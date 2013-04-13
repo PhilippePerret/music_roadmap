@@ -40,7 +40,7 @@ when /le #{VARIABLE} élément (?:du|de ce) résultat doit être (.*)$/ then
   case expect
   when 'true' then 
     unless @resultat[index]
-      puts "*** @resultat[#{index}] devrait être true. @resultat:#{@resultat.inspect}"
+      puts "* @resultat[#{index}] devrait être true. @resultat:#{@resultat.inspect}".red
     end
     @resultat[index] should be true
   when "les données mini de l'utilisateur"

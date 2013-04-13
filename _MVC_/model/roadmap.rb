@@ -49,34 +49,32 @@ class Roadmap
   
   # =>  Return true si l'utilisateur est le possesseur de la rm ou un
   #     administrateur
-  # @param  dauth     Hash contenant :mail, :password[, :md5]
+  # @param  dauth     Hash contenant :mail, :md5
   # @param  pwd       Mot de passe String si dauth est un string
   # @param  md5       MD5 si dauth est un string
   # 
   # @note:  dans le flux normal, le possesseur est checké seulement avec
   #         le mail et le md5
   # 
-  def owner_or_admin? dauth, pwd = nil, lemd5 = nil
+  def owner_or_admin? dauth, lemd5 = nil
     if dauth.class == String
-      dauth = {:mail => dauth, :password => pwd, :md5 => lemd5 }
+      dauth = {:mail => dauth, :md5 => lemd5 }
     end
     User.authentify_as_admin( dauth ) || owner?( dauth )
   end
-  # =>  Retourne true si l'utilisateur identifié par +dauth+ est bien le
-  #     possesseur de la feuille de route
-  # @param  dauth   Pour le moment, contient :mail et :password qui doivent
+  # Retourne true si l'utilisateur identifié par +dauth+ est bien le
+  # détenteur de la feuille de route
+  # @param  dauth   Pour le moment, contient :mail et :md5 qui doivent
   #                 correspondre à ceux enregistrés dans la feuille de route
-  #                 peut-être aussi défini par le md5
   # 
-  def owner? hismail, hispwd = nil, hismd5 = nil
+  def owner? hismail, hismd5 = nil
     if hismail.class == Hash
-      hispwd  = hismail[:password]
       hismd5  = hismail[:md5]
       hismail = hismail[:mail]
     end
     begin
       raise "Mail nil" if hismail.nil?
-      raise "Password of md5 required" if hispwd.nil? && hismd5.nil?
+      raise "Md5 required" if hismd5.nil?
       user = User.new hismail
       raise "User inconnu" unless user.exists?
     rescue Exception => e
@@ -86,22 +84,8 @@ class Roadmap
       # # -- / débug --
       return false
     end
-    
-    
-    #  Le mail doit être bon, ainsi que le password OU le md5
-    good_password = hispwd  == user.password # @noter 'user'
-    good_md5      = hismd5  == md5
 
-    # # -- Débug --
-    # puts "\n--------------"
-    # puts "DÉBUG Roadmap.owner?"
-    # puts "Mail ne matche pas (donné:#{hismail} / rm:#{mail})" if hismail!=mail
-    # puts "Pwd ne matche pas (donné:#{hispwd} / user:#{user.password})" unless good_password
-    # puts "Md5 ne matche pas (donné:#{hismd5} / rm:#{md5})" unless good_md5
-    # puts "--------------"
-    # # -- /Débug --
-
-    return (hismail == mail) && ( good_password || good_md5 )
+    return (hismail == mail) && ( hismd5 == md5 )
   end
   # => Retourne true si le dossier de l'exercice existe déjà
   def exists?
@@ -151,16 +135,15 @@ class Roadmap
   def ip;         get_datajs 'ip'         end
   # =>  Retourne le mail du possesseur de la roadmap (ou nil)
   def mail;       get_datajs 'mail'       end
-  # =>  Retourne le password enregistré avec la roadmap
-  #     @WARNING ! Il ne s'agit pas du mdp de la roadmap, propre à la rm,
-  #     mais du mot de passe du possesseur de la roadmap
-  # OBSOLÈTE
-  def password;   get_datajs 'password'   end
   # =>  Retourne la date de création de la rm
   def created_at; get_datajs 'created_at' end
   # =>  Retourne la date de dernière modification
   def updated_at; get_datajs 'updated_at' end
 
+  # Retourne les data de l'exercice d'identifiant +idex+
+  def exercice idex
+    JSON.parse(File.read(path_exercice(idex)))
+  end
   # =>  Retourne la data exercices +key+ ou l'ensemble des données exercices
   #     (fichier exercices.js) si +key+ n'est pas fourni ou nil
   def data_exercices key = nil

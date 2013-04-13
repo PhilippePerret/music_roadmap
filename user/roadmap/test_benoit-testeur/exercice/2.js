@@ -1,0 +1,1 @@
+{"started_at":null,"tempo":60,"created_at":1365874157,"tempo_max":120,"note":null,"obligatory":true,"tempo_min":50,"image":null,"suite":"normale","updated_at":1365874157,"ended_at":null,"auteur":"Beringher","recueil":"Cahier 1","abs_id":null,"titre":"Exercice 1","with_next":null,"up_tempo":null,"id":"2","created_at":null,"types":["G0"]}

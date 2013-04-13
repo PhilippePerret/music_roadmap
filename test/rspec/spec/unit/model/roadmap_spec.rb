@@ -232,10 +232,10 @@ describe Roadmap do
 				it { should respond_to :owner? }
 				context "quand les données d'authentification sont valides" do
 					subject { rm_test }
-					it { subject.owner?(:mail => rm_test.mail, :password => DATA_PHIL[:password]).should be_true }
+					it { subject.owner?(:mail => rm_test.mail, :md5 => DATA_PHIL[:md5]).should be_true }
 				end
 				context "quand les données d'authentification sont invalides" do
-					it { subject.owner?(:mail => "bad", :password => "new").should be_false }
+					it { subject.owner?(:mail => "bad", :md5 => "new").should be_false }
 				end
 			end
 			
@@ -244,15 +244,15 @@ describe Roadmap do
 			  it { should respond_to :owner_or_admin? }
 				context "quand les données d'authentification sont valides" do
 					subject { rm_test }
-					it { subject.owner_or_admin?(:mail => rm_test.mail, :password => DATA_PHIL[:password]).should be_true }
+					it { subject.owner_or_admin?(:mail => rm_test.mail, :md5 => DATA_PHIL[:md5]).should be_true }
 				end
 				context "quand les données d'authentification sont invalides" do
-					it { subject.owner_or_admin?(:mail => "bad", :password => "new").should be_false }
+					it { subject.owner_or_admin?(:mail => "bad", :md5 => "new").should be_false }
 				end
 				context "quand c'est un administrateur (Phil)" do
 					# C'est un "faux test" puisque la feuille de route est de toute façon
 					# possédée par moi
-					it { subject.owner_or_admin?(:mail => DATA_PHIL[:mail], :password => DATA_PHIL[:password]).should be_true }
+					it { subject.owner_or_admin?(:mail => DATA_PHIL[:mail], :md5 => DATA_PHIL[:md5]).should be_true }
 				end
 				
 			end

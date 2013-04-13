@@ -47,7 +47,7 @@ describe User do
 	describe ":authentify_with_mail_and_password" do
 	  context "avec des données d'administrateur" do
 	  	it { User::authentify_with_mail_and_password(:mail => DATA_PHIL[:mail], :password => DATA_PHIL[:password]).should be_true }
-	  	it { User::authentify_with_mail_and_password(:md5 => DATA_PHIL[:md5]).should be_false }
+	  	it { User::authentify_with_mail_and_password(:password => DATA_PHIL[:password]).should be_false }
 	  end
 	  context "avec de mauvaises données" do
 	  	it { User::authentify_with_mail_and_password(:mail => "badmail", :password => "badpassword").should be_false }
@@ -68,11 +68,11 @@ describe User do
 	it { should respond_to :authentify_as_admin }
 	describe ":authentify_as_admin" do
 	  context "avec des données d'administrateur" do
-	  	it { User::authentify_as_admin(:mail => DATA_PHIL[:mail], :password => DATA_PHIL[:password]).should be_true }
+	  	it { User::authentify_as_admin(:mail => DATA_PHIL[:mail], :md5 => DATA_PHIL[:md5]).should be_true }
 	  	it { User::authentify_as_admin(:md5 => DATA_PHIL[:md5]).should be_true }
 	  end
 	  context "avec de mauvaises données" do
-	  	it { User::authentify_as_admin(:mail => "badmail", :password => "badpassword").should be_false }
+	  	it { User::authentify_as_admin(:mail => "badmail", :md5 => "badpassword").should be_false }
 	  end
 	end
 	

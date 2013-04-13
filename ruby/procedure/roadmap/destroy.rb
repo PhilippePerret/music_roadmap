@@ -7,7 +7,7 @@ require_model 'user'
 
 def ajax_roadmap_destroy
   rm    = Roadmap.new param(:roadmap_nom), param(:roadmap_mdp)
-  dauth = { :mail => param(:mail), :password => param(:password), :md5 => param(:md5) }
+  dauth = { :mail => param(:mail), :md5 => param(:md5) }
   res = roadmap_destroy rm, dauth
   RETOUR_AJAX[:error] = res unless res.nil?
 end
@@ -18,7 +18,7 @@ end
 # @param  auth  Paramètres d'authentification
 #               contient :
 #                 :mail   => adresse IP de l'utilisateur courant
-#                 :passw  => MD5 du mail-password de l'utilisateur
+#                 :md5    => MD5 de l'utilisateur
 # 
 def roadmap_destroy rm, auth
   

@@ -1,5 +1,6 @@
 # On essaie d'ouvrir une roadmap
 # Quand je m'identifie par javascript comme testeur
 Quand je m'identifie par le formulaire comme testeur
-  Then je dois être identifié
-# Quand je m'identifie comme testeur
+Et que je choisis "test_benoit-testeur" dans le menu "roadmaps"
+  Alors la roadmap "test_benoit-testeur" doit être chargée
+  Et la roadmap "test_benoit-testeur" doit être affichée

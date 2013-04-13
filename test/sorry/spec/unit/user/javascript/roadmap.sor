@@ -15,5 +15,7 @@ Et que j'appelle la méthode JS peuple_menu_roadmaps de Roadmap avec ["rm1-t","r
 # Test unitaire de Roadmap.open_by_menu
 Quand je rejoins l'accueil
 Et que je m'identifie par JS comme testeur
+Et que je choisis l'item "test_benoit" dans le menu "roadmaps"
 Et que j'appelle la méthode JS open_by_menu de Roadmap avec "roadmaps"
-  Alors la roadmap "test_benoit-testeur" doit être affichée
+  Alors la roadmap "test_benoit-testeur" doit être chargée
+  Et la roadmap "test_benoit-testeur" doit être affichée

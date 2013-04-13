@@ -9,14 +9,20 @@ when /je m'identifie (par le formulaire|par javascript|par JS)? (avec des codes 
   #   je m'indentifie [par ...] comme [admin | testeur]
   #   je m'identifie [par ...] avec des codes invalides
   # --
-  par_js = $1 == nil || ["par javascript ","par JS "].include?($1)
+  par = $1
+  par_js = par == nil || ["par javascript","par JS"].include?(par)
   comme = $2
   @mail, @password = case comme.strip
-  when "comme testeur"            then ["benoit.ackerman@yahoo.fr", "testeur"]
-  when "comme admin"              then [DATA_PHIL[:mail], DATA_PHIL[:password]]
-  when "avec des codes invalides" then ["pasbon", "paspropre"]
+  when "comme testeur"            then 
+    ["benoit.ackerman@yahoo.fr", "testeur"]
+  when "comme admin"              then 
+    [DATA_PHIL[:mail], DATA_PHIL[:password]]
+  when "avec des codes invalides" then 
+    ["pasbon", "paspropre"]
+  else
+    raise "Il faut spécifier l'utilisateur (`comme testeur', `comme admin', `avec des codes invalides')"
   end
-  User identify @mail, @password, par_js
+  SUser identify @mail, @password, par_js
 
   
 when "j'apelle la méthode d'identification" then

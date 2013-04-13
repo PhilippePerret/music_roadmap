@@ -264,6 +264,22 @@ window.Roadmap = {
     return from.replace(/ /g, '_').replace(/[^a-zA-Z0-9_-]/g, '') ;
   },
 
+  /*  Ouvre la roadmap voulue par un menu
+  
+      La méthode est appelée par un menu, principalement le menu "roadmaps"
+      qui contient par les roadmaps de l'utilisateur.
+      
+      @param    idmenu    Identifiant du menu qui appelle la méthode
+      @products Le chargement et l'affichage de la roadmap sélectionnée dans
+                le menu (si elle existe)
+  */
+  open_by_menu: function( idmenu ){
+    this.opening = true ;
+    var nomdp = $('select#' + idmenu).val();
+    var drm   = nomdp.split('-');
+    this.set(drm[0], drm[1]);
+    this.open();
+  },
   // Ouvre la roadmap courante
   opening: false, // mis à true pendant l'ouverture
   open: function(){

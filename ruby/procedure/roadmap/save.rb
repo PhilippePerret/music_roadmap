@@ -23,7 +23,7 @@ def ajax_roadmap_save
       # Update
       # ------
       raise "ERRORS.Roadmap.unknown"    unless rm.exists?
-      is_owner_or_admin = rm.owner_or_admin?(user_mail, nil, user_md5)
+      is_owner_or_admin = rm.owner_or_admin?(user_mail, user_md5)
       raise "ERRORS.Roadmap.bad_owner"  unless is_owner_or_admin
     else
       # Création

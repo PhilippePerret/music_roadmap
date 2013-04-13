@@ -73,7 +73,7 @@ describe "Procédures de destruction" do
 		context "avec des données d'administrateur" do
 			before :all do
 				build_roadmap_asup
-				@res = roadmap_destroy Roadmap.new("asup","asup"), {:mail => DATA_PHIL[:mail], :password => DATA_PHIL[:password], :md5 => DATA_PHIL[:md5]}
+				@res = roadmap_destroy Roadmap.new("asup","asup"), {:mail => DATA_PHIL[:mail], :md5 => DATA_PHIL[:md5]}
 			end
 			it { @res.should be_nil }
 			it "a dû détruire le dossier" do

@@ -15,7 +15,6 @@ when /j'appelle la méthode JS #{VARIABLE} (?:de #{VARIABLE} )?(?:avec (.+))?$/ 
   method  = $1
   objet   = $2
   args    = $3 || ""
-  puts "*** args: #{args.inspect}"
   caller = if objet.nil?
     "#{method}"
   else

@@ -28,15 +28,6 @@ Sorry.configure do |config|
   config.url_online   = APP_FOLDER_URL_ONLINE
   config.url_offline  = APP_FOLDER_URL_OFFLINE
   
-  # def identify_user_with mail, password, javascript = false
-  #   p "*** Identification de l'utilisateur avec #{mail}/#{password}"
-  #   if javascript
-  #     puts "*** Identification par javascript"
-  #   else
-  #     puts "*** Identification par intégration"
-  #   end
-  # end
-
   # Require la procédure spécifiée
   # 
   # @param  :rel_path::     Chemin relatif à la procédure, depuis le dossier

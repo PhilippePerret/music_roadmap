@@ -4,3 +4,26 @@ when /je clique le bouton #{STRING}/ then
   # exemple "a#btn_signin")
   # --
   Browser click $1
+
+when /je choisis l'item #{STRING} dans le menu #{STRING}/ then
+  # Permet de sélectionner un item de menu
+  # 
+  # @param    Le 1er string définit la valeur ou le text de l'item
+  # @param    Le 2nd string définit l'identifiant du select (qui doit exister)
+  # 
+  # --
+  item = $1
+  idselect = $2
+  
+  Browser should contain :tag => 'select', :id => idselect
+  wel = Browser get :tag => 'select', :id => idselect
+  puts "*** wel:#{wel.inspect}"
+  # wel should exist
+  opt = wel.option(:text => item)
+  opt = wel.option(:value => item) unless opt.exists?
+  puts "*** opt:#{opt.inspect}"
+  opt.select
+  
+  
+# FIN
+end
