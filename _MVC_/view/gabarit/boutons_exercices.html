@@ -1,0 +1,35 @@
+<div id="btns_exercices" class="right semicadreh">
+  <!-- Flottant à gauche -->
+  <a  id="btn_exercices_move" 
+      onclick="return $.proxy(Exercices.move, Exercices)()"
+      class="btn fleft"
+      style="display:none;margin-top:-0.2em;"
+      title="Reclasser les exercices dans un ordre différent"
+      >Activer le déplacement</a>
+
+  <!-- Flottant à droite -->
+  <a  id="btn_fullscreen"
+      onclick="$.proxy(UI.fullscreen, UI)()"
+      class="fright"
+      title="Ajuster la liste à la taille de l'écran"
+      ><img data-src="picto_fullscreen.png" /></a>
+  
+  <a  id="btn_stop_exercices"
+      class="btn"
+      style="display:none"
+      onclick="return $.proxy(Exercices.end_suitex, Exercices, true)()"
+      title="Interrompre le jeu de la suite d'exercice."
+      >Stopper les exercices</a>
+  <a  id="btn_exercices_run"
+      class="btn"
+      onclick="return $.proxy(Exercices.suitex, Exercices)()"
+      style="display:none;"
+      title="Passer d'un exercice à un autre, dans l'ordre du jour, en réglant chaque fois le métronome à la bonne vitesse, pour exemple ou suivi."
+      >Lancer les exercices</a>
+  <a  id="btn_exercice_create" 
+      onclick="return $.proxy(Exercices.new, Exercices)()"
+      class="btn"
+      title="Créer un nouvel exercice"
+      >Nouvel exercice</a>
+  
+</div>

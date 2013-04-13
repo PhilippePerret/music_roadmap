@@ -1,0 +1,1 @@
+Ce dossier contient les textes d'aide pour les tests seulement.

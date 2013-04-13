@@ -1,0 +1,65 @@
+<!-- 
+  Les informations sur le fichier contenant les données des exercices
+-->
+<div id="roadmap_specs-specs">
+  <table width="100%">
+    <tr>
+      <td>
+        <input type="text" id="roadmap_nom" value="" onchange="$.proxy(Roadmap.onchange_affixe, Roadmap, this.value, null)()" />
+      </td>
+      <td>
+        <input type="text" id="roadmap_mdp" value="" onchange="$.proxy(Roadmap.onchange_affixe, Roadmap, null, this.value)()" />
+      </td>
+      <td colspan="2">
+        <select id="roadmaps"></select>
+      </td>
+      <td>
+        
+      </td>
+      <td class="right">
+        <a  href="#" 
+            id="btn_close_specs"
+            style="color:white"
+            onclick="return $.proxy(Roadmap.set_div_specs, Roadmap)()"
+            class="petit"
+        >[<span class="label_close">fermer</span>]</a>
+      </td>
+    </tr>
+    <tr id="specs_roadmap">
+      <td id="td_label_roadmap" class="center" width="180">FEUILLE DE ROUTE</td>
+      <td id="td_label_mdp" class="center" width="180">MOT DE PASSE</td>
+      <td colspan="3">
+        <a  id="btn_roadmap_open" 
+            class="btn" 
+            onclick="$.proxy(Roadmap.open, Roadmap)();"
+        >Ouvrir</a>
+        <a  id="btn_roadmap_create" href="#"
+            class="btn"
+            onclick="return $.proxy(Roadmap.create, Roadmap)()"
+            title="Créer cette feuille de route"
+        >Créer</a>
+        <a  id="btn_save_roadmap" 
+            class="btn off" 
+            onclick="$.proxy(Roadmap.save, Roadmap)();"
+        >...</a>
+      </td>
+      <td class="right">
+        <a  id="btn_init_roadmap" href="#"
+            class="btn"
+            onclick="return $.proxy(Roadmap.init_new, Roadmap)()"
+            title="Créer un tout nouveau document vierge"
+        >Init</a>
+      </td>
+    </tr>
+  </table>
+</div>
+<!--  
+  Quand le div ci-dessus est fermé,, le div ci-dessous est ouvert (et 
+  vice-et-versa)
+-->
+<div id="open_roadmap_specs" style="display:none;padding-top:4px;" class="right">
+  <a  href="#"
+      style="color:white"
+      onclick="return $.proxy(Roadmap.set_div_specs, Roadmap)()"
+  >[<span class="label_roadmap">Feuille de route</span>…]</a>
+</div>

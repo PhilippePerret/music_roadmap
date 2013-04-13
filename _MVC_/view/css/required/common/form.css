@@ -1,0 +1,83 @@
+
+/* Les a-boutons */
+a.btn, input.btn, button.btn {
+  padding           : 4px 10px ;
+  border-width      : 1px ;
+  border-style      : solid ;
+  border-color      : #DDDDDD #006800 #006800 #DDDDDD ;
+  border-radius     : 4px ;
+  font-family       : Arial, Helvetica ;
+  font-size         : 12.8px ;
+  background-color  : #acda7d !important ;
+  color             : #006800 !important ;
+  text-align        : center ;
+  cursor            : pointer ;
+}
+a.btn:active, input.btn:active, button.btn:active {
+  color             : white !important ;
+  background-color  : #006800 !important ;
+}
+a.btn.petit {
+  font-size         : 11px !important;
+  padding           : 1px 7px ;
+}
+a.btn.moyen {
+  font-size         : 1.04em !important;
+}
+a.btn.gros {
+  font-size         : 1.24em !important;
+}
+
+a.btn.off {
+  opacity           : 0.35 ;
+  font-style        : italic;
+}
+a.btn.on {
+  opacity: 1;
+  font-style: normal;
+}
+a.btn.act { //*quand l'opération du bouton est en cours */
+  font-weight: bold;
+}
+
+/*
+  
+  Styles pour les tables formulaires
+  
+*/
+table.form {
+  width               :100%;
+  border              :0;
+}
+table.form td {
+  vertical-align      :top;
+  font-family         :Verdana;
+  font-size           :12.3px;
+}
+table.form td.libelle {
+  color               :#999;
+  font-style          :italic;
+  font-size           :0.7em;
+  text-align          :right;
+  padding-right       :1em;
+  
+}
+
+table.form input[type="text"], 
+table.form input[type="password"], 
+table.form textarea
+{
+  width         : 90% ;
+  font-family   : Verdana ;
+  font-size     : inherit ;
+  padding       : 3.2px ;
+  color         : #1350D5 ;
+}
+table.form select, table.form select option {
+  font-size     : inherit ;
+  font-family   : inherit ;
+}
+table.form tr.buttons, table.form tr.boutons {
+  text-align          : right;
+  padding-top         : 1em ;
+}

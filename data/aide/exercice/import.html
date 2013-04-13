@@ -1,0 +1,64 @@
+<div class="titre">Importer des exercices</div>
+
+<div class="soustitre">Présentation</div>
+
+<div>
+  Grâce à la fonction d'importation, vous pouvez importer dans une nouvelle feuille de route des exercices appartenant à d'autres feuilles de route.
+</div>
+
+<div class="soustitre">Comment faire&nbsp;?</div>
+
+<div>
+  <ul>
+    <li>Créer <aide value="roadmap/creation">une nouvelle feuille</aide> de route si nécessaire&nbsp;;</li>
+    <li>Ouvrez la boite d'édition des exercices en cliquant sur le <focus value="a#btn_exercice_create">bouton “Nouvel exercice”</focus>&nbsp;;
+      <br />-> La boite d'édition doit s'ouvrir.
+      </li>
+    <li>Indiquez dans le <focus value="input#path_to_exercice">champ des chemins d'exercices</focus> les “paths” des exercices (cf. <a href="#chemins">Définir les chemins des exercices</a> ci-dessous)&nbsp;;</li>
+    <li>Cliquer sur le <focus value="a#btn_import_exercice">bouton “Importer”</focus> pour importer le ou les exercices spécifiés.
+      <br />-> Ils doivent se charger dans votre feuille de route.
+      </li>
+  </ul>
+  <div class="italic">
+    Vous aurez peut-être besoin de recharger la page pour que les images de ces exercices apparaissent.
+  </div>
+</div>
+
+<div id="chemins" class="soustitre">Définition des chemins des exercices</div>
+
+<div>
+  Un “chemin d'exercice” est spécifié par&nbsp;:
+  <ul>
+    <li>Le nom de sa feuille de route (par exemple “exemple”)&nbsp;;</li>
+    <li>Son mot de passe (p.e. “motdepasse”)&nbsp;;</li>
+    <li>Son identifiant (toujours un nombre)</li>
+  </ul>
+  <div>
+    Chacun de ces éléments est séparé de l'autre par une balance (“/”). Par exemple&nbsp;: <code>feuille_de_route/mot_de_passe/125</code>.
+  </div>
+</div>
+
+<div>
+  Dans le <focus value="input#path_to_exercice">champ d'importation d'exercices</focus>, vous pouvez spécifier plusieurs exercices en les séparant par des virgules, sans espaces&nbsp;:<br />
+  <code>feuille01/password/12,ma_map/moncode/24,feuilleessai/code/32</code>.
+</div>
+<div>
+  Dans l'exemple ci-dessus, on importera l'exercice #12 de la feuille “feuille01” qui est protégée par le mot de passe “password”, l'exercice #24 de la feuille “ma_map” protégée par “moncode” et l'exercice #32 de la feuille “feuilleessai” protégée par “code” (de très mauvais mots de passe, inutile de vous le dire ;-)).
+</div>
+
+<div class="soustitre">Obtenir le chemin d'un exercice</div>
+
+<div>
+  Il y a une chose toute simple à faire pour obtenir le chemin d'un exercice sans vous tromper et de façon très rapide&nbsp;:
+</div>
+<ul>
+  <li>Dans une autre page, rejoignez <a href="http://www.atelier-icare.net/music_roadmap" target="_new">Feuille de Route Musicale</a>, ouvrez votre feuille de route qui contient l'exercice à importer&nbsp;;</li>
+  <li>Cliquez sur le chiffre lègèrement bleu, entre crochets, qui se trouve sous le titre de l'exercice, tout à gauche&nbsp;
+    <br />-> L'application ouvre un message (en haut) contenant le chemin de l'exercice&nbsp;;</li>
+  <li>Placez votre curseur dans ce chemin du message.
+    <br />-> Tout le chemin devrait se sélectionner&nbsp;;</li>
+  <li>Copiez-collez le dans votre feuille de route qui doit importer l'exercice, sans oublier de le séparer d'une virgule si vous avez déjà indiqué d'autres chemins d'exercices.</li>
+</ul>
+<div>
+  Simplissime, non&nbsp;? (même mon chien y parvient, qui adore les Hanon… enfin… surtout les Hanonosses).
+</div>

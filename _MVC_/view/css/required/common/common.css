@@ -1,0 +1,141 @@
+body {
+  font-family: "sans-serif" ;
+  font-size:    16px ;
+  margin:       0;
+  padding:      0;
+}
+
+code {font-size:14.7px;}
+
+.inherit {
+  font-family       : inherit !important ;
+  font-size         : inherit !important ;
+  font-weight       : inherit !important ;
+  border            : 0 ;
+  margin            : 0 ;
+}
+
+img { border: 0 ;}
+/* 
+  Par défaut, les éléments qui définissent la class 'no_js' ne sont
+  pas affichés. Un <noscript> permet de surclasser cette définition pour
+  les afficher quand javascript n'est pas activé dans le navigateur. 
+*/
+.no_js { display: none; }
+
+/*  Translucide permet d'avoir un élément avec une faible
+    opacité, qui se révèle quand on le survole */
+.translucide        { opacity: 0.5; }
+.translucide:hover  { opacity: 1;   }
+
+/* Visible ou invisible */
+.visible            {visibility:visible !important;}
+.invisible,.hidden  {visibility:hidden !important;}
+
+/* Élément "hot", ie dangereux, risqué, etc. 
+  Placé ici pour qu'il s'impose aux autres */
+*.hot { 
+  color:              red !important; 
+  background-color:   #FDD; 
+  border-color:       red !important ;
+  }
+
+/* Liens */
+a, a:hover, a:link, a:visited {
+  text-decoration:      none      ;
+  color:                #0000AF   ;
+}
+/* Positionnement d'un container */
+.clear  { clear: both; }
+.inline { display: inline !important; }
+.block  { display: block  !important; }
+.fixed  { position: fixed ;}
+.masked { display: none; }
+/* Cadre */
+.cadre { border: 1px solid #ccc; padding: 1em; }
+.petit_cadre {border: 1px solid #ccc; padding: 0.5em;}
+.mini_cadre, .cadre_mini {border: 1px solid #ccc; padding: 2px 9px;}
+/*    Seulement les traits haut et bas */
+.semicadreh {border-width:1px 0;border-style:solid;border-color:white;padding:1em;}
+/*    Seulement les traits droite et gauche */
+.semicadrev {border-width:0 1px;border-style:solid;border-color:white;padding:1em;}
+/* Profondeur */
+.background { z-index:  0    ; }
+.midground  { z-index:  500  ; }
+.foreground { z-index:  1000 ; }
+/* Position du texte */
+.center { text-align: center !important;}
+.fleft  { float: left;}
+.left   { text-align: left !important;}
+.right  { text-align: right !important;}
+.fright { float: right;}
+/* Pour une marge en haut (t = top) ou en bas (b = bottom)*/
+.mgt { margin-top: 0.5em ;}
+.gmgt { margin-top: 1em ;}
+.mgb { margin-bottom: 0.5em ;}
+.gmgb { margin-bottom: 1em ;}
+/* Pour une marge à gauche ou à droite de l'élément */
+.mg.petit, .ml.petit { margin-left:   0.5em;}
+.md.petit, .mr.petit { margin-right:  0.5em;}
+.mg, .ml { margin-left:  1em;}
+.md, .mr { margin-right: 1em;}
+.mg50  {margin-left: 5em    !important ;} /* Les styles mgXXX peuvent être utilisés */
+.mg100 {margin-left: 6.5em  !important ;} /* par exemple avec les styles wXXX.fleft */
+.mg150 {margin-left: 8em    !important ;} /* pour créer des fausses tables          */
+.mg200 {margin-left: 9.5em  !important ;} /*                                        */
+/* Pour laisser de l'air, soit en dessous et au-dessus, soit l'un ou l'autre */
+.air    { margin : 1em 0; }
+.air_top{ margin-top: 1em; }
+.air_bottom{margin-bottom:1em;}
+.mediumair { margin: 3em 0;}
+.mediumair_top { margin-top: 3em;}
+.mediumair_bottom { margin-bottom: 3em;}
+.bigair, .grand_air {margin: 4em 0;}
+.bigair_top, .grand_air_haut{margin-top:4em;}
+.bigair_bottom, .grand_air_bas{margin-bottom:4em;}
+/* Taille */
+.pc50   { min-width: 49% ; }
+.pc30   { min-width: 32% ;}
+.petit, table td .petit  { font-size: 13.75px!important ; }
+.mini, table td .mini { font-size: 11.75px !important;}
+.tout_petit, .tout_petit * {font-size: 12.75px !important; }
+.grand { font-size: 1.17em ; }
+/* Des largeurs fixes — transforme automatiquement en display:block — 
+    pour utilisation par exemple avec un float (fleft, fright) */
+.w50    {display:block; width: 3.4em  ;}
+.w100   {display:block; width: 4.9em  ;}
+.w150   {display:block; width: 6.4em  ;}
+.w200   {display:block; width: 7.0em  ;}
+.w100pc {display:block; width: 98% ;}
+/* Styles */
+.bold   { font-weight: bold;}
+.italic { font-style: italic; font-size:1.049em;}
+.title { font-weight: bold; margin-top: 1em;}
+
+
+/*Couleurs*/
+.red, .rouge { color: red ; }
+.green, .vert { color: #0A0 ;}
+
+pre.debug {
+  margin-left:    1em;
+  font-size:      13px;
+}
+
+/* Message d'alerte ou boutons dangereux */
+.warning {
+  color:              red     !important ;
+  background-color:   #fcc    ;
+}
+
+/*
+  Affichage du backtrace (quand F.backtrace sans argument est employé)
+*/
+div.backtrace {
+  position:   fixed     ;
+  bottom:     10px      ;
+  left:       10px      ;
+  width:      80%       ;
+  max-height: 180px     ;    
+  overflow:   auto      ;
+}

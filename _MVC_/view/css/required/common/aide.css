@@ -1,0 +1,108 @@
+/*
+  Feuille de styles pour l'objet Aide
+  
+  @note: à mettre dans les librairies générales quand OK
+  
+*/
+section#aide {
+  position          :fixed;
+  top               :1em;
+  left              :1em;
+  background-color  :white;
+  border            :3px solid brown;
+  z-index           :3000;
+  width             :30em;
+  border-radius     :1em;
+}
+section#aide a { cursor:pointer; }
+
+/*quand on la déplace*/
+section#aide.moving {
+  opacity           :0.8em;
+}
+
+/* BANDE DE TITRE */
+section#aide div#aide_bande_titre {
+  background-color    :brown;
+  color               :white;
+  padding             :0.5em 1.3em;
+  border-radius       :0.8em 0.8em 0 0;
+}
+/* LES LIENS */
+/* dans barre de titre */
+section#aide div#aide_bande_titre a {
+  color               :white !important;
+}
+/* dans le texte, vers une autre aide */
+section#aide div.aide_text a.aide_lien {
+  font-family         :inherit;
+  font-size           :inherit;
+  color               :#025AC7;
+}
+/* dans le texte, pour mettre le focus sur un élément */
+section#aide div.aide_text a.aide_focus {
+  color               : #025AC7;
+  font-family         : Arial, Helvetica;
+  font-size           : 0.9em;
+}
+section#aide div.aide_text a.aide_focus:before {
+/*  content:"▶◀";*/
+content:"▶";
+}
+/*section#aide div.aide_text a.aide_focus:after {
+    content:"▶";
+}
+*/
+/*
+{
+  NSFont = "ArialUnicodeMS 12.00 pt. P [] (0x4166080) fobj=0x416bf30, spc=3.33";
+}
+*/
+/*section#aide div.aide_text a.aide_focus:before,
+section#aide div.aide_text a.aide_focus:after {content:"#";}
+*/
+/* CONTENU */
+section#aide div#aide_content {
+  overflow            :auto;
+  max-height          :26em;
+  border-radius       :0.5em;
+  background-color    :brown;
+}
+/* Un texte d'aide en particulier */
+section#aide div#aide_content div.aide_text {
+  background-color    :#E9E9D0;
+  margin              :0.5em 0;
+  border-top          :1px solid brown;
+  border-bottom       :1px solid brown;
+  padding             :0;
+}
+section#aide div#aide_content div.aide_text_content > div:not(.titre):not(.soustitre) {
+  margin-bottom: 0.5em;
+}
+/* Le titre d'un texte d'aide */
+section#aide div#aide_content div.aide_text .titre {
+  font-size           :1.4em;
+  margin-bottom       :2em !important;
+}
+/* Un sous-titre */
+section#aide div#aide_content div.aide_text div.soustitre {
+  font-size           :1.2em;
+  margin-top          :1.5em;
+  margin-bottom       :1em !important;
+}
+/* La bande des boutons (close, etc.)*/
+section#aide div#aide_content div.aide_text div.btns {
+  font-size           :13.75px !important;
+  text-align          :right;
+  padding             :2px 0.5em;
+}
+section#aide div.aide_text_content {
+  padding             :1em 2em;
+}
+
+/* Les pictos aide */
+img.picto_aide {
+  width               :16.8px;
+  vertical-align      :middle;
+  opacity             :0.616;
+}

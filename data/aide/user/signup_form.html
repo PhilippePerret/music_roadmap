@@ -1,0 +1,81 @@
+<div id="user_signup_form">
+  <table class="form">
+    <colgroup>
+      <col width="130">
+      <col width="auto">
+    </colgroup>
+    <tr>
+      <td class="titre" colspan="2" id="signup_label_titre">
+        SIGNUP_LABEL_TITRE
+      </td>
+    </tr>
+    <tr>
+      <td class="libelle" id="signup_label_name">
+        SIGNUP_LABEL_NAME
+      </td>
+      <td>
+        <input type="text" name="user[nom]" value="" id="user_nom" />
+      </td>
+    </tr>
+    <tr>
+      <td class="libelle" id="signup_label_mail">
+        SIGNUP_LABEL_MAIL
+      </td>
+      <td>
+        <input type="text" name="user[mail]" value="" id="user_mail" />
+      </td>
+    </tr>
+    <tr>
+      <td class="libelle" id="signup_label_mail_confirmation">
+        SIGNUP_LABEL_MAIL_CONFIRMATION
+      </td>
+      <td>
+        <input type="text" name="user_mail_confirmation" value="" id="user_mail_confirmation" />
+      </td>
+    </tr>
+    <tr>
+      <td class="libelle" id="signup_label_password">
+        SIGNUP_LABEL_PASSWORD
+      </td>
+      <td>
+        <input type="password" name="user[password]" value="" id="user_password" />
+      </td>
+    </tr>
+    <tr id="tr_user_password_confirmation">
+      <td class="libelle" id="signup_label_password_confirmation">
+        SIGNUP_LABEL_PASSWORD_CONFIRMATION
+      </td>
+      <td>
+        <input type="password" name="user_password_confirmation" value="" id="user_password_confirmation" />
+      </td>
+    </tr>
+    <tr id="tr_user_instrument">
+      <td class="libelle" id="signup_label_instrument">
+        SIGNUP_LABEL_INSTRUMENT
+      </td>
+      <td>
+        <input type="text" name="user[instrument]" value="" id="user_instrument" />
+      </td>
+    </tr>
+    <tr id="tr_user_presentation">
+      <td class="libelle" id="signup_label_description">
+        SIGNUP_LABEL_DESCRIPTION
+      </td>
+      <td>
+        <textarea name="user[description]" id="user_description"></textarea>
+      </td>
+    </tr>
+    <tr id="tr_boutons" class="boutons">
+      <td class="libelle">
+        
+      </td>
+      <td>
+        <a  href="#" 
+            id="signup_button_name" 
+            class="gros btn"
+            onclick="return $.proxy(User.create, User)()"
+            >SIGNUP_BUTTON_NAME</a>
+      </td>
+    </tr>
+  </table>
+</div>

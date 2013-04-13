@@ -1,0 +1,120 @@
+/*
+  Feuille de styles pour le gabarit général de la page
+  
+  
+  Pour du vert clair : #cdd7d7 (mais pas grande surface)
+*/
+/*
+  BODY
+  ----
+*/
+body {
+  position          :relative;
+  max-width         : 1200px ;
+  min-width         : 400px ;
+  background-image  : url('../../../img/fond_bois.jpg');
+}
+/*
+  ROADMAP
+  --------
+*/
+section#roadmap {
+  border              : 1px solid #334E52;
+  min-height          : 100px ;
+  width               : 21cm ;
+  margin-left         : 16em ;
+  border-radius       : 15px 15px 0 0 ;
+}
+
+/* Les fonds foncés */
+div#roadmap_specs {
+  background-color      : teal;
+}
+div#btns_exercices {
+  height              : 20px;
+  background-color    : #334E52;
+  padding             : 0.7em ;
+}
+section#roadmap div#roadmap_specs {
+/*  width               : 100% ;*/
+  font-size           : 0.9em ;
+  padding             : 0 0.7em 0.5em 0.7em ;
+  color               : white ;
+  border-radius       : 15px 15px 0 0 ;
+}
+section#roadmap div#roadmap_specs input[type=text] {
+  padding             : 2px ;
+  width               : 160px;
+}
+
+/*
+    SECTION PARTAGE
+    ---------------
+*/
+section#partage {
+  position            :absolute;
+  left                :30em;
+  top                 :14px;
+}
+section#partage a {
+  color               :white !important;
+  font-size           :inherit;
+}
+
+/*
+  BANDE LOGO
+  ----------
+*/
+section#bande_logo {
+  background-color    :#B0A2A2;
+  height              :auto;
+  width               :309px;
+  border-radius       :0 0 1em 0;
+  padding             :0.5em 0 0.5em 1.1em;
+  margin-bottom       :0.5em;
+  opacity             :0.85;
+  color               :white;
+}
+section#bande_logo div#nom_site {
+  font-size           : 1.23em ;
+}
+/*
+  METRONOME
+*/
+section#sec_metronome {
+  
+}
+/*Le métrodonme*/
+section#sec_metronome img#metronome_anim {
+  background-color  : #A46B55;
+  border-radius     : 4em 4em 4em 4em;
+  left              : 4em;
+  padding           : 0.5em;
+  position          : absolute;
+  top               : 4em;
+  width             : 111px;
+}
+
+a#btn_save_roadmap {
+  width               : 70px  ;
+  float               : right ;
+  display             : block ;
+  margin-top          : -5px  ; /* pour aligner */
+}
+/* pour div#document_body, cf. document.css*/
+
+div#parametres {
+  background-color    : #008080 ; /*#454545*/ ;
+}
+
+/* Drapeau pour autre langue */
+img#drapeau_autre_langue {
+  width               : 34.8px;
+  margin-left         : 12px ;
+}
+/*
+  SECTION DONATION
+*/
+section#donation {
+  
+}

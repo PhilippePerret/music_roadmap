@@ -1,0 +1,115 @@
+<!-- 
+  Formulaire de création d'un exercice
+-->
+<table id="exercice_form" class="form" style="display:none">
+  <colgroup>
+    <col width="80">
+    <col width="auto">
+  </colgroup>
+  <tr>
+    <td class="libelle">Recueil</td>
+    <td><input type="text" id="exercice_recueil" value="" /></td>
+  </tr>
+  <tr>
+    <td class="libelle">Titre</td>
+    <td>
+      <input type="text" id="exercice_titre" value="" />
+      <input type="hidden" id="exercice_id" value="" />
+      <!-- 
+        @TODO: Ici, on mettra la possibilité de choisir parmi des exercices
+        déjà existants. Leur sélection réglera automatiquement tous les
+        champ de l'exercice
+        @note: je ne sais pas si c'est un select qu'il faut, car les exercices
+        peuvent devenir extrêmement nombreux. Donc plutôt une liste dans une
+        autre page, avec ici un champ simplement pour copier/coller l'ID
+      -->
+      <div style="display:none;">
+        Choisir 
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">Auteur</td>
+    <td><input type="text" id="exercice_auteur" value="" /></td>
+  </tr>
+  <tr>
+    <td class="libelle">
+      Infos
+    </td>
+    <td>
+      <span id="span_obligatory">
+        <input type="checkbox" id="exercice_obligatory">
+        <label for="exercice_obligatory">Obligatoire</label>
+        <aide value="exercice/prop/obligatory"></aide>
+      </span>
+      <span id="span_with_next">
+        <input type="checkbox" id="exercice_with_next">
+        <label for="exercice_with_next">Lié au suivant</label>
+        <aide value="exercice/prop/with_next"></aide>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">
+      Types
+    </td>
+    <td>
+      <div class="left">
+        <a  href="#"
+            id="btn_toggle_types_exercices"
+            class="petit btn"
+            onclick="return $.proxy(Exercices.Edition.toggle_types, Exercices.Edition)();">modifier…</a> 
+        <aide value="exercice/prop/type"></aide>
+      </div>
+      <div id="exercice_cbs_types" style="display:none;"></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">Tempi</td>
+    <td>
+      Courant <select id="exercice_tempo" class="tempo"></select> 
+      Minimum <select id="exercice_tempo_min" class="tempo"></select> 
+      Maximum <select id="exercice_tempo_max" class="tempo"></select>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">Suite</td>
+    <td>
+      <select id="exercice_suite">
+        <option value="normale">Normale (définie par l'exercice)</option>
+        <option value="harmonic">Harmonique (C->Am -> F->Dm etc. ou inverse)</option>
+        <option value="none">Aucune</option>
+      </select>
+    </td>
+  </tr>
+  <tr class="buttons">
+    <td></td>
+    <td>
+      <a onclick="$('table#exercice_form').hide()" class="btn">Renoncer</a>
+      <a id="btn_exercice_save" onclick="$.proxy(Exercices.save, Exercices)()" class="btn">Créer l'exercice</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">Image</td>
+    <td>
+      <input type="file" id="exercice_image" value="" />
+      <span class="mini italic">(Par exemple un extrait-partition)</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">Notes</td>
+    <td><textarea id="exercice_note"></textarea></td>
+  </tr>
+  <tr>
+    <td class="libelle">Import</td>
+    <td>
+      <div>
+        Une liste d'exercices <select id="abs_id"><option value=""></option></select> <span class="mini italic">(Inutilisé pour le moment)</span>
+      </div>
+      <div>
+        <input type="text" id="path_to_exercice" value ="" style="width:200px;padding:1px;" />
+        <a href="#" id="btn_import_exercice" class="btn" onclick="return $.proxy(Exercices.import,Exercices)();">Importer</a>  <aide value="exercice/import"></aide>
+      </div>
+    </td>
+  </tr>
+</table>

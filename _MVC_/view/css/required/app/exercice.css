@@ -1,0 +1,102 @@
+/*table du formulaire*/
+table#exercice_form {
+  background-color          :whitesmoke ;
+  padding                   :1em         ;
+  margin-left               :13.3em;
+  border-width              :0 7px 7px 3px;
+  border-color              :#334E52;
+  border-style              :solid;
+  width                     :512px !important;
+}
+table#exercice_form div#exercice_cbs_types {
+  background-color          :#E0E0E0;
+  padding                   :0.5em;
+}
+table#exercice_form div#exercice_cbs_types span {
+  margin-right              :0.5em;
+  display                   :block;
+  float                     :left;
+  width                     :82px;
+}
+table#exercice_form div#exercice_cbs_types label {
+  font-size                 :0.85em;
+}
+/*
+  LISTE DES EXERCICES
+*/
+ul#exercices {
+  list-style            :none ;
+  padding               :1em  ;
+  margin                :0    ;
+  height                :25em ;
+  max-height            :25em ;
+  overflow-y            :scroll ;
+  border-bottom         :18px solid #008080;
+}
+ul#exercices li.ex {
+  position              :relative ;
+  margin-bottom         :0.5em ;
+  padding               :0.5em ;
+  background-color      :white ;
+  clear                 :both  ;
+  border-radius         :0.6em ;
+}
+ul#exercices li.ex.selected {
+  background-color       :#cdd7d7 !important ;
+}
+li.ex a.ex_id {
+  margin-right          :1em ;
+  font-size             :12.3px;
+}
+li.ex span.ex_recueil {
+  font-variant          :small-caps ;
+  margin-right          :8px ;
+}
+li.ex div.ex_titre {
+  font-weight           :bold ;
+  font-size             :1.4em ;
+}
+li.ex span.ex_auteur {
+  font-size             :0.9em ;
+}
+li.ex select.ex_tempo/*, li.ex select.ex_tempo option*/ {
+  font-family           :Verdana ;
+  font-size             :1.4em ;
+}
+li.ex div.ex_suite {
+  width                 :31em;
+  margin-top            :8px;
+}
+li.ex div.ex_note {
+  width                 :50%;
+  margin-top            :5px;
+  padding               :4px;
+  border                :1px solid #7BD161;
+  font-size             :0.9em;
+  background-color      :#D1EADE;
+}
+li.ex img.ex_image {
+  position              :absolute;
+  margin-left           :25.5em  ;
+  max-height            :5.3em   ;
+  max-width             :15.4em;
+  float                 :right   ;
+  margin-right          :1.5em   ;
+}
+
+li.ex div.btns_edition {
+  float                 :right ;
+}
+li.ex div.btns_edition a {
+  display               :block ; /*  les uns au dessous  */
+  margin-bottom         :4px   ; /*  des autres          */
+  width                 :40px  ;
+  font-size             :0.83em ;
+}
+li.ex div.btns_edition a.btn_edit {
+  
+}
+li.ex div.btns_edition a.btn_del {
+  background-color      :#f99 !important ;
+  border-color          :#900 !important ;
+}

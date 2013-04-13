@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>essai-image</title>
+  <style type="text/css" media="screen">
+    div#div_image{
+      position:relative;
+      border:1px dashed #ccc;
+    }
+    div#div_image.on {
+      height:10cm;
+      width:28cm;/* La partition s'adaptera automatiquement à cette valeur*/
+      overflow:hidden;}
+    div#div_image.off {width:10cm;height:4cm;overflow:hidden;}
+    div.div_partition img.image{position:absolute;}
+    div.div_partition.on img.image{left:0;top:0;}
+    div.div_partition.off img.image{
+      left:2px;       /* Ces deux valeurs sont à régler suivant */
+      top:-72.3px;    /* l'image utilisée */
+    }
+    div.div_partition.on img.image{/*width:1013px;*/width:100%;}
+    div.div_partition.off img.image{
+      width:800px; /*Cette valeur sera à régler suivant l'image*/
+    }
+  </style>
+  <script type="text/javascript" charset="utf-8">
+    function toggle(o){
+      var css = o.getAttribute('class');
+      var is_on = css.indexOf(' off') < 0 ;
+      o.setAttribute('class', 'div_partition ' + (is_on ? 'off' : 'on') ) ;
+    }
+  </script>
+</head>
+<body id="essai-image">
+  <div id="div_image" class="div_partition off" onclick="toggle(this)">
+    <img class="image" src="data/exercice/hanon/01/ex-fleched.jpg" />
+  </div>
+</body>
+</html>

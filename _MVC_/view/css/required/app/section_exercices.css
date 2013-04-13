@@ -1,0 +1,14 @@
+section#section_exercices {
+  padding               : 0;
+}
+/*Séparation entre les boutons de la barre exercices*/
+div#btns_exercices a {
+  margin-right        : 1em ;
+}
+
+div#btns_exercices a#btn_fullscreen img {
+  width               : 30px  ;
+  margin-top          : -4px  ;
+  margin-right        : -16px ;
+}
+  

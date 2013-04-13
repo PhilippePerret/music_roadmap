@@ -1,0 +1,23 @@
+/*
+    Styles pour le document
+    -----------------------
+    
+    Note : Quand le :style est "style" dans les données du document, la classe
+    css est "ds_style". "ds" pour "document style"
+    
+*/
+
+/*
+  OPTIONS DOCUMENT
+*/
+section#roadmap span#mode_exergue_paragraphe_cliquable {
+  color             : white !important ;
+  font-size         : 13.48px ;
+}
+/*
+  OUTILS DOCUMENT
+*/
+div#outils_roadmap {
+  background-color        : #cdd7d7 ; /* s'associe bien avec vert dur */
+  padding                 : 1em ;
+}

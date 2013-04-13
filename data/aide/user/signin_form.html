@@ -1,0 +1,42 @@
+<div id="user_signin_form">
+  <table class="form">
+    <tr>
+      <td class="titre" colspan="2" id="signin_label_titre">
+        SIGNIN_LABEL_TITRE
+      </td>
+    </tr>
+    <tr>
+      <td class="libelle" id="signin_label_mail">
+        SIGNIN_LABEL_MAIL
+      </td>
+      <td>
+        <input type="text" name="user[mail]" value="" id="user_mail" />
+      </td>
+    </tr>
+    <tr>
+      <td class="libelle" id="signin_label_password">
+        SIGNIN_LABEL_PASSWORD
+      </td>
+      <td>
+        <input type="password" name="user[password]" value="" id="user_password" />
+      </td>
+    </tr>
+    <tr id="tr_boutons" class="boutons">
+      <td class="libelle">
+      </td>
+      <td>
+        <a  href="#"
+            id="btn_signup"
+            class="gros btn"
+            style="margin-right:2em;"
+            onclick="return $.proxy(User.new, User)()"
+          >BTN_SIGNUP</a>
+        <a  href="#" 
+            id="btn_signin" 
+            class="gros btn"
+            onclick="return $.proxy(User.check, User)()"
+            >BTN_SIGNIN</a>
+      </td>
+    </tr>
+  </table>
+</div>

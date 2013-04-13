@@ -1,0 +1,25 @@
+<!-- Logo métronome -->
+<section id="sec_metronome">
+  <img  id="metronome_anim" 
+          data-src="metronome/metro.gif" 
+          data-src-alt="metronome/metro_fixe.png" 
+          onclick="$.proxy(UI.onclick_metronome_anim, UI)();"
+          />
+</section>
+<!-- Partage -->
+<section id="partage">
+  <div class="mini_cadre fleft center" style="width:auto;">
+    <a id="btn_want_signin" href="#" onclick="return $.proxy(User.signin, User)()">S'identifier/S'inscrire</a>
+  </div>
+  <div class="mini_cadre fleft center" style="width:90px;">
+    <aide value="application/mail_to_phil.rb" id="mail_to_phil">Écrire à Phil</aide>
+  </div>
+  <a id="btn_change_lang" href="#" onclick="return $.proxy(UI.change_lang, UI)();">
+    <img id="drapeau_autre_langue" data-src="picto/drapeau/en.png" />
+  </a>
+</section>
+<!-- Bande logo -->
+<section id="bande_logo">
+  <div id="nom_site">Feuille de Route Musicale</div>
+  <div id="subtitle_site" class="petit italic">Gestion au quotidien de ses exercices de musique.</div>
+</section>
