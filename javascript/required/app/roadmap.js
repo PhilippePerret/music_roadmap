@@ -448,6 +448,26 @@ window.Roadmap = {
     this.destroying = false ;
   },
   
+  /*  Peuple le select#roadmaps avec les roadmaps envoyées
+      -----------------------------------------------------
+
+    @param   roadmaps    Liste (Array) d'identifiant de roadmap, c'est-à-dire
+                         de "nom-mdp". Seul le nom importe pour l'affichage
+                         puisque mdp est le mail du possesseur.                
+
+  */
+  peuple_menu_roadmaps: function(roadmaps){
+    var i, nom, mdp;
+    var menu = $('select#roadmaps');
+    menu.html("");
+    roadmaps.unshift(LOCALE_UI.Roadmap.open_your_rm+"…-");
+    for(i in roadmaps){
+      idrm = roadmaps[i];
+      drm = idrm.split('-') ;
+      nom = drm[0]; mdp = drm[1];
+      menu.append('<option value="'+idrm+'">' + nom + '</option>');
+    }
+  },
   // /*
   //     Sous-objet Roadmap.Data
   //     -------------------------
