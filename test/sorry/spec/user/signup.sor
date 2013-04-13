@@ -1,0 +1,10 @@
+# @TODO: à poursuivre
+# @TODO: Penser à vérifier la fermeture de la boite d'identification (sa
+# suppression n'est pas encore implémentée)
+Quand je rejoins l'accueil
+Et que j'apelle la méthode d'identification
+  Comme visiteur non identifié
+    Then la boite d'identification doit s'afficher
+    Et la boite d'identification doit contenir les bons éléments
+    Et le message d'erreur "ERRORS.User.need_to_signin" doit être affiché
+

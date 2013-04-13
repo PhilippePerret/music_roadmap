@@ -1,0 +1,20 @@
+# Test de l'identification
+# 
+# Scénario: On rejoint l'accueil, on clique sur le bouton "S'identifier",
+# on remplit le formulaire, soit avec des données valides, soit avec des
+# données invalides, et on teste le résultat.
+# --
+Quand je rejoins l'accueil
+Et que je m'identifie par le formulaire comme testeur
+  Then je dois être identifié
+  Et la boite d'identification ne doit plus être ouverte
+  Et le message "MESSAGES.User.welcome" doit être affiché
+  Et le lien a#btn_want_signin doit avoir le label "LOCALE_UI.User.logout"
+  Et la liste de mes roadmaps doit être affichée
+  Et la liste des roadmaps de "benoit.ackerman@yahoo.fr-testeur" doit être affichée
+
+# Quand je rejoins l'accueil
+# Et que je m'identifie par le formulaire avec des codes invalides
+#   Then je ne dois pas être identifié
+#   Et la boite d'identification doit être ouverte
+#   Et le message d'erreur "ERRORS.User.unknown" doit être affiché

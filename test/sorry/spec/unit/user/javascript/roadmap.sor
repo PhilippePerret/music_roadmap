@@ -1,0 +1,19 @@
+Quand je rejoins l'accueil
+  Alors JS Roadmap doit exister
+  Et JS Roadmap doit répondre à get_nom
+  Et JS Roadmap doit répondre à get_mdp
+  Et JS Roadmap doit répondre à get
+  Et JS Roadmap doit répondre à set
+  Et JS Roadmap doit répondre à peuple_menu_roadmaps
+  Et JS Roadmap doit répondre à open_by_menu
+
+# Test de Roadmap.peuple_menu_roadmaps
+Quand je rejoins l'accueil
+Et que j'appelle la méthode JS peuple_menu_roadmaps de Roadmap avec ["rm1-t","rm2-u"]
+  Alors le menu des roadmaps doit contenir ["rm1-t","rm2-u"]
+
+# Test unitaire de Roadmap.open_by_menu
+Quand je rejoins l'accueil
+Et que je m'identifie par JS comme testeur
+Et que j'appelle la méthode JS open_by_menu de Roadmap avec "roadmaps"
+  Alors la roadmap "test_benoit-testeur" doit être affichée

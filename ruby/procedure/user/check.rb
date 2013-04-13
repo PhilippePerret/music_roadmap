@@ -8,10 +8,13 @@ def ajax_user_check
     # puts "res: #{res.inspect}"
     raise res[1] if res[0] == false
   rescue Exception => e
-    RETOUR_AJAX[:error] = e.message
-    RETOUR_AJAX[:user] = nil
+    RETOUR_AJAX[:error]     = e.message
+    RETOUR_AJAX[:user]      = nil
+    RETOUR_AJAX[:roadmaps]  = nil
   else
-    RETOUR_AJAX[:user] = res[1]
+    RETOUR_AJAX[:user]      = res[1]
+    RETOUR_AJAX[:babar]     = "Est parmi nous"
+    RETOUR_AJAX[:roadmaps]  = res[2]
   end
 end
 
@@ -26,7 +29,7 @@ def user_check hdata
     raise "ERRORS.User.unknown" unless user.valide_with?(hdata[:password])
     # On peut charger l'utilisateur
     require 'procedure/user/load'
-    [true, user_load(hdata[:mail], hdata[:password])]
+    [true, user_load(hdata[:mail], hdata[:password]), user.roadmaps]
   rescue Exception => e
     [false, e.message]
   end
