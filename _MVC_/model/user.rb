@@ -42,7 +42,6 @@ class User
   def md5;          @md5          ||= data['md5']         end
   def nom;          @nom          ||= data['nom']         end
   def ip;           @ip           ||= data['ip']          end
-  def password;     @password     ||= data['password']    end
   def instrument;   @instrument   ||= data['instrument']  end
   def description;  @description  ||= data['description'] end
   def salt;         @salt         ||= data['salt']        end
@@ -104,23 +103,36 @@ class User
   # 
   def data_to_json with_update = true
     d = data_to_hash
-    d.merge(:updated_at => Time.now.to_i) if with_update
+    d = d.merge(:updated_at => Time.now.to_i) if with_update
     d.to_json
   end
   
   # Enregistre les nouvelles données de l'utilisateur
   def save
+    raise "Data user invalid (empty string) (#{__FILE__}:#{__LINE__})" if data_to_json.to_s == ""
     File.open(path, 'wb'){ |f| f.write data_to_json }
   end
   
   def exists?
     File.exists? path
   end
+  
+  # Vérifie la validité de l'utilisateur à partir du mot de passe fourni.
+  # 
+  # @rappel: Le mot de passe n'est plus enregistré dans la donnée de l'utilisateur
+  # mais seulement son md5.
+  # 
   def valide_with? password
-    password == data['password']
+    to_md5( password ) == data['md5']
+  end
+  
+  # Transforme le mot de passe en md5
+  def to_md5 password
+    require 'digest/md5'
+    Digest::MD5.hexdigest("#{mail}-#{instrument}-#{password}")
   end
   
   def path
-    @path ||= File.join(APP_FOLDER, 'user', 'data', @mail)
+    @path ||= File.join(APP_FOLDER, 'user', 'data', mail)
   end
 end

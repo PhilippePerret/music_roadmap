@@ -28,7 +28,12 @@ section#roadmap {
 
 /* Les fonds foncés */
 div#roadmap_specs {
-  background-color      : teal;
+  background-color      :teal;
+}
+/* Menu des roadmaps */
+div#roadmap_specs select#roadmaps {
+  font-size     :1.3em;
+  width         :14em;
 }
 div#btns_exercices {
   height              : 20px;

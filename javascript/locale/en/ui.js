@@ -44,12 +44,13 @@ window.LOCALE_UI = {
     },
   },
   Roadmap: {
-    btn_save: "Save",
-    btn_saved: "Saved",
-    btn_saving: "Saving…",
-    btn_open: "Open",
-    btn_init: "Init",
-    btn_create: "Create",
+    open_your_rm  : "Open your roadmap",
+    btn_save      : "Save",
+    btn_saved     : "Saved",
+    btn_saving    : "Saving…",
+    btn_open      : "Open",
+    btn_init      : "Init",
+    btn_create    : "Create",
   },
   Exercices: {
     Label:{

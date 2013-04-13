@@ -11,7 +11,7 @@
         <input type="text" id="roadmap_mdp" value="" onchange="$.proxy(Roadmap.onchange_affixe, Roadmap, null, this.value)()" />
       </td>
       <td colspan="2">
-        <select id="roadmaps"></select>
+        <select id="roadmaps" onchange="$.proxy(Roadmap.open, Roadmap, this.value)"></select>
       </td>
       <td>
         
