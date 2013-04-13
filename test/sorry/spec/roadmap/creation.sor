@@ -1,0 +1,11 @@
+Avant chaque
+  Do Détruire la roadmap "nouvelle-nouvelle_mdp" si elle existe
+  
+Quand je rejoins l'accueil
+Et que je veux créer une feuille de route
+Et que je donne le nom "nouvelle" et le mdp "nouvelle_mdp" à la roadmap
+  Comme visiteur identifié
+    Alors la roadmap "nouvelle-nouvelle_mdp" doit être créée
+  Comme visiteur non identifié
+    Alors la roadmap "nouvelle-nouvelle_mdp" ne doit pas être créée
+    Et la page doit afficher le formulaire d'identification

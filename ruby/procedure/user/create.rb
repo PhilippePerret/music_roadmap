@@ -29,9 +29,9 @@ def user_create duser
     raise "ERRORS.User.password_required" unless duser.has_key?(:password)
     raise "ERRORS.User.Signup.instrument_required" unless duser.has_key?(:instrument)
     # MD5 et check de la non-existence
-    md5   = Digest::MD5.hexdigest("#{duser[:mail]}-#{duser[:instrument]}-#{duser[:password]}")
-    path  = File.join(APP_FOLDER, 'user', 'data', duser[:mail])
-    raise "ERRORS.User.Signup.already_exists" if File.exists?(path)
+    user  = User.new duser[:mail] # virtual user
+    raise "ERRORS.User.Signup.already_exists" if user.exists?
+    md5   = user.to_md5( duser.delete(:password) )
     # Création de l'utilisateur
     duser = duser.merge( 
       :ip         => Params::User.ip,
@@ -41,7 +41,7 @@ def user_create duser
       :created_at => Time.now.to_i,
       :updated_at => Time.now.to_i
       )
-    File.open(path, 'wb'){|f| f.write duser.to_json}
+    File.open(user.path, 'wb'){|f| f.write duser.to_json}
     return [ true, md5 ]
   rescue Exception => e
     return [ false, e.message ]
