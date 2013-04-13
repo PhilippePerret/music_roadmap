@@ -8,6 +8,7 @@ window.User = {
   nom             :null,
   md5             :null,
   mail            :null,
+  roadmaps        :null,      // liste (array) des roadmaps de l'utilisateur
   identified      :false,
   
   preparing_form  :false, // mis à true pendant préparation formulaires
@@ -93,7 +94,7 @@ window.User = {
       return this.checking = false ;
     }
     Ajax.query({
-      data:{proc:'user/load',user:hdata},
+      data:{proc:'user/check',user:hdata},
       success: $.proxy(this.retour_check, this)
     });
     return false ; // pour le a-lien
@@ -104,17 +105,14 @@ window.User = {
       // ------------------------
       //  Identification réussie
       // ------------------------
-      var duser = rajax.user ;
-      this.md5  = duser.md5 ;
-      this.nom  = duser.nom ;
-      this.mail = duser.mail ;
+      var duser     = rajax.user ;
+      this.md5      = duser.md5 ;
+      this.nom      = duser.nom ;
+      this.mail     = duser.mail ;
+      this.roadmaps = rajax.roadmaps ;
       $('div#user_signin_form').remove();
       Aide.close() ;
       F.show(MESSAGES.User.welcome);
-      with( $('a#btn_want_signin') ){
-        html(LOCALE_UI.User.logout);
-        attr('onclick', "return $.proxy(User.logout, User)()");
-      }
       this.pour_suivre_identification();
     } else {
       // Identification failed
@@ -128,6 +126,14 @@ window.User = {
   // poursuivre avec la méthode initialement invoquée (par exemple la création
   // d'une roadmap).
   pour_suivre_identification:function(){
+    // Set the signin/logount main button
+    with( $('a#btn_want_signin') ){
+      html(LOCALE_UI.User.logout);
+      attr('onclick', "return $.proxy(User.logout, User)()");
+    }
+    // Set the roadmaps menu (with user's roadmaps if any)
+    Roadmap.peuple_menu_roadmaps( this.roadmaps );
+    // On poursuit avec les méthodes demandée au départ
     if ('function' == typeof this.fx_pour_suivre_signin){ 
       this.fx_pour_suivre_signin();
       this.fx_pour_suivre_signin = null ;
