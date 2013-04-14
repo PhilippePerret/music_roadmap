@@ -1,9 +1,11 @@
-when /je clique le bouton #{STRING}/ then
+when /je clique (?:sur )?le bouton (.+)$/ then
   # Clic sur un bouton (un a-button).
   # Peut-être spécifié par son nom (p.e. "S'identifier") ou son JID (par 
   # exemple "a#btn_signin")
   # --
-  Browser click $1
+  btn = $1
+  btn.gsub!(/^("|')(.*)\1$/){$2}
+  Browser click btn
 
 when /je choisis l'item #{STRING} dans le menu #{STRING}/ then
   # Permet de sélectionner un item de menu

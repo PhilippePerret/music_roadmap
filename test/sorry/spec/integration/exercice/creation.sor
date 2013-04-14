@@ -1,0 +1,25 @@
+# Test de la création d'un exercice.
+# 
+# On part de l'utilisateur qui arrive, qui se connecte, qui ouvre une de ses
+# feuilles de route, et il veut ajouter un exercice.
+# 
+
+Quand je rejoins l'accueil
+Et que je m'identifie par le formulaire comme testeur
+Et que je choisis la roadmap "test_benoit"
+# Et que je clique sur le bouton "LOCALE_UI.Exercices.Label.new_exercice"
+Et que je clique sur le bouton a#btn_exercice_create
+  Alors le formulaire exercice doit être affiché
+  Et le formulaire exercice doit être vierge
+  
+  Quand je remplis le formulaire exercice
+  # Et que je clique sur le bouton a#btn_exercice_save
+    Si les données du formulaire exercice sont valides
+      Alors l'exercice doit être créé
+#       Et le formulaire exercice doit être fermé
+#       Et l'exercice doit être affiché
+#       Et flash doit afficher le message "MESSAGES.Exercice.saved"
+#       Et EXERCICES doit connaitre le nouvel exercice
+#       Et l'exercice doit avoir été ajouté à la roadmap
+#       # ci-dessus, penser à : dans data javascript actuelles (ordre)
+#       # et dans le fichier exercices.js de la roadmap

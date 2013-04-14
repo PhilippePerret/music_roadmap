@@ -22,6 +22,6 @@ window.MESSAGES = {
   },
   // EXERCICE
   Exercice: {
-    
+    saved       : "Exercice enregistré avec succès."
   },
 }

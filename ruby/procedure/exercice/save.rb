@@ -52,9 +52,11 @@ def exercice_save rm, data, owner
     # Exercice existant
     old_data = JSON.parse(File.read(expath))
     data = old_data.merge data
-  else
-    # Nouvel exercice
-    data = data.merge(:created_at => now)
+  end
+  
+  if ! data.has_key?('created_at') || data['created_at'].nil?
+    # New exercice or error
+    data = data.merge 'created_at' => now
   end
   data = data.merge 'updated_at' => now
   
