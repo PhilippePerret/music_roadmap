@@ -277,8 +277,8 @@ $.extend(window.Exercices,{
     else
       this.save_ordre() ;
   },
-  // Masquer/afficher les boutons propres aux exercices en fonction de leur
-  // présence ou non
+  // Masquer/afficher les boutons propres aux exercices en fonction de la
+  // présence ou non d'exercices
   // 
   set_boutons:function(){
     BT.add('-> Exercices.set_boutons (EXERCICES.length='+EXERCICES.length+')') ;

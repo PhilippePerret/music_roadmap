@@ -33,7 +33,6 @@ when /la roadmap #{STRING} doit être chargée/ then
   ordex = rm.ordre_exercices
   if ordex.count > 0
     ordex.each do |idex|
-      puts "*** vérification de l'exercice #{idex}"
       "'undefined' != typeof EXERCICES['#{idex}']".js should be true
     end
   else
@@ -59,21 +58,29 @@ when /la roadmap #{STRING} doit être affichée/ then
   require_model 'roadmap'
   rm = Roadmap.new nom, mdp
   ordex = rm.ordre_exercices
-  if ordex.count > 0
-    ordex.each do |idex|
-      dex = rm.exercice idex
-      puts "*** vérification de l'exercice #{dex.inspect}"
-      # @TODO: il doit être affiché
-    end
-  else
-    raise "Il faut ajouter des exercices à la feuille de route #{nomdp} pour pouvoir vraiment la tester"
-  end
+  ul_exercices = Browser get ul :id => 'exercices'
+  raise "Il faut ajouter des exercices à la feuille de route #{nomdp} pour pouvoir vraiment la tester" if ordex.empty?
+  # Présence du li de chaque exercice
+  ordex.each { |idex| 
+    ul_exercices should contain li :id => "li_ex-#{idex}"
+  }
   
   # Les specs doivent contenir le nom et le mdp
-  # Les exercices doivent être affichés
+  wel = Browser get input :id => 'roadmap_nom'
+  wel.value should be nom
+  wel = Browser get input :id => 'roadmap_mdp'
+  wel.value should be mdp
+    
   # La configuration des exercices doit être visible
-  # Les boutons roadmap/exercices doivent être affichés
-  # La spec de la roadmap doit être fermée
+  Browser should display div :id => 'config_generale'
   
+  # Les boutons roadmap/exercices doivent être affichés
+  Browser should display a :id => 'btn_exercice_create'
+  Browser should display a :id => 'btn_exercices_run'
+  Browser should display a :id => 'btn_exercices_move'
+
+when "les specs de la roadmap doivent être masquées" then
+  Browser should not display div :id => 'roadmap_specs-specs'
+
 # Pour le dernier block (if any)
 end

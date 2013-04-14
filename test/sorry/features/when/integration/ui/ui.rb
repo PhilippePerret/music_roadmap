@@ -17,11 +17,8 @@ when /je choisis l'item #{STRING} dans le menu #{STRING}/ then
   
   Browser should contain :tag => 'select', :id => idselect
   wel = Browser get :tag => 'select', :id => idselect
-  puts "*** wel:#{wel.inspect}"
-  # wel should exist
   opt = wel.option(:text => item)
   opt = wel.option(:value => item) unless opt.exists?
-  puts "*** opt:#{opt.inspect}"
   opt.select
   
   

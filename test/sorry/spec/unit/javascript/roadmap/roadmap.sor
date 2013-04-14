@@ -8,14 +8,25 @@ Quand je rejoins l'accueil
   Et JS Roadmap doit répondre à open_by_menu
 
 # Test de Roadmap.peuple_menu_roadmaps
+# 
+# Pur test unitaire. Vérifie la méthode qui met une liste de roadmaps
+# quelconque dans le menu principal select#roadmaps affichant en règle
+# générale la liste des roadmaps de l'utilisateur.
+# 
 Quand je rejoins l'accueil
 Et que j'appelle la méthode JS peuple_menu_roadmaps de Roadmap avec ["rm1-t","rm2-u"]
   Alors le menu des roadmaps doit contenir ["rm1-t","rm2-u"]
 
-# Test unitaire de Roadmap.open_by_menu
+# Test pseudo-unitaire de Roadmap.open_by_menu
+# 
+# Cette méthode permet d'ouvrir une roadmap à partir d'un menu où son
+# titre est affiché. C'est la méthode principale qui répond par exemple
+# au menu affichant la liste des roadmaps de l'utilisateur
+# 
 Quand je rejoins l'accueil
 Et que je m'identifie par JS comme testeur
 Et que je choisis l'item "test_benoit" dans le menu "roadmaps"
 Et que j'appelle la méthode JS open_by_menu de Roadmap avec "roadmaps"
   Alors la roadmap "test_benoit-testeur" doit être chargée
   Et la roadmap "test_benoit-testeur" doit être affichée
+  Et les specs de la roadmap doivent être masquées
