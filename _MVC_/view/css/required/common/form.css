@@ -67,17 +67,20 @@ table.form input[type="text"],
 table.form input[type="password"], 
 table.form textarea
 {
-  width         : 90% ;
-  font-family   : Verdana ;
-  font-size     : inherit ;
-  padding       : 3.2px ;
-  color         : #1350D5 ;
+  width         :98%;
+  font-family   :Verdana;
+  font-size     :inherit;
+  padding       :3.2px;
+  color         :#1350D5;
 }
 table.form select, table.form select option {
-  font-size     : inherit ;
-  font-family   : inherit ;
+  font-size     :inherit;
+  font-family   :inherit;
 }
 table.form tr.buttons, table.form tr.boutons {
   text-align          : right;
   padding-top         : 1em ;
+}
+table.form tr.buttons, table.form tr.boutons td {
+  padding-top         :1.3em;
 }

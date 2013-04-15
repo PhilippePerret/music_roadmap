@@ -9,7 +9,7 @@ section#aide {
   top               :1em;
   left              :1em;
   background-color  :white;
-  border            :3px solid brown;
+  border            :6px solid #606060;
   z-index           :3000;
   width             :30em;
   border-radius     :1em;
@@ -23,7 +23,7 @@ section#aide.moving {
 
 /* BANDE DE TITRE */
 section#aide div#aide_bande_titre {
-  background-color    :brown;
+  background-color    :#606060;
   color               :white;
   padding             :0.5em 1.3em;
   border-radius       :0.8em 0.8em 0 0;
@@ -66,14 +66,14 @@ section#aide div#aide_content {
   overflow            :auto;
   max-height          :26em;
   border-radius       :0.5em;
-  background-color    :brown;
+  background-color    :#606060;
 }
 /* Un texte d'aide en particulier */
 section#aide div#aide_content div.aide_text {
-  background-color    :#E9E9D0;
+  background-color    :#F7F9FA;
   margin              :0.5em 0;
-  border-top          :1px solid brown;
-  border-bottom       :1px solid brown;
+  border-top          :1px solid #606060;
+  border-bottom       :1px solid #606060;
   padding             :0;
 }
 section#aide div#aide_content div.aide_text_content > div:not(.titre):not(.soustitre) {
@@ -84,6 +84,10 @@ section#aide div#aide_content div.aide_text .titre {
   font-size           :1.4em;
   margin-bottom       :2em !important;
 }
+section#aide div#aide_content div.aide_text td.titre {
+  padding-bottom      :0.9em;
+}
+
 /* Un sous-titre */
 section#aide div#aide_content div.aide_text div.soustitre {
   font-size           :1.2em;
@@ -95,6 +99,9 @@ section#aide div#aide_content div.aide_text div.btns {
   font-size           :13.75px !important;
   text-align          :right;
   padding             :2px 0.5em;
+}
+section#aide div#aide_content div.aide_text div.btns a {
+  color               : #B0B0B0;
 }
 section#aide div.aide_text_content {
   padding             :1em 2em;
