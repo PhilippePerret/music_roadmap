@@ -1,3 +1,21 @@
+when /Détruire les exercices créés après #{STRING}$/ then
+  # Détruit tous les exercices créés après le time stamp fourni.
+  # 
+  # @usage: Par exemple : placer avant, dans un Before all: `Do $depart = Time.now.to_i`
+  #         puis `Détruire les exercices créés après "$depart"`
+  #         @note: bien le mettre entre guillemets
+  # --
+  from = eval($1).to_i
+  raise "Le temps ne peut être inférieur à l'heure" if from < Time.now.to_i - 3600
+  rm  = get_current_roadmap
+  Dir["#{rm.folder_exercices}/*.js"].each do |path|
+    id = File.basename(path, File.extname(path))
+    next if File.stat(path).mtime.to_i < from
+    next if "'undefined' == typeof EXERCICES['#{id}']".js
+    "Exercices.delete('#{id}',destroy=true)".js
+    Browser wait_while{ "Exercices.deleting".js }
+  end
+  
 when /Détruire (?:le nouvel |l')exercice(?: #{STRING})?/ then
   # Procède à la destruction complète d'un exercice de la roadmap
   # courante.

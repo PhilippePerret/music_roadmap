@@ -67,6 +67,7 @@ Sorry.configure do |config|
       rm.exercice(id).each do |k, v|
         dex = dex.merge "exercice_#{k}".to_sym => v
       end
+      dex = dex.merge :id => id
       dex # => on retourne le hash
     end
   end

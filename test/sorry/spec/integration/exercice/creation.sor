@@ -3,6 +3,10 @@
 # On part de l'utilisateur qui arrive, qui se connecte, qui ouvre une de ses
 # feuilles de route, et il veut ajouter un exercice.
 # 
+Before all
+  Do $depart = Time.now.to_i
+After all
+  Do Détruire les exercices créés après "$depart"
 
 Quand je rejoins l'accueil
 Et que je m'identifie par le formulaire comme testeur
@@ -17,7 +21,5 @@ Et que je clique sur le bouton a#btn_exercice_create
       Alors l'exercice doit être créé
       Et le formulaire exercice doit être fermé
       Et l'exercice doit être correctement affiché
-      Et le message "MESSAGES.Exercice.saved" doit être affiché
       Et EXERCICES doit bien connaitre le nouvel exercice
       Et l'exercice doit avoir été ajouté à la roadmap
-      Et je détruis le nouvel exercice

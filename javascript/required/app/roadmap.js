@@ -527,13 +527,6 @@ window.Roadmap = {
       }
     },
     
-  //   // Ajoute un identifiant à l'ordre, en vérifiant son existence
-  //   add_id: function(id){
-  //     if ( this.EXERCICES['ordre'].indexOf(id) >= 0 )
-  //       return F.error("L'identifiant "+id+" est déjà connu de nos services…");
-  //     else
-  //       this.EXERCICES['ordre'].push( id ) ;
-  //   },
   //   // Passer à la configuration générale suivante
   //   next_config_generale: function(){
   //     // Index de la nouvelle configuration

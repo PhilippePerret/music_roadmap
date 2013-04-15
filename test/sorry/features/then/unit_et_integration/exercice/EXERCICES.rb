@@ -16,11 +16,12 @@ when /EXERCICES doit (bien )?connaitre (le nouvel |l')exercice(?: #{STRING})?/ t
   lenouvel  = $2
   idex      = $3
   dex = get_data_exercice idex
+  id = dex[:id]
   
   # Début du test
   "EXERCICES['#{idex}']" should be defined
   if deep
-    ex = "EXERCICES['#{idex}']".js
+    ex = "EXERCICES['#{id}']".js
     ex['class']       should be "Exercice"
     ex['titre']       should be dex[:exercice_titre]
     ex['auteur']      should be dex[:exercice_auteur]

@@ -12,6 +12,10 @@ when "l'exercice doit être créé" then
   # --
   raise "@data_exercice doit être défini pour pouvoir vérifier l'exercice" if !defined?(@data_exercice) || @data_exercice.nil?
   
+  # L'exercice est peut-être encore en train d'être crée donc j'attends jusqu'à
+  # la fin de la création
+  Browser wait_while{ "Exercices.saving".js }
+  
   # On va supposer que c'est le dernier exercice créé, et on connait la 
   # roadmap courante par javascript. Mais que se passera-t-il si ce n'est
   # pas le dernier exercice créé ? C'est simple = il ne matchera pas et une
@@ -22,9 +26,10 @@ when "l'exercice doit être créé" then
   
   # On récupère le tout dernier exercice
   Dir["#{rm.folder_exercices}/*.js"].each do |pathex|
-    if File.stat(pathex).mtime.to_i > last_date
+    mtime_file = File.stat(pathex).mtime.to_i
+    if mtime_file > last_date
       path_last_exercice = "#{pathex}"
-      last_date = File.stat(pathex).mtime.to_i
+      last_date = 0 + mtime_file
     end
   end
   dfile = JSON.parse(File.read(path_last_exercice))
@@ -45,7 +50,7 @@ when "l'exercice doit être créé" then
   # Valeurs optionnellement définies (la troisième est la valeur par défaut)
   [
     ['types',       :types,                 []        ],
-    ['obligatory',  :exercice_obligatory,   false     ],
+    ['obligatory',  :exercice_obligatory,   nil       ],
     ['suite',       :exercice_suite,        "normale" ],
     ['abs_id',      :exercice_abs_id,       nil       ],
     ['with_next',   :exercice_with_next,    nil       ],
@@ -66,7 +71,7 @@ when "l'exercice doit être créé" then
   @data_exercice = @data_exercice.merge :id => dfile['id']
   
   
-when /l'exercice (?:#{STRING} )doit avoir été ajouté à la roadmap/ then
+when /l'exercice (?:#{STRING} )?doit avoir été ajouté à la roadmap/ then
   # On teste qu'un (nouvel) exercice a bien été ajouté à la roadmap courante.
   # 
   # Si STRING est défini, c'est l'identifiant de l'exercice entre guillemets.
@@ -79,7 +84,8 @@ when /l'exercice (?:#{STRING} )doit avoir été ajouté à la roadmap/ then
   id  = dex[:id] || dex[:exercice_id] if id.nil?
   
   # Dans javascript
-  "Roadmap.Data.EXERCICES.ordre" should contain id
+  # puts "Roadmap.Data.EXERCICES.ordre:" + "Roadmap.Data.EXERCICES.ordre".js.inspect
+  "Roadmap.Data.EXERCICES.ordre".js should contain id
   
   # Dans les fichiers
   dfile = JSON.parse(File.read(rm.path_exercices))
