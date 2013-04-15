@@ -4,3 +4,4 @@ Quand je m'identifie par le formulaire comme testeur
 Et que je choisis "test_benoit-testeur" dans le menu "roadmaps"
   Alors la roadmap "test_benoit-testeur" doit être chargée
   Et la roadmap "test_benoit-testeur" doit être affichée
+  Et l'exercice "2" doit être affiché

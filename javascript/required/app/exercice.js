@@ -200,7 +200,8 @@ Exercice.prototype.path_to_image = function(){
 Exercice.prototype.code_div_titre = function(){
   var recueil = this.recueil ? '<span class="ex_recueil">'+this.recueil+'</span>': "" ;
   var auteur  = this.auteur ? ' <span class="ex_auteur"> ('+this.auteur+')</span>':"";
-  var titre   = recueil + this.titre + auteur ;
+  var titre   = '<span class="ex_titre">' + this.titre + '</span>' ;
+  titre = recueil + titre + auteur ;
   return '<div id="titre_ex-'+this.id+'" class="ex_titre">' + titre + '</div>' ;
 }
 Exercice.prototype.code_tempo = function(){

@@ -16,7 +16,7 @@ Et que je clique sur le bouton a#btn_exercice_create
   # Et que je clique sur le bouton a#btn_exercice_save
     Si les données du formulaire exercice sont valides
       Alors l'exercice doit être créé
-#       Et le formulaire exercice doit être fermé
+      Et le formulaire exercice doit être fermé
 #       Et l'exercice doit être affiché
 #       Et flash doit afficher le message "MESSAGES.Exercice.saved"
 #       Et EXERCICES doit connaitre le nouvel exercice

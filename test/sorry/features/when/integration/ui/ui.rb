@@ -7,7 +7,7 @@ when /je clique (?:sur )?le bouton (.+)$/ then
   btn.gsub!(/^("|')(.*)\1$/){$2}
   Browser click btn
 
-when /je choisis l'item #{STRING} dans le menu #{STRING}/ then
+when /je choisis (?:l'item )?#{STRING} dans le menu #{STRING}/ then
   # Permet de sélectionner un item de menu
   # 
   # @param    Le 1er string définit la valeur ou le text de l'item

@@ -6,6 +6,12 @@ when "le formulaire exercice doit être affiché" then
   # --
   Browser should display table :id => 'exercice_form', :class => 'form'
 
+when "le formulaire exercice doit être fermé" then
+  # Vérifie que le formulaire d'édition de l'exercice ne soit plus ouvert
+  # 
+  # --
+  Browser should not display table :id => 'exercice_form', :class => 'form'
+  
 when "le formulaire exercice doit être vierge" then
   # Vérifie que tous les champs du formulaire soient bien à leur état
   # vide (pour la création d'un nouvel exercice, sinon il doit contenir les

@@ -6,6 +6,9 @@ when "l'exercice doit être créé" then
   # créé. Certaines valeurs sont obligatoirement dans @data_exercice, d'autres
   # sont optionnelles. Si elles ne sont pas définies, on prend leur valeur
   # par défaut, définies ici.
+  # 
+  # @note: L'identifiant (relevé dans le fichier) est ajouté à @data_exercice
+  # pour un contrôle ultérieur (par exemple voir si l'exercice a été affiché)
   # --
   raise "@data_exercice doit être défini pour pouvoir vérifier l'exercice" if !defined?(@data_exercice) || @data_exercice.nil?
 
@@ -62,6 +65,9 @@ when "l'exercice doit être créé" then
   dfile['updated_at'] should not be nil
   dfile['started_at'] should be nil
   dfile['ended_at']   should be nil
+  
+  # On ajoute l'identifant
+  @data_exercice = @data_exercice.merge :id => dfile['id']
   
 # fin du fichier
 end
