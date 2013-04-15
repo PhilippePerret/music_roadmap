@@ -345,7 +345,11 @@ window.Aide = {
   // --- Protected methods ---
   
   // Détruit le texte d'aide d'identifiant +id+ de la fenêtre d'aide
+  // 
+  // @note: la méthode peut être appelée sur un identifiant qui n'existe pas, donc
+  // il faut vérifier avant que le texte d'aide demandé soit bien affiché.
   remove: function(id){
+    if ('undefined' == typeof this.TEXTS[id]) return false ;
     this.jqtext(id).remove();
     delete this.TEXTS[id];
     return false;
@@ -375,6 +379,7 @@ window.Aide = {
             'retirer</a>' +  '</div>';
     return '<div class="aide_text" id="aide_text_id-'+daide.uid+'">' +
             btns + 
+            '<div class="flash" style="position:absolute;top:1em;left:1em;"></div>' + 
             '<div class="aide_text_content">' + daide.text + '</div>' +
             btns + 
             '</div>';

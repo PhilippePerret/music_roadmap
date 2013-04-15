@@ -64,7 +64,7 @@ section#aide div.aide_text a.aide_focus:after {content:"#";}
 /* CONTENU */
 section#aide div#aide_content {
   overflow            :auto;
-  max-height          :26em;
+  max-height          :32em;
   border-radius       :0.5em;
   background-color    :#606060;
 }

@@ -60,6 +60,7 @@ window.Flash={
     if ('undefined' == typeof options) options = {} ;
     if ('undefined' == typeof options.timer) options.timer = true;
     if ('undefined' == typeof options.keep)  options.keep  = false;
+    if ('undefined' == typeof options.inner) options.inner = 'body';
     this.options = options ;
   },
   /*
@@ -109,8 +110,12 @@ window.Flash={
   */
   // Affiche les messages dans la fenêtre
   // @param   options   Cf. la méthode show ci-dessus
+  old_inner_flash: null,
+  old_inner_position:null,
   affiche_messages: function(){
-    oflash = $('#flash') ;
+    oflash = $('div#flash') ;
+    if (this.options.inner == 'body') this.set_flash_in_body();
+    else this.set_flash_in_inner() ;
     // oflash.hide() ;
     if ( $('#inner_flash').length > 0 ){
       if ( this.options.keep == false ) $('#inner_flash').html('') ;
@@ -119,6 +124,53 @@ window.Flash={
       oflash.html('<div id="inner_flash">' + this.textes + '</div>');      
     }
     if( false == $(oflash).is(':visible') ) oflash.fadeIn();
+  },
+  // Remet le flash dans le body (if any)
+  set_flash_in_body:function(){
+    var oflash = $('div#flash') ;
+    if (this.old_inner_flash != null ){
+      this.old_inner_flash.css({position:old_inner_position});
+      this.old_inner_flash = null;
+      oflash.attr('style', ""/* naturel, défini par CSS */);
+      oflash.css({position:'fixed', 'max-width':'400px'});
+    }
+    $('body').append(oflash);
+  },
+  /*  Pour placer le flash ailleurs
+      -------------------------------------------------------------------
+      Cet emplacement est spécifié avec l'option `inner'. Il y a deux solutions
+      alors:
+        - L'inner possède un div de class 'flash' (pas d'identifiant !) et alors
+          le flash est mis à l'intérieur.
+        - L'inner ne possède pas ce div, et alors le flash est mis à l'intérieur
+          de lui. Deux solutions :
+          1.  L'inner a une position normale, on met alors sa position à relative
+              et le flash à top:1em et left:1em pour qu'il se trouve au-dessus
+          2.  L'inner a une position fixed, et alors on place le flash en haut à
+              gauche par rapport au offset de l'inner.
+  */
+  set_flash_in_inner: function(){
+    if ( this.inner_flash_str == this.options.inner ) return ;
+    var oflash  = $('div#flash') ;
+    var inner   = $(this.options.inner) ;
+    this.inner_flash_str = this.options.inner.toString();
+    this.old_inner_flash = inner;
+    if ( $(this.options.inner + ' div.flash').length ){
+      oflash.css({position:'relative'})
+      $(this.options.inner + ' div.flash').append( oflash );
+    } else {
+      this.old_inner_position = inner.css('position');
+      if (this.old_inner_position == 'fixed'){
+        var dim = inner.offset();
+        style = "top:"+(dim.top + 20) + "px;left:"+(dim.left + 20) +"px;";
+      } else {
+        inner.css('position','relative');
+        style = "top:1em;left:1em;" ;
+      }
+      inner.append( oflash );
+      oflash.attr('style', style);
+    }
+    oflash.css({'max-width':'100%'});
   },
   definir_messages: function( p ){
     var _i, key ;
