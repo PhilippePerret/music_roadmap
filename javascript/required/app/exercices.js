@@ -354,14 +354,17 @@ $.extend(window.Exercices,{
   
   Edition: {
     class: "Exercices.Edition",
+    // Fill exercice form with values in +data+
     set_values:function(data){ // @testok
-      for(var k in data){ 
+      for(var k in data){
         switch( k ){
           case 'types': this.coche_types(data[k]); break;
+          case 'image': break; // ne rien faire
           default:$('table#exercice_form #exercice_'+k).val(data[k]);
         }
       };
     },
+    // Return values from the exercice form
     get_values:function(){ // @testok
       var data = {}, id, k, i ;
       for(i in EXERCICE_PROPERTIES){

@@ -218,10 +218,16 @@ Exercice.prototype.code_tempo = function(){
   }
   h += ' <select id="tempo_ex-'+this.id+'" class="ex_tempo" onchange="'+meth+'">' +
         Exercices.Edition.options_list(this.tempo_min, this.tempo_max) + '</select>' ;
-  h += ' (jusqu’à '+this.tempo_max.toString()+').' ;
+  h += this.span_tempo_de_a() ;
   h += '<div>À la prochaine séance, ' + this.menu_up_tempo()+ '.</div>' ;
   h += "</div>" ;
   return h ;
+}
+Exercice.prototype.span_tempo_de_a = function(){
+  return ' <span id="tempo_de_a_ex-'+this.id+'">(' +
+          "de " + this.tempo_min + 
+          " à " + this.tempo_max + 
+          ')</span>' ;
 }
 Exercice.prototype.menu_up_tempo = function(){
   var meth = '$.proxy(Exercices.set_up_tempo, Exercices,\''+this.id+'\', this)()' ;
