@@ -11,16 +11,12 @@ when "l'exercice doit être créé" then
   # pour un contrôle ultérieur (par exemple voir si l'exercice a été affiché)
   # --
   raise "@data_exercice doit être défini pour pouvoir vérifier l'exercice" if !defined?(@data_exercice) || @data_exercice.nil?
-
-  require_model 'roadmap'
   
   # On va supposer que c'est le dernier exercice créé, et on connait la 
   # roadmap courante par javascript. Mais que se passera-t-il si ce n'est
   # pas le dernier exercice créé ? C'est simple = il ne matchera pas et une
   # erreur sera levée.
-  rm_nom = "Roadmap.nom".js
-  rm_mdp = "Roadmap.mdp".js
-  rm = Roadmap.new rm_nom, rm_mdp
+  rm = get_current_roadmap
   path_last_exercice = nil
   last_date = 0
   
@@ -69,5 +65,42 @@ when "l'exercice doit être créé" then
   # On ajoute l'identifant
   @data_exercice = @data_exercice.merge :id => dfile['id']
   
+  
+when /l'exercice (?:#{STRING} )doit avoir été ajouté à la roadmap/ then
+  # On teste qu'un (nouvel) exercice a bien été ajouté à la roadmap courante.
+  # 
+  # Si STRING est défini, c'est l'identifiant de l'exercice entre guillemets.
+  # Sinon, on prend l'exercice défini dans @data_exercice, qui doit impérativement
+  # être défini.
+  # --
+  id  = $1
+  rm  = get_current_roadmap
+  dex = get_data_exercice id
+  id  = dex[:id] || dex[:exercice_id] if id.nil?
+  
+  # Dans javascript
+  "Roadmap.Data.EXERCICES.ordre" should contain id
+  
+  # Dans les fichiers
+  dfile = JSON.parse(File.read(rm.path_exercices))
+  dfile['ordre'].should contain id
+  
+  
+when /je détruis (le nouvel |l')exercice(?: #{STRING})?/ then
+  # Feature "Then" à ajouter à la fin de la création d'un nouvel exercice.
+  # J'ai dû la créer car apparemment After all ... n'est pas encore opérationnel
+  # 
+  # Si STRING est fourni, c'est l'identifiant de l'exercice entre guillemets
+  # Sinon, l'identifiant est pris dans @data_exercice qui doit exister
+  # ---
+  id  = $1
+  rm  = get_current_roadmap
+  dex = get_data_exercice id
+  id  = id || dex[:id] || dex[:exercice_id]
+  pex = rm.path_exercice(id)
+  File pex should exist
+  "Exercices.delete('#{id}',destroy=true)".js
+  Browser wait_while{ "Exercices.deleting".js }
+  File pex should not exist
 # fin du fichier
 end

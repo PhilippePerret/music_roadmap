@@ -92,11 +92,9 @@ Exercice.prototype.edit = function(){
   $.proxy(Exercices.Edition.set_values,Exercices.Edition, this.as_hash())() ;
   $.proxy(Exercices.Edition.open,Exercices.Edition)() ;
 }
-// Suppression de l'exercice
-Exercice.prototype.delete = function(){
-  this.li().remove() ;
-  // @TODO: ici, il faudrait relever l'ordre et le sauver
-  F.show("Pour le moment, l'exercice est simplement retiré de la liste, mais pas détruit.");
+// Supprime l'exercice de la liste des exercices
+Exercice.prototype.remove = function(){
+  this.li().remove();
 }
 // Construction du div de l'exercice
 Exercice.prototype.build = function(after){

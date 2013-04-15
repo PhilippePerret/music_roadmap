@@ -1,7 +1,13 @@
-# On essaie d'ouvrir une roadmap
-# Quand je m'identifie par javascript comme testeur
+# Test d'intégration de l'ouverture d'une roadmap
+# 
+# On ouvre la roadmap et on vérifie que tout soit correct dans l'affichage
+# (c'est-à-dire les éléments visibles, tous les exercices affichés, etc.) et
+# on fait quelques vérification dans javascript, par exemple la bonne 
+# définition d'un exercice dans EXERCICES.
+# --
 Quand je m'identifie par le formulaire comme testeur
 Et que je choisis "test_benoit-testeur" dans le menu "roadmaps"
   Alors la roadmap "test_benoit-testeur" doit être chargée
   Et la roadmap "test_benoit-testeur" doit être affichée
-  Et l'exercice "2" doit être affiché
+  Et EXERCICES doit bien connaitre l'exercice "2"
+  Et l'exercice "2" doit être correctement affiché

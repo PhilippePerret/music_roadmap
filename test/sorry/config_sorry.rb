@@ -38,6 +38,39 @@ Sorry.configure do |config|
   end
   
   
+  # Retourne la roadmap courante dans le navigateur
+  # 
+  def get_current_roadmap
+    require_model 'roadmap'
+    rm_nom = "Roadmap.nom".js
+    rm_mdp = "Roadmap.mdp".js
+    Roadmap.new rm_nom, rm_mdp
+  end
+  
+  # Retourne les data_exercice SOIT de l'identifiant fourni en argument,
+  # SOIT de la variable @data_exercice qui doit être définie (lève une errreur
+  # dans le cas contraire).
+  # 
+  # @return:  Un hash où toutes les clés "naturelles" d'un exercice sont
+  # préfixées par 'exercice' (p.e. : :exercice_titre). Toutes les clés sont
+  # des Symbol
+  # 
+  def get_data_exercice id
+    if id.nil?
+      raise "@data_exercice doit être défini" if !defined?(@data_exercice) || @data_exercice.nil?
+      raise "@data_exercice doit définir l'identifiant (key :id)" unless @data_exercice.has_key?(:id)
+      @data_exercice
+    else
+      # Il faut relever les data de l'exercice dans le fichier
+      rm = get_current_roadmap
+      dex = {}
+      rm.exercice(id).each do |k, v|
+        dex = dex.merge "exercice_#{k}".to_sym => v
+      end
+      dex # => on retourne le hash
+    end
+  end
+  
   def user_identified?
     "User.is_identified()".js
   end

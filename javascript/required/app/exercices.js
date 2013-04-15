@@ -157,13 +157,12 @@ $.extend(window.Exercices,{
       fct_success = $.proxy(this.end_import, this) ;
     Ajax.query({
       data:{
-        proc          : 'exercice/import',
+        proc              : 'exercice/import',
         roadmap_nom       : Roadmap.nom,
         roadmap_mdp       : Roadmap.mdp,
-        data          : path
+        data              : path
       },
-      success : fct_success,
-      error   : fct_success,
+      success : fct_success
     });
     return false ; // pour le a-lien
   },
@@ -196,9 +195,43 @@ $.extend(window.Exercices,{
     ex.save() ;
     
   },
-  // Suppression d'un exercice (le retire simplement de la liste)
-  delete: function(id){
-    exercice(id).delete() ;
+  // Suppression d'un exercice (le retire simplement de la liste, sauf si
+  // +destroy+ est mis à true, dans lequel cas on le détruit complètement)
+  deleting:false,
+  delete: function(id, destroy){
+    if (User.is_not_owner()) return false ;
+    this.deleting = true ;
+    if('undefined' == typeof destroy) destroy = false;
+    var ex = exercice(id)
+    ex.remove();
+    this.save_ordre($.proxy(this.suite_delete, this, id, destroy));
+    delete EXERCICES[this.id];
+    delete ex;
+  },
+  // Suite de la suppression de l'exercice. Procède à la destruction complète
+  // de l'exercice +id+ si +destroy+ est true.
+  suite_delete:function(id, destroy, rajax){
+    if( false == traite_rajax(rajax) ){
+      if ( destroy == true ){
+        Ajax.query({
+          data:{
+            proc              :"exercice/destroy",
+            roadmap_nom       : Roadmap.nom,
+            roadmap_mdp       : Roadmap.mdp,
+            user_mail         : User.mail,
+            user_md5          : User.md5,
+            exercice_id       :id
+          },
+          success: $.proxy(this.end_delete, this)
+        })
+      } else {
+        this.deleting = false ;
+      }
+    }
+  },
+  end_delete:function(rajax){
+    traite_rajax(rajax);
+    this.deleting = false ;
   },
   // Fait jouer le métronome au tempo de l'exercice
   play: function(id){
