@@ -2,17 +2,20 @@ window.ERRORS = {
   lang: 'en',
   // USER
   User:{
-    unknown             : "I can't recognize you, sorry…",
-    need_to_signin      : "Please sign in.",
-    mail_required       : "Email address required!",
-    md5_required        : "Md5 required.",
-    password_required   : "Password required!",
+    unknown                     : "I can't recognize you, sorry…",
+    need_to_signin              : "Please sign in.",
+    mail_required               : "Email address required!",
+    md5_required                : "Md5 required.",
+    password_required           : "Password required!",
     Signup:{
-      bad_name      : "Your name should not be empty!",
-      bad_mail      : "Invalid email address. Please try again.",
-      bad_mail_confirmation:"Your mail confirmation does not match…",
-      bad_password  : "Invalid password (only a->z, 0->9)",
-      bad_password_confirmation:"Your password confirmation does not match…"
+      name_required             : "Your name should not be empty!",
+      mail_required             : "Email address required.",
+      bad_mail                  : "Invalid email address. Please try again.",
+      bad_mail_confirmation     :"Your mail confirmation does not match…",
+      password_required         : "A password is required.",
+      bad_password              : "Invalid password (only a->z, 0->9)",
+      bad_password_confirmation :"Your password confirmation does not match…"
+      instru_required           : "Your instrument is required, please."
     },
   },
   // ROADMAP

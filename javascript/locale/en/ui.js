@@ -2,6 +2,7 @@ window.LOCALE_UI = {
   lang: 'en',
   Verb:{
     and_save    : "and save",
+    Cancel      : "Cancel",
     close       : "close",
     Close       : "Close",
     modify      : "modify…",
@@ -29,18 +30,18 @@ window.LOCALE_UI = {
       MAIL                    : "Your email",
       PASSWORD                : "Your password",
       BTN_SIGNIN              : "Sign In!",
-      BTN_SIGNUP              : "Sign up…"
+      BTN_WANT_SIGNUP         : "Sign up…"
     },
     Signup:{
-      TITRE                  : "Sign Up",
-      NAME                   : "Your name",
-      MAIL                   : "Your (valid) email",
-      MAIL_CONFIRMATION      : "Mail confirmation",
-      PASSWORD               : "Your password",
-      PASSWORD_CONFIRMATION  : "Password confirmation",
-      INSTRUMENT             : "You play the…",
-      DESCRIPTION            : "A few words about you",
-      BUTTON_NAME            : "Sign up now!"
+      TITRE                   : "Sign Up",
+      NAME                    : "Your name",
+      MAIL                    : "Your (valid) email",
+      MAIL_CONFIRMATION       : "Mail confirmation",
+      PASSWORD                : "Your password",
+      PASSWORD_CONFIRMATION   :"Password confirmation",
+      INSTRUMENT              : "You play the…",
+      DESCRIPTION             : "A few words about you",
+      btn_signup              : "Sign up now!"
     },
   },
   Roadmap: {

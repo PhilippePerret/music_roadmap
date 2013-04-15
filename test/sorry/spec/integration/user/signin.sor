@@ -5,6 +5,13 @@
 # données invalides, et on teste le résultat.
 # --
 Quand je rejoins l'accueil
+Et que je clique sur le bouton a#btn_want_signin
+  Comme visiteur non identifié
+    Alors la boite d'identification doit s'afficher
+    Et la boite d'inscription ne doit pas être affichée
+    Et la boite d'identification doit contenir les bons éléments
+    
+Quand je rejoins l'accueil
 Et que je m'identifie par le formulaire comme testeur
   Then je dois être identifié
   Et la boite d'identification ne doit plus être ouverte
@@ -16,5 +23,5 @@ Et que je m'identifie par le formulaire comme testeur
 # Quand je rejoins l'accueil
 # Et que je m'identifie par le formulaire avec des codes invalides
 #   Then je ne dois pas être identifié
-#   Et la boite d'identification doit être ouverte
+#   Et la boite d'identification doit s'afficher
 #   Et le message d'erreur "ERRORS.User.unknown" doit être affiché

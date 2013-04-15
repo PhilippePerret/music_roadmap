@@ -22,15 +22,21 @@
       </td>
     </tr>
     <tr id="tr_boutons" class="boutons">
-      <td class="libelle">
+      <td>
+        <a  href="#"
+            id="btn_cancel_signin"
+            class="btn"
+            style="margin-right:2em;"
+            onclick="return $.proxy(Aide.close, Aide)();"
+        >BTN_CANCEL_SIGNIN</a>
       </td>
       <td>
         <a  href="#"
-            id="btn_signup"
+            id="btn_want_signup"
             class="gros btn"
             style="margin-right:2em;"
             onclick="return $.proxy(User.new, User)()"
-          >BTN_SIGNUP</a>
+          >BTN_WANT_SIGNUP</a>
         <a  href="#" 
             id="btn_signin" 
             class="gros btn"

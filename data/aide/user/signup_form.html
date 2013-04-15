@@ -66,15 +66,20 @@
       </td>
     </tr>
     <tr id="tr_boutons" class="boutons">
-      <td class="libelle">
-        
+      <td>
+        <a  href="#"
+            id="btn_cancel_signup"
+            class="btn"
+            style="margin-right:2em;"
+            onclick="return $.proxy(Aide.close, Aide)();"
+        >BTN_CANCEL_SIGNUP</a>
       </td>
       <td>
         <a  href="#" 
-            id="signup_button_name" 
+            id="btn_signup" 
             class="gros btn"
             onclick="return $.proxy(User.create, User)()"
-            >SIGNUP_BUTTON_NAME</a>
+            >BTN_SIGNUP</a>
       </td>
     </tr>
   </table>

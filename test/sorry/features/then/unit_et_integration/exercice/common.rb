@@ -33,7 +33,6 @@ when "l'exercice doit être créé" then
     end
   end
   dfile = JSON.parse(File.read(path_last_exercice))
-  # puts "*** Data du dernier exercice :#{dfile.inspect}"
   
   # On compare les data
   de = @data_exercice # shorter

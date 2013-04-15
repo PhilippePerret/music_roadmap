@@ -2,6 +2,7 @@ window.LOCALE_UI = {
   lang: 'fr',
   Verb:{
     and_save    : "et l'enregistrer",
+    Cancel      : "Renoncer",
     close       : "fermer",
     Close       : "Fermer",
     modify      : "modifier…",
@@ -29,18 +30,18 @@ window.LOCALE_UI = {
       MAIL                    : "Votre mail",
       PASSWORD                : "Votre code secret",
       BTN_SIGNIN              : "S'identifier",
-      BTN_SIGNUP              : "S'inscrire"
+      BTN_WANT_SIGNUP         : "S'inscrire"
     },
     Signup:{
-      TITRE                  : "Inscription",
-      NAME                   : "Votre nom",
-      MAIL                   : "Votre mail (valide)",
-      MAIL_CONFIRMATION      : "Confirmation mail",
-      PASSWORD               : "Votre code secret",
-      PASSWORD_CONFIRMATION  : "Confirmation<br />code secret",
-      INSTRUMENT             : "Votre instrument",
-      DESCRIPTION            : "Quelques mots<br />sur vous",
-      BUTTON_NAME            : "S'inscrire"
+      TITRE                   : "Inscription",
+      NAME                    : "Votre nom",
+      MAIL                    : "Votre mail (valide)",
+      MAIL_CONFIRMATION       : "Confirmation mail",
+      PASSWORD                : "Votre code secret",
+      PASSWORD_CONFIRMATION   : "Confirmation<br />code secret",
+      INSTRUMENT              : "Votre instrument",
+      DESCRIPTION             : "Quelques mots<br />sur vous",
+      btn_signup              : "S'inscrire"
     },
   },
   Roadmap: {

@@ -31,13 +31,3 @@ when "j'apelle la méthode d'identification" then
   # le lien "S'identifier/S'inscrire"
   # --
   Browser call "User.need_to_signin()"
-
-when "je remplis le formulaire d'identification" then
-  # Remplissage du formulaire d'identification
-  # 
-  # @user_mail et @user_password doivent avoir été définis avant, dans une
-  # spec-clause `Si ...'
-  # --
-  Browser should display 'div#user_signin_form'
-  Browser set :user_mail      => @user_mail
-  Browser set :user_password  => @user_password

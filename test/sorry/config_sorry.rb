@@ -72,6 +72,20 @@ Sorry.configure do |config|
     end
   end
   
+  # Retourne des data user valides et uniques (notamment pour l'inscription, donc elles
+  # sont complètes)
+  # 
+  def get_data_user_valides
+    now = Time.now.to_i
+    mail = "unmail#{now}@chez.lui"
+    mdp  = "motdepass#{now}"
+    {
+      :nom => "Mon nom #{now}", :mail => mail, :mail_confirmation => mail,
+      :password   => mdp, :password_confirmation => mdp,
+      :instrument => "le tuba", :description => "Utilisateur inscrit à #{now}."
+    }
+  end
+  
   def user_identified?
     "User.is_identified()".js
   end

@@ -1,12 +1,12 @@
 when "visiteur identifié", "user identified"
   # Identify un visiteur quelconque (ici benoit ackerman)
   # --
-  User identify "benoit.ackerman@yahoo.fr", "testeur"
+  SUser identify "benoit.ackerman@yahoo.fr", "testeur"
 
 when "visiteur non identifié", "user not identified"
   # Logout le visiteur s'il y en a un d'identifié
   # --
-  User logout
+  SUser logout
 
 when "les données d'utilisateur sont correctes" then
   # Mets dans @user_mail et @user_password des données correctes, c'est-à-dire
