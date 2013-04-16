@@ -1,0 +1,1 @@
+# Message envoyé à l'administration à l'inscription d'un utilisateur (FR)

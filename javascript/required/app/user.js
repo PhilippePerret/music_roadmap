@@ -225,12 +225,14 @@ window.User = {
   // Création de l'utilisateur (après check des informations transmises)
   // @param   hdata   Les données de l'utilisateur à créer. Si non fournies,
   //                  la méthode les prend dans le formulaire et les teste
+  // @note: La procédure envoie aussi un mail à l'utilisateur et à l'administrateur
+  // 
   creating:false,
   create:function(hdata){
     if ('undefined' == typeof hdata) hdata = this.check_data();
     if ( hdata != false ){
       Ajax.query({
-        data:{proc:'user/create', user:hdata},
+        data:{proc:'user/create', user:hdata, lang:LANG},
         success:$.proxy(this.end_create, this)
       });
     }
