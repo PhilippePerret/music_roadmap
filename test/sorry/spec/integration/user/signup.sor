@@ -13,28 +13,51 @@ Et que j'apelle la méthode d'identification
       Et la boite d'inscription doit contenir les bons éléments
       Et la boite d'identification ne doit plus être ouverte
       
+      # Quand je remplis le formulaire d'inscription
+      # Et que je clique sur le bouton a#btn_signup
+      #   Si les données d'inscription sont valides
+      #     Alors je dois être inscrit
+      #     Et je dois être identifié
+      #     Et je dois avoir un fichier de données
+      #     Et le message "MESSAGES.User.created" doit être affiché
+      #     Et la boite d'inscription ne doit plus être affichée
+          
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
-        # Si les données d'inscription sont valides
-        #   Alors je dois être inscrit
-        #   Et je dois être identifié
-        #   Et je dois avoir un fichier de données
-        #   Et le message "MESSAGES.User.created" doit être affiché
         Si les données d'inscription n'ont pas de nom
-          Alors l'alerte "ERRORS.User.Signup.bad_name" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.name_required" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de mail
-          Alors l'alerte "ERRORS.User.mail_required" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.mail_required" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont un mauvais mail
-          Alors l'alerte "ERRORS.User.Signup.bad_mail" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.bad_mail" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont une mauvaise confirmation de mail
-          Alors l'alerte "ERRORS.User.Signup.bad_mail_confirmation" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.bad_mail_confirmation" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de password
-          Alors l'alerte "ERRORS.User.password_required" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.password_required" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont un mauvais password
-          Alors l'alerte "ERRORS.User.Signup.bad_password" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.bad_password" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont une mauvaise confirmation de password
-          Alors l'alerte "ERRORS.User.Signup.bad_password_confirmation" doit être affiché
+          Alors l'alerte "ERRORS.User.Signup.bad_password_confirmation" doit être affichée
+
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de instrument
-          Alors l'alerte "ERRORS.User.Signup.instru_required"
-      # APRÈS L'INSCRIPTION
-      # Et la boite d'inscription ne doit plus être affichée
+          Alors l'alerte "ERRORS.User.Signup.instru_required" doit être affichée

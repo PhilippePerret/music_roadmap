@@ -12,6 +12,7 @@ section#aide {
   border            :6px solid #606060;
   z-index           :3000;
   width             :30em;
+  max-height        :90%;
   border-radius     :1em;
 }
 section#aide a { cursor:pointer; }
@@ -64,7 +65,8 @@ section#aide div.aide_text a.aide_focus:after {content:"#";}
 /* CONTENU */
 section#aide div#aide_content {
   overflow            :auto;
-  max-height          :32em;
+/*  max-height          :32em;*/
+  max-height          :90%; /*Ne fonctionne pas. Il faut le régler dynamiquement*/
   border-radius       :0.5em;
   background-color    :#606060;
 }

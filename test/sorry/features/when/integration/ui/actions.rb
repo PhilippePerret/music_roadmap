@@ -6,6 +6,8 @@ when /je clique (?:sur )?le bouton (.+)$/ then
   btn = $1
   btn.gsub!(/^("|')(.*)\1$/){$2}
   Browser click btn
+  sleep 1
+  screenshot "click-on-#{btn.gsub(/\#/,'-')}"
 
 when /je choisis (?:l'item )?#{STRING} dans le menu #{STRING}/ then
   # Permet de sélectionner un item de menu

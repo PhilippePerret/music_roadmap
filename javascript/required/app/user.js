@@ -177,36 +177,47 @@ window.User = {
     Aide.show('user/signup_form.html', $.proxy(this.prepare_signup_form, this));
     Aide.remove('user/signin_form.html');
   },
+  
+  // Fonctionne avec la méthode suivante (@todo: mais ça pourrait être généralisé)
+  check_field:function(field_jid, operator, expected, locale){
+    var o   = $(field_jid);
+    var val = o.val().trim();
+    var res = eval("val " + operator + " " + expected);
+    if (res === false ) throw { locale:locale, dom:o };
+    else { 
+      o.removeClass('error');
+      return val ;
+    }
+  },
   // Check les data entrées
   // Return le Hash des données à enregistrer ou lève une erreur en cas
   // d'erreur et retourne false
   check_data:function(){
     try{
-      var nom = $('input#user_nom').val().trim() ;
-      if ( nom == "" ) throw 'name_required' ;
+
+      var nom = this.check_field("input#user_nom", '!=', "''", 'name_required');
       nom = Texte.correct_guil_et_apo( nom ) ;
-      var mail = $('input#user_mail').val().trim() ;
-      if (mail == "") throw 'mail_required';
-      if ( mail.indexOf('@') < 0 ) throw 'bad_mail' ;
-      var mail_conf = $('input#user_mail_confirmation').val().trim() ;
-      if (mail != mail_conf) throw 'bad_mail_confirmation' ;
-      var pwd = $('input#user_password').val() ;
-      if (pwd == "") throw 'password_required';
-      if ( pwd != pwd.replace(/[^a-z0-9]/g, '')) throw 'bad_password' ;
-      var pwd_conf = $('input#user_password_confirmation').val();
-      if ( pwd != pwd_conf) throw 'bad_password_confirmation' ;
-      var description = $('textarea#user_description').val().trim();
-      description = Texte.correct_guil_et_apo( description ) ;
-      var instrument  = $('input#user_instrument').val().trim();
-      if (instrument == "") throw 'intru_required';
+      var mail = this.check_field('input#user_mail', '!=', "''", 'mail_required');
+      if ( mail.indexOf('@') < 0 ) throw {locale:'bad_mail', dom:$('input#user_mail')} ;
+      this.check_field('input#user_mail_confirmation', '==', "'"+mail+"'", 'bad_mail_confirmation');
+      var pwd = this.check_field('input#user_password', '!=', "''", 'password_required');
+      if ( pwd != pwd.replace(/[^a-z0-9]/g, '')) throw {locale:'bad_password', dom:$('input#user_password')};
+      this.check_field('input#user_password_confirmation', '==', "'"+pwd+"'", 'bad_password_confirmation');
+      var instrument = this.check_field('input#user_instrument', "!=", "''", 'instru_required');
       instrument = Texte.correct_guil_et_apo( instrument ) ;
+      var description = Texte.correct_guil_et_apo($('textarea#user_description').val().trim());
+
       // Tout est OK
       return { nom:nom, password:pwd, mail:mail, instrument:instrument,
         description:description } ;
     }catch(erreur){
-      if ( 'undefined' != typeof ERRORS.User.Signup[erreur] )
-        erreur = ERRORS.User.Signup[erreur] ;
-      F.error(erreur, {inner:'section#aide'});
+      if ( 'object' == typeof erreur ){
+        erreur.dom.addClass('error');
+        erreur.dom.focus();
+        errmes = ERRORS.User.Signup[erreur.locale] ;
+      }
+      else{ errmes = erreur }
+      F.error(errmes, {inner:'section#aide'});
       return false;
     }
   },

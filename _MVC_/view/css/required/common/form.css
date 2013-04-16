@@ -69,9 +69,12 @@ table.form textarea
 {
   width         :98%;
   font-family   :Verdana;
-  font-size     :inherit;
+  font-size     :15.5px;
   padding       :3.2px;
-  color         :#1350D5;
+  color         :#402095;
+}
+table.form .error {
+  background-color      :#FFBDC3;
 }
 table.form select, table.form select option {
   font-size     :inherit;

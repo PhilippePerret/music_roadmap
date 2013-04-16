@@ -16,8 +16,8 @@ when "je remplis le formulaire d'inscription" then
   # Le formulaire doit avoir été ouvert précédemment
   # 
   # --
-  sleep 0.56
   raise "@data_user doit impérativement être défini" if !defined?(@data_user) || @data_user.nil?
+  # On essaie en attendant 5 secondes
   @data_user.each do |prop,val|
     Browser set "user_#{prop}".to_sym => val
   end

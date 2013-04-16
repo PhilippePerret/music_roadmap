@@ -171,6 +171,7 @@ window.Aide = {
     this.showing = true ;
     this.fx_pour_suivre_show = fx_suite ;
     this.get(id, $.proxy(this.show_text, this, id));
+    this.fit(); // pour adapter la fenêtre à la page
     BT.add("<- Aide.show(id:"+id+")");
     return false ; // pour le a-lien
   },
@@ -342,6 +343,14 @@ window.Aide = {
     } catch(erreur) { F.warning( "[Aide.scroll_to] " + erreur )}
   },
   
+  // On ne peut pas régler en pourcentage la hauteur max du contenu de la fenêtre d'aide,
+  // il faut donc le faire "à la main"
+  // @TODO: on pourrait en faire une méthode de ui.js (librairie générale)
+  fit:function(){
+    maxheight = ($(window).height() - 40) + "px";
+    // console.log("Fenêtre mise à : " + maxheight);
+    $('section#aide div#aide_content').css('max-height', maxheight);
+  },
   // --- Protected methods ---
   
   // Détruit le texte d'aide d'identifiant +id+ de la fenêtre d'aide
