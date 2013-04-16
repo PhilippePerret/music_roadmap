@@ -26,7 +26,7 @@ Et que j'appelle la méthode d'identification
         Si les données d'inscription existent déjà
           Alors l'alerte "ERRORS.User.Signup.already_exists" doit être affichée
           Et je ne dois pas être identifié
-
+      
       # Toutes les erreurs possibles (en tout cas, c'est à espérer ;-))
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
@@ -77,11 +77,12 @@ Et que j'appelle la méthode d'identification
           Et je ne dois pas être identifié
 
       # Enfin, un user avec des données valides
+      # @note: j'utilise benoit ackerman pour pouvoir tester l'envoi de mail
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
-        Si les données d'inscription sont valides
+        Si les données d'inscription sont celles de Benoit
           Alors le message "MESSAGES.User.created" doit être affiché
           Et je dois être identifié
           Et je dois avoir un fichier de données valide
           Et la boite d'inscription ne doit plus être affichée
-          # Et un mail de confirmation d'inscription doit avoir été envoyé
+          Et je dois avoir reçu le mail de confirmation de l'inscription

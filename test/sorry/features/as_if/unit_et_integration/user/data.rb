@@ -43,6 +43,27 @@ when "les données d'inscription existent déjà" then
   @data_user = @data_user.merge(:mail_confirmation => datatmp['mail'])
   @data_user = @data_user.merge(:password => "unmotdepassevalide")
   @data_user = @data_user.merge(:password_confirmation => "unmotdepassevalide")
+
+when "les données d'inscription sont celles de Benoit" then
+  # When-clause spéciale, qui détruit l'inscription de benoit pour pouvoir le
+  # réinscrire
+  # --
+  require 'fileutils'
+  path = File.join(APP_FOLDER, 'user', 'data', 'benoit.ackerman@yahoo.fr')
+  path_copie = File.join(APP_FOLDER, 'user', 'data', 'benoit.ackerman@yahoo.fr copie')
+  if File.exists? path
+    FileUtils::cp path, path_copie
+    File.unlink path # important!
+  end
+  datatmp = JSON.parse(File.read(path_copie)).to_sym
+  @data_user = {}
+  # Ne prendre que les données pour le formulaire
+  get_data_user_valides.each do |k,val|
+    @data_user = @data_user.merge( k => datatmp[k] )
+  end
+  @data_user = @data_user.merge(:mail_confirmation => datatmp[:mail])
+  @data_user = @data_user.merge(:password => "bozoleclown")
+  @data_user = @data_user.merge(:password_confirmation => "bozoleclown")
   
 # Fin du fichier
 end
