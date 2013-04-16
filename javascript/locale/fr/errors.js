@@ -12,14 +12,15 @@ window.ERRORS = {
     md5_required            : "Md5 required.",
     password_required       : "Mot de passe requis.",
     Signup:{            
-      name_required         : "Votre nom ne peut être vide !",
-      mail_required         : "Votre adresse mail est requise.",
-      bad_mail              : "Votre adresse email est invalide. Merci de la corriger",
+      already_exists        :"Cet email est celui d'un roadmapeur déjà inscrit.",
+      name_required         :"Votre nom ne peut être vide !",
+      mail_required         :"Votre adresse mail est requise.",
+      bad_mail              :"Votre adresse email est invalide. Merci de la corriger",
       bad_mail_confirmation :"La confirmation de votre adresse email ne correspond pas…",
-      password_required     : "Un mot de passe est requis.",
-      bad_password          : "Votre mot de passe est invalide (seulement des lettres de a à z et/ou des chiffres).",
-      bad_password_confirmation:"La confirmation de votre mot de passe ne correspond pas…",
-      instru_required       : "Votre instrument est requis"
+      password_required     :"Un mot de passe est requis.",
+      bad_password          :"Votre mot de passe est invalide (seulement des lettres de a à z et/ou des chiffres).",
+      bad_pwd_confirmation  :"La confirmation de votre mot de passe ne correspond pas…",
+      instru_required       :"Votre instrument est requis"
     },
   },
   // ROADMAP

@@ -129,7 +129,7 @@ window.Flash={
   set_flash_in_body:function(){
     var oflash = $('div#flash') ;
     if (this.old_inner_flash != null ){
-      this.old_inner_flash.css({position:old_inner_position});
+      this.old_inner_flash.css({position:this.old_inner_position});
       this.old_inner_flash = null;
       oflash.attr('style', ""/* naturel, défini par CSS */);
       oflash.css({position:'fixed', 'max-width':'400px'});

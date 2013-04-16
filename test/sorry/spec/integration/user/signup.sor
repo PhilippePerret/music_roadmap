@@ -1,8 +1,15 @@
-# @TODO: à poursuivre
-# @TODO: Penser à vérifier la fermeture de la boite d'identification (sa
-# suppression n'est pas encore implémentée)
+# 
+# Test de l'inscription d'un utilisateur
+# Tous les cas sont traités ici, du formulaire valide au formulaire invalides
+# en passant par des données d'utilisateur existant déjà.
+# 
+Before all
+  Do $start = Time.now.to_i
+After all
+  Do Détruire tous les utilisateurs créés après $start
+  
 Quand je rejoins l'accueil
-Et que j'apelle la méthode d'identification
+Et que j'appelle la méthode d'identification
   Comme visiteur non identifié
     Then la boite d'identification doit s'afficher
     Et le message d'erreur "ERRORS.User.need_to_signin" doit être affiché
@@ -13,51 +20,68 @@ Et que j'apelle la méthode d'identification
       Et la boite d'inscription doit contenir les bons éléments
       Et la boite d'identification ne doit plus être ouverte
       
-      # Quand je remplis le formulaire d'inscription
-      # Et que je clique sur le bouton a#btn_signup
-      #   Si les données d'inscription sont valides
-      #     Alors je dois être inscrit
-      #     Et je dois être identifié
-      #     Et je dois avoir un fichier de données
-      #     Et le message "MESSAGES.User.created" doit être affiché
-      #     Et la boite d'inscription ne doit plus être affichée
-          
+      # Visiteur existant déjà
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
+        Si les données d'inscription existent déjà
+          Alors l'alerte "ERRORS.User.Signup.already_exists" doit être affichée
+          Et je ne dois pas être identifié
+
+      # Toutes les erreurs possibles (en tout cas, c'est à espérer ;-))
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de nom
           Alors l'alerte "ERRORS.User.Signup.name_required" doit être affichée
-
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de mail
           Alors l'alerte "ERRORS.User.Signup.mail_required" doit être affichée
-
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont un mauvais mail
           Alors l'alerte "ERRORS.User.Signup.bad_mail" doit être affichée
-
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont une mauvaise confirmation de mail
           Alors l'alerte "ERRORS.User.Signup.bad_mail_confirmation" doit être affichée
-
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de password
           Alors l'alerte "ERRORS.User.Signup.password_required" doit être affichée
-
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont un mauvais password
           Alors l'alerte "ERRORS.User.Signup.bad_password" doit être affichée
-
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription ont une mauvaise confirmation de password
-          Alors l'alerte "ERRORS.User.Signup.bad_password_confirmation" doit être affichée
-
+          Alors l'alerte "ERRORS.User.Signup.bad_pwd_confirmation" doit être affichée
+          Et je ne dois pas être identifié
+      
       Quand je remplis le formulaire d'inscription
       Et que je clique sur le bouton a#btn_signup
         Si les données d'inscription n'ont pas de instrument
           Alors l'alerte "ERRORS.User.Signup.instru_required" doit être affichée
+          Et je ne dois pas être identifié
+
+      # Enfin, un user avec des données valides
+      Quand je remplis le formulaire d'inscription
+      Et que je clique sur le bouton a#btn_signup
+        Si les données d'inscription sont valides
+          Alors le message "MESSAGES.User.created" doit être affiché
+          Et je dois être identifié
+          Et je dois avoir un fichier de données valide
+          Et la boite d'inscription ne doit plus être affichée
+          # Et un mail de confirmation d'inscription doit avoir été envoyé

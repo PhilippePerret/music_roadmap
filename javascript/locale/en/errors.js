@@ -8,13 +8,14 @@ window.ERRORS = {
     md5_required                : "Md5 required.",
     password_required           : "Password required!",
     Signup:{
+      already_exists            :"Email address of a user already signed up, sorry.",
       name_required             : "Your name should not be empty!",
       mail_required             : "Email address required.",
       bad_mail                  : "Invalid email address. Please try again.",
       bad_mail_confirmation     :"Your mail confirmation does not match…",
       password_required         : "A password is required.",
       bad_password              : "Invalid password (only a->z, 0->9)",
-      bad_password_confirmation :"Your password confirmation does not match…"
+      bad_pwd_confirmation      :"Your password confirmation does not match…",
       instru_required           : "Your instrument is required, please."
     },
   },

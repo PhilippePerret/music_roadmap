@@ -78,7 +78,7 @@ Sorry.configure do |config|
   def get_data_user_valides
     now = Time.now.to_i
     mail = "unmail#{now}@chez.lui"
-    mdp  = "motdepass#{now}"
+    mdp  = "motdepasse#{now}"
     {
       :nom => "Mon nom #{now}", :mail => mail, :mail_confirmation => mail,
       :password   => mdp, :password_confirmation => mdp,
@@ -90,12 +90,5 @@ Sorry.configure do |config|
     "User.is_identified()".js
   end
   
-  # def logout_user
-  #   puts "JE PASSE DANS LOGOUT_USER DE LA CONFIGURATION"
-  # end
-  
-  def locale messid
-    return "Je viens pour te voir"
-  end
   
 end

@@ -476,6 +476,7 @@ window.Roadmap = {
     var i, nom, mdp;
     var menu = $('select#roadmaps');
     menu.html("");
+    if('undefined' == typeof(roadmaps) || roadmaps == null) return;
     roadmaps.unshift(LOCALE_UI.Roadmap.open_your_rm+"…-");
     for(i in roadmaps){
       idrm = roadmaps[i];

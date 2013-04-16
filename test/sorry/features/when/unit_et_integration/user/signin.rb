@@ -25,7 +25,7 @@ when /je m'identifie (par le formulaire|par javascript|par JS)? (avec des codes 
   SUser identify @mail, @password, par_js
 
   
-when "j'apelle la méthode d'identification" then
+when "j'appelle la méthode d'identification" then
   # Force l'affichage du formulaire d'identification
   # Maintenant, il vaut mieux passer par la sentence qui clique sur
   # le lien "S'identifier/S'inscrire"

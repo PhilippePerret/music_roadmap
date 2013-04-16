@@ -83,7 +83,7 @@ class User
     @data ||= JSON.parse(File.read(path))
   end
   
-  # Retourn les données sous forme de Hash
+  # Retourne les données sous forme de Hash
   # 
   # @note: Les prend dans l'instance, contrairement à `data` qui les prend
   # dans le fichier.
@@ -127,9 +127,9 @@ class User
   end
   
   # Transforme le mot de passe en md5
-  def to_md5 password
+  def to_md5 pwd
     require 'digest/md5'
-    Digest::MD5.hexdigest("#{mail}-#{instrument}-#{password}")
+    Digest::MD5.hexdigest("#{mail}-#{instrument}-#{pwd}")
   end
   
   def path

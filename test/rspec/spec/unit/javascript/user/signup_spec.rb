@@ -257,7 +257,7 @@ describe "Procédures d'inscription de l'utilisateur" do
 			it "confirmation mot de passe doit lever la bonne erreur" do
 				signup_form.text_field(:id =>'user_password_confirmation').set "unmaivse"
 				run 'check_data'
-				flash_should_contain "ERRORS.User.Signup.bad_password_confirmation".js, :warning
+				flash_should_contain "ERRORS.User.Signup.bad_pwd_confirmation".js, :warning
 			end
 		end
 		

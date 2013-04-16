@@ -10,7 +10,7 @@ def ajax_user_check
   rescue Exception => e
     RETOUR_AJAX[:error]     = e.message
     RETOUR_AJAX[:user]      = nil
-    RETOUR_AJAX[:roadmaps]  = nil
+    RETOUR_AJAX[:roadmaps]  = []
   else
     RETOUR_AJAX[:user]      = res[1]
     RETOUR_AJAX[:babar]     = "Est parmi nous"

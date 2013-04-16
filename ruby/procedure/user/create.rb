@@ -29,7 +29,9 @@ def user_create duser
     raise "ERRORS.User.password_required" unless duser.has_key?(:password)
     raise "ERRORS.User.Signup.instrument_required" unless duser.has_key?(:instrument)
     # MD5 et check de la non-existence
-    user  = User.new duser[:mail] # virtual user
+    # @note: l'instance a aussi besoin de connaître @instrument pour calculer
+    # le md5
+    user  = User.new( :mail => duser[:mail], :instrument => duser[:instrument] ) # virtual user
     raise "ERRORS.User.Signup.already_exists" if user.exists?
     md5   = user.to_md5( duser.delete(:password) )
     # Création de l'utilisateur

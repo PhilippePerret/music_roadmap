@@ -199,10 +199,11 @@ window.User = {
       nom = Texte.correct_guil_et_apo( nom ) ;
       var mail = this.check_field('input#user_mail', '!=', "''", 'mail_required');
       if ( mail.indexOf('@') < 0 ) throw {locale:'bad_mail', dom:$('input#user_mail')} ;
+      if ( mail.replace(/^([-a-zA-Z0-9_\.]+)@([-a-zA-Z0-9_\.]+)\.([a-z]){1,4}$/i,'') != "" ) throw {locale:'bad_mail', dom:$('input#user_mail')} ;
       this.check_field('input#user_mail_confirmation', '==', "'"+mail+"'", 'bad_mail_confirmation');
       var pwd = this.check_field('input#user_password', '!=', "''", 'password_required');
-      if ( pwd != pwd.replace(/[^a-z0-9]/g, '')) throw {locale:'bad_password', dom:$('input#user_password')};
-      this.check_field('input#user_password_confirmation', '==', "'"+pwd+"'", 'bad_password_confirmation');
+      if ( pwd.replace(/[a-zA-Z0-9]/g, '') != "") throw {locale:'bad_password', dom:$('input#user_password')};
+      this.check_field('input#user_password_confirmation', '==', "'"+pwd+"'", 'bad_pwd_confirmation');
       var instrument = this.check_field('input#user_instrument', "!=", "''", 'instru_required');
       instrument = Texte.correct_guil_et_apo( instrument ) ;
       var description = Texte.correct_guil_et_apo($('textarea#user_description').val().trim());
