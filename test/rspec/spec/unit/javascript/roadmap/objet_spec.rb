@@ -613,7 +613,7 @@ describe "Objet JS Roadmap" do
 			"Roadmap.Data.start_to_end".js.should == true
 			onav.span(:id => 'start_to_end').should_not be_visible
 			# Doit afficher un message (dans la bonne langue)
-			flash_should_contain "MESSAGES.Roadmap.ready".js
+			flash_should_contain "MESSAGE.Roadmap.ready".js
 		end
 	end # / describe :init_new
 
@@ -638,7 +638,7 @@ describe "Objet JS Roadmap" do
 					"$('ul#exercices > li').length".js.should == nombre_exercices
 				end
 				it "doit afficher un message de réussite" do
-				  flash_should_contain "MESSAGES.Roadmap.loaded".js
+				  flash_should_contain "MESSAGE.Roadmap.loaded".js
 				end
 				it "doit avoir réglé le md5" do
 				  md5 = get_property(:md5)
@@ -685,7 +685,7 @@ describe "Objet JS Roadmap" do
 			# end
 			it "doit afficher un message de réussite en cas de succès" do
 			  run 'end_open', {:error => nil, :roadmap => {:data_roadmap => {}}}
-				flash_should_contain "MESSAGES.Roadmap.loaded".js
+				flash_should_contain "MESSAGE.Roadmap.loaded".js
 			end
 			it "doit mettre loaded à true" do
 				set_property(:loaded => false)

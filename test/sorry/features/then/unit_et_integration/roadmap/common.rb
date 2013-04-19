@@ -28,7 +28,7 @@ when /la roadmap #{STRING} doit être chargée/ then
   "Roadmap.loaded" should be true
   "Roadmap.nom" should be nom
   "Roadmap.mdp" should be mdp
-  Flash should contain :notice => "MESSAGES.Roadmap.loaded"
+  Flash should contain :notice => "MESSAGE.Roadmap.loaded"
   # Les exercices doivent être définis
   ordex = rm.ordre_exercices
   if ordex.count > 0

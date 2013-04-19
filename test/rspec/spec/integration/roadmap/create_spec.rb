@@ -75,10 +75,10 @@ describe "[intégration] Création d'une roadmap" do
 			# <--
 		end
 		it "doit afficher un message de succès" do
-		  flash_should_contain "MESSAGES.Roadmap.created".js
+		  flash_should_contain "MESSAGE.Roadmap.created".js
 		end
 		it "doit créer la roadmap et afficher le message de réussite" do
-			flash_should_contain "MESSAGES.Roadmap.created".js
+			flash_should_contain "MESSAGE.Roadmap.created".js
 			roadmap_should_exist kept(:nom), kept(:mdp)
 		end
 		it "doit avoir ajouté un log de création" do

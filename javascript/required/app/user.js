@@ -115,7 +115,7 @@ window.User = {
       this.roadmaps = rajax.roadmaps ;
       $('div#user_signin_form').remove();
       Aide.close() ;
-      F.show(MESSAGES.User.welcome);
+      F.show(MESSAGE.User.welcome);
       this.pour_suivre_identification();
     } else {
       // Identification failed
@@ -244,7 +244,7 @@ window.User = {
       // ---------------------
       //  Inscription réussie
       // ---------------------
-      F.show( MESSAGES.User.created );
+      F.show( MESSAGE.User.created );
       this.md5 = rajax.user.md5 ;
       $('div#user_signup_form').remove();
       Aide.close();

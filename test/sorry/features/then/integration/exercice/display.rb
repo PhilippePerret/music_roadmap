@@ -68,11 +68,11 @@ when /l'exercice (?:#{STRING} )?doit être (correctement )?affiché/ then
   shouldcontain liex, :div, {:id => "tempi_ex-#{id}", :class => 'ex_tempo'}, "div tempi exercice"
   odiv = liex.div(:id => "tempi_ex-#{id}")
   shouldcontain odiv, :select, {:id => "tempo_ex-#{id}"}, "menu tempo"
-  odiv.select(:id => "tempo_ex-#{id}").value should be dex[:exercice_tempo]
+  odiv.select(:id => "tempo_ex-#{id}").value should be dex[:exercice_tempo].to_s
   if deep
     shouldcontain odiv, :span, {:id => "tempo_de_a_ex-#{id}"}, "tempo de… à…"
     de_a = "(de #{dex[:exercice_tempo_min]} à #{dex[:exercice_tempo_max]})"
-    odiv.span(:id => "tempo_de_a_ex-#{id}").text should be de_a
+    odiv.span(:id => "tempo_de_a_ex-#{id}").text should be de_a.to_s
   end
   
   # Suite harmonique
@@ -97,6 +97,32 @@ when /l'exercice (?:#{STRING} )?doit être (correctement )?affiché/ then
   
   # Pour que la spec sentence soit affichée à la ligne en mode documenté
   puts "" if @retour_console
+
+
+when /l'exercice #{STRING} doit avoir un bouton #{STRING}/ then
+  # Vérifie un des boutons de l'exercice donné
+  # 
+  # 1er STRING: Identifiant de l'exercice (entre guillemets)
+  # 2e STRING: Identifiant ou nom du bouton à vérifier
+  # --
+  ex_id = $1
+  btn   = $2
+  Browser should contain li :id => "li_ex-#{ex_id}"
+  liex = onav.li(:id => "li_ex-#{ex_id}")
+  if btn.start_with? 'btn_'
+    liex should contain a :id => btn
+  else
+    liex should contain a :text => btn
+  end
+  
+when /l'exercice #{STRING} doit être sélectionné/ then
+  # Regarde si l'exercice est sélectionné
+  # 
+  # STRING: Identifiant de l'exercice entre guillemets
+  # --
+  ex_id = $1
+  btn = Browser get a :id => "li_ex-#{ex_id}"
+  btn should have css "selected"
   
 # fin de clauses
 end

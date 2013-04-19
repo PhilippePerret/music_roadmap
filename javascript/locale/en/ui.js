@@ -77,10 +77,11 @@ window.LOCALE_UI = {
     Edition:{
       types_of_exercice     :"Types of this exercice…"
     }
- },
+  },
   Exercice: {
     create_new_exercice     :"Save this new exercice",
     create_new_morceau      :"Save this new piece",
-    update                  : "Update this exercice"
+    update                  : "Update this exercice",
+    save_duree_travail      :"Yes, save time working on this exercice"
   },
 }

@@ -73,7 +73,7 @@ window.Roadmap = {
     BT.add('-> Roadmap.init_new') ;
     this.initing_new = true ;
     this.reset_all() ;
-    F.show(MESSAGES.Roadmap.ready);
+    F.show(MESSAGE.Roadmap.ready);
     BT.add('<- Roadmap.init_new') ;
     this.initing_new = false ;
   },
@@ -310,7 +310,7 @@ window.Roadmap = {
       $.proxy(Exercices.reset_liste, Exercices)() ;
       $.proxy(Roadmap.Data.dispatch, Roadmap.Data, roadmap)();
       $.proxy(Roadmap.Data.show, Roadmap.Data)();
-      Flash.show(MESSAGES.Roadmap.loaded) ;
+      Flash.show(MESSAGE.Roadmap.loaded) ;
     }
     // $.proxy(Roadmap.set_div_specs, Roadmap, ouvert = !this.loaded)() ;
     Exercices.set_boutons() ;
@@ -367,7 +367,7 @@ window.Roadmap = {
       this.saving = false; 
       return false;
     }
-    F.show(MESSAGES.Roadmap.saving);
+    F.show(MESSAGE.Roadmap.saving);
     // -> Requête de sauvegarde ou création
     Ajax.query({
       data:{
@@ -389,7 +389,7 @@ window.Roadmap = {
   end_save: function(fx_suite, rajax){
     BT.add('-> Roadmap.end_save') ;
     var error_occured = traite_rajax( rajax ) ;
-    if( ! error_occured ) Flash.show(MESSAGES.Roadmap.saved) ;
+    if( ! error_occured ) Flash.show(MESSAGE.Roadmap.saved) ;
     this.saving = false ;
     // Dans le cas d'une création
     if ( this.creating ){
@@ -430,7 +430,7 @@ window.Roadmap = {
       // Retour Ajax
       BT.add('-> Roadmap.create (retour ajax)') ;
       if ( false == traite_rajax( rajax ) ){
-        F.show( MESSAGES.Roadmap.creating ) ;
+        F.show( MESSAGE.Roadmap.creating ) ;
         this.save() ;
       } else this.end_create(false);
     }
@@ -439,7 +439,7 @@ window.Roadmap = {
   // indépendants, ce sont ces traitements qui gèrent l'affichage des erreurs
   // Donc ici, il suffit de savoir si la création a pu se faire ou non
   end_create:function(ok){
-    if (ok === true) F.show(MESSAGES.Roadmap.created);
+    if (ok === true) F.show(MESSAGE.Roadmap.created);
     this.creating = false ;
     return false ; // pour certaines méthodes
   },

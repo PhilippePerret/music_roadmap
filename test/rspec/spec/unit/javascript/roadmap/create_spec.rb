@@ -20,7 +20,7 @@ describe "La roadmap" do
 		end
 		it "doit afficher le message de fin de création si OK" do
 		  run 'end_create(true)'
-			flash_should_contain "MESSAGES.Roadmap.created".js, :notice
+			flash_should_contain "MESSAGE.Roadmap.created".js, :notice
 		end
 	end
 	# :create

@@ -1,0 +1,4 @@
+Quand j'appelle la méthode show du modèle Rapport
+Avec la date "2013-01-01"
+Alors le rapport du "2013-01-01" doit s'afficher
+# Note: pour le moment, tout est fait en stub

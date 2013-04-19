@@ -3,6 +3,7 @@
   Procédure d'enregistrement d'un exercice
   
 =end
+require_model 'roadmap'
 
 def ajax_exercice_save
   rm = Roadmap.new param(:roadmap_nom), param(:roadmap_mdp)

@@ -74,7 +74,7 @@ describe "Méthodes JS d'identification de l'user" do
 				# <--
 			end
 			it "doit afficher le message d'accueil" do
-				flash_should_contain 'MESSAGES.User.welcome'.js
+				flash_should_contain 'MESSAGE.User.welcome'.js
 			end
 			it "doit détruire le formulaire d'identification" do
 			  signin_form.should_not exist
@@ -115,7 +115,7 @@ describe "Méthodes JS d'identification de l'user" do
 				Watir::Wait.while{ "User.checking".js }
 			end
 			it "doit afficher le message de bienvenue" do
-			  flash_should_contain 'MESSAGES.User.welcome'.js, :notice
+			  flash_should_contain 'MESSAGE.User.welcome'.js, :notice
 			end
 			it "doit régler le md5 de l'user" do
 			  get_property(:md5).should == kept(:md5)

@@ -5,12 +5,19 @@
 
 require 'rubygems'
 require 'cgi'
-require 'rack' # pour Rack::Utils.parse_nested_query(string)
+require 'rack'  # pour Rack::Utils.parse_nested_query(string)
 
 Sorry.configure do |config|
-      
+  
+  Rapport = Object.new
+
   RETOUR_AJAX = {:error => nil} unless defined?(RETOUR_AJAX)
-      
+
+
+  # class Test::Unit::TestCase
+  #   include RR::Adapters::TestUnit
+  # end
+  
   require File.join(APP_FOLDER, 'ruby', 'lib', 'app', 'required', 'constants.rb')
   Dir["#{APP_FOLDER}/ruby/lib/app/required/**/*.rb"].each { |m| require m }
   $: << APP_FOLDER
@@ -64,7 +71,7 @@ Sorry.configure do |config|
       # Il faut relever les data de l'exercice dans le fichier
       rm = get_current_roadmap
       dex = {}
-      rm.exercice(id).each do |k, v|
+      rm.exercice(id).data.each do |k, v|
         dex = dex.merge "exercice_#{k}".to_sym => v
       end
       dex = dex.merge :id => id
@@ -83,6 +90,28 @@ Sorry.configure do |config|
       :nom => "Mon nom #{now}", :mail => mail, :mail_confirmation => mail,
       :password   => mdp, :password_confirmation => mdp,
       :instrument => "le tuba", :description => "Utilisateur inscrit à #{now}."
+    }
+  end
+  
+  # Return a Hash for a date "AAAA-MM-JJ"
+  def data_date date
+    require 'date'
+    odate = Date.parse(date)
+    hprov = Date._parse( date )
+    moisc = ['jan', 'fév', 'mar', 'avr', 'mai', 'juin', 'juil', 'aout', 'sept', 'oct', 'nov', 'déc'][hprov[:mon]-1]
+    moish = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'][hprov[:mon]-1]
+    jourh = hprov[:mday] == 1 ? '1er' : hprov[:mday] 
+    {
+      :jour_i         => hprov[:mday], 
+      :mois_i         => hprov[:mon], 
+      :annee_i        => hprov[:year],
+      :jour           => odate.strftime("%d"), 
+      :mois           => odate.strftime("%m"), 
+      :annee          => odate.strftime("%Y"),
+      :jj_mm_yyyy     => odate.strftime("%d %m %Y"),
+      :humaine        => "#{jourh} #{moish} #{hprov[:year]}",
+      :humaine_courte => "#{jourh} #{moisc} #{hprov[:year]}",
+      :from_today     => (Date.today - odate).numerator
     }
   end
   

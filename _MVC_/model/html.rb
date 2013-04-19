@@ -10,13 +10,26 @@
 require 'cgi'
 
 class Html
-  
-  URL         = 'www.music-roadmap.net'
-  URL_OFFLINE = "localhost/~philippeperret/cgi-bin/music_roadmap"
-  
+
   # Path des librairies générales (JS, Css, Img, etc.)
   PATH_LIB_GENE     = File.join(APP_FOLDER, "xlib")
   PATH_LIB_JS_GENE  = File.join(PATH_LIB_GENE, "javascript")
+
+  # -------------------------------------------------------------------
+  #   PROPRE À L'APPLICATION
+  # -------------------------------------------------------------------
+  URL         = 'www.music-roadmap.net'
+  URL_OFFLINE = "localhost/~philippeperret/cgi-bin/music_roadmap"
+  # Liste des librairies Javascript utiles à l'application courante
+  JS_LIBRARIES = [
+    "#{PATH_LIB_JS_GENE}/optional/backtrace.js",
+    "#{PATH_LIB_JS_GENE}/optional/ajax.js",
+    "#{PATH_LIB_JS_GENE}/optional/flash.js",
+    "#{PATH_LIB_JS_GENE}/optional/utils.js",
+    "#{PATH_LIB_JS_GENE}/optional/ui.js",
+    "#{PATH_LIB_JS_GENE}/optional/Time.js"
+    ]
+  
   
   # Liste des fichiers javascript à insérer dans la page
   # Utiliser la méthode add_javascript en lui envoyant en paramètre le chemin
@@ -136,6 +149,7 @@ class Html
       '</script>'
     end
     
+    
     # JAVASCRIPTS
     # ------------
     # Retourne le code pour tous les scripts javascript à utiliser
@@ -145,14 +159,7 @@ class Html
       # Les scripts de la librairie générale required
       # libcgi = File.expand_path "../lib/javascript/required"
       libcgi = "#{PATH_LIB_JS_GENE}/required"
-      liste = Dir["#{libcgi}/**/*.js"] +
-              [
-                "#{PATH_LIB_JS_GENE}/optional/backtrace.js",
-                "#{PATH_LIB_JS_GENE}/optional/ajax.js",
-                "#{PATH_LIB_JS_GENE}/optional/flash.js",
-                "#{PATH_LIB_JS_GENE}/optional/utils.js",
-                "#{PATH_LIB_JS_GENE}/optional/ui.js"
-                ]
+      liste = Dir["#{libcgi}/**/*.js"] + JS_LIBRARIES
       tags = liste.collect do |js|
         STDOUT.write "- js: #{js}\n  path: #{real_path_to_html(js)}\n"
         js = File.expand_path js

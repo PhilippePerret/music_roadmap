@@ -116,7 +116,7 @@ describe "Procédures d'inscription de l'utilisateur" do
 				duser['ip'].should == "::1"
 			end
 			it "affiché le message de réussite" do
-			  flash_should_contain "MESSAGES.User.created".js, :notice
+			  flash_should_contain "MESSAGE.User.created".js, :notice
 			end
 			it "avoir supprimé le div du formulaire d'aide" do
 				onav.div(:id => 'user_signup_form').should_not exist
@@ -139,7 +139,7 @@ describe "Procédures d'inscription de l'utilisateur" do
 				  get_property(:creating).should === false
 				end
 				it "afficher le message de succès" do
-				  flash_should_contain "MESSAGES.User.created".js#, :notice
+				  flash_should_contain "MESSAGE.User.created".js#, :notice
 				end
 				it "avoir défini le md5 de l'utilisateur" do
 				  get_property(:md5).should_not be_nil

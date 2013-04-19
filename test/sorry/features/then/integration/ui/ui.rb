@@ -21,16 +21,17 @@ when /la boite d'identification (ne )?doit( plus| pas)? être ouverte/ then
     Browser should not display div :id => 'user_signin_form'
   end
 
-when /(?:le|la) (lien|bouton|label|case) #{JID} doit avoir le label #{STRING}/ then
+when /(?:le|la) (lien|bouton|label|case) #{STRING} doit avoir le label #{STRING}/ then
   # Teste le nom d'un élément comme un lien, un bouton, etc.
   # --
-  wel_type  = $1 # lien, bouton, etc.
-  wel_jid   = $2 # jID de l'élément
+  wel_type  = $1 # lien, bouton, etc. (inusité pour le moment)
+  wel_jid   = $2 # jID de l'élément (entre guillemets ou non)
   wel_label = $3 # contenu attendu
-  wel = Browser get wel_jid # C'est nouveau, on va voir
+  wel_jid.sub!(/^(['"])?(.+)\1$/){$2}
+  wel = Browser get wel_jid
   wel should not be nil
-  wel.text should be wel_label
-  
-# / pour le dernier end du dernier block
+  wel should have label wel_label
+
+# fin ds clauses
 end
   

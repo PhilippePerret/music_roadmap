@@ -44,7 +44,7 @@ describe "Ouverture d'une feuille de route (exemple)" do
 	it "doit charger la feuille avec succès" do
 	  JS.run "Roadmap.open()"
 		Watir::Wait.while{ "Roadmap.opening".js }
-		flash_should_contain "MESSAGES.Roadmap.loaded".js
+		flash_should_contain "MESSAGE.Roadmap.loaded".js
 		"Roadmap.loaded".js.should === true
 	end
 	
@@ -82,6 +82,6 @@ describe "Ouverture d'une feuille de route (exemple)" do
 	end
 	
 	it "doit afficher le message de succès" do
-	  flash_should_contain "MESSAGES.Roadmap.loaded".js
+	  flash_should_contain "MESSAGE.Roadmap.loaded".js
 	end
 end

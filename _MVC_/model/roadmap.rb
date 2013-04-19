@@ -10,6 +10,8 @@
 require 'json'
 require 'digest/md5'
 require_model 'user'
+require_model 'exercice'
+require_model 'file_duree_jeu'
 
 class Roadmap
   
@@ -28,9 +30,17 @@ class Roadmap
   # 
   attr_reader :mdp
   
-  @nom      = nil
-  @mdp      = nil
-  @datajs   = nil  # Données du fichier data.js
+  @nom        = nil
+  @mdp        = nil
+  @datajs     = nil  # Données du fichier data.js
+  
+  # Hash contenant les instances Exercice des exercices déjà relevés au cours du travail.
+  # En clé : l'identifiant (String) de l'exercice et en valeur son instance.
+  # Mais on accède pas directement à cette propriété, on fait plutôt :
+  #     <roadmap>.exercice( <id exercice> )
+  # 
+  # @see: la méthode `exercice`
+  @exercices  = nil
   
   # Instanciation
   # 
@@ -140,10 +150,14 @@ class Roadmap
   # =>  Retourne la date de dernière modification
   def updated_at; get_datajs 'updated_at' end
 
-  # Retourne les data de l'exercice d'identifiant +idex+
+  # Retourne l'instance Exercice de l'exercice d'identifiant idex
+  # 
+  # @note: Les exercices déjà relevés sont conservés dans l'attribut @exercices de la
+  # feuille de route
   def exercice idex
-    JSON.parse(File.read(path_exercice(idex)))
+    @exercices[idex.to_s] ||= Exercice.new( idex, {:roadmap => self })
   end
+  
   # =>  Retourne la data exercices +key+ ou l'ensemble des données exercices
   #     (fichier exercices.js) si +key+ n'est pas fourni ou nil
   def data_exercices key = nil
@@ -188,6 +202,19 @@ class Roadmap
       :ip         => Params::User.ip
     }
   end
+  
+  # -------------------------------------------------------------------
+  # Pour les rapports et tout ce qui concerne les données de durée de
+  # jeu
+  # -------------------------------------------------------------------
+  
+  # Définit et retourne l'instance FileDureeJeu qui gère le fichier "durees_jeux" de la
+  # roadmam, où sont enregistrés toutes les données des jeux de l'exercice.
+  # 
+  def file_duree_jeu
+    @file_duree_jeu ||= FileDureeJeu.new self
+  end
+  
   # -------------------------------------------------------------------
   #   Créations
   # -------------------------------------------------------------------

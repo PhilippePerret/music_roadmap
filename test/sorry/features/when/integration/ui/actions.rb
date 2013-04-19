@@ -4,7 +4,7 @@ when /je clique (?:sur )?le bouton (.+)$/ then
   # exemple "a#btn_signin")
   # --
   btn = $1
-  btn.gsub!(/^("|')(.*)\1$/){$2}
+  btn.sub!(/^("|')(.*)\1$/){$2}
   Browser click btn
   sleep 1
   screenshot "click-on-#{btn.gsub(/\#/,'-')}"

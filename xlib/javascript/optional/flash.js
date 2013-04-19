@@ -190,6 +190,7 @@ window.Flash={
     $('div#flash').fadeOut( null,function(){$(this).html("");});
     this.kill_timers();
     this.on = false;
+    return false; // Pour le a-lien éventuel
   },
   // For Sorry
   reset:function(){this.clean()},

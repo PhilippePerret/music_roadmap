@@ -214,7 +214,7 @@ describe "La roadmap" do
 			end
 			it "doit afficher le bon message" do
 			  run 'end_save(null,{error:null})'
-				flash_should_contain "MESSAGES.Roadmap.saved".js
+				flash_should_contain "MESSAGE.Roadmap.saved".js
 				Watir::Wait.while{ "Log.adding".js }
 			end
 		end

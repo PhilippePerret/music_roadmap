@@ -81,6 +81,7 @@ window.LOCALE_UI = {
   Exercice: {
     create_new_exercice     :"Enregistrer ce nouvel exercice",
     create_new_morceau      :"Enregistrer ce nouvel morceau",
-    update                  :"Actualiser cet exercice"
+    update                  :"Actualiser cet exercice",
+    save_duree_travail      :"Oui, sauver la durée de travail sur cet exercice"
   },
 }

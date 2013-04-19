@@ -175,14 +175,21 @@ Exercice.prototype.code_html = function(){
   return li ;
 }
 // Règle le bouton pour le métronome
-Exercice.prototype.set_btn_metronome = function(){
-  $("li#li_ex-"+this.id+" a#btn_clic-"+this.id).html(this.playing?'STOP':'CLIC') ;
+// 
+// @param   running     True si l'exercice doit être en jeu, FALSE dans le cas contraire
+// 
+// @note: on ne se sert pas de la valeur this.playing, car au moment où la méthode est
+// appelée, this.playing n'a peut-être pas encore la bonne valeur (définie par exemple à
+// FALSE seulement après l'enregistrement d'une durée de jeu, qui peut être très lointain
+// lorsque la durée de jeu excède l'heure et qu'on doit avoir confirmation du musicien)
+Exercice.prototype.set_btn_metronome = function( running ){
+  $("li#li_ex-"+this.id+" a#btn_clic-"+this.id).html(running ? 'STOP' : 'Play') ;
 }
 Exercice.prototype.code_btns_edition = function(){
   var div = '<div class="btns_edition">' ;
   div += '<a class="btn_del petit btn" onclick="$.proxy(Exercices.delete, Exercices, \''+this.id+'\')()">Sup</a>';
   div += '<a class="btn_edit petit btn" onclick="$.proxy(Exercices.edit, Exercices, \''+this.id+'\')()">Edit</a>';
-  div += '<a id="btn_clic-'+this.id+'"class="btn_clic petit btn" onclick="$.proxy(Exercices.play, Exercices, \''+this.id+'\')()">Clic</a>';
+  div += '<a id="btn_clic-'+this.id+'"class="btn_clic petit btn" onclick="$.proxy(Exercices.play, Exercices, \''+this.id+'\')()">Play</a>';
   div += '</div>' ;
   return div ;
 }
@@ -285,22 +292,10 @@ Exercice.prototype.code_note = function(){
 // @param dont_stop_metronome Si mis à true, le métronome continue de battre
 //                            Cela arrive quand un autre exercice et lancé.
 Exercice.prototype.play = function( dont_stop_metronome ){
-  if (this.playing){
-    if ( 'undefined' == typeof(dont_stop_metronome) || 
-          dont_stop_metronome == false ) $.proxy(Metronome.stop, Metronome)();
-  } else {
-    $.proxy(Metronome.start, Metronome, this.tempo)() ;
-    Exercices.select(this.id) ;
-  }
-  this.playing = !this.playing ;
-  // Temps de début ou de fin de travail
-  this[this.playing?'w_start':'w_end'] = parseInt(new Date().valueOf()/1000,10) ;
-  if ( !this.playing ){
-    // À la fin du travail de l'exercice, on calcule le temps de travail et,
-    // s'il est suffisant, on enregistre une ligne de log
-    this.calc_duree_travail() ;
-  }
-  this.set_btn_metronome() ;
+  var running;
+  if (this.playing){ this.stop_exercice( dont_stop_metronome ) ; running = false }
+  else{              this.start_exercice() ; running = true }
+  this.set_btn_metronome(running);
 }
 // Méthode appelée par Exercices.deselect() si l'exercice était en train
 // de jouer.
@@ -308,22 +303,86 @@ Exercice.prototype.stop = function(){
   this.play( true ) ;
 }
 
-// Calcul de la durée de travail de l'exercice
+// Met en route le jeu de l'exercice
+Exercice.prototype.start_exercice = function(){
+  this.playing = true ;
+  this.w_start = Time.now() ;
+  $.proxy(Metronome.start, Metronome, this.tempo)() ;
+  Exercices.select(this.id) ;
+  this.w_end   = null ;
+}
+// Arrête l'exercice en train de jouer
+// 
+// Si dont_stop_metronome est true (false par défaut), on n'arrête pas le métronome
+// (utile lorsqu'on joue une série d'exercices)
+// 
+// @noter qu'on ne mettra le `playing` de l'exercice à false qu'une fois l'enregistrement
+// de la durée effectué (donc: on se trouvera parfois avec deux exercices qui ont cette
+// propriété à true, quand une durée de jeu d'un exercice est en train d'être enregistrée
+// tandis que l'exercice suivant est déjà en train d'être joué).
+// 
+Exercice.prototype.stop_exercice = function(dont_stop_metronome){
+  if ( ! dont_stop_metronome ) $.proxy(Metronome.stop, Metronome)();
+  this.w_end    = Time.now() ;
+  this.calc_duree_travail() ;
+}
+
+/* Calcul de la durée de travail de l'exercice
+
+  Si la durée a été suffisante ( > à 30 secondes), alors on enregistre cette durée dans le
+  fichier des données de durée de jeu. Sinon, on indique au musicien que le temps de travail
+  a été trop court pour l'enregistrer.
+  On affiche aussi une alerte lorsque le temps de travail a dépassé l'heure, pour avoir 
+  confirmation que le musicien a bien travaillé tout ce temps. S'il confirme, on enregistre
+  aussi cette durée de travail.
+
+*/
 Exercice.prototype.calc_duree_travail = function(){
-  if (this.w_start == null || this.w_end == null)
+  if (this.w_start == null || this.w_end == null) {
+    this.playing = false ;
     return F.error("Impossible de calculer la durée de travail de l'exercice (une valeur null)");
+  }
   this.w_duree = this.w_end - this.w_start ;
-  if ( this.w_duree > 30 ){
-  // if ( this.w_duree > 1 ){ // POUR TESTER
-    // On peut mémoriser le travail sur cet exercice
-    Log.new(510, this) ;
-    F.show("Le travail sur l'exercice “"+this.titre+"” a été enregistré.");
-  } else if ( this.w_duree > 60 * 60 ){
+  if ( this.w_duree > 60 * 60 ){
     // Demande de confirmation
-    // @TODO
-    // Avez-vous réellement passé une heure sur cet exercice ?
+    var mes = MESSAGE.Exercice.really_save_duree_travail + '<br />' +
+          '<a href="#" class="petit btn" onclick="exercice(\''+this.id+'\').playing=false;return Flash.clean();">' + LOCALE_UI.Verb.Cancel + '</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+          '<a href="#" class="petit btn" onclick="return exercice(\''+this.id+'\').save_duree_travail();">' +
+          LOCALE_UI.Exercice.save_duree_travail + '</a>' ;
+    F.error(mes);
+  } else if ( this.w_duree > 30 ){
+    // On peut mémoriser le travail sur cet exercice
+    this.save_duree_travail();
   } else {
     // Temps insuffisant pour mémoriser l'exercice
     F.show("L'exercice n'a été travaillé que "+this.w_duree+" secondes, je ne l'enregistre pas.");
+    this.playing = false ;
+  }
+}
+
+/* Enregistre la durée du travail sur l'exercice */
+Exercice.prototype.save_duree_travail = function(rajax){
+  if ('undefined' == typeof rajax){
+    // Procéder à l'enregistrement
+    this.ajax_on = true ;
+    Ajax.query({
+      data:{
+        proc:     'exercice/save_duree_travail',
+        roadmap_nom : Roadmap.nom,
+        roadmap_mdp : Roadmap.mdp,
+        user_mail   : User.mail,
+        user_md5    : User.md5,
+        ex_id       : this.id,
+        ex_w_duree  : this.w_duree
+      },
+      success: $.proxy(this.save_duree_travail, this)
+    });
+    return false; // pour le a-lien si c'est appelé depuis un message
+  } else {
+    if (false == traite_rajax(rajax)){
+      F.show(MESSAGE.Exercice.work_on_exercice_saved);
+    }
+    this.playing = false;
+    this.ajax_on = false;
   }
 }

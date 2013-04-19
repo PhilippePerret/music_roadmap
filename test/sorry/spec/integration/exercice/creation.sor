@@ -11,12 +11,12 @@ After all
 Quand je rejoins l'accueil
 Et que je m'identifie par le formulaire comme testeur
 Et que je choisis la roadmap "test_benoit"
-Et que je clique sur le bouton a#btn_exercice_create
+Et que je clique sur le bouton "a#btn_exercice_create"
   Alors le formulaire exercice doit être affiché
   Et le formulaire exercice doit être vierge
   
   Quand je remplis le formulaire exercice
-  Et que je clique sur le bouton a#btn_exercice_save
+  Et que je clique sur le bouton "a#btn_exercice_save"
     Si les données du formulaire exercice sont valides
       Alors l'exercice doit être créé
       Et le formulaire exercice doit être fermé

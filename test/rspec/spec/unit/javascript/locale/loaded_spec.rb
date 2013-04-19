@@ -7,8 +7,8 @@ describe "Chargement des locales" do
     it "LOCALE_UI doit exister" do
 			js_object_should_exist 'LOCALE_UI'
     end
-		it "MESSAGES doit exister" do
-			js_object_should_exist 'MESSAGES'
+		it "MESSAGE doit exister" do
+			js_object_should_exist 'MESSAGE'
 		end
 		it "ERRORS doit exister" do
 			js_object_should_exist 'ERRORS'
@@ -21,8 +21,8 @@ describe "Chargement des locales" do
 		it "LOCALE_UI doit être en français" do
 		  "LOCALE_UI.lang".js.should == "fr"
 		end
-		it "MESSAGES doit être en français" do
-		  "MESSAGES.lang".js.should == "fr"
+		it "MESSAGE doit être en français" do
+		  "MESSAGE.lang".js.should == "fr"
 		end
 		it "ERRORS doit être en français" do
 		  "ERRORS.lang".js.should == "fr"
@@ -35,8 +35,8 @@ describe "Chargement des locales" do
 		it "LOCALE_UI doit être en anglais" do
 		  "LOCALE_UI.lang".js.should == "en"
 		end
-		it "MESSAGES doit être en anglais" do
-		  "MESSAGES.lang".js.should == "en"
+		it "MESSAGE doit être en anglais" do
+		  "MESSAGE.lang".js.should == "en"
 		end
 		it "ERRORS doit être en anglais" do
 		  "ERRORS.lang".js.should == "en"

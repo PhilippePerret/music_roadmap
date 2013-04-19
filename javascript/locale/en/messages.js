@@ -1,4 +1,4 @@
-window.MESSAGES = {
+window.MESSAGE = {
   lang: 'en',
   // USER
   User:{
@@ -22,6 +22,8 @@ window.MESSAGES = {
   },
   // EXERCICE
   Exercice: {
-    saved       : "Exercice successfully saved!"
+    saved                     : "Exercice successfully saved!",
+    work_on_exercice_saved    : "Working time on exercice registered",
+    really_save_duree_travail : "You've worked a hour on this exercice, really? If it's true, please confirm by clicking the link below."
   },
 }
