@@ -124,6 +124,14 @@ window.Flash={
       oflash.html('<div id="inner_flash">' + this.textes + '</div>');      
     }
     if( false == $(oflash).is(':visible') ) oflash.fadeIn();
+    this.set_display_typoe_of_spans();
+  },
+  // Quand le message tient sur plusieurs lignes, il faut passer tous les spans en 
+  // display:block pour avoir un affichage correct
+  set_display_typoe_of_spans:function(){
+    var plusieurs_lignes = $('div#flash div#inner_flash').height() > 30 ;
+    if ( false == plusieurs_lignes ) return ;
+    $('div#flash div#inner_flash > div > span').css('display', 'block');
   },
   // Remet le flash dans le body (if any)
   set_flash_in_body:function(){
