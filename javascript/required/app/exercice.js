@@ -346,7 +346,7 @@ Exercice.prototype.calc_duree_travail = function(){
   if ( this.w_duree > 60 * 60 ){
     // Demande de confirmation
     var mes = MESSAGE.Exercice.really_save_duree_travail + '<br />' +
-          '<a href="#" class="petit btn" onclick="exercice(\''+this.id+'\').playing=false;return Flash.clean();">' + LOCALE_UI.Verb.Cancel + '</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+          '<a href="#" id="cancel_save_duree_jeu" class="petit btn" onclick="exercice(\''+this.id+'\').playing=false;return Flash.clean();">' + LOCALE_UI.Verb.Cancel + '</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
           '<a href="#" class="petit btn" onclick="return exercice(\''+this.id+'\').save_duree_travail();">' +
           LOCALE_UI.Exercice.save_duree_travail + '</a>' ;
     F.error(mes);

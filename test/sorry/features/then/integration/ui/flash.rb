@@ -12,7 +12,7 @@ when /(le message|l'alerte)( d'erreur)? #{STRING} doit être affichée?/ then
   key = (mes_type == "le message" && derreur.nil?) ? :notice : :warning
   Flash should contain key => message
   
-when /(le message|l'alerte)( d'erreur)? #{STRING} ne doit pas être affichée?/ then
+when /(le message|l'alerte)( d'erreur)? #{STRING} ne doit (?:pas|plus) être affichée?/ then
   # Test de la non présence d'un message dans le flash
   # 
   # --
