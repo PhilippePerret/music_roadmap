@@ -1,0 +1,19 @@
+
+/* Un div complet pour un auteur */
+div.dbe_div_auteur {
+  padding-bottom  :2px;
+  border-bottom   :1px solid #999;
+  margin-bottom   :6px;
+}
+
+/* Le nom de l'auteur des exercices/recueils */
+div.dbe_div_auteur a.dbe_auteur {
+  font-size       :1.1em;
+  font-weight     :bold;
+  color           :black !important;
+}
+
+div.dbe_div_auteur div.dbe_div_recueils {
+  margin-left     :2em;
+  padding         :8px;
+}

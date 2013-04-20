@@ -2,7 +2,7 @@ div#flash {
   position          :fixed;
   opacity           :0.8;
   top               :0.2em;
-  left              :20em;
+  left              :40em;
   margin: 0;
   padding: 0;
   z-index: 1000;

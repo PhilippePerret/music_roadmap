@@ -452,13 +452,13 @@ $.extend(window.Exercices,{
     // Ouvre le formulaire
     open: function(){ // @testok
       if ( User.is_not_owner() ) return false;
-      $('table#exercice_form').show() ;
+      $('table#exercice_form').toggle('slide',{},750);
       document.location.hash = '#bande_logo' ;
       return false ;
     },
     // Ferme le formulaire
     close: function(){ // @testok
-      $('table#exercice_form').hide() ;
+      $('table#exercice_form').toggle('slide',{},750);
     },
     // Nettoie le formulaire
     clear_form:function(){

@@ -1,11 +1,26 @@
 <!-- 
   Formulaire de création d'un exercice
+  
+  + Table de recherche d'un exercice
+  
 -->
 <table id="exercice_form" class="form" style="display:none">
   <colgroup>
     <col width="80">
     <col width="auto">
   </colgroup>
+  <tr>
+    <td class="libelle"></td>
+    <td>
+      <div>
+        <a  href="#" 
+            class="btn"
+            id="seach_ex_in_database"
+            onclick="return $.proxy(DBE.open, DBE)()"
+            >Chercher un exercice dans la base de données</a>
+      </div>
+    </td>
+  </tr>
   <tr>
     <td class="libelle">Recueil</td>
     <td><input type="text" id="exercice_recueil" value="" /></td>
@@ -85,7 +100,7 @@
   <tr class="buttons">
     <td></td>
     <td>
-      <a onclick="$('table#exercice_form').hide()" class="btn">Renoncer</a>
+      <a onclick="return $.proxy(Exercices.Edition.close, Exercices.Edition)()" class="btn cancel">Renoncer</a>
       <a id="btn_exercice_save" onclick="$.proxy(Exercices.save, Exercices)()" class="btn">Créer l'exercice</a>
     </td>
   </tr>
@@ -104,12 +119,12 @@
     <td class="libelle">Import</td>
     <td>
       <div>
-        Une liste d'exercices <select id="abs_id"><option value=""></option></select> <span class="mini italic">(Inutilisé pour le moment)</span>
-      </div>
-      <div>
         <input type="text" id="path_to_exercice" value ="" style="width:200px;padding:1px;" />
         <a href="#" id="btn_import_exercice" class="btn" onclick="return $.proxy(Exercices.import,Exercices)();">Importer</a>  <aide value="exercice/import"></aide>
       </div>
     </td>
   </tr>
 </table>
+
+<div id="database_exercices" style="display:none;">
+</div>

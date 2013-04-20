@@ -1,13 +1,27 @@
 /*table du formulaire*/
-table#exercice_form {
-  background-color          :whitesmoke ;
-  padding                   :1em         ;
-  margin-left               :13.3em;
-  border-width              :0 7px 7px 3px;
-  border-color              :#334E52;
-  border-style              :solid;
-  width                     :512px !important;
+table#exercice_form, div#database_exercices {
+  position             :absolute;
+  background-color     :whitesmoke;
+  padding              :1em;
+  margin-left          :12.3em;
+  border-width         :5px;
+  border-color         :#334E52;
+  border-style         :solid;  
 }
+table#exercice_form {
+  z-index   :1000;
+  width     :512px !important;
+}
+
+/* Div de la database des exercices 
+  @note: mise ici parce qu'elle doit ressembler au formulaire d'exercice
+*/
+div#database_exercices {
+  min-height    :300px;
+  z-index       :1001;
+  width         :470px !important;
+}
+
 table#exercice_form div#exercice_cbs_types {
   background-color          :#E0E0E0;
   padding                   :0.5em;
