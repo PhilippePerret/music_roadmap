@@ -17,7 +17,8 @@ $.extend(window.Exercices,{
       'O0':"Octaves",
       'T0':"Trills",
       'C1':"Chromatisme",
-      'P0':"Wrist"
+      'P0':"Wrist",
+      'D0':"Unbinder"
     }
   }
 });

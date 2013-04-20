@@ -20,7 +20,7 @@ when /le temps de jeu de l'exercice #{STRING} (?:ne )?doit (pas )?être enregist
   idex    = $1
   dontbe  = $2 == "pas "
   today   = Date.today.strftime("%y%m%d")
-  rm      = Roadmap.new "Roadmap.nom".js, "Roadmap.mdp".js
+  rm      = Roadmap.new "Roadmap.nom".js, "User.mail".js
   path_dureesjeux = rm.file_duree_jeu.path
   File path_dureesjeux should exist
   # Le fichier doit avoir été modifié dans les 10 secondes précédentes

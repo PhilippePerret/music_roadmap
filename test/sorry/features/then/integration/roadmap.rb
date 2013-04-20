@@ -19,15 +19,15 @@ when /la liste (des|de mes) roadmaps (?:de #{STRING} )?doit être affichée/ the
   end
   # On doit trouver un item option pour chaque roadmap
   roadmaps.each do |drm|
-    opt = Browser get option :value => (drm['nom']+"-"+drm['mdp'])
+    opt = Browser get option :value => (drm['nom']+"-"+drm['mail'])
     opt should exist
     opt.text should be drm['nom']
   end
 
 when /la roadmap #{STRING} doit être créée/
-  nom_mdp = $1
-  Folder "#{FOLDER_ROADMAP}/#{nom_mdp}" should exist
+  nom_umail = $1
+  Folder "#{FOLDER_ROADMAP}/#{nom_umail}" should exist
   
 when /la roadmap #{STRING} ne doit pas être créée/
-  nom_mdp = $1
-  Folder "#{FOLDER_ROADMAP}/#{nom_mdp}" should not exist
+  nom_umail = $1
+  Folder "#{FOLDER_ROADMAP}/#{nom_umail}" should not exist

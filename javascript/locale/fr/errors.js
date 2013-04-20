@@ -35,16 +35,14 @@ window.ERRORS = {
     Specs:{
       requises      : "Le nom et le mot de passe de la feuille de route sont requis !",
       need_a_nom    : "Il faut définir le nom de la feuille de route !",
-      need_a_mdp    : "Il faut définir le mot de passe de la feuille de route !",
-      invalid_nom   : "Le nom contient des caractères invalides…",
-      invalid_mdp   : "Le mot de passe contient des caractères invalides…",
+      invalid_nom   : "Le nom contient des caractères invalides…"
     },
     Data:{
       required                  : "Les données à dispatcher sont requises !",
       data_required             : "Les données (data_roadmap) sont requises !",
       config_generale_required  : "La configuration générale (config_generale) est requise !",
       data_exercices_required   : "Les données des exercices (data_exercices) sont requises !",
-      exercices_required        : "La liste des exercices est requises !",
+      exercices_required        : "La liste des exercices est requises !"
     },
     unable_with_example: "Cette action est impossible sur la feuille de route en exemple, désolé.", 
   },

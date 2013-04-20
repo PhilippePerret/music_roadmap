@@ -12,14 +12,14 @@
 load_model 'roadmap'
 
 def ajax_roadmap_check
-  nom = param(:roadmap_nom)
-  mdp = param(:roadmap_mdp)
+  nom   = param(:roadmap_nom)
+  umail = param(:user_mail)
   begin
-    # puts "nom:#{nom} / mdp:#{mdp}"
-    if nom.to_s == "" || mdp.to_s == ""
+    # puts "nom:#{nom} / umail:#{umail}"
+    if nom.to_s == "" || umail.to_s == ""
       raise "ERRORS.Roadmap.Specs.requises"
     end
-    fdr = Roadmap.new nom, mdp
+    fdr = Roadmap.new nom, umail
   rescue Exception => e
     # Sera évalué en retour ajax
     e.message = "\"#{e.message}\"" unless e.message.start_with?("ERRORS")

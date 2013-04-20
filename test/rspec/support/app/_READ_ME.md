@@ -1,1 +1,0 @@
-Ce dossier contient les modules de méthodes pratiques propre au projet courant.

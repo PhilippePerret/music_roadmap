@@ -31,7 +31,7 @@ ul#exercices {
   height                :25em ;
   max-height            :25em ;
   overflow-y            :scroll ;
-  border-bottom         :18px solid #008080;
+  border-bottom         :18px solid #C07051;
 }
 ul#exercices li.ex {
   position              :relative ;

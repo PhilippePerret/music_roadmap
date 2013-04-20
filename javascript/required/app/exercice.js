@@ -18,13 +18,11 @@ window.EXERCICE_PROPERTIES = [
 // Au lieu de créer une instance à chaque fois, on passe par cette méthode
 // qui checke si l'exercice a déjà été instancié
 window.exercice = function( foo ){
-  if ( 'number' == typeof foo ) foo = { 'id': foo.toString() } ;
-  else if ( 'string' == typeof foo ) foo = { 'id': foo.toString() } ;
+  if ('number' == typeof foo) foo = { 'id': foo.toString() } ;
+  else if ('string' == typeof foo) foo = { 'id': foo.toString() } ;
   else id = foo['id'].toString() ;
-  if ( 'undefined' == typeof EXERCICES[foo['id']] )
-    return new Exercice( foo ) ;
-  else
-    return EXERCICES[foo['id']] ;
+  if ('undefined' == typeof EXERCICES[foo['id']]) new Exercice(foo);
+  return EXERCICES[foo['id']] ;
 }
 
 function Exercice(data){
@@ -127,7 +125,6 @@ Exercice.prototype.save = function(fx_suite){
     data:{
       proc:'exercice/save',
       roadmap_nom : Roadmap.nom, 
-      roadmap_mdp : Roadmap.mdp,
       mail        : User.mail,
       md5         : User.md5,
       data        : this.as_hash()
@@ -369,7 +366,6 @@ Exercice.prototype.save_duree_travail = function(rajax){
       data:{
         proc:     'exercice/save_duree_travail',
         roadmap_nom : Roadmap.nom,
-        roadmap_mdp : Roadmap.mdp,
         user_mail   : User.mail,
         user_md5    : User.md5,
         ex_id       : this.id,

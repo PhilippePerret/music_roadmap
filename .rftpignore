@@ -1,0 +1,10 @@
+_Docs/
+data_ftp.py
+essai-image.html
+README.md
+.git
+.gitignore
+.tmp
+.rftpignore
+./test
+rftp_data.rb

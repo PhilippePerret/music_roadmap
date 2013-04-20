@@ -1,0 +1,1 @@
+DB_EXERCICES = {"czerny":{"r":{},"n":"Carl Czerny"},"hanon":{"r":{"pianiste_virtuose":{"t":"Le Pianiste virtuose","e":[{"i":"1","t":"Exercice n°1","y":["D0","P0"],"g":false},{"i":"_data","t":null,"y":null,"g":false}]}},"n":"Charles-Louis Hanon"}}

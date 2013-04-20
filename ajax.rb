@@ -105,7 +105,7 @@ begin
   
   # Librairie pour les procédures ajax.
   # Contient notamment `get_document' qui retourne l'instance Document du
-  # document défini par les paramètres :roadmap_nom et :roadmap_mdp
+  # document défini par les paramètres :roadmap_nom et :user_mail
   # require 'app/ajax'
   
   # On invoque la procédure demandée

@@ -3,7 +3,7 @@ require_model 'roadmap'
 
 
 def ajax_exercice_save_duree_travail
-  rm = Roadmap.new param(:roadmap_nom), param(:roadmap_mdp)
+  rm = Roadmap.new param(:roadmap_nom), param(:user_mail)
   dataex = {:id => param(:ex_id), :duree => param(:ex_w_duree)}
   RETOUR_AJAX[:error] = exercice_save_duree_travail rm, dataex, {:mail => param(:user_mail), :md5 => param(:user_md5)}
 end

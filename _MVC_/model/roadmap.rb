@@ -19,19 +19,7 @@ class Roadmap
   # 
   attr_reader :nom
   
-  # Return le mdp (mot de passe) de la roadmap
-  # 
-  # @note: il faudrait que ça devienne une procédure obsolète maintenant
-  # que l'utilisateur est nécessairement identifié. Mais ça changera énormément
-  # de choses, puisque ce mdp est intensivement utilisé. Peut-être le rendre
-  # simplement transparent en définissant sa valeur au mail de l'utilisateur,
-  # ce qui permettra d'avoir des RM avec le même nom (nom) pour deux users 
-  # sans problème.
-  # 
-  attr_reader :mdp
-  
   @nom        = nil
-  @mdp        = nil
   @datajs     = nil  # Données du fichier data.js
   
   # Hash contenant les instances Exercice des exercices déjà relevés au cours du travail.
@@ -44,14 +32,14 @@ class Roadmap
   
   # Instanciation
   # 
-  # @param  data    SOIT Hash contenant :nom et :mdp
+  # @param  data    SOIT Hash contenant :nom et :mail
   #                 SOIT String définissant :nom
-  # @param  mdp     SOIT nil si data est un Hash
-  #                 SOIT String définissant :mdp si :nom est string
-  def initialize data, mdp = nil
-    data = {:nom => data, :mdp => mdp} unless data.class == Hash
+  # @param  mail    SOIT nil si data est un Hash
+  #                 SOIT String définissant :mail si :nom est string
+  def initialize data, mail = nil
+    data = {:nom => data, :mail => mail} unless data.class == Hash
     set data
-    check_nom_et_mdp
+    check_nom_et_mail
   end
   
   # --- Méthodes de checks ---
@@ -116,10 +104,10 @@ class Roadmap
   def set data
     data.each{ |k,v| self.instance_variable_set( "@#{k}", v ) }
   end
-  def check_nom_et_mdp
+  def check_nom_et_mail
     @nom = nil if @nom == ""
-    @mdp = nil if @mdp == ""
-    raise "ERRORS.Roadmap.initialization_failed" if @nom.nil? || @mdp.nil?
+    @mail = nil if @mail == ""
+    raise "ERRORS.Roadmap.initialization_failed" if @nom.nil? || @mail.nil?
   end
   
   # -------------------------------------------------------------------
@@ -194,7 +182,6 @@ class Roadmap
       :created_at => Time.now.to_i,
       :updated_at => Time.now.to_i,
       :nom        => @nom,
-      :mpd        => @mdp,
       :mail       => mail,
       :md5        => md5,
       :password   => password,
@@ -233,7 +220,7 @@ class Roadmap
   # Définition des paths
   # -------------------------------------------------------------------
   def affixe
-    @affixe ||= "#{@nom}-#{@mdp}"
+    @affixe ||= "#{@nom}-#{@mail}"
   end
   def folder
     @folder ||= File.join(APP_FOLDER, 'user', 'roadmap', affixe )

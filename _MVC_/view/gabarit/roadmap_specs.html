@@ -4,11 +4,9 @@
 <div id="roadmap_specs-specs">
   <table width="100%">
     <tr>
+      <td id="td_label_roadmap" class="center" width="180">FEUILLE DE ROUTE</td>
       <td>
         <input type="text" id="roadmap_nom" value="" onchange="$.proxy(Roadmap.onchange_affixe, Roadmap, this.value, null)()" />
-      </td>
-      <td>
-        <input type="text" id="roadmap_mdp" value="" onchange="$.proxy(Roadmap.onchange_affixe, Roadmap, null, this.value)()" />
       </td>
       <td colspan="2">
         <select id="roadmaps" onchange="$.proxy(Roadmap.open_by_menu, Roadmap, this.id)()"></select>
@@ -26,8 +24,8 @@
       </td>
     </tr>
     <tr id="specs_roadmap">
-      <td id="td_label_roadmap" class="center" width="180">FEUILLE DE ROUTE</td>
-      <td id="td_label_mdp" class="center" width="180">MOT DE PASSE</td>
+      <td></td>
+      <td></td>
       <td colspan="3">
         <a  id="btn_roadmap_open" 
             class="btn" 
@@ -57,9 +55,13 @@
   Quand le div ci-dessus est fermé,, le div ci-dessous est ouvert (et 
   vice-et-versa)
 -->
-<div id="open_roadmap_specs" style="display:none;padding-top:4px;" class="right">
+<div id="open_roadmap_specs" style="display:none;" class="right">
   <a  href="#"
-      style="color:white"
+    ><span class="label_rapport">Rapport de travail</span></a>
+  <a  href="#"
+    ><span class="label_confection">Confectionner une séance de travail</a>
+  <a  href="#"
       onclick="return $.proxy(Roadmap.set_div_specs, Roadmap)()"
-  >[<span class="label_roadmap">Feuille de route</span>…]</a>
+  ><span class="label_roadmap">Feuille de route</span>…</a>
+  &nbsp;
 </div>

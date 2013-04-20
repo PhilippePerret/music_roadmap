@@ -5,7 +5,7 @@ load_model 'roadmap'
 # Procédure Ajax de chargement de la roadmap
 def ajax_roadmap_load
   begin
-    fdr = Roadmap.new param(:roadmap_nom), param(:roadmap_mdp)
+    fdr = Roadmap.new param(:roadmap_nom), param(:user_mail)
     if param(:check_if_exists).to_s == "true" && !fdr.exists?
       raise "ERRORS.Roadmap.unknown" 
     end
@@ -28,8 +28,8 @@ end
 #                 Ce sont les clés utilisées par data ci-dessous, par exemple
 #                 `:data_exercices'
 # 
-def roadmap_load rm, mdp = nil, only = nil
-  rm = Roadmap.new rm, mdp unless rm.class == Roadmap
+def roadmap_load rm, umail = nil, only = nil
+  rm = Roadmap.new rm, umail unless rm.class == Roadmap
   return "ERRORS.Roadmap.unknown" unless rm.exists?
   
   # Les données qui seront retournées

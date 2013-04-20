@@ -20,6 +20,11 @@ class Html
   # -------------------------------------------------------------------
   URL         = 'www.music-roadmap.net'
   URL_OFFLINE = "localhost/~philippeperret/cgi-bin/music_roadmap"
+  # JQuery's files
+  JQUERIES = [
+    File.join(PATH_LIB_JS_GENE, 'required', 'jquery.js'),
+    File.join(PATH_LIB_JS_GENE, 'required', 'jquery-ui.js')
+    ]
   # Liste des librairies Javascript utiles à l'application courante
   JS_LIBRARIES = [
     "#{PATH_LIB_JS_GENE}/optional/backtrace.js",
@@ -159,7 +164,7 @@ class Html
       # Les scripts de la librairie générale required
       # libcgi = File.expand_path "../lib/javascript/required"
       libcgi = "#{PATH_LIB_JS_GENE}/required"
-      liste = Dir["#{libcgi}/**/*.js"] + JS_LIBRARIES
+      liste = JQUERIES + JS_LIBRARIES
       tags = liste.collect do |js|
         STDOUT.write "- js: #{js}\n  path: #{real_path_to_html(js)}\n"
         js = File.expand_path js
@@ -242,7 +247,7 @@ class Html
     end
     def section_roadmap
       '<section id="roadmap" onmousedown="UI.set_premier_plan(this)" style="">' +
-      section_specs + section_parametres +
+      section_specs + section_exercices +
       '</section>'
     end
     def section_specs
@@ -251,12 +256,10 @@ class Html
       '</div>'
     end
     
-    # PARAMÈTRES DE L'EXERCICE
+    # SECTION EXERCICES
     # ------------------------
-    def section_parametres
-      '<div id="parametres">' +
-      load_view( 'gabarit/parametres.rb' )   +
-      '</div>'
+    def section_exercices
+      load_view('gabarit/section_exercices.rb')
     end
     
   end # class << self

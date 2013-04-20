@@ -1,7 +1,6 @@
 # Quand je rejoins l'accueil
 #   Alors JS Roadmap doit exister
 #   Et JS Roadmap doit répondre à get_nom
-#   Et JS Roadmap doit répondre à get_mdp
 #   Et JS Roadmap doit répondre à get
 #   Et JS Roadmap doit répondre à set
 #   Et JS Roadmap doit répondre à peuple_menu_roadmaps

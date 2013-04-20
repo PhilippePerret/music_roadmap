@@ -15,6 +15,7 @@ $.extend(window.Exercices,{
     'O0':"Octaves",
     'T0':"Trilles",
     'C1':"Chromatic",
-    'P0':"Poignet"
+    'P0':"Poignet",
+    'D0':"Déliateur"
   }
 });

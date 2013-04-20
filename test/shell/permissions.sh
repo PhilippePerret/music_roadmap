@@ -4,7 +4,8 @@ proprio='www' # Pour l'utilisation normale
 echo "Propriétaire et permission de tous les éléments de user/doc mis à $proprio et 0777"
 # On boucle sur tous les dossiers/fichiers du dossier user
 # cd /Users/philippeperret/Sites/cgi-bin/brins/user/doc
-cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user
+# cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user
+cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/
 find . |
 while read line; do
   if [[ "$line" == *git* ]]; then

@@ -31,18 +31,16 @@ window.ERRORS = {
     Specs:{
       requises      : "Roadmap Name and password are required!",
       need_a_nom    : "Roadmap's name is required!",
-      need_a_mdp    : "Roadmap's password is required!",
-      invalid_nom   : "Roadmap Name is invalid…",
-      invalid_mdp   : "Roadmap password is invalid…",
+      invalid_nom   : "Roadmap Name is invalid…"
     },
     Data:{
       required                  : "Data to dispatch required!",
       data_required             : "Data :data_roadmap required!",
       config_generale_required  : "General configuration (:config_generale) required!",
       data_exercices_required   : "Exercices data (:data_exercices) required!",
-      exercices_required        : "Exercices list required!",
+      exercices_required        : "Exercices list required!"
     },
-    unable_with_example: "Forbidden with Example Roadmap.", 
+    unable_with_example: "Forbidden with Example Roadmap."
   },
   // EXERCICES
   Exercices: {

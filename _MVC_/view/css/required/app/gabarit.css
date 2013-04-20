@@ -10,25 +10,47 @@
 */
 body {
   position          :relative;
-  max-width         : 1200px ;
-  min-width         : 400px ;
-  background-image  : url('../../../img/fond_bois.jpg');
+  max-width         :1200px;
+  min-width         :400px;
+  background-color  :#607060;
+/*  background-image  : url('../../../img/fond_bois.jpg');*/
 }
+
+/*
+  CONFIGURATION GÉNÉRALE DE L'EXERCICE
+  ------------------------------------
+*/
+div#config_generale {
+  position        :absolute;
+  left            :56em;
+  top             :11em;
+  padding         :0   ;
+  width           :15em;
+  opacity         :0.81;
+}
+
 /*
   ROADMAP
   --------
 */
 section#roadmap {
-  border              : 1px solid #334E52;
-  min-height          : 100px ;
-  width               : 21cm ;
-  margin-left         : 16em ;
-  border-radius       : 15px 15px 0 0 ;
+  border              :3px solid #FFFFFF;
+  min-height          :100px;
+  width               :19cm;
+  margin-left         :10.9em;
+  margin-top          :2.3em;
+  border-radius       :15px 15px 0 0;
+  
 }
 
+/* Section exercices */
+section#section_exercices {
+    padding             :0;
+    background-color    :#C07051;
+}
 /* Les fonds foncés */
 div#roadmap_specs {
-  background-color      :teal;
+  background-color      :#C07051;
 }
 /* Menu des roadmaps */
 div#roadmap_specs select#roadmaps {
@@ -36,9 +58,9 @@ div#roadmap_specs select#roadmaps {
   width         :14em;
 }
 div#btns_exercices {
-  height              : 20px;
-  background-color    : #334E52;
-  padding             : 0.7em ;
+  height              :20px;
+  background-color    :#9E5600;
+  padding             :0.7em;
 }
 section#roadmap div#roadmap_specs {
 /*  width               : 100% ;*/
@@ -58,8 +80,10 @@ section#roadmap div#roadmap_specs input[type=text] {
 */
 section#partage {
   position            :absolute;
-  left                :30em;
-  top                 :14px;
+  left                :24.9em;
+  top                 :34.4px;
+  font-size           :15.0px;
+  width               :30em;
 }
 section#partage a {
   color               :white !important;
@@ -71,14 +95,14 @@ section#partage a {
   ----------
 */
 section#bande_logo {
-  background-color    :#B0A2A2;
+  background-color    :#000000;
   height              :auto;
   width               :309px;
   border-radius       :0 0 1em 0;
   padding             :0.5em 0 0.5em 1.1em;
   margin-bottom       :0.5em;
   opacity             :0.85;
-  color               :white;
+  color               :#BFB96A;
 }
 section#bande_logo div#nom_site {
   font-size           : 1.23em ;
@@ -87,17 +111,17 @@ section#bande_logo div#nom_site {
   METRONOME
 */
 section#sec_metronome {
-  
+  background-color  :#005847;
+  border-radius     :3.8em 0 3.2em 0;
+  top               :5.5em;
+  left              :1.3em;
+  position          :absolute;
+  opacity           :0.914;
 }
 /*Le métrodonme*/
 section#sec_metronome img#metronome_anim {
-  background-color  : #A46B55;
-  border-radius     : 4em 4em 4em 4em;
-  left              : 4em;
-  padding           : 0.5em;
-  position          : absolute;
-  top               : 4em;
-  width             : 111px;
+  padding           :0.8em;
+  width             :111px;
 }
 
 a#btn_save_roadmap {
@@ -106,20 +130,32 @@ a#btn_save_roadmap {
   display             : block ;
   margin-top          : -5px  ; /* pour aligner */
 }
-/* pour div#document_body, cf. document.css*/
-
-div#parametres {
-  background-color    : #008080 ; /*#454545*/ ;
-}
 
 /* Drapeau pour autre langue */
 img#drapeau_autre_langue {
-  width               : 34.8px;
-  margin-left         : 12px ;
+  width               :28px;
+  margin-left         :12px;
+  margin-top          :-5px;
 }
 /*
   SECTION DONATION
 */
 section#donation {
   
+}
+
+div#open_roadmap_specs {
+  padding-top     :4px;
+}
+div#open_roadmap_specs a {
+  background-color: #615654;
+  color: white !important;
+  display: block;
+  float: right;
+  font-family: cursive;
+  letter-spacing: 1px;
+  margin-right: 1em;
+  margin-top: -4px;
+  padding: 1px 8px;
+  text-align: center;
 }

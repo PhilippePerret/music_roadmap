@@ -25,7 +25,7 @@ class UserTest
   #                 :as => :array / :hash (DEFAULT)
   # 
   # * RETURN
-  #   - Soit le hash des roadmaps de l'utilisateur, avec en clé le "nommdp"
+  #   - Soit le hash des roadmaps de l'utilisateur, avec en clé le "nomumail"
   #   - Soit le array de toutes les données.
   # 
   def roadmaps opts = nil
@@ -37,7 +37,7 @@ class UserTest
       drm = JSON.parse(File.read(datajs))
       next unless drm['mail'] == mail
       if as_hash then 
-        retour = retour.merge "#{drm['nom']}#{drm['mdp']}" => drm
+        retour = retour.merge "#{drm['nom']}#{drm['mail']}" => drm
       else  
         retour << drm
       end

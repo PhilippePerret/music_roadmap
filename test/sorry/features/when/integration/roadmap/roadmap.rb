@@ -1,9 +1,9 @@
 when "je veux créer une feuille de route"
   # => Ouverture du formulaire spec
   
-when /je donne le nom #{STRING} et le mdp #{STRING} à la roadmap/
+when /je donne le nom #{STRING} et le umail #{STRING} à la roadmap/
   roadmap_nom = $1
-  roadmap_mdp = $2
+  user_mail   = $2
   pending "Donner le nom #{roadmap_nom} à la feuille de route"
 
 when /je choisis la roadmap #{STRING}/ then
@@ -13,7 +13,7 @@ when /je choisis la roadmap #{STRING}/ then
   # roadmap de l'utilisateur courant identifié.
   # 
   # Le STRING peut contenir soit le nom seul de la roadmap (le texte de
-  # l'itemp de menu) soit le "nom-mdp" (dont le value de l'option). Pour un
+  # l'itemp de menu) soit le "nom-umail" (dont le value de l'option). Pour un
   # traitement plus rapide, on peut mettre plutôt le nom seul, c'est lui
   # qui est cherché en premier.
   # 
@@ -23,9 +23,9 @@ when /je choisis la roadmap #{STRING}/ then
   # prudent.
   # 
   # --
-  nomdp = $1.strip
-  opt = Browser get option :text => nomdp
-  opt = Browser get option :value => nomdp if opt.nil?
+  noumail = $1.strip
+  opt = Browser get option :text => noumail
+  opt = Browser get option :value => noumail if opt.nil?
   # Ouvrir la roadmap
   opt.select
   Browser wait_while { "Roadmap.opening".js }

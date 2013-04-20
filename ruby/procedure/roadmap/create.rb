@@ -13,7 +13,6 @@ def roadmap_create data
     # puts "-> roadmap_create avec : #{data.inspect}"
     # Présence des données
     raise unless data.has_key?(:nom) && data[:nom] != nil
-    raise unless data.has_key?(:mdp) && data[:mdp] != nil
     raise unless data.has_key?(:mail) && data[:mail] != nil
     raise unless data.has_key?(:md5) && data[:md5] != nil
     raise unless data.has_key?(:salt) && data[:salt] != nil
@@ -22,7 +21,7 @@ def roadmap_create data
     owner = User.new data[:mail]
     raise unless owner.md5 == data[:md5]
     # Unicité de la roadmap
-    rm = Roadmap.new data[:nom], data[:mdp]
+    rm = Roadmap.new data[:nom], data[:mail]
     raise if rm.exists?
   rescue Exception => e
     return "ERRORS.Roadmap.cant_create"
@@ -42,7 +41,7 @@ def roadmap_create data
     }
     File.open(rm.path_exercices,'wb') { |f| f.write data.to_json }
     # On ajoute cette roadmap à l'utilisateur
-    owner.add_roadmap "#{rm.nom}-#{rm.mdp}"
+    owner.add_roadmap "#{rm.nom}-#{rm.mail}"
     # @note: les autres fichiers doivent être créés par la procédure save
     return nil # important
   rescue Exception => e

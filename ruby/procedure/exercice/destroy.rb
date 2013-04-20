@@ -5,7 +5,7 @@
 =end
 
 def ajax_exercice_destroy
-  rm = Roadmap.new param(:roadmap_nom), param(:roadmap_mdp)
+  rm = Roadmap.new param(:roadmap_nom), param(:user_mail)
   RETOUR_AJAX[:error] = exercice_destroy rm, param(:exercice_id), {:mail => param(:user_mail), :md5 => param(:user_md5)}
 end
 

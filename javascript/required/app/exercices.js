@@ -148,7 +148,7 @@ $.extend(window.Exercices,{
       if ( path == "" ) 
         throw "Vous devez indiquer le chemin de l'exercice !" ;
       if ( path.indexOf('/') < 0 ) 
-        throw "Vos chemins sont mal formatés (requis : “feuille/mdp/index,etc.”)";
+        throw "Vos chemins sont mal formatés (requis : “feuille/mail/index,etc.”)";
       if ( path.replace(/[a-zA-Z0-9\/,_-]/g, '') != "" )
         throw "Vos chemins contiennent des caractères illégaux…"
     }catch(erreur){ return F.error( erreur )}
@@ -159,7 +159,7 @@ $.extend(window.Exercices,{
       data:{
         proc              : 'exercice/import',
         roadmap_nom       : Roadmap.nom,
-        roadmap_mdp       : Roadmap.mdp,
+        user_mail         : User.mail,
         data              : path
       },
       success : fct_success
@@ -217,7 +217,6 @@ $.extend(window.Exercices,{
           data:{
             proc              :"exercice/destroy",
             roadmap_nom       : Roadmap.nom,
-            roadmap_mdp       : Roadmap.mdp,
             user_mail         : User.mail,
             user_md5          : User.md5,
             exercice_id       :id
@@ -375,7 +374,7 @@ $.extend(window.Exercices,{
   // Affiche la path de cet exercice (pour une copie ailleurs)
   show_path: function(id){
     var mes = 'Le chemin de cet exercice est : <input type="text" value="' +
-     Roadmap.nom + "/" + Roadmap.mdp + "/" + id + '" onfocus="this.select()" />';
+     Roadmap.nom + "/" + User.mail + "/" + id + '" onfocus="this.select()" />';
     F.show(mes, {timer:false}) ;
     return false ; //pour le a-lien
   },

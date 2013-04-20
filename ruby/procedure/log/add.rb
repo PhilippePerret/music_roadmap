@@ -7,14 +7,14 @@
 # Procédure Ajax d'enregistrement d'une ligne de log
 # 
 # @requis   roadmap_nom   Nom de la feuille de route dans les paramètres
-# @requis   roadmap_mdp   Mdp de la feuille de route dans les paramètres
-# @requis   data      Les données du log dans les paramètres
+# @requis   user_mail     Mail du owner de la roadmap
+# @requis   data          Les données du log dans les paramètres
 # 
 # @return void, mais met la ligne de code produite dans 'logline' en retour
 # d'ajax
 def ajax_log_add
   begin
-    fdr = Roadmap.new param(:roadmap_nom), param(:roadmap_mdp)
+    fdr = Roadmap.new param(:roadmap_nom), param(:user_mail)
     fdr.build_folder # peut être nécessaire pour les tests
     RETOUR_AJAX[:logline] = log_add param(:data), fdr
   rescue Exception => e

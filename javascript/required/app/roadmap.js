@@ -6,7 +6,6 @@
 window.Roadmap = {
   class     : 'Roadmap',
   nom       : null,
-  mdp       : null,
   md5       : null,
   partage   : null,
   loaded    : false,    // mis à true quand une roadmap est chargée
@@ -19,49 +18,34 @@ window.Roadmap = {
     BT.add('<- Roadmap.get_nom (return: this.nom='+this.nom+')') ;
     return this.nom;
   },
-  // // => Retourne le mdp de la feuille de route courante
-  get_mdp: function(){
-    BT.add('-> Roadmap.get_mdp') ;
-    this.set(false, $('input#roadmap_mdp').val()) ;
-    BT.add('<- Roadmap.get_mdp (return: this.mdp='+this.mdp+')') ;
-    return this.mdp;
-  },
-  // Définit le nom et le mdp du document (et les place dans le div specs)
-  set: function(nom, mdp){
-    BT.add('-> Roadmap.set(nom:'+nom+', mdp:'+mdp+')') ;
+  // Définit le nom de la roadmap (et les place dans le div specs)
+  set: function(nom){
+    BT.add('-> Roadmap.set(nom:'+nom) ;
     if ( nom !== false ){
       if ( nom == "" ) nom = null ;
       this.nom = nom ;
       $('input#roadmap_nom').val( nom || "" ) ;
     }
-    if ( mdp !== false ){
-      if ( mdp == "" ) mdp = null ;
-      this.mdp = mdp ;
-      $('input#roadmap_mdp').val( mdp || "" ) ;
-    }
     BT.add('<- Roadmap.set') ;
-    if ( nom === false ) return mdp ;
-    else if ( mdp === false ) return nom ;
-    else return [nom, mdp] ;
+    return nom ;
   },
   // Relève les données du roadmap dans le document
   // @return  Null (void)
   get: function(){ 
     BT.add('-> Roadmap.get') ;
     this.get_nom(); 
-    this.get_mdp();
     BT.add('<- Roadmap.get') ;
   },
   // => Retourn l'“affixe” de la feuille de route courante, c'est-à-dire le
   //    nom du dossier qui va contenir ses éléments.
   affixe: function(){
-    return this.nom + '-' + this.mdp ;
+    return this.nom + '-' + User.mail ;
   },
   
   // Initialisation (au chargement de la page)
   init: function(){
     BT.add('-> Roadmap.init') ;
-    // Rechargement la feuille de route si un nom/mdp est défini et qu'il
+    // Rechargement la feuille de route si un nom/User.mail est défini et qu'il
     // est valide.
     if ( this.set_etat_specs(messages=false) ) this.open() ;
     BT.add('<- Roadmap.init') ;
@@ -104,7 +88,7 @@ window.Roadmap = {
       RÉGLAGE INTERFACE
   */
   // Définit l'état du div contenant les specs en fonction de la présence ou
-  // non des nom et mdp
+  // non des nom et User.mail
   // @return true si les données sont bonnes, false dans le cas contraire
   set_etat_specs: function( with_message ){
     BT.add('-> Roadmap.set_etat_specs') ;
@@ -183,9 +167,9 @@ window.Roadmap = {
     BT.add('<- Roadmap.set_div_specs') ;
     return false ; // pour le a-lien
   },
-  // Appelé quand on change les valeurs dans les specs (nom et mdp)
-  onchange_affixe:function(nom,mdp){
-    BT.add('-> Roadmap.onchange_affixe (nom='+nom+', mdp='+mdp+')') ;
+  // Appelé quand on change la valeur du nom de la roadmap dans les specs
+  onchange_affixe:function(nom){
+    BT.add('-> Roadmap.onchange_affixe (nom='+nom) ;
     if( nom != null ) {
       if ( nom == "" ) nom = null ;
       else {
@@ -195,19 +179,7 @@ window.Roadmap = {
           F.error(ERRORS.Roadmap.Specs.invalid_nom) 
         }
       }
-      this.set(nom,false);
-      this.nom = nom ;
-    }
-    if ( mdp != null ){
-      if ( mdp == "" ) mdp = null ;
-      else {
-        mdp_init = mdp.toString();
-        mdp = this.get_a_correct( mdp ) ;
-        if( mdp_init != mdp ){
-          F.error(ERRORS.Roadmap.Specs.invalid_mdp) }
-      }
-      this.set(false,mdp);
-      this.mdp = mdp ;
+      this.nom = this.set(nom);
     }
     this.loaded = false ;
     var afficher_alerte = nom == false ; // cf. N0006
@@ -216,18 +188,18 @@ window.Roadmap = {
     BT.add('<- Roadmap.onchange_affixe') ;
   },
   
-  // => Retourne true si le nom et le mdp de le roadmap ne sont pas vides
+  // => Retourne true si le nom de la roadmap et User.mail sont définis
   specs_ok: function( with_message ){
     BT.add('-> Roadmap.specs_ok') ;
     if ('undefined' == typeof with_message) with_message = false ;
     this.get();
-    var ok = this.nom != null && this.mdp != null ;
+    var ok = this.nom != null && User.mail != null ;
     if ( with_message && !ok ) F.error(ERRORS.Roadmap.Specs.requises) ;
     BT.add('<- Roadmap.specs_ok / return : ' + ok) ;
     return ok ;
   },
   
-  // => Retourne true si le nom et le mdp sont valides
+  // => Retourne true si le nom et le User.mail sont valides
   are_specs_valides: function(forcer_check, with_message ){
     BT.add('-> Roadmap.are_specs_valides') ;
     if ( 'undefined' == typeof with_message ) with_message = true ;
@@ -238,17 +210,11 @@ window.Roadmap = {
       if( this.nom == null ) {
         UI.focus('roadmap_nom') ; 
         throw 'need_a_nom' ;
-      } else if( this.mdp == null ) {
-        UI.focus('roadmap_mdp') ; 
-        throw 'need_a_mdp' ;
       } else if( this.affixe().replace(/[a-zA-Z0-9_-]/g, '') != "" ){
         var nom_is_bad = this.nom.replace(/[a-zA-Z0-9_-]/g, '') != "" ;
         this.set( this.get_a_correct(this.nom), false ) ;
-        this.set( false, this.get_a_correct(this.mdp) ) ;
         UI.focus('roadmap_nom') ;
-        UI.focus('roadmap_mdp') ;
-        UI.focus( nom_is_bad ? 'roadmap_nom' : 'roadmap_mdp') ;
-        throw nom_is_bad ? 'invalid_nom' : 'invalid_mdp' ;
+        throw 'invalid_nom';
       }
       // Tout semble OK
       this.specs_valides = true ;
@@ -275,8 +241,8 @@ window.Roadmap = {
   */
   open_by_menu: function( idmenu ){
     this.opening = true ;
-    var nomdp = $('select#' + idmenu).val();
-    var drm   = nomdp.split('-');
+    var nomumail = $('select#' + idmenu).val();
+    var drm   = nomumail.split('-');
     this.set(drm[0], drm[1]);
     this.open();
   },
@@ -289,8 +255,8 @@ window.Roadmap = {
     Ajax.query({
       data:{
         proc            : "roadmap/load",
-        roadmap_nom         : this.nom,
-        roadmap_mdp         : this.mdp,
+        roadmap_nom     : this.nom,
+        user_mail       : User.mail,
         check_if_exists : true
       },
       success: $.proxy(this.end_open, this),
@@ -335,7 +301,6 @@ window.Roadmap = {
       data:{
         proc            : 'roadmap/save',
         roadmap_nom     : this.nom,
-        roadmap_mdp     : this.mdp,
         mail            : User.mail,
         md5             : User.md5,
         data_exercices  : this.Data.EXERCICES
@@ -373,7 +338,6 @@ window.Roadmap = {
       data:{
         proc            : 'roadmap/save',
         roadmap_nom     : this.nom,
-        roadmap_mdp     : this.mdp,
         mail            : User.mail,
         md5             : User.md5,
         creating        : this.creating,
@@ -419,9 +383,9 @@ window.Roadmap = {
       } catch( erreur ){
         return this.end_create(false);
       }
-      // Le nom-mdp de la roadmap doit être unique
+      // Le nom-umail de la roadmap doit être unique
       Ajax.query({
-        data:{proc:'roadmap/check',roadmap_nom:this.nom, roadmap_mdp:this.mdp},
+        data:{proc:'roadmap/check',roadmap_nom:this.nom, user_mail:User.mail},
         success : $.proxy(this.create,this),
       })
       BT.add('<- Roadmap.create (attente retour ajax)') ;
@@ -452,7 +416,6 @@ window.Roadmap = {
       data:{
         proc: 'roadmap/destroy',
         roadmap_nom : this.nom,
-        roadmap_mdp : this.mdp,
         mail        : User.mail,
         password    : User.password
       },
@@ -468,12 +431,12 @@ window.Roadmap = {
       -----------------------------------------------------
 
     @param   roadmaps    Liste (Array) d'identifiant de roadmap, c'est-à-dire
-                         de "nom-mdp". Seul le nom importe pour l'affichage
-                         puisque mdp est le mail du possesseur.                
+                         de "nom-umail". Seul le nom importe pour l'affichage
+                         puisque umail est le mail du possesseur.
 
   */
   peuple_menu_roadmaps: function(roadmaps){
-    var i, nom, mdp;
+    var i, nom, umail;
     var menu = $('select#roadmaps');
     menu.html("");
     if('undefined' == typeof(roadmaps) || roadmaps == null) return;
@@ -481,7 +444,7 @@ window.Roadmap = {
     for(i in roadmaps){
       idrm = roadmaps[i];
       drm = idrm.split('-') ;
-      nom = drm[0]; mdp = drm[1];
+      nom = drm[0]; umail = drm[1];
       menu.append('<option value="'+idrm+'">' + nom + '</option>');
     }
   },

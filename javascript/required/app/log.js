@@ -41,7 +41,7 @@ window.Log = {
       data:{
         proc        : 'log/add',
         roadmap_nom : Roadmap.nom,
-        roadmap_mdp : Roadmap.mdp,
+        user_mail   : User.mail,
         data        : data.join("\t")
       },
       success : fx_success

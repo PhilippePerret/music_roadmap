@@ -6,10 +6,6 @@ require_model 'roadmap'
 # Méthode Ajax
 def ajax_roadmap_save
   
-  nom = param(:roadmap_nom)
-  mdp = param(:roadmap_mdp)
-  rm = Roadmap.new nom, mdp
-  for_creation = param(:creating).to_s == 'true'
 
   begin
     user_mail  = param(:mail)
@@ -18,6 +14,10 @@ def ajax_roadmap_save
     raise "ERRORS.User.md5_required" if user_md5.to_s == ""
     owner = User.new user_mail
     raise "ERRORS.User.unknown" unless owner.exists?
+    
+    nom = param(:roadmap_nom)
+    rm = Roadmap.new nom, user_mail
+    for_creation = param(:creating).to_s == 'true'
     
     unless for_creation
       # Update
@@ -31,7 +31,6 @@ def ajax_roadmap_save
       require 'procedure/roadmap/create'
       data = {
         :nom      => rm.nom, 
-        :mdp      => rm.mdp, 
         :mail     => user_mail, 
         :md5      => user_md5,
         :salt     => owner.salt,

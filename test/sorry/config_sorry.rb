@@ -49,9 +49,9 @@ Sorry.configure do |config|
   # 
   def get_current_roadmap
     require_model 'roadmap'
-    rm_nom = "Roadmap.nom".js
-    rm_mdp = "Roadmap.mdp".js
-    Roadmap.new rm_nom, rm_mdp
+    rm_nom  = "Roadmap.nom".js
+    umail   = "User.mail".js
+    Roadmap.new rm_nom, umail
   end
   
   # Retourne les data_exercice SOIT de l'identifiant fourni en argument,
@@ -85,10 +85,10 @@ Sorry.configure do |config|
   def get_data_user_valides
     now = Time.now.to_i
     mail = "unmail#{now}@chez.lui"
-    mdp  = "motdepasse#{now}"
+    pasw = "motdepasse#{now}"
     {
       :nom => "Mon nom #{now}", :mail => mail, :mail_confirmation => mail,
-      :password   => mdp, :password_confirmation => mdp,
+      :password   => pasw, :password_confirmation => pasw,
       :instrument => "le tuba", :description => "Utilisateur inscrit à #{now}."
     }
   end

@@ -47,30 +47,16 @@ class User
   def salt;         @salt         ||= data['salt']        end
   def created_at;   @created_at   ||= data['created_at']  end
   def updated_at;   @updated_at   ||= data['updated_at']  end
-  # Retourne la liste des roadmaps de l'utilisateur
+
+  # Return user roadmaps list
   # 
-  # @FIXME: Comme le paramètres 'roadmaps' n'était pas prévu au départ, la
-  # méthode comprend aussi une relève des roadmaps dans la liste des roadmaps
-  # Cette procédure est à supprimer lorsqu'un tour sera fait
-  # @FIXME: Mettre ça ensuite :
-  # def roadmaps;     @roadmaps     ||= data['roadmaps']    end
-  def roadmaps
-    if @roadmaps.nil? || @roadmaps.empty? # => il faut relever la liste
-      @roadmaps = Dir["#{FOLDER_ROADMAP}/**/data.js"].collect do |datajs|
-        drm = JSON.parse(File.read(datajs))
-        next nil if drm['mail'] != mail
-        "#{drm['nom']}-#{drm['mdp']}"
-      end.reject{|e| e.nil?}
-      save
-    end
-    @roadmaps
-  end
+  def roadmaps;     @roadmaps     ||= data['roadmaps']    end
   
   # Ajoute une roadmap à l'utilisateur (et sauve ses nouvelles données)
-  def add_roadmap nom, mdp
+  def add_roadmap nom, umail
     # @FIXME: Ici, il faudra faire un check du nombre de roadmaps pour le
     # limiter
-    @roadmaps << "#{nom}-#{mdp}"
+    @roadmaps << "#{nom}-#{umail}"
     save
   end
   # => Return les data minimales (pour JS)

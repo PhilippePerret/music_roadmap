@@ -1,14 +1,6 @@
 /*
   Feuille de style pour les paramètres (config générale, etc.)
 */
-div#config_generale {
-  float           :left;
-  padding         :0   ;
-  width           :15em; /* cf. marge-left du div des exercices*/
-  margin-top      :11em;
-  opacity         :0.81;
-}
-
 /* Le DIV contenant la définition d'un paramètre */
 div.param {
   background-color  : white;

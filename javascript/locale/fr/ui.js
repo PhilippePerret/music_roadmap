@@ -25,7 +25,7 @@ window.LOCALE_UI = {
   User:{
     logout                    : "Se déconnecter",
     Signin:{
-      main_button             : "S'identifier ou s'inscrire",
+      main_button             : "S'identifier / S'inscrire",
       TITRE                   : "Identification",
       MAIL                    : "Votre mail",
       PASSWORD                : "Votre code secret",

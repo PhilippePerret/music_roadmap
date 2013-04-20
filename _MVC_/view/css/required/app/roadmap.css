@@ -21,3 +21,8 @@ div#outils_roadmap {
   background-color        : #cdd7d7 ; /* s'associe bien avec vert dur */
   padding                 : 1em ;
 }
+
+/* Label dans les specs */
+td#td_label_roadmap {
+  vertical-align          :middle;
+}
