@@ -9,7 +9,7 @@ window.EXERCICES = {length: 0} ; // Instances Exercice déjà créées
 
 // Liste des propriétés enregistrées dans les data de l'exercice
 window.EXERCICE_PROPERTIES = [
-  'id', 'abs_id', 'titre', 'recueil', 'auteur', 'suite', 'image', 
+  'id', 'abs_id', 'titre', 'recueil', 'auteur', 'suite', 
   'tempo', 'tempo_min', 'tempo_max', 'up_tempo',
   'types', 'obligatory', 'with_next',
   'note', 'started_at', 'ended_at', 'created_at', 'updated_at'
@@ -28,14 +28,16 @@ window.exercice = function( foo ){
 function Exercice(data){
   this.id         = null ;
   this.class      = "Exercice" ;
-  this.abs_id     = null ;  // ID absolu quand l'exercice est un exercice défini dans les data
+  this.abs_id     = null ;  // ID absolu si l'exercice vient de la Database Exercices
   this.titre      = null ;  // titre de l'exercice
   this.recueil    = null ;  // Le recueil contenant l'exercice
   this.auteur     = null ;  // Auteur de l'exercice (p.e. "Hanon")
   this.types      = null ;  // Types de l'exercice (sur deux lettres/chiffres séparés par ',')
   this.tempo      = 120  ;  // Tempo actuel
   this.suite      = null ;  // Le type de suite (harmonic, normale, etc.)
-  this.image      = null ;  // L'image éventuelle (partition)
+  // this.image      = null ;  // L'image éventuelle (partition) OBSOLÈTE (cf. extrait et vignette)
+  this.extrait    = null ;  // Null ou path relatif à l'image de l'extrait
+  this.vignette   = null ;  // Null ou path relatif à la vignette
   this.tempo_min  = null ;  // Tempo minimum requis
   this.tempo_max  = null ;  // Tempo maximum requis
   this.up_tempo   = null ;  // Mis à true si on doit augmenter le tempo la prochaine fois
@@ -162,7 +164,7 @@ Exercice.prototype.code_html = function(){
   var li = "" ;
   li += '<li id="li_ex-'+this.id+'" class="ex">' ;
   li += this.code_btns_edition() ;
-  li += this.code_image() ;
+  li += this.code_vignette() ;
   li += this.code_div_titre() ;
   li += this.code_tempo() ;
   li += this.code_suite() ;
@@ -190,14 +192,19 @@ Exercice.prototype.code_btns_edition = function(){
   div += '</div>' ;
   return div ;
 }
-Exercice.prototype.code_image = function(){
-  if ( this.image == null ) return "" ;
-  
-  return '<img class="ex_image" id="image_ex-'+this.id+'" src="'+
-          this.path_to_image() + '" />' ;
+// Return le code d'affichage de la vignette (if any)
+Exercice.prototype.code_vignette = function(){
+  if ( this.vignette == null ) return "" ;
+  return '<img class="ex_image" id="image_ex-'+this.id+'"'+
+          ' src="' + this.vignette + '"' + 
+          this.onclick_pour_extrait() +
+          ' />' ;
 }
-Exercice.prototype.path_to_image = function(){
-  return "./user/roadmap/" + Roadmap.affixe() +"/exercice/" + this.image ;
+// Return le code HTML onclick="..." pour afficher l'extrait (if any)
+Exercice.prototype.onclick_pour_extrait = function(){
+  if (this.extrait == null ) return "" ;
+  return ' onclick="return $.proxy(Exercices.show_partition,Exercices,\''+this.extrait+'\')()"';
+  
 }
 Exercice.prototype.code_div_titre = function(){
   var recueil = this.recueil ? '<span class="ex_recueil">'+this.recueil+'</span>': "" ;

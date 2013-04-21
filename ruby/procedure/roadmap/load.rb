@@ -1,6 +1,7 @@
 # Procédure de chargement de la roadmap (AJAX + normale)
 
-load_model 'roadmap'
+require_model 'roadmap'
+require_model 'exercice'
 
 # Procédure Ajax de chargement de la roadmap
 def ajax_roadmap_load
@@ -76,31 +77,23 @@ def roadmap_load rm, umail = nil, only = nil
   
   if ( only.nil? || only.has_key?(:exercices))
     data = data.merge :exercices => []
-    data = data.merge :data_exercices => {}
     if File.exists?( rm.folder_exercices )
-      if !data[:data_exercices].has_key?('ordre') || data[:data_exercices]['ordre'].empty?
-        # Chargement sans ordre (normalement, ne devrait plus arriver)
-        data[:data_exercices]['ordre'] = []
-        Dir["#{rm.folder_exercices}/*.js"].each do |ex|
-          data[:exercices] << JSON.parse(File.read(ex))
-        end
-      else
-        # Chargement avec ordre
-        data[:data_exercices]['ordre'].each do |id|
-          data[:exercices] << JSON.parse(File.read(File.join(rm.folder_exercices,"#{id}.js")))
-        end
+      data[:exercices] = data[:data_exercices]['ordre'].collect do |id|
+        JSON.parse(File.read(File.join(rm.folder_exercices,"#{id}.js")))
       end
       # --- On regarde s'il y a des images ---
-      # @note: la vérification est donc fait à chaque chargement de la feuille
-      # de style.
-      data[:exercices].collect do |dex|
-        id = dex['id']
-        path_png = rm.path_image_png( id )
-        path_jpg = rm.path_image_jpg( id )
-        if File.exists? path_png      then  dex['image'] = "#{id}.png"
-        elsif File.exists? path_jpg   then  dex['image'] = "#{id}.jpg"
-        else                                dex['image'] = nil
-        end
+      # On doit remonter deux paths à JS :
+      # - Path de l'image vignette
+      # - Path de l'image extrait
+      # 
+      # Si l'exercice est un exercice tiré de la Database Exercices, c'est son path qu'on
+      # doit retourner. Mais on prévoit quand même le fait que des images personnalisées
+      # a pu être créées, donc on vérifie toujours dans le dossier de la roadmap en premier.
+      # 
+      data[:exercices].collect! do |dex|
+        iex = Exercice.new dex['id'], {:roadmap => rm}
+        dex['vignette'] = iex.relpath_vignette
+        dex['extrait']  = iex.relpath_extrait
         dex
       end
     else

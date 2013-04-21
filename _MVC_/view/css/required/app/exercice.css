@@ -109,13 +109,11 @@ li.ex div.ex_note {
   font-size             :0.9em;
   background-color      :#D1EADE;
 }
+/* Vignette de l'exercice */
 li.ex img.ex_image {
-  position              :absolute;
-  margin-left           :25.5em  ;
-  max-height            :5.3em   ;
-  max-width             :15.4em;
-  float                 :right   ;
-  margin-right          :1.5em   ;
+  max-height            :90px;
+  float                 :right;
+  margin-right          :3.0em;
 }
 
 li.ex div.btns_edition {

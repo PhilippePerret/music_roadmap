@@ -208,6 +208,10 @@ class Roadmap
   end
   
   # -------------------------------------------------------------------
+  #   Propre aux exercices
+  # -------------------------------------------------------------------
+  
+  # -------------------------------------------------------------------
   # Pour les rapports et tout ce qui concerne les données de durée de
   # jeu
   # -------------------------------------------------------------------
@@ -266,13 +270,14 @@ class Roadmap
   def path_exercice id
     File.join( folder_exercices, "#{id}.js")
   end
-  # Path de l'image PNG de l'exercice
-  def path_image_png id
-    File.join( folder_exercices, "#{id}.png")
-  end
-  def path_image_jpg id
-    File.join( folder_exercices, "#{id}.jpg")
-  end
+  # # Path de l'image PNG de l'exercice (OBSOLÈTE)
+  # def path_image_png id
+  #   File.join( folder_exercices, "#{id}.png")
+  # end
+  # #  (OBSOLÈTE)
+  # def path_image_jpg id
+  #   File.join( folder_exercices, "#{id}.jpg")
+  # end
   # --- JOURNAL DE BORD ---
   # Path du journal de bord (historique)
   def path_log

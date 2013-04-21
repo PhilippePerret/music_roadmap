@@ -14,6 +14,10 @@ class Exercice
   # 
   attr_reader :id
   
+  # Roadmap de l'exercice
+  # 
+  attr_reader :roadmap
+  
   # Nombre de fois où l'exercice a été joué (un temps suffisant)
   # 
   attr_reader :fois
@@ -58,11 +62,7 @@ class Exercice
   # NIL si l'exercice ne s'y trouve pas encore
   # 
   attr_accessor :offset_in_duree_jeu
-  
-  # Roadmap de l'exercice
-  # 
-  @roadmap = nil
-  
+    
   # Data dans le fichier .js de l'exercice
   # 
   # @note: Utiliser la méthode <exercice>.data pour les récupérer
@@ -184,5 +184,80 @@ class Exercice
       :date   => this[0..5],
       :duree  => this[6..-1].to_i
     }
+  end
+  
+  # Return l'identifiant absolu ou NIL s'il n'existe pas
+  def abs_id
+    @abs_id ||= data['abs_id']
+  end
+  
+  # Return TRUE si l'exercice provient de la Database Exerice (DBE)
+  # 
+  def dbe?
+    abs_id != nil
+  end
+  
+  # Return le path relatif à la vignette (pour affichage dans le document)
+  # 
+  # Si la vignette existe dans la roadmap, on la prend
+  # Sinon, si l'exercice provient de la Database, on prend sa vignette
+  # Sinon, on renvoie NIL
+  def relpath_vignette
+    @relpath_vignette ||= begin
+      rpath = real_path_vignette
+      rpath.nil? ? nil : rpath.sub(/#{APP_FOLDER}\//,'')
+    end
+  end
+  # Return le path relatif à l'extrait (pour affichage dans le document)
+  # Même note que `relpath_vignette' ci-dessus
+  def relpath_extrait
+    @relpath_extrait ||= begin
+      rpath = real_path_extrait
+      rpath.nil? ? nil : rpath.sub(/#{APP_FOLDER}\//,'')
+    end
+  end
+  
+  # Return le vrai path à la vignette, soit propre, soit tirée de la BD Exercices
+  def real_path_vignette
+    @real_path_vignette ||= begin
+      File.exists?( path_vignette ) ? path_vignette : path_vignette_bde
+    end
+  end
+  # Return le vrai path à l'extrait, soit propre, soit tirée de la BD Exercice, soit NIL
+  def real_path_extrait
+    @real_path_extrait ||= begin
+      File.exists?(path_extrait) ? path_extrait : path_extrait_bde
+    end
+  end
+  
+  # Return le path à la vignette propre (dans le dossier exercice)
+  def path_vignette
+    @path_vignette ||= File.join( roadmap.folder_exercices, "#{id}-vignette.jpg")
+  end
+  # Return le path de la vignette de l'exercice dans la base de données ou NIL si l'exercice
+  # ne vient pas de la database
+  def path_vignette_bde
+    @path_vignette_bde ||= begin
+      if dbe?
+        File.join(APP_FOLDER, 'data', 'db_exercices', abs_id.split('-')) + '-vignette.jpg'
+      else
+        nil
+      end
+    end
+  end
+  # Return le Path de l'extrait image de l'exercice
+  def path_extrait
+    @path_extrait ||= File.join(roadmap.folder_exercices, "#{id}-extrait.jpg")
+  end
+  # Return le path à l'extrait dans la Database Exercice ou NIL si l'exercice ne vient pas
+  # de la database
+  def path_extrait_bde
+    @path_extrait_bde ||= begin
+      if dbe?
+        File.join(APP_FOLDER, 'data', 'db_exercices', abs_id.split('-')) + '-extrait.jpg'
+      else 
+        nil
+      end
+    end
   end
 end

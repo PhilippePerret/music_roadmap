@@ -26,6 +26,7 @@ $.extend(window.Exercices,{
     var o = $('div#partition');
     o.show();
     o.animate({opacity:1},500);
+    return false; // pour le a-lien
   },
   // Ferme la partition ouverte
   hide_partition:function(){
