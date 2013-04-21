@@ -1,3 +1,14 @@
+/* Titre du div principal */
+div#database_exercices div.titre {
+  margin-bottom   :1em;
+  font-weight     :bold;
+  color           :#555;
+}
+/* Div principaux des boutons */
+div#database_exercices div#dbe_boutons {
+  margin-top      :2em;
+  text-align      :right;
+}
 
 /* Un div complet pour un auteur */
 div.dbe_div_auteur {
@@ -14,6 +25,24 @@ div.dbe_div_auteur a.dbe_auteur {
 }
 
 div.dbe_div_auteur div.dbe_div_recueils {
-  margin-left     :2em;
+  margin-left     :1em;
   padding         :8px;
+}
+
+/* Pour un titre de recueil lorsqu'il est en lien et en div simple */
+div.dbe_div_auteur div.dbe_div_recueils a.recueil_title {
+  color           :black !important;
+  text-decoration :none;
+  font-style      :italic;
+}
+
+/* Div d'un exercice dans le listing de la database */
+div.dbe_div_auteur div.dbe_div_recueils div.bde_div_exercices div.bde_div_ex {
+  margin-left     :1em;
+  border-bottom   :1px solid #ddd;
+}
+/* Tous les liens d'un div exercice dans le listing de la database */
+div.dbe_div_auteur div.dbe_div_recueils div.bde_div_exercices div.bde_div_ex a {
+  margin-left     :12px;
+  font-size       :0.85em;
 }

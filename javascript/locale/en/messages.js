@@ -1,5 +1,7 @@
 window.MESSAGE = {
   lang: 'en',
+  // Général
+  thank_to_wait: "Wait a moment, please…",
   // USER
   User:{
     created     : "You're signup! Enjoy Music Roadmap!",

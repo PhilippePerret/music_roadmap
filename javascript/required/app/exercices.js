@@ -1,5 +1,4 @@
 if('undefined' == typeof window.Exercices){ 
-  console.log("Exercices non défini (dans le normal)");
   window.Exercices = {};}
 $.extend(window.Exercices,{
   ERROR: {
@@ -18,6 +17,21 @@ $.extend(window.Exercices,{
   reset_liste: function(){
     window.EXERCICES = {length:0} ;
     $('ul#exercices').html("") ;
+  },
+  
+  // Affiche la partition de source +src+
+  showing_partition:false,
+  show_partition:function(src, options){
+    $('div#partition img#img_partition').attr('src', src);
+    var o = $('div#partition');
+    o.show();
+    o.animate({opacity:1},500);
+  },
+  // Ferme la partition ouverte
+  hide_partition:function(){
+    var o = $('div#partition');
+    o.animate({opacity:0},500,function(){o.hide()});
+    return false;
   },
   
   // Demande de création d'un exercice
@@ -437,14 +451,23 @@ $.extend(window.Exercices,{
     },
     // Prépare le formulaire (à l'ouverture de l'application)
     prepared:false,   // Mis à true quand la boite est prête
-    preparing:false,
+    preparing:false,  // Mis à true pendant la préparation de la boite
     prepare:function(){
       this.preparing = true ;
       // Tempos
       this.menus_tempo_populate();
       // Types
       this.types_populate();
-      $('a#btn_toggle_types_exercices').html(LOCALE_UI.Verb.modify);
+      
+      // Labels, boutons et autres textes
+      var h = {
+        "label#label_exercice_obligatory" :LOCALE_UI.Label.obligatory,
+        "label#label_exercice_with_next"  :LOCALE_UI.Label.link_to_next,
+        "a#btn_toggle_types_exercices"    :LOCALE_UI.Verb.modify,
+        "a#seach_ex_in_database"          :LOCALE_UI.DBExercice.search_in_db
+      }
+      for(jid in h){ $('table#exercice_form ' + jid).html(h[jid])}
+
       this.prepared = true ;
       this.preparing = false ;
       $.proxy(UI.set_ready, UI, 'exedition')();
@@ -452,13 +475,17 @@ $.extend(window.Exercices,{
     // Ouvre le formulaire
     open: function(){ // @testok
       if ( User.is_not_owner() ) return false;
-      $('table#exercice_form').toggle('slide',{},750);
+      var o = $('table#exercice_form');
+      o.show();
+      o.animate({opacity:1},400);
       document.location.hash = '#bande_logo' ;
       return false ;
     },
     // Ferme le formulaire
     close: function(){ // @testok
-      $('table#exercice_form').toggle('slide',{},750);
+      var o = $('table#exercice_form');
+      o.animate({opacity:0},400,function(){o.hide()});
+      return false;
     },
     // Nettoie le formulaire
     clear_form:function(){

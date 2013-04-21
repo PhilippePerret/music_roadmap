@@ -10,17 +10,95 @@ window.DBE = {
   opening:true,
   open:function(){
     this.opening = true;
-    $('div#database_exercices').toggle('slide',{},750);
+    var o = $('div#database_exercices');
+    o.show();
+    o.animate({opacity:1},400)
     if ( this.ready == false ) this.prepare();
     return this.opening = false;
+  },
+  close:function(){
+    var o = $('div#database_exercices');
+    o.animate({opacity:0},400,function(){o.hide()})
+  },
+  
+  // Affiche un extrait de l'exercice identifié par +idtotal+ ("<auteur>-<recueil>-<ex>")
+  show_extrait:function( idtotal ){
+    var src = "data/db_exercices/" + idtotal.split('-').join('/') + '.jpg';
+    Exercices.show_partition(src);
+  },
+  
+  // Chargement des exercices d'un recueil
+  // 
+  // @param   idcomplet     Id "complet" composé de "<auteur_id>-<recueil_id>"
+  // 
+  // @note: cette méthode ne peut être appelée que si les exercices ne sont pas chargés.
+  // Car une fois chargés, le lien posé sur le recueil est supprimé et remplacé par un
+  // titre qui ne fait qu'ouvrir et fermer la liste des exercices.
+  // @note: affiche un message pour patienter en attendant la fin du chargement.
+  loading: false,
+  load_recueil_exercices:function(idcomplet){
+    this.loading = true;
+    [auteur_id, recueil_id] = idcomplet.split('-');
+    Ajax.query({
+      data:{
+        proc        : 'db_exercices/recueil/load_exercices',
+        auteur_id   : auteur_id,
+        recueil_id  : recueil_id,
+        lang        : LANG
+      },
+      success: $.proxy(this.load_recueil_exercices_suite, this)
+    });
+    $('div#div_exercices-'+idcomplet).html('<span class="blue">'+MESSAGE.thank_to_wait+'</span>');
+    return false; // pour le a-lien
+  },
+  load_recueil_exercices_suite:function(rajax){
+    if (false == traite_rajax(rajax)){
+      // @TODO: Il faut mettre les exercices dans DB_EXERCICES
+      // @TODO: ici, il faut fabriquer les div des exercices remontés
+      // @TODO: Il faut remplacer le lien sur le titre du recueil par un titre sans lien
+      this.display_exercices( rajax.exercices, rajax.auteur_id + "-" + rajax.recueil_id);
+      // console.dir(rajax.exercices);
+    }
+    this.loading = false;
+  },
+  
+  // Affiche les exercices (remontés par ajax)
+  // 
+  // @param ary_exs     Array des exercices, avec des clés unilettre
+  // @param idcomplet   Identifiant complet formé de "<id auteur>-<id recueil>"
+  // 
+  // @products    Ajoute des divs à la liste des exercices du recueil avec des cases à
+  //              cocher pour les choisir.
+  display_exercices:function(ary_exs, idcomplet){
+    $('div#div_exercices-'+idcomplet).html("");
+    [auteur_id, recueil_id] = idcomplet.split('-');
+    for(var i in ary_exs){
+      var hex = ary_exs[i];
+      hex.a = auteur_id; hex.r = recueil_id;
+      $('div#div_exercices-'+idcomplet).append(new DBExercice(hex).bd_div(idcomplet));
+    }
+  },
+  
+  // return le DIV de l'exercice défini par le hash +hex+ à insérer dans les lites des
+  // exercices à choisir dans la database
+  div_exercice_in_listing:function(hex, idcomplet){
+    var idtotal = idcomplet + "-" + hex.i ; // => "auteur-recueil-idex"
+    return '<div id="div_exercice-'+idtotal+'">' +
+            hex.t +
+            '</div>' ;
   },
   
   // Prépare la fenêtre avec les données de base (auteurs et recueils)
   prepare:function(){
-    var o = $('div#database_exercices');
+    var o = $('div#dbe_listing');
     for(auth_id in DB_EXERCICES){
       o.append(this.prepare_div_auteur(auth_id,DB_EXERCICES[auth_id]));
     }
+    // Remplacer le noms des éléments DOM
+    $('div#database_exercices div#dbe_titre').html(LOCALE_UI.DBExercice.titre)
+    $('div#database_exercices a#btn_dbe_add_selected').html(LOCALE_UI.DBExercice.add_selected);
+    $('div#database_exercices a.cancel').html(LOCALE_UI.Verb.Cancel);
+    $('div#database_exercices a.close').html(LOCALE_UI.Verb.Close);
     this.ready = true;
   },
   
@@ -50,11 +128,25 @@ window.DBE = {
   },
   // Prépare le div d'un recueil d'un auteur
   prepare_div_recueil:function(autid, recid, drec){
-    var idcomp = recid + "-" + autid ;
-    var div = '<div id="div_receuil-'+idcomp+'" class="dbe_div_recueil">' ;
-    div += '<div class="titre_recueil">' + drec['t'] + '</div>';
-    div += '<div id="div_exercices-'+idcomp+'"></div>';
-    div += '</div>';
-    return div;
+    var idcomplet = autid + "-" + recid ;
+    return  '<div id="div_receuil-'+idcomplet+'" class="dbe_div_recueil">' +
+              '<div class="titre_recueil">' + 
+                this.titre_recueil_with_lien(idcomplet,drec) + 
+              '</div>' +
+              '<div id="div_exercices-'+idcomplet+'" class="bde_div_exercices"></div>' +
+            '</div>';
+  },
+  // Retourne le lien pour le titre d'un recueil, lien permettant de charger les exercices
+  // du recueil
+  // 
+  // @param   idcomplet     Composé de "<recueil_id>-<auteur_id>"
+  // @param   drec          Hash des données du recueil dans DB_EXERCICES
+  // 
+  // @return  Un lien d'identifiant "btn_load_exercices_of-<idcomplet>" qui appelle la 
+  //          méthode load_recueil_exercices avec l'identifiant complet
+  titre_recueil_with_lien:function(idcomplet,drec){
+    return '<a href="#" class="recueil_title" id="btn_load_exercices_of-'+idcomplet+'" ' + 
+            'onclick="$.proxy(DBE.load_recueil_exercices, DBE, \''+idcomplet+'\')()">' +
+            drec['t'] + '</a>' ;
   }
 }

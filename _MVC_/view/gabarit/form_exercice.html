@@ -1,10 +1,19 @@
 <!-- 
   Formulaire de création d'un exercice
   
-  + Table de recherche d'un exercice
+  + Table de recherche d'un exercice dans la database
+  
+  + Le div pour afficher la partition ou un extrait
   
 -->
-<table id="exercice_form" class="form" style="display:none">
+<!-- BOITE EXTRAIT -->
+<div id="partition" style="opacity:0;display:none;">
+  <a  href="#" class="close" onclick="return $.proxy(Exercices.hide_partition,Exercices)()">x</a>
+  <img id="img_partition" src="" />
+</div>
+
+<!-- EXERCICE FORM -->
+<table id="exercice_form" class="form" style="opacity:0;display:none;">
   <colgroup>
     <col width="80">
     <col width="auto">
@@ -17,7 +26,7 @@
             class="btn"
             id="seach_ex_in_database"
             onclick="return $.proxy(DBE.open, DBE)()"
-            >Chercher un exercice dans la base de données</a>
+            ></a>
       </div>
     </td>
   </tr>
@@ -54,12 +63,12 @@
     <td>
       <span id="span_obligatory">
         <input type="checkbox" id="exercice_obligatory">
-        <label for="exercice_obligatory">Obligatoire</label>
+        <label id="label_exercice_obligatory" for="exercice_obligatory"></label>
         <aide value="exercice/prop/obligatory"></aide>
       </span>
       <span id="span_with_next">
         <input type="checkbox" id="exercice_with_next">
-        <label for="exercice_with_next">Lié au suivant</label>
+        <label id="label_exercice_with_next" for="exercice_with_next"></label>
         <aide value="exercice/prop/with_next"></aide>
       </span>
     </td>
@@ -93,6 +102,7 @@
       <select id="exercice_suite">
         <option value="normale">Normale (définie par l'exercice)</option>
         <option value="harmonic">Harmonique (C->Am -> F->Dm etc. ou inverse)</option>
+        <option value="whitekey">Touches blanches (“à la Hanon”)</option>
         <option value="none">Aucune</option>
       </select>
     </td>
@@ -100,8 +110,8 @@
   <tr class="buttons">
     <td></td>
     <td>
-      <a onclick="return $.proxy(Exercices.Edition.close, Exercices.Edition)()" class="btn cancel">Renoncer</a>
-      <a id="btn_exercice_save" onclick="$.proxy(Exercices.save, Exercices)()" class="btn">Créer l'exercice</a>
+      <a onclick="return $.proxy(Exercices.Edition.close, Exercices.Edition)()" class="btn cancel"></a>
+      <a id="btn_exercice_save" onclick="$.proxy(Exercices.save, Exercices)()" class="btn"></a>
     </td>
   </tr>
   <tr>
@@ -126,5 +136,11 @@
   </tr>
 </table>
 
-<div id="database_exercices" style="display:none;">
+<div id="database_exercices" style="opacity:0;display:none;">
+  <div id="dbe_titre" class="titre"></div>
+  <div id="dbe_listing"></div>
+  <div id="dbe_boutons">
+    <a href="#" onclick="return $.proxy(DBE.close,DBE)()" class="close btn"></a>
+    <a href="#" id="btn_dbe_add_selected" onclick="return $.proxy(DBE.add_selected,DBE)()" class="btn"></a>
+  </div>
 </div>

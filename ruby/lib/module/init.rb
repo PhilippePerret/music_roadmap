@@ -9,4 +9,5 @@ Params.set_params
 # exister. Si ce n'est pas le cas, on appelle la procédure d'update
 unless File.exists? File.join(APP_FOLDER, 'javascript', 'locale', 'fr', 'db_exercices.js')
   require File.join(FOLDER_LIB_RUBY, 'module', 'data_base_exercices.rb')
+  DataBaseExercices::update
 end

@@ -12,9 +12,8 @@
       r: => { // "r" for "recueils" ("collections")
           "<id recueil>" => {
             t: "<recueil title",
-            e: => [ // "e" for "exercices" (list of exercices)
-              {i:"<id>", t:"<ex title>", y:[types list], g:<true if image>}
-              ]
+            e: => []  // will be filled later, if recueil title is clicked
+                      // @see exercices_of
           }
         }
       }
@@ -88,7 +87,6 @@ class AuteurExercice
   def initialize path
     @path = path
     raise "Mauvais dossier auteur (pas de fichier _data.yml)" unless valid?
-    self.class.add_auteur self
   end
   
   def valid?
@@ -100,13 +98,60 @@ class AuteurExercice
   end
   def id; data['id'] end
   def name; data['author'] end
+
+  # Return exercices of recueil +recueil_id+
+  # 
+  # @param  recueil_id      Name of collection ("recueil") folder (or NIL for all recueils)
+  # @param  lang            Lang of the Hash of data returned (DEFAULT: :en)
+  # 
+  # @return A Hash with data.
+  #   If recueil_id is NIL, keys are recueil names and value is the Array data of exercices
+  #   Else, only the Array of exercices, sorted by id, with :
+  #   [
+  #     {i:<id exercice>, t:<exercice title>, y:[<exercice types list>],
+  #       g:<true = image exists>, wm:<working time min>, wx:<working time max,
+  #       }
+  #   ]
+  def exercices_of_recueil recueil_id = nil, lang = :en
+    @exercices_of_recueil = {}
+    @lang = lang
+    if recueil_id.nil?
+      Dir["#{path}/*"].reject{ |path_recueil| File.directory?(path_recueil) }
+    else
+      [File.join(path, recueil_id)]
+    end.each do |path|
+      recueil = RecueilExercice.new self, path # Raise an exception if recueil does not exist
+      recueil.traite_exercices
+    end
+    # Sort exercices by id
+    @retour = {}
+    @exercices_of_recueil.each do |recueil_id, exs|
+      @retour = @retour.merge recueil_id => exs.sort_by{|e| e[:i].to_i}
+    end
+    return @retour if recueil_id.nil?
+    @retour[recueil_id]
+  end
+  # Add a exercice to the Array of exercice list returned by ajax
+  # @see exercices_of_recueil above
+  # 
+  # @param iex  Instance of AuteurExercice::RecueilExercice::Exercice
+  # 
+  def exercice_to_data iex
+    unless @exercices_of_recueil.has_key?(iex.recueil.id)
+      @exercices_of_recueil = @exercices_of_recueil.merge iex.recueil.id => []
+    end
+    @exercices_of_recueil[iex.recueil.id] << iex.to_js( @lang )
+  end
   
+  # Add collections to author
+  # 
+  # @note: We don't treat exercices. The JS DB_EXERCICES table does not contain exercices
+  # at starting point.
   def traite_recueils
     Dir["#{path}/*"].each do |path_recueil|
       next unless File.directory?(path_recueil)
       recueil = RecueilExercice.new self, path_recueil
       self.class.add_recueil recueil
-      recueil.traite_exercices
     end
   end
   
@@ -127,6 +172,11 @@ class AuteurExercice
     # 
     attr_reader :auteur
     
+    # Initialize a new RecueilExercice by an +auteur+
+    # 
+    # @param  auteur    Instance AuteurExercice
+    # @param  path      Full path to the collection ("recueil") folder
+    # 
     def initialize auteur, path
       @auteur = auteur
       @path   = path
@@ -137,10 +187,16 @@ class AuteurExercice
     def valid?
       File.exists? path_data
     end
+    alias :exists? :valid?
     
-    def id; data['id'] end
-    def titre_fr; data['recueil_fr'] end
-    def titre_en; data['recueil_en'] end
+    def id;         @id   ||= data['id']        end
+    def opus;       @opus ||= data['opus']      end
+    def opus_str
+      return "" if opus.nil?
+      " op. #{opus}"
+    end
+    def titre_fr; data['recueil_fr'] + opus_str end
+    def titre_en; data['recueil_en'] + opus_str end
     
     # Treat data of the recueil
     def data
@@ -148,11 +204,14 @@ class AuteurExercice
     end
     
     # Treat exercices of the recueil
-    def traite_exercices
-      exercice_files = Dir["#{path}/*.yml"].reject{ |e| File.basename(e)[0] == "_"}
+    # 
+    # @param    filter    Unused. Later, let you to filter the exercices returned
+    # 
+    def traite_exercices filter = nil
+      exercice_files = Dir["#{path}/*.yml"].reject{ |e| File.basename(e) == "_data.yml"}
       exercice_files.each do |path_ex|
         iex = Exercice.new self, path_ex
-        auteur.class.add_exercice iex
+        auteur.exercice_to_data iex
       end
     end
     
@@ -179,14 +238,61 @@ class AuteurExercice
         @path    = path
       end
       
+      # Return a Hash prepared for JS DB_EXERCICES
+      def to_js lang = :en
+        {
+          :i => id, :t => titre(lang), :y => types,
+          :wm => working_time_min, :wx => working_time_max, :g => image?
+        }
+      end
+      
       def id
         @id ||= File.basename(path, File.extname(path) )
       end
-      def titre; data['titre'] end
-      def types; data['types'] end
-      def suite; data['suite'] end
-      def tempo_min; data['tempo_min'] end
-      def tempo_max; data['tempo_max'] end
+      def titre lang = :en
+        lang == :en ? data['titre_en'] : data['titre_fr'] 
+      end
+      def types;        data['types']       end
+      def suite;        data['suite']       end
+      def tempo_min;    data['tempo_min']   end
+      def tempo_max;    data['tempo_max']   end
+      def nb_mesures;   data['nb_mesures']  end
+      # @note: 0=carrée, 1=ronde, 1.5= ronde pointée, 2=blanche, 3=blanche pointée, 4=noire,
+      # 6=noire pointée, etc.
+      def duree_temps;  data['duree_temps'] end
+      def nb_temps;     data['nb_temps']    end
+      
+      # Return working time max according to number of measures, metrique and tempo min
+      # So the LONGEST working time
+      # @return Number of seconds
+      def working_time_max
+        (nb_temps * nb_mesures * duree_temps_tempo_min).to_i
+      end
+      # Return working time max according to number of measures, metrique and tempo min
+      # So the SHORTEST working time
+      # @return Number of seconds
+      def working_time_min
+        if nb_temps.nil? || nb_mesures.nil? || duree_temps_tempo_max.nil?
+          raise "nb_temps: #{nb_temps.inspect}:#{nb_temps.class}" +
+                "nb_mesures: #{nb_mesures.inspect}:#{nb_mesures.class}" +
+                "duree_temps_tempo_max: #{duree_temps_tempo_max.inspect}:#{duree_temps_tempo_max.class}"
+        end
+        (nb_temps * nb_mesures * duree_temps_tempo_max).to_i
+      end
+      # Return time duration of a beat according to the tempo min
+      def duree_temps_tempo_min
+        if tempo_min.nil?
+          raise "tempo_min est nil in #{self.inspect}:#{self.class}"
+        end
+        60.0 / tempo_min
+      end
+      # Return time duration of a beat at the tempo max
+      def duree_temps_tempo_max
+        if tempo_max.nil?
+          raise "tempo_max est nil in exercice ##{id}/#{recueil.id}/#{recueil.auteur.name} (#{self.inspect}:#{self.class})"
+        end
+        60.0 / tempo_max
+      end
       
       def image?
         File.exists? path_image
@@ -210,11 +316,32 @@ class AuteurExercice
 end
 
 class DataBaseExercices
+  
+  # Return data of exercices by +auteur_id+. If +recueil_id is not nil, only the exercices
+  # of this collection.
+  # 
+  # @param    auteur_id       Name of the author folder
+  # @param    recueil_id      Name of the collection folder
+  # @param    lang            Lang of the required Hash of data (pe :en, :fr)
+  # 
+  # @return   A Hash with data of exercices, for display.
+  # 
+  # @see JS database_exercices.js file
+  def self.exercices_by auteur_id, recueil_id = nil, lang = nil
+    path    = File.join(folder_data, auteur_id)
+    raise "Unknow author #{auteur_id}…" unless File.exists? path
+    auteur  = AuteurExercice.new path
+    auteur.exercices_of_recueil recueil_id, lang
+  end
+  
+  # Update JS DB_EXERCICES (with initial data, ie without exercices — only authors and collections)
   def self.update
     AuteurExercice::data_fr = {}
     AuteurExercice::data_en = {}
     Dir["#{folder_data}/*"].each do |path|
+      next unless File.directory?(path)
       auteur = AuteurExercice.new path
+      AuteurExercice::add_auteur auteur
       auteur.traite_recueils
     end
     File.open(path_fr, 'w'){|f| f.write "DB_EXERCICES = #{AuteurExercice::data_fr.to_json}"}
@@ -231,11 +358,6 @@ class DataBaseExercices
   end
   # Return full path to exercice folder (data base folder for exercices)
   def self.folder_data
-    @folder_data ||= File.join(APP_FOLDER, 'data', 'exercice')
+    @folder_data ||= File.join(APP_FOLDER, 'data', 'db_exercices')
   end
 end
-
-DataBaseExercices::update
-datafr = AuteurExercice::data_fr
-puts "data fr: #{datafr.inspect}"
-puts "Poids donnée française : #{datafr.to_json.length} octets"

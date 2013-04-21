@@ -1,5 +1,7 @@
 window.MESSAGE = {
   lang: 'fr',
+  // Général
+  thank_to_wait: "Merci de patienter un instant…",
   // USER
   User:{
     created     : "Vous êtes maintenant inscrit à Feuille de Route Musicale !",

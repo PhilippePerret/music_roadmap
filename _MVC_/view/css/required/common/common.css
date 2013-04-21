@@ -116,6 +116,7 @@ a, a:hover, a:link, a:visited {
 /*Couleurs*/
 .red, .rouge { color: red ; }
 .green, .vert { color: #0A0 ;}
+.blue, .bleu {color:#00A;}
 
 pre.debug {
   margin-left:    1em;

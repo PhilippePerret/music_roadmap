@@ -1,3 +1,23 @@
+/* Div pour afficher un extrait de partition */
+div#partition {
+  position          :fixed;
+  top               :20%;
+  left              :20%;
+  background-color  :white;
+  width             :auto;
+  height            :auto;
+  z-index           :1100;
+  padding           :3.8em 3em 2em;
+  border            :7px solid #454545;
+}
+div#partition a.close {
+  position          :absolute;
+  top               :4px;
+  right             :8px;
+  color             :black;
+  font-size         :1.5em;
+}
+
 /*table du formulaire*/
 table#exercice_form, div#database_exercices {
   position             :absolute;
@@ -17,7 +37,7 @@ table#exercice_form {
   @note: mise ici parce qu'elle doit ressembler au formulaire d'exercice
 */
 div#database_exercices {
-  min-height    :300px;
+  min-height    :100%;
   z-index       :1001;
   width         :470px !important;
 }

@@ -14,13 +14,18 @@ window.LOCALE_UI = {
     Update      : "Actualiser"
   },
   Label:{
-    TITLE         : "FEUILLE DE ROUTE MUSICALE",
-    title         : "Feuille de Route Musicale",
-    subtitle      : "Gestion au quotidien de ses exercices de musique",
-    roadmap       : "Feuille de route",
-    ROADMAP       : "FEUILLE DE ROUTE",
+    details       : "détails",
+    extrait       : "extrait",
+    link_to_next  : "Lié au suivant",
     MDP           : "MOT DE PASSE",
     mail_to_phil  : "Écrire à Phil",
+    obligatory    : "Obligatoire",
+    roadmap       : "Feuille de route",
+    ROADMAP       : "FEUILLE DE ROUTE",
+    subtitle      : "Gestion au quotidien de ses exercices de musique",
+    TITLE         : "FEUILLE DE ROUTE MUSICALE",
+    title         : "Feuille de Route Musicale",
+    working_time  : "Durée de travail"
   },
   User:{
     logout                    : "Se déconnecter",
@@ -84,4 +89,9 @@ window.LOCALE_UI = {
     update                  :"Actualiser cet exercice",
     save_duree_travail      :"Oui, sauver la durée de travail sur cet exercice"
   },
+  DBExercice:{
+    titre                   :"BASE DE DONNÉES D’EXERCICES",
+    search_in_db            :"Choisir des exercices dans la base de données des exercices",
+    add_selected            :"Ajouter les exercices sélectionnés à la feuille de route"
+  }
 }

@@ -14,13 +14,18 @@ window.LOCALE_UI = {
     Update      : "Update"
   },
   Label:{
-    TITLE         : "MUSIC ROADMAP",
-    title         : "Music Roadmap",
-    subtitle      : "Deal with your daily music exercices",
-    roadmap       : "Roadmap",
-    ROADMAP       : "ROADMAP",
+    details       : "details",
+    extrait       : "excerpt",
+    link_to_next  : "Linked to next",
     MDP           : "PASSWORD",
     mail_to_phil  : "Mail to Phil",
+    obligatory    : "Obligatory",
+    roadmap       : "Roadmap",
+    subtitle      : "Deal with your daily music exercices",
+    TITLE         : "MUSIC ROADMAP",
+    title         : "Music Roadmap",
+    ROADMAP       : "ROADMAP",
+    working_time  : "Working time"
   },
   User:{
     logout                    : "Log out",
@@ -84,4 +89,9 @@ window.LOCALE_UI = {
     update                  : "Update this exercice",
     save_duree_travail      :"Yes, save time working on this exercice"
   },
+  DBExercice:{
+    titre                   :"DATABASE EXERCICES",
+    search_in_db            :"Choose exercices in Database Exercices",
+    add_selected            :"Add selected exercices to current roadmap"
+  }
 }
