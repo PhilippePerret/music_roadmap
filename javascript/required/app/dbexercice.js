@@ -47,7 +47,7 @@ DBExercice.prototype.bd_div = function(){
   var iddom = this.dom_id();
   var idcb  = "cb_dbex-" + iddom;
   return '<div id="div_exercice-'+iddom+'" class="bde_div_ex">' +
-            '<input id="'+idcb+'" type="checkbox" />' +
+            '<input class="dbe_cb_ex" id="'+idcb+'" type="checkbox" />' +
               this.btn_show_infos() +
               this.lien_to_show_extrait() +
               '<label for="'+idcb+'">' + this.titre + '</label>' +

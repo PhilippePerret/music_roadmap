@@ -53,8 +53,8 @@ class AuteurExercice
   # 
   # @param    iauteur     Instance AuteurExercice of the auteur
   def self.add_auteur iauteur
-    @data_fr = @data_fr.merge iauteur.id => {:n => iauteur.name, :r => {}}
-    @data_en = @data_en.merge iauteur.id => {:n => iauteur.name, :r => {}}
+    @data_fr = @data_fr.merge iauteur.id => {:n => iauteur.patronyme, :r => {}}
+    @data_en = @data_en.merge iauteur.id => {:n => iauteur.patronyme, :r => {}}
   end
   
   # Inaugure a new recueil for author
@@ -97,7 +97,8 @@ class AuteurExercice
     @data ||= YAML.load_file(path_data)
   end
   def id; data['id'] end
-  def name; data['author'] end
+  def name; data['name'] end
+  def patronyme; data['patronyme'] end
 
   # Return exercices of recueil +recueil_id+
   # 
@@ -291,7 +292,7 @@ class AuteurExercice
       # Return time duration of a beat at the tempo max
       def duree_temps_tempo_max
         if tempo_max.nil?
-          raise "tempo_max est nil in exercice ##{id}/#{recueil.id}/#{recueil.auteur.name} (#{self.inspect}:#{self.class})"
+          raise "tempo_max est nil in exercice ##{id}/#{recueil.id}/#{recueil.auteur.patronyme} (#{self.inspect}:#{self.class})"
         end
         60.0 / tempo_max
       end

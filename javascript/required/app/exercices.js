@@ -48,6 +48,43 @@ $.extend(window.Exercices,{
     return false ; // pour le a-link
   },
   
+  /*  Ajout d'exercices de la database exercices
+      -------------------------------------------
+      La méthode est appelée par DBE (database_exercices.js) après relève des exercices
+      sélectionnée.
+      
+      @param  ary_exs   Array of "<instrument>-<auteur>-<recueil>-<id exercices>"
+      
+      @products   Add the choosen exercice to the current roadmap and display them
+      @remind     Each DBE exercice is duplicated in the roadmap exercices folder, except
+                  images and other fixed information, so the user can set his own tempi,
+                  notes, etc.
+      
+  */
+  adding_bde_exercices:false,
+  add_bde_exercices:function(ary_exs){
+    this.adding_bde_exercices = true ;
+    Ajax.query({
+      data:{
+        proc      : 'exercice/add_from_dbe',
+        bde_exs   : ary_exs.join(','),
+        roadmap   : Roadmap.nom,
+        mail      : User.mail,
+        md5       : User.md5,
+        lang      : LANG
+      },
+      success: $.proxy(this.add_bde_exercices_suite, this)
+    })
+  },
+  // Suite of precedente
+  add_bde_exercices_suite:function(rajax){
+    if(false == traite_rajax(rajax)){ //=> on success
+      F.show(MESSAGE.DBExercice.added);
+      // Et il faut actualiser l'affichage de la roadmap
+      Roadmap.open();
+    }
+    this.adding_bde_exercices = false ;
+  },
   // Sauvegarde de l'exercice (nouveau ou ancien)
   saving:false,
   save: function(){
@@ -436,11 +473,7 @@ $.extend(window.Exercices,{
     
     // Retourne un identifiant unique (inexistant)
     new_id: function(){
-      var i = 0 ;
-      while( true ){
-        istr = (++i).toString() ;
-        if ('undefined' == typeof EXERCICES[istr]) return istr ;
-      }
+      return Roadmap.next_id_exercice();
     },
     // Met un ID inexistant dans le champ (pour création)
     // Retourne cet identifiant

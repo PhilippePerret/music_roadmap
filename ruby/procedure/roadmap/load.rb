@@ -5,19 +5,20 @@ load_model 'roadmap'
 # Procédure Ajax de chargement de la roadmap
 def ajax_roadmap_load
   begin
-    fdr = Roadmap.new param(:roadmap_nom), param(:user_mail)
-    if param(:check_if_exists).to_s == "true" && !fdr.exists?
+    rm = Roadmap.new param(:roadmap_nom), param(:user_mail)
+    if param(:check_if_exists).to_s == "true" && !rm.exists?
       raise "ERRORS.Roadmap.unknown" 
     end
   rescue Exception => e
     RETOUR_AJAX[:roadmap] = nil
     RETOUR_AJAX[:error]   = e.message
   else
-    data_rm = roadmap_load( fdr )
+    data_rm = roadmap_load rm
     if data_rm.class == String
       RETOUR_AJAX[:error] = data_rm
     else
       RETOUR_AJAX[:roadmap] = data_rm
+      RETOUR_AJAX[:last_id_exercice] = rm.last_id_exercice
     end
   end 
 end

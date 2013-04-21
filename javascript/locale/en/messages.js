@@ -28,4 +28,8 @@ window.MESSAGE = {
     work_on_exercice_saved    : "Working time on exercice registered",
     really_save_duree_travail : "You've worked a hour on this exercice, really? If it's true, please confirm by clicking the link below."
   },
+  DBExercice:{
+    added                     :"BDE Exercices successfully added!",
+    no_exercices_in_recueil   :"This collection has no exercice yet (Don't wait! Mail to Phil to beg him to add them!)"
+  }
 }

@@ -56,4 +56,8 @@ window.ERRORS = {
   Exercice: {
     
   },
+  // DATABASE EXERCICES
+  DBExercice:{
+    no_exercice_choosed   :"You have to choose the exercices to add to your current roadmap!"
+  }
 }

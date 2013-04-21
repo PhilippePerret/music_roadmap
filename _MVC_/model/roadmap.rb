@@ -157,6 +157,23 @@ class Roadmap
       return @data_exercices[key.to_s] # toujours clé string
     end
   end
+  
+  # Update last id exercice
+  def update_last_id_exercice id
+    File.open(path_last_id_exercice,'wb'){ |f| f.write id.to_s }
+  end
+  
+  # Return last id used
+  def last_id_exercice
+    @last_id_exercice ||= begin
+      if File.exists? path_last_id_exercice
+        File.read(path_last_id_exercice)
+      else
+        0
+      end
+    end
+  end
+  
   # =>  Retourne l'ordre des exercices (key 'ordre' du fichier 'exercices.js')
   #     En cas d'absence du fichier exercices.js renvoie une liste vide
   def ordre_exercices
@@ -235,6 +252,10 @@ class Roadmap
   # Dossier contenant les exercices, les images, les fichiers midi/son if any
   def folder_exercices
     @folder_exercices ||= File.join( folder, 'exercice' )
+  end
+  # Path contenant l'identifiant du dernier exercice enregistré
+  def path_last_id_exercice
+    @path_last_id_exercice ||= File.join(folder, 'LAST_ID_EXERCICE')
   end
   # Path contenant les données générales des exercices (liste des exercices
   # en cours, etc.)

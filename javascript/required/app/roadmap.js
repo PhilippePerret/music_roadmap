@@ -10,7 +10,16 @@ window.Roadmap = {
   partage   : null,
   loaded    : false,    // mis à true quand une roadmap est chargée
   modified  : false,
+  last_id_exercice: null,
   
+  // Return the id for a new exercice.
+  // 
+  // @noter que ce nouvel identifiant ne sera pris en compte qu'à l'enregistrement effectif
+  // de l'exercice.
+  // 
+  next_id_exercice:function(){
+    return ++ this.last_id_exercice ;
+  },
   // // => Retourne le nom de la feuille de route courante
   get_nom: function(){
     BT.add('-> Roadmap.get_nom') ;
@@ -273,6 +282,7 @@ window.Roadmap = {
     if ( this.loaded ) {
       this.loaded = true ;
       var roadmap = rajax.roadmap ;
+      this.last_id_exercice = parseInt(rajax.last_id_exercice, 10) ;
       $.proxy(Exercices.reset_liste, Exercices)() ;
       $.proxy(Roadmap.Data.dispatch, Roadmap.Data, roadmap)();
       $.proxy(Roadmap.Data.show, Roadmap.Data)();

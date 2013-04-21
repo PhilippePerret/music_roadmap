@@ -16,6 +16,7 @@ $.extend(window.Exercices,{
     'T0':"Trilles",
     'C1':"Chromatic",
     'P0':"Poignet",
-    'D0':"Déliateur"
+    'D0':"Déliateur",
+    'E0':"Écarts"
   }
 });

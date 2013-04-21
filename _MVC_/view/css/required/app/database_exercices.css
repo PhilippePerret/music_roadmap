@@ -19,9 +19,11 @@ div.dbe_div_auteur {
 
 /* Le nom de l'auteur des exercices/recueils */
 div.dbe_div_auteur a.dbe_auteur {
+  display         :block;
   font-size       :1.1em;
   font-weight     :bold;
   color           :black !important;
+  margin-bottom   :0.6em;
 }
 
 div.dbe_div_auteur div.dbe_div_recueils {
@@ -30,16 +32,28 @@ div.dbe_div_auteur div.dbe_div_recueils {
 }
 
 /* Pour un titre de recueil lorsqu'il est en lien et en div simple */
-div.dbe_div_auteur div.dbe_div_recueils a.recueil_title {
+div.dbe_div_auteur div.dbe_div_recueils div.titre_recueil {
+  font-size       :1.16em;
+  margin-bottom   :0.4em;
+  font-style      :italic;
+}
+/*Le div contenant le recueil (titre et exercices)*/
+div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_recueil {
+  margin-top      :0.6em;
+}
+div.dbe_div_auteur div.dbe_div_recueils div.titre_recueil a.recueil_title {
   color           :black !important;
   text-decoration :none;
-  font-style      :italic;
 }
 
 /* Div d'un exercice dans le listing de la database */
 div.dbe_div_auteur div.dbe_div_recueils div.bde_div_exercices div.bde_div_ex {
   margin-left     :1em;
   border-bottom   :1px solid #ddd;
+}
+/* Les checkbox pour chosiir les exercices à importer */
+div.dbe_div_auteur div.bde_div_ex input[type="checkbox"].dbe_cb_ex {
+  margin-right    :1em;
 }
 /* Tous les liens d'un div exercice dans le listing de la database */
 div.dbe_div_auteur div.dbe_div_recueils div.bde_div_exercices div.bde_div_ex a {

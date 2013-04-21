@@ -18,7 +18,8 @@ $.extend(window.Exercices,{
       'T0':"Trills",
       'C1':"Chromatisme",
       'P0':"Wrist",
-      'D0':"Unbinder"
+      'D0':"Unbinder",
+      'E0':"Strech"
     }
   }
 });

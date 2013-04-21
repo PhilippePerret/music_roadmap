@@ -60,4 +60,8 @@ window.ERRORS = {
   Exercice: {
     
   },
+  // DATABASE EXERCICES
+  DBExercice:{
+    no_exercice_choosed   :"Il faut choisir les exercices à ajouter à votre feuille de route courante !"
+  }
 }

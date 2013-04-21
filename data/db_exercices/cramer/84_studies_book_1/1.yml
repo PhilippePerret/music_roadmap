@@ -1,0 +1,10 @@
+titre_fr:     Étude n°1
+titre_en:     Study n°1
+suite:        null
+types:        ['D0', 'P0']
+tempo_min:    100
+tempo_max:    132
+nb_mesures:   22
+nb_temps:     4
+duree_temps:  4
+metrique:     "4/4"
