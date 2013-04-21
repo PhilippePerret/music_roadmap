@@ -242,7 +242,9 @@ class AuteurExercice
       def to_js lang = :en
         {
           :i => id, :t => titre(lang), :y => types,
-          :wm => working_time_min, :wx => working_time_max, :g => image?
+          :wm => working_time_min, :wx => working_time_max, 
+          :ie => extrait?, :iv => vignette?,
+          :sc => score?
         }
       end
       
@@ -294,17 +296,35 @@ class AuteurExercice
         60.0 / tempo_max
       end
       
-      def image?
-        File.exists? path_image
-      end
+      # Return TRUE if score pdf exists
+      def score?;     File.exists? path_score     end
+      # Return TRUE if whole score image exists
+      def image?;     File.exists? path_image     end
+      # Return TRUE if excerpt image exists
+      def extrait?;   File.exists? path_extrait   end
+      # Return TRUE if vignette image exists
+      def vignette?;  File.exists? path_vignette  end
       
       def data
         @data ||= YAML.load_file( path )
       end
       
+      # Return (and define) path of score pdf
+      def path_score
+        @path_score ||= File.join(folder, "#{id}.pdf")
+      end
       # Return (and define) path image
       def path_image
         @path_image ||= File.join(folder, "#{id}.jpg")
+      end
+      # Return (and define) path vignette image
+      def path_vignette
+        @path_vignette ||= File.join(folder, "#{id}-vignette.jpg")
+      end
+      
+      # Return (and define) path excerpt image
+      def path_extrait
+        @path_extrait ||= File.join(folder, "#{id}-extrait.jpg")
       end
       
       # Return (and define) folder image

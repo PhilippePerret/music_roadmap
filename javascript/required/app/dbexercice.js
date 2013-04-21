@@ -4,19 +4,22 @@
     Pour un exercice de la base de données
 */
 window.DBExercice = function(dex){
-  this.id         = null;
-  this.titre      = null;
-  this.auteur     = null; // id auteur
-  this.recueil    = null; // id recueil
-  this.tempo_min  = null;
-  this.tempo_max  = null;
-  this.duree_min  = null;
-  this.duree_max  = null;
-  this.types      = [];
-  this.has_image  = false;
+  this.id           = null;
+  this.titre        = null;
+  this.auteur       = null; // id auteur
+  this.recueil      = null; // id recueil
+  this.tempo_min    = null;
+  this.tempo_max    = null;
+  this.duree_min    = null;
+  this.duree_max    = null;
+  this.types        = [];
+  this.has_score    = false;  // fichier PDF
+  this.has_extrait  = false;  // Image d'un l'extrait (500x300)
+  this.has_vignette = false;  // Vignette (200x100)
   if ('undefined' != typeof dex){
     this.id = dex.i; this.titre = dex.t; this.duree_min = dex.wm; this.duree_max = dex.wx;
-    this.types = dex.y; this.has_image = dex.g;
+    this.types = dex.y; this.has_score = dex.sc; 
+    this.has_extrait = dex.ie; this.has_vignette = dex.iv
     this.auteur = dex.a; this.recueil = dex.r; // @note: pas relevé par ajax, mais ajouté après
   }
 }
@@ -45,17 +48,25 @@ DBExercice.prototype.bd_div = function(){
   var idcb  = "cb_dbex-" + iddom;
   return '<div id="div_exercice-'+iddom+'" class="bde_div_ex">' +
             '<input id="'+idcb+'" type="checkbox" />' +
-              '<a href="#" class="fright petit btn" onclick="$(this).next().next().next().slideToggle(300);return false;">'+LOCALE_UI.Label.details+'</a>' +
+              this.btn_show_infos() +
               this.lien_to_show_extrait() +
               '<label for="'+idcb+'">' + this.titre + '</label>' +
-              '<div class="petit" style="display:none;">' +
-                "(type : " + this.types_to_s() + " / "+LOCALE_UI.Label.working_time+" : "+this.duree_travail_to_s()+")" +
-              '</div>' +
+              this.div_infos() +
           '</div>' ;
 }
-
+// Retourne le div caché des infos de l'exercice
+DBExercice.prototype.div_infos = function(){
+  return '<div id="dbe_infos_ex-'+this.dom_id()+'" class="petit" style="display:none;">' +
+    "(type : " + this.types_to_s() + " / "+LOCALE_UI.Label.working_time+" : " +
+    this.duree_travail_to_s()+")" +
+    '</div>';
+}
+// Retourne le bouton pour voir les infos de l'exercice
+DBExercice.prototype.btn_show_infos = function(){
+  return '<a href="#" class="fright petit btn" onclick="$(\'div#dbe_infos_ex-'+this.dom_id()+'\').slideToggle(300);return false;">'+LOCALE_UI.Label.details+'</a>'
+}
 // Retourne un lien pour voir un extrait de l'exercice
 DBExercice.prototype.lien_to_show_extrait = function(){
-  if(this.has_image == false) return "" ;
+  if(this.has_extrait == false) return "" ;
   return '<a href="#" class="fright petit btn" onclick="return $.proxy(DBE.show_extrait, DBE, \''+this.dom_id()+'\')()">' + LOCALE_UI.Label.extrait + '</a>' ;
 }

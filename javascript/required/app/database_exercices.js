@@ -23,7 +23,7 @@ window.DBE = {
   
   // Affiche un extrait de l'exercice identifié par +idtotal+ ("<auteur>-<recueil>-<ex>")
   show_extrait:function( idtotal ){
-    var src = "data/db_exercices/" + idtotal.split('-').join('/') + '.jpg';
+    var src = "data/db_exercices/" + idtotal.split('-').join('/') + '-extrait.jpg';
     Exercices.show_partition(src);
   },
   
