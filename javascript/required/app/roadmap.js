@@ -27,7 +27,7 @@ window.Roadmap = {
     BT.add('<- Roadmap.get_nom (return: this.nom='+this.nom+')') ;
     return this.nom;
   },
-  // Définit le nom de la roadmap (et les place dans le div specs)
+  // Définit le nom de la roadmap (et le place dans le div specs)
   set: function(nom){
     BT.add('-> Roadmap.set(nom:'+nom) ;
     if ( nom !== false ){
@@ -54,9 +54,7 @@ window.Roadmap = {
   // Initialisation (au chargement de la page)
   init: function(){
     BT.add('-> Roadmap.init') ;
-    // Rechargement la feuille de route si un nom/User.mail est défini et qu'il
-    // est valide.
-    if ( this.set_etat_specs(messages=false) ) this.open() ;
+    this.set("");
     BT.add('<- Roadmap.init') ;
   },
   
@@ -74,7 +72,7 @@ window.Roadmap = {
   // Reset tout
   reset_all: function(){
     $('ul#exercices').html('') ;
-    this.set(null,null) ;
+    this.set(null) ;
     this.loaded         =false;
     this.specs_modified =false;
     this.md5            =null;
@@ -97,7 +95,7 @@ window.Roadmap = {
       RÉGLAGE INTERFACE
   */
   // Définit l'état du div contenant les specs en fonction de la présence ou
-  // non des nom et User.mail
+  // non du nom de la roadmap
   // @return true si les données sont bonnes, false dans le cas contraire
   set_etat_specs: function( with_message ){
     BT.add('-> Roadmap.set_etat_specs') ;
@@ -197,7 +195,8 @@ window.Roadmap = {
     BT.add('<- Roadmap.onchange_affixe') ;
   },
   
-  // => Retourne true si le nom de la roadmap et User.mail sont définis
+  // Retourne true si le nom de la roadmap est défini et que le mail de l'utilisateur
+  // est défini
   specs_ok: function( with_message ){
     BT.add('-> Roadmap.specs_ok') ;
     if ('undefined' == typeof with_message) with_message = false ;
@@ -221,7 +220,7 @@ window.Roadmap = {
         throw 'need_a_nom' ;
       } else if( this.affixe().replace(/[a-zA-Z0-9_-]/g, '') != "" ){
         var nom_is_bad = this.nom.replace(/[a-zA-Z0-9_-]/g, '') != "" ;
-        this.set( this.get_a_correct(this.nom), false ) ;
+        this.set( this.get_a_correct(this.nom)) ;
         UI.focus('roadmap_nom') ;
         throw 'invalid_nom';
       }
@@ -231,10 +230,10 @@ window.Roadmap = {
       this.specs_valides = false ;
       if ( with_message ) Flash.error( ERRORS.Roadmap.Specs[erreur], {keep:false} ) ;
     }
-    // this.set_btns_roadmap() ; // À METTRE AILLEURS, PAS DANS CETTE MÉTHODE
     BT.add('<- Roadmap.are_specs_valides (return: this.specs_valides='+this.specs_valides+')') ;
     return this.specs_valides ;
   },
+  // Retourne un nom de roadmap correcte
   get_a_correct: function( from ){
     return from.replace(/ /g, '_').replace(/[^a-zA-Z0-9_-]/g, '') ;
   },
@@ -250,10 +249,12 @@ window.Roadmap = {
   */
   open_by_menu: function( idmenu ){
     this.opening = true ;
-    var nomumail = $('select#' + idmenu).val();
+    var oselect = $('select#' + idmenu) ;
+    var nomumail = oselect.val();
     var drm   = nomumail.split('-');
-    this.set(drm[0], drm[1]);
+    this.set(drm[0]);
     this.open();
+    oselect.val('');
   },
   // Ouvre la roadmap courante
   opening: false, // mis à true pendant l'ouverture

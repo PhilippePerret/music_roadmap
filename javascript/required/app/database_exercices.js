@@ -45,7 +45,7 @@ window.DBE = {
   
   // Affiche un extrait de l'exercice identifié par +idtotal+ ("<auteur>-<recueil>-<ex>")
   show_extrait:function( idtotal ){
-    var src = "data/db_exercices/" + idtotal.split('-').join('/') + '-extrait.jpg';
+    var src = "data/db_exercices/" + INSTRUMENT + '/' + idtotal.split('-').join('/') + '-extrait.jpg';
     Exercices.show_partition(src);
     return false; // pour le a-lien
   },
@@ -152,7 +152,7 @@ window.DBE = {
       o.append(this.prepare_div_auteur(auth_id,DB_EXERCICES[auth_id]));
     }
     // Remplacer le noms des éléments DOM
-    $('div#database_exercices div#dbe_titre').html(LOCALE_UI.DBExercice.titre + ' ' + INSTRUMENT);
+    $('div#database_exercices div#dbe_titre').html(LOCALE_UI.DBExercice.titre + ' ' + INSTRUMENT_H.toUpperCase());
     $('div#database_exercices a#btn_dbe_add_selected').html(LOCALE_UI.DBExercice.add_selected);
     $('div#database_exercices a.cancel').html(LOCALE_UI.Verb.Cancel);
     $('div#database_exercices a.close').html(LOCALE_UI.Verb.Close);

@@ -52,6 +52,10 @@ section#section_exercices {
 div#roadmap_specs {
   background-color      :#C07051;
 }
+/* Div général des specs de la roadmap */
+div#roadmap_specs-specs {
+  position      :relative;
+}
 /* Menu des roadmaps */
 div#roadmap_specs select#roadmaps {
   font-size     :1.3em;

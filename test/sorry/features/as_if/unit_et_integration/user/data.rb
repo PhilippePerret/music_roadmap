@@ -62,8 +62,8 @@ when "les données d'inscription sont celles de Benoit" then
     @data_user = @data_user.merge( k => datatmp[k] )
   end
   @data_user = @data_user.merge(:mail_confirmation => datatmp[:mail])
-  @data_user = @data_user.merge(:password => "bozoleclown")
-  @data_user = @data_user.merge(:password_confirmation => "bozoleclown")
+  @data_user = @data_user.merge(:password => datatmp[:password])
+  @data_user = @data_user.merge(:password_confirmation => datatmp[:password])
   
 # Fin du fichier
 end

@@ -432,11 +432,18 @@ class DataBaseExercices
   # @param  instid    Instrument id (as defined in `_data.yml' file of instrument folder)
   # 
   def self.final_code lang, instid
+    instrument_h = nom_humain_instrument instid, lang
     code = AuteurExercice.send("data_#{lang}").to_json
     <<-EOC
-window.INSTRUMENT = "#{instid}"
-window.DB_EXERCICES = #{code}
+window.INSTRUMENT   = "#{instid}";
+window.INSTRUMENT_H = "#{instrument_h}";
+window.DB_EXERCICES = #{code};
     EOC
+  end
+  
+  # Return human name of instrument +inst_id+ in language +lang+
+  def self.nom_humain_instrument inst_id, lang
+    YAML.load_file(File.join(folder_data, inst_id, '_data.yml'))["name_#{lang}"]
   end
   
   # Return full path to JS French file for instrument +instid+

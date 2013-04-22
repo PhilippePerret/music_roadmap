@@ -83,6 +83,8 @@ window.UI = {
   set_visible: function(o, visible){
     if ('undefined' == visible ) visible = true ;
     $(o).css('visibility', visible ? 'visible' : 'hidden' ) ;
+    $(o).removeClass(visible ? 'invisible' : 'visible');
+    $(o).addClass(visible ? 'visible' : 'invisible');
     return visible ;
   },
   
