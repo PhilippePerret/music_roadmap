@@ -16,14 +16,15 @@
       • Un dossier "./data/aide/" contenant les textes d'aide (HTML ou ruby)
       • Le dossier './ruby/procedure/aide/ contenant tous les scripts utiles
         et principalement : load.rb
+      • Definition of JS constant LANG (current language, in two letters)
     
     UTILISATION
     -----------
     
     Dans l'interface ou le texte de l'aide, on peut utiliser :
     
-      <aide value="<id texte aide>" />
-        Met une image "?" qui ouvre le texte d'aide <id texte aide>
+      <aide value="<path/to/aide/file>"></aide>
+        Met une image "?" qui ouvre le texte d'aide <path/to/aide/file>
         
       <aide value="<id texte aide>" title="TITRE" />
       <aide value="<id texte>">TITRE</aide>
@@ -33,10 +34,9 @@
         Met un ID au a-lien créé dans le DOM
         
       <focus value="<id élément interface>" title="<texte du lien>" />
-        Créer un a-lien qui, lorsqu'on clique dessus, ferme l'aide provisoire
-        ment pour mettre en exergue l'élément <id élément> de l'interface.
-        @Note: à utiliser dans les textes d'aide, ça n'aurait pas vraiment de
-        sens sinon.
+        Dans le texte de l'aide, crée un a-lien qui, lorsqu'on clique dessus, ferme 
+        provisoirement l'aide pour mettre en exergue l'élément <id élément> de l'interface.
+        <id élément interface> est l'identifiant simple, sans "#"
 */
 window.Aide = {
   class         : "Aide",
@@ -112,7 +112,8 @@ window.Aide = {
       Chaque méthode doit remettre la valeur par défaut après le traitement
   */
   apply_option_bandeau_titre:function( valeur ){
-    $('section#aide div#aide_bande_titre')[valeur ? 'show' : 'hide']();
+    var titre = valeur ? LOCALE_UI.id.span.section_aide_titre : '&nbsp;'
+    $('section#aide div#aide_bande_titre span#section_aide_titre').html( titre )
     Aide.options_disp['bandeau_titre'] = true ;
   },
 
@@ -133,7 +134,8 @@ window.Aide = {
     if (this.ocontent == null) this.ocontent = this.section().find('div#aide_content');
     return this.ocontent ;
   },
-  // => Retourne l'objet jQuery du texte d'aide d'ID +id+
+  // Retourne l'objet jQuery du texte d'aide d'ID +id+
+  // @note: C'est le div principal de l'aide identifiée par +id+
   jqtext: function(id){ return $('div#'+Aide.otextid(id))},
   // => Retourne l'identifiant DOM du texte d'aide +id+
   otextid: function(id){return 'aide_text_id-'+Aide.TEXTS[id].uid;},
@@ -171,7 +173,6 @@ window.Aide = {
     this.showing = true ;
     this.fx_pour_suivre_show = fx_suite ;
     this.get(id, $.proxy(this.show_text, this, id));
-    this.fit(); // pour adapter la fenêtre à la page
     BT.add("<- Aide.show(id:"+id+")");
     return false ; // pour le a-lien
   },
@@ -343,14 +344,6 @@ window.Aide = {
     } catch(erreur) { F.warning( "[Aide.scroll_to] " + erreur )}
   },
   
-  // On ne peut pas régler en pourcentage la hauteur max du contenu de la fenêtre d'aide,
-  // il faut donc le faire "à la main"
-  // @TODO: on pourrait en faire une méthode de ui.js (librairie générale)
-  fit:function(){
-    maxheight = ($(window).height() - 40) + "px";
-    // console.log("Fenêtre mise à : " + maxheight);
-    $('section#aide div#aide_content').css('max-height', maxheight);
-  },
   // --- Protected methods ---
   
   // Détruit le texte d'aide d'identifiant +id+ de la fenêtre d'aide
@@ -420,7 +413,7 @@ window.Aide = {
     // Par défaut, la méthode ne fait rienf
     if ('undefined' == typeof fx_suite) fx_suite = null ;
     Ajax.query({
-      data    : {proc:'aide/load', aide_id:id},
+      data    : {proc:'aide/load', aide_id:id, lang: LANG || 'en'},
       success : $.proxy(Aide.end_load, Aide, fx_suite)
     });
   },
@@ -456,9 +449,9 @@ window.Aide = {
     $('body').append(
       '<section id="aide" style="display:none;">' +
         '<div id="aide_bande_titre">'+
-          '<a class="fright" href="#" onclick="return $.proxy(Aide.close,Aide)()" style="margin-left:2em;">X</a>' +
-          '<span class="mini italic fright">(vous pouvez déplacer cette fenêtre à l\'aide de cette barre de titre)</span>'+
-          '<span>AIDE</span>'+
+          '<a class="btn_close" href="#" onclick="return $.proxy(Aide.close,Aide)()"></a>' +
+          '<span id="section_aide_move_txt">' + LOCALE_UI.id.span.section_aide_move_txt + '</span>'+
+          '<span id="section_aide_titre">AIDE</span>'+
         '</div>' +
         '<div id="aide_content"></div>' +
       '</section>');

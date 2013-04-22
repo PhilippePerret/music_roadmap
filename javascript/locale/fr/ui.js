@@ -1,5 +1,14 @@
 window.LOCALE_UI = {
   lang: 'fr',
+  class:{
+    other       : "Autre…"
+  },
+  id:{
+    span:{
+      section_aide_titre      :"AIDE",
+      section_aide_move_txt   :"(déplacer cette boite en <br>cliquant-déplaçant cette barre)"
+    }
+  },
   Verb:{
     and_save    : "et l'enregistrer",
     Cancel      : "Renoncer",

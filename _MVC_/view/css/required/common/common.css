@@ -5,6 +5,18 @@ body {
   padding:      0;
 }
 
+a.btn_close {
+  background-image:url(http://www.atelier-icare.net/img/pictos/mac/b_close.png);
+  width :16px;
+  height:16px;
+  position:absolute;
+  top:6px;
+  right:6px;
+}
+a.btn_close:hover {
+  background-image:url(http://www.atelier-icare.net/img/pictos/mac/b_close_over.png);
+}
+
 code {font-size:14.7px;}
 
 .inherit {

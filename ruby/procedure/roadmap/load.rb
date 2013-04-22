@@ -70,8 +70,9 @@ def roadmap_load rm, umail = nil, only = nil
   if ( only.nil? || only.has_key?(:data_exercices))
     d = if rm.exercices?
           JSON.parse( File.read(rm.path_exercices))
-        else {'ordre' => nil} 
+        else {'ordre' => []} 
         end
+    d = d.merge 'ordre' => [] unless d.has_key?('ordre') # @see Issue #22
     data = data.merge :data_exercices => d
   end
   

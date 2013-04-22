@@ -1,0 +1,1 @@
+window.DATA_INSTRUMENTS = [{"name":"Clarinette","id":"clarinet"},{"name":"Piano","id":"piano"},{"name":"Violon","id":"violon"}]

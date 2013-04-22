@@ -46,6 +46,10 @@ window.ERRORS = {
     },
     unable_with_example: "Cette action est impossible sur la feuille de route en exemple, désolé.", 
   },
+  // INSTRUMENT
+  Instrument:{
+    should_be_defined      :"L'instrument devrait être défini…"
+  },
   // EXERCICES
   Exercices: {
     Edit:{

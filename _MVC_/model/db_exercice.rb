@@ -8,8 +8,18 @@ require 'yaml'
 
 class DBExercice
   
+  class << self
+    
+    # Language ID
+    # 
+    attr_reader :lang
+    
+    # Instrument ID
+    # 
+    attr_reader :instrument
+    
+  end
   # Return name of auteur +autid+
-  # def self.auteur_name instid, autid # LATER, WHEN INSTRUMENT BE USED
   def self.auteur_name autid
     YAML.load_file(File.join(folder_auteur(autid), '_data.yml'))['name']
   end
@@ -22,24 +32,41 @@ class DBExercice
   # 
   def self.recueil_title autid, recid
     drecueil = YAML.load_file(File.join(folder_recueil(autid, recid), '_data.yml'))
-    drecueil[@lang == :en ? 'recueil_en' : 'recueil_fr']
+    tit = @lang == :en ? 'recueil_en' : 'recueil_fr'
+    drecueil[tit]
   end
   
+  # Return path to recueil (collection) folder
   def self.folder_recueil autid, recid
-    @folder_recueil ||= File.join(folder_auteur(autid), recid)
+    File.join(folder_auteur(autid), recid)
   end
-  # def self.folder_auteur instid, autid # LATER, WHEN INSTRUMENT BE USED
+
+  # Return path to author +autid+ folder
   def self.folder_auteur autid
-    @folder_auteur ||= File.join(folder_data, autid)
-    # @folder_auteur ||= File.join(folder_data, instid, autid) # LATER, WHEN INSTRUMENT BE USED
+    File.join(folder_instrument, autid)
   end
   
+  # Return path to instrument folder (sub-main)
+  def self.folder_instrument
+    raise "Instrument should be defined in DBExercice (use DBExercice::set_instrument <inst_id>)" if @instrument.nil?
+    @folder_instrument ||= File.join(folder_data, @instrument)
+  end
+  
+  # Return DB Exercices data folder (main)
   def self.folder_data
     @folder_data ||= File.join(APP_FOLDER, 'data', 'db_exercices')
   end
   
+  # Set language of return and text
   def self.set_lang lang
     @lang = lang
+  end
+  
+  # Set current Instrument
+  # 
+  # @param  inst_id   Instrument ID (p.e. "piano", or "violin")
+  def self.set_instrument inst_id
+    @instrument = inst_id
   end
   
   def self.lang
@@ -74,14 +101,14 @@ class DBExercice
   
   # Initialize a new DBExercice
   # 
-  # @param    long_id   Long-Id of exercice (something like "<instrument>-<auteur>-<recueil>-<id_ex>")
+  # @note:    Instrument ID should has been defined in DBExercice (calling DBExercice::set_instrument)
+  # 
+  # @param    long_id   Long-Id of exercice (something like "<auteur>-<recueil>-<id_ex>")
   # 
   def initialize long_id
     @long_id  = long_id
     decompose_long_id
-    @path     = File.join(self.class.folder_data, @auteur, @recueil, "#{@id}.yml")
-    # @path     = File.join(self.class.folder_data, @instrument, @auteur, @recueil, "#{@id}.yml") # LATER
-    decompose_long_id # to set @id, @recueil, @auteur, @instrument
+    @path     = File.join(self.class.folder_instrument, @auteur, @recueil, "#{@id}.yml")
   end
   
   def decompose_long_id
@@ -89,7 +116,6 @@ class DBExercice
     @id         = d.pop
     @recueil    = d.pop
     @auteur     = d.pop
-    @instrument = d.pop
   end
   
   # Duplicate exercice in roadmap +rm+
@@ -108,7 +134,8 @@ class DBExercice
       # Calculated values (or nil values)
       dex = {
         :id         => withid,
-        :abs_id     => abs_id, 
+        :abs_id     => abs_id,
+        :instrument => DBExercice::instrument,
         :titre      => titre,
         :auteur     => auteur_to_hum,
         :recueil    => recueil_to_hum,

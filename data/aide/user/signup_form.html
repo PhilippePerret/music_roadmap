@@ -54,7 +54,11 @@
         SIGNUP_LABEL_INSTRUMENT
       </td>
       <td>
-        <input type="text" name="user[instrument]" value="" id="user_instrument" />
+        <select id="instruments" onchange="return $.proxy(User.on_choose_instrument, User, this)()"></select> <aide value="user/choix_instrument"></aide>
+        <div id="div_other_instrument" style="display:inline;visibility:hidden;">
+          <input type="text" name="user[instrument]" value="" id="user_instrument" />
+          <div id="signup_instrument_explaination"></div>
+        </div>
       </td>
     </tr>
     <tr id="tr_user_presentation">

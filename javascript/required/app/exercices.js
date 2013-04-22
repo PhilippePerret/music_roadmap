@@ -67,12 +67,13 @@ $.extend(window.Exercices,{
     this.adding_bde_exercices = true ;
     Ajax.query({
       data:{
-        proc      : 'exercice/add_from_dbe',
-        bde_exs   : ary_exs.join(','),
-        roadmap   : Roadmap.nom,
-        mail      : User.mail,
-        md5       : User.md5,
-        lang      : LANG
+        proc        : 'exercice/add_from_dbe',
+        instrument  : INSTRUMENT,
+        bde_exs     : ary_exs.join(','),
+        roadmap     : Roadmap.nom,
+        mail        : User.mail,
+        md5         : User.md5,
+        lang        : LANG
       },
       success: $.proxy(this.add_bde_exercices_suite, this)
     })

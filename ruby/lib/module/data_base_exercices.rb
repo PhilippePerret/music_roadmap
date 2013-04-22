@@ -2,9 +2,13 @@
 
   Data-Base Exercice
   
-  When called, update the db_exercice.js in french and english locale folders.
+  @note: To force the update of all files, remove file:
+    javascript/locale/fr/db_exercices/piano.js
   
-  Build a JS table called DB_EXERCICES:
+  When called, update the db_exercices JS files per instrument in french and english locale
+  folders.
+  
+  Each file build a JS table called DB_EXERCICES:
   
   DB_EXERCICES = {
     <id auteur> => {
@@ -20,11 +24,6 @@
     }
   }
 =end
-
-
-# Pour les essais
-APP_FOLDER = File.join(Dir.home, 'Sites', 'cgi-bin', 'music_roadmap') unless defined? APP_FOLDER
-
 require 'json'
 require 'yaml'
 
@@ -338,9 +337,22 @@ end
 
 class DataBaseExercices
   
+  class << self
+
+    # Current instrument
+    # 
+    attr_reader :current_instrument
+    
+    # Instrument list (Array of Hashs)
+    # 
+    attr_reader :instruments_list
+
+  end
+  
   # Return data of exercices by +auteur_id+. If +recueil_id is not nil, only the exercices
   # of this collection.
   # 
+  # @param    inst_id         ID of the instrument (p.e. "piano" or "violin")
   # @param    auteur_id       Name of the author folder
   # @param    recueil_id      Name of the collection folder
   # @param    lang            Lang of the required Hash of data (pe :en, :fr)
@@ -348,37 +360,114 @@ class DataBaseExercices
   # @return   A Hash with data of exercices, for display.
   # 
   # @see JS database_exercices.js file
-  def self.exercices_by auteur_id, recueil_id = nil, lang = nil
-    path    = File.join(folder_data, auteur_id)
-    raise "Unknow author #{auteur_id}…" unless File.exists? path
+  def self.exercices_by inst_id, auteur_id, recueil_id = nil, lang = nil
+    path    = File.join(folder_data, inst_id, auteur_id)
+    unless File.exists? path
+      raise "Unknow instrument #{inst_id}…" unless File.exists?(File.join(folder_data, inst_id)) 
+      raise "Unknow author #{auteur_id} (or instrument #{inst_id})…" 
+    end
     auteur  = AuteurExercice.new path
     auteur.exercices_of_recueil recueil_id, lang
   end
   
-  # Update JS DB_EXERCICES (with initial data, ie without exercices — only authors and collections)
-  def self.update
+  # Update JS DBExercices for each instrument
+  # 
+  # @product  
+  #   - Build de JS File for DBExercice for each instrument
+  #   - Update `locale/<lang>/instruments.js` file
+  # 
+  # @see `update_instrument' below for details
+  def self.update_each_instrument
+    @instruments_list = {:fr => [], :en => []}
+    Dir["#{folder_data}/*"].each do |path|
+      next unless folder_instrument? path
+      # @TODO: Ici, on pourrait regarder si le fichier JS en français existe. Si c'est le
+      # cas, on n'actualise pas ce fichier.
+      dinstr = YAML.load_file(File.join(path, '_data.yml'))
+      @instruments_list[:fr] << {:id => dinstr['id'], :name => dinstr['name_fr']}
+      @instruments_list[:en] << {:id => dinstr['id'], :name => dinstr['name_en']}
+      @current_instrument = dinstr['id']
+      update_instrument
+    end
+    update_instruments_js_locale_file
+  end
+  
+  # Update `instruments.js' file which contains list of instruments (for sign up)
+  # 
+  def self.update_instruments_js_locale_file
+    [:fr, :en].each do |lang|
+      code = "window.DATA_INSTRUMENTS = " + instruments_list[lang].to_json
+      path = File.join(APP_FOLDER, 'javascript', 'locale', lang.to_s, 'instruments.js')
+      File.open(path,'wb'){|f| f.write code}
+    end
+  end
+  
+  # Update JS DB_EXERCICES (with only « initial data », that means without exercices — only 
+  # authors and collections)
+  # 
+  # @param  instid    ID of instrument. If NIL, we get the :current_instrument pseudo-class 
+  #                   variable
+  # 
+  # @product  
+  #   - Build de JS File for DBExercice for instrument
+  # 
+  def self.update_instrument instid = nil
+    instid ||= @current_instrument
     AuteurExercice::data_fr = {}
     AuteurExercice::data_en = {}
-    Dir["#{folder_data}/*"].each do |path|
+    folder_instrument = File.join(folder_data, instid)
+    Dir["#{folder_instrument}/*"].each do |path|
       next unless File.directory?(path)
       auteur = AuteurExercice.new path
       AuteurExercice::add_auteur auteur
       auteur.traite_recueils
     end
-    File.open(path_fr, 'w'){|f| f.write "DB_EXERCICES = #{AuteurExercice::data_fr.to_json}"}
-    File.open(path_en, 'w'){|f| f.write "DB_EXERCICES = #{AuteurExercice::data_en.to_json}"}
+    File.open(path_fr(instid), 'wb'){|f| f.write final_code(:fr, instid)}
+    File.open(path_en(instid), 'wb'){|f| f.write final_code(:en, instid)}
   end
   
-  # Return full path to JS french data-base file 
-  def self.path_fr
-    @path_fr ||= File.join(APP_FOLDER, 'javascript', 'locale', 'fr', 'db_exercices.js')
+  # Return final code according to instrument and lang
+  # 
+  # @param  lang      Lang, p.e. :en or :fr
+  # @param  instid    Instrument id (as defined in `_data.yml' file of instrument folder)
+  # 
+  def self.final_code lang, instid
+    code = AuteurExercice.send("data_#{lang}").to_json
+    <<-EOC
+window.INSTRUMENT = "#{instid}"
+window.DB_EXERCICES = #{code}
+    EOC
+  end
+  
+  # Return full path to JS French file for instrument +instid+
+  # 
+  def self.path_fr instid
+    File.join(folder_fr, "#{instid}.js")
+  end
+  def self.path_en instid
+    File.join(folder_en, "#{instid}.js")
+  end
+  # Return full path to JS french data-base folder
+  # This folder contain all files by instrument, in french
+  def self.folder_fr
+    @path_fr ||= File.join(APP_FOLDER, 'javascript', 'locale', 'db_exercices', 'fr')
   end
   # Return full path to JS english data-base file
-  def self.path_en
-    @path_en ||= File.join(APP_FOLDER, 'javascript', 'locale', 'en', 'db_exercices.js')
+  # This folder contain all files by instrument, in english
+  def self.folder_en
+    @path_en ||= File.join(APP_FOLDER, 'javascript', 'locale', 'db_exercices', 'en')
   end
   # Return full path to exercice folder (data base folder for exercices)
   def self.folder_data
     @folder_data ||= File.join(APP_FOLDER, 'data', 'db_exercices')
   end
+  
+  
+  # Return TRUE if +path+ can be a folder instrument
+  def self.folder_instrument? path
+    return false unless File.directory? path
+    return false unless File.exists? File.join(path, '_data.yml')
+    return true
+  end
+  
 end

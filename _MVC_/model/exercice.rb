@@ -191,6 +191,14 @@ class Exercice
     @abs_id ||= data['abs_id']
   end
   
+  # Return the Instrument ID or NIL if it doesn't exist
+  # 
+  # @note: Instrument ID exists only for exercices from DB Exercices
+  # 
+  def instrument
+    @instrument ||= data['instrument']
+  end
+  
   # Return TRUE si l'exercice provient de la Database Exerice (DBE)
   # 
   def dbe?
@@ -239,7 +247,7 @@ class Exercice
   def path_vignette_bde
     @path_vignette_bde ||= begin
       if dbe?
-        File.join(APP_FOLDER, 'data', 'db_exercices', abs_id.split('-')) + '-vignette.jpg'
+        File.join(APP_FOLDER, 'data', 'db_exercices', instrument, abs_id.split('-')) + '-vignette.jpg'
       else
         nil
       end
@@ -254,7 +262,7 @@ class Exercice
   def path_extrait_bde
     @path_extrait_bde ||= begin
       if dbe?
-        File.join(APP_FOLDER, 'data', 'db_exercices', abs_id.split('-')) + '-extrait.jpg'
+        File.join(APP_FOLDER, 'data', 'db_exercices', instrument, abs_id.split('-')) + '-extrait.jpg'
       else 
         nil
       end

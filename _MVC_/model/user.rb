@@ -61,7 +61,7 @@ class User
   end
   # => Return les data minimales (pour JS)
   def data_mini
-    {:nom => nom, :md5 => md5, :mail => mail}
+    {:nom => nom, :md5 => md5, :mail => mail, :instrument => instrument}
   end
   # Retourne les data enregistrées si elles existent
   def data

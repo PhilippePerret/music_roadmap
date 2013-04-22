@@ -12,8 +12,10 @@ section#aide {
   border            :6px solid #606060;
   z-index           :3000;
   width             :30em;
+  padding           :0;
+  height            :90%;
   max-height        :90%;
-  border-radius     :1em;
+  border-radius     :1.6em;
 }
 section#aide a { cursor:pointer; }
 
@@ -29,6 +31,14 @@ section#aide div#aide_bande_titre {
   padding             :0.5em 1.3em;
   border-radius       :0.8em 0.8em 0 0;
 }
+section#aide div#aide_bande_titre span#section_aide_move_txt {
+  position            :absolute;
+  right               :3em;
+  top                 :0.1em;
+  font-style          :italic;
+  font-size           :0.8em;
+}
+
 /* LES LIENS */
 /* dans barre de titre */
 section#aide div#aide_bande_titre a {
@@ -65,17 +75,14 @@ section#aide div.aide_text a.aide_focus:after {content:"#";}
 /* CONTENU */
 section#aide div#aide_content {
   overflow            :auto;
-/*  max-height          :32em;*/
-  max-height          :90%; /*Ne fonctionne pas. Il faut le régler dynamiquement*/
-  border-radius       :0.5em;
-  background-color    :#606060;
+  background-color    :white;
+  max-height          :90%;
 }
 /* Un texte d'aide en particulier */
 section#aide div#aide_content div.aide_text {
   background-color    :#F7F9FA;
-  margin              :0.5em 0;
-  border-top          :1px solid #606060;
-  border-bottom       :1px solid #606060;
+  margin              :0;
+  border-bottom       :3px solid #606060;
   padding             :0;
 }
 section#aide div#aide_content div.aide_text_content > div:not(.titre):not(.soustitre) {
@@ -83,8 +90,9 @@ section#aide div#aide_content div.aide_text_content > div:not(.titre):not(.soust
 }
 /* Le titre d'un texte d'aide */
 section#aide div#aide_content div.aide_text .titre {
+  font-family         :Verdana;
   font-size           :1.4em;
-  margin-bottom       :2em !important;
+  margin-bottom       :1.2em !important;
 }
 section#aide div#aide_content div.aide_text td.titre {
   padding-bottom      :0.9em;

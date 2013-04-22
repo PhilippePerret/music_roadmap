@@ -8,6 +8,7 @@ window.User = {
   nom             :null,
   md5             :null,
   mail            :null,
+  instrument      :null,      // Instrument ID (used for DB Exercices)
   roadmaps        :null,      // liste (array) des roadmaps de l'utilisateur
   identified      :false,
   
@@ -75,8 +76,8 @@ window.User = {
   signin:function(){
     this.preparing_form = true ;
     Aide.options({bandeau_titre:false}) ; // réglage des options
-    Aide.remove('user/signup_form.html');
-    Aide.show('user/signin_form.html', $.proxy(this.prepare_signin_form, this));
+    Aide.remove('user/signup_form');
+    Aide.show('user/signin_form', $.proxy(this.prepare_signin_form, this));
     return false; // pour le a-lien
   },
   // Méthode vérifiant les data envoyées pour l'identification
@@ -108,10 +109,11 @@ window.User = {
       // ------------------------
       //  Identification réussie
       // ------------------------
-      var duser     = rajax.user ;
-      this.md5      = duser.md5 ;
-      this.nom      = duser.nom ;
-      this.mail     = duser.mail ;
+      var duser       = rajax.user ;
+      this.md5        = duser.md5 ;
+      this.nom        = duser.nom ;
+      this.mail       = duser.mail ;
+      this.instrument = duser.instrument;
       this.roadmaps = rajax.roadmaps ;
       $('div#user_signin_form').remove();
       Aide.close() ;
@@ -119,9 +121,10 @@ window.User = {
       this.pour_suivre_identification();
     } else {
       // Identification failed
-      this.md5  = null ;
-      this.nom  = null ;
-      this.mail = null ;
+      this.md5        = null;
+      this.nom        = null;
+      this.mail       = null;
+      this.instrument = null;
     }
     this.checking = false ;
   },
@@ -174,8 +177,8 @@ window.User = {
   new: function(){
     this.preparing_form = true ;
     Aide.options({bandeau_titre:false});
-    Aide.show('user/signup_form.html', $.proxy(this.prepare_signup_form, this));
-    Aide.remove('user/signin_form.html');
+    Aide.show('user/signup_form', $.proxy(this.prepare_signup_form, this));
+    Aide.remove('user/signin_form');
   },
   
   // Fonctionne avec la méthode suivante (@todo: mais ça pourrait être généralisé)
@@ -269,8 +272,35 @@ window.User = {
     // Les boutons
     $('div#user_signup_form a#btn_cancel_signup').text(LOCALE_UI.Verb.Cancel);
     $('div#user_signup_form a#btn_signup').text(LOCALE_UI.User.Signup.btn_signup);
+    // Instruments
+    this.prepare_instruments_in_signup_form();
     this.preparing_form = false ;
   },
   
+  // Called with user choose a instrument in select #instruments in sign up form
+  // 
+  on_choose_instrument:function(oselect){
+    var o = $(oselect);
+    var instid    = o.val();
+    var for_other = instid == "other";
+    $('div#div_other_instrument').css('visibility', for_other ? 'visible' : 'hidden');
+    if ( ! for_other ) $('input#user_instrument').val(instid);
+    return false
+  },
+  
+  // @note: DATA_INSTRUMENTS is defined in `javascript/locale/<lang>/instruments.js`. To
+  // update this file when an instrument has been added, remove file :
+  //  javascript/locale/db_exercices/fr/piano.js
+  prepare_instruments_in_signup_form:function(){
+    for(var instid in DATA_INSTRUMENTS){
+      var dinst = DATA_INSTRUMENTS[instid];
+      $('select#instruments').append(
+        '<option value="'+dinst['id']+'">' + dinst['name'] + '</option>');
+    }
+    $('select#instruments').append(
+      '<option value="other" class="other">' + LOCALE_UI.class.other + '</option>');
+    // Et placer le texte explicatif en fonction de la langue
+    
+  }
   
 }

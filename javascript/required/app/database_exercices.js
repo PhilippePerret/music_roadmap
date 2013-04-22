@@ -70,6 +70,7 @@ window.DBE = {
     Ajax.query({
       data:{
         proc        : 'db_exercices/recueil/load_exercices',
+        instrument  : INSTRUMENT,
         auteur_id   : auteur_id,
         recueil_id  : recueil_id,
         lang        : LANG
@@ -121,14 +122,37 @@ window.DBE = {
             '</div>' ;
   },
   
-  // Prépare la fenêtre avec les données de base (auteurs et recueils)
+  /*  Prépare la fenêtre avec les données de base (auteurs et recueils)
+      ------------------------------------------------------------------
+      Noter qu'au départ, la donnée DB_EXERCICES n'est pas chargée, puisqu'elle dépend
+      maintenant de l'instrument de l'utilisateur. Donc il faut commencer par la charger
+      en renseignant le src de la balise script `src_db_exercices`.
+      
+      Le timer_prepare permet d'attendre que DB_EXERCICES soit chargé
+  */ 
+  timer_prepare:null,
   prepare:function(){
+    if ('undefined'==typeof DB_EXERCICES){
+      if ( this.timer_prepare == null ){
+        if ( $('script#src_db_exercices').length ) $('script#src_db_exercices').remove();
+        var src = "javascript/locale/db_exercices/"+LANG+"/"+User.instrument+".js";
+        var balscript = '<script id="src_db_exercices" src="' + src + '" type="text/javascript" />' ;
+        $('body').append(balscript);
+      }
+      this.timer_prepare = setTimeout("DBE.prepare()", 100);
+      return false;
+    } else {
+      if ( this.timer_prepare != null ){
+        clearTimeout(this.timer_prepare);
+        this.timer_prepare = null ;
+      } 
+    }
     var o = $('div#dbe_listing');
     for(auth_id in DB_EXERCICES){
       o.append(this.prepare_div_auteur(auth_id,DB_EXERCICES[auth_id]));
     }
     // Remplacer le noms des éléments DOM
-    $('div#database_exercices div#dbe_titre').html(LOCALE_UI.DBExercice.titre)
+    $('div#database_exercices div#dbe_titre').html(LOCALE_UI.DBExercice.titre + ' ' + INSTRUMENT);
     $('div#database_exercices a#btn_dbe_add_selected').html(LOCALE_UI.DBExercice.add_selected);
     $('div#database_exercices a.cancel').html(LOCALE_UI.Verb.Cancel);
     $('div#database_exercices a.close').html(LOCALE_UI.Verb.Close);

@@ -1,5 +1,18 @@
 window.LOCALE_UI = {
   lang: 'en',
+  // -- Remplacements automatique --
+  // Au changement de langue, l'application parcourt les éléments définis dans 'span' et
+  // 'id' ci-dessous et les remplace par les textes localisés s'il les trouve.
+  class:{
+    other       : "Other…"
+  },
+  id:{
+    span:{
+      section_aide_titre      :"HELP",
+      section_aide_move_txt   :"(move this box by <br>clicking-dragging this bar)"
+    }
+  },
+  // -- Fin des remplacements automatiques --
   Verb:{
     and_save    : "and save",
     Cancel      : "Cancel",

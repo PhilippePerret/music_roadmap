@@ -43,9 +43,9 @@ class Html
   @@javascripts = []
   @@css = []
   
-  FOLDER_VIEWS        = File.join(APP_FOLDER, '_MVC_', 'view')
+  FOLDER_VIEWS        = File.join(APP_FOLDER,   '_MVC_', 'view')
   FOLDER_CSS          = File.join(FOLDER_VIEWS, 'css')
-  FOLDER_JAVASCRIPTS  = File.join(APP_FOLDER, 'javascript')
+  FOLDER_JAVASCRIPTS  = File.join(APP_FOLDER,   'javascript')
   
   class << self
     def out
@@ -179,10 +179,11 @@ class Html
       liste = 
         Dir["#{FOLDER_JAVASCRIPTS}/required/**/*.js"] +
         @@javascripts
-      tags + locales + liste.collect do |js|
+      jss = tags + locales + liste.collect do |js|
         js = js.sub(/#{APP_FOLDER}\//,'')
         "<script type=\"text/javascript\" src=\"#{js}\"></script>"
       end.to_s
+      jss
     end
     
     # CSS

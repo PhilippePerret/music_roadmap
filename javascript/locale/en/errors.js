@@ -42,6 +42,10 @@ window.ERRORS = {
     },
     unable_with_example: "Forbidden with Example Roadmap."
   },
+  // INSTRUMENT
+  Instrument:{
+    should_be_defined      :"Instrument (ID) should be defined…"
+  },
   // EXERCICES
   Exercices: {
     Edit:{

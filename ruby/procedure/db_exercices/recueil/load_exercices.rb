@@ -13,7 +13,7 @@ require File.join(FOLDER_LIB_RUBY, 'module', 'data_base_exercices.rb')
 # 
 # @return   Un Hash contenant les données sur les exercices du recueil demandé
 def ajax_db_exercices_recueil_load_exercices
-  ok, exs = db_exercices_recueil_load_exercices param(:auteur_id), param(:recueil_id), param(:lang)
+  ok, exs = db_exercices_recueil_load_exercices param(:instrument), param(:auteur_id), param(:recueil_id), param(:lang)
   if ok
     RETOUR_AJAX[:exercices]   = exs
     RETOUR_AJAX[:auteur_id]   = param(:auteur_id)
@@ -24,9 +24,9 @@ def ajax_db_exercices_recueil_load_exercices
 end
 
 # @return [<ok>, <hash with data exercices or error message>]
-def db_exercices_recueil_load_exercices auteur_id, recueil_id = nil, lang = :en
+def db_exercices_recueil_load_exercices inst_id, auteur_id, recueil_id = nil, lang = :en
   begin
-    exs = DataBaseExercices::exercices_by auteur_id, recueil_id, lang.to_sym
+    exs = DataBaseExercices::exercices_by inst_id, auteur_id, recueil_id, lang.to_sym
     return [true, exs]
   rescue Exception => e
     return [false, e.message + "<br>" + e.backtrace.join("<br>")]
