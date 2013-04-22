@@ -18,7 +18,7 @@
 # - On doit vérifier que le message annonce bien que l'exercice n'a pas été pris
 #   en compte.
 # 
-Quand je charge la roadmap "test_benoit-testeur" comme propriétaire
+Quand je charge la roadmap "test_benoit-benoit.ackerman@yahoo.fr" comme propriétaire
 Et l'image du métronome arrêtée
 
   # Simple contrôle de la mise en route de l'exercice

@@ -93,6 +93,12 @@ Sorry.configure do |config|
     }
   end
   
+  # Return les data de Benoit
+  def get_data_benoit
+    require File.join(APP_FOLDER, 'data', 'secret', 'data_benoit.rb')
+    return DATA_BENOIT
+  end
+  
   # Return a Hash for a date "AAAA-MM-JJ"
   def data_date date
     require 'date'

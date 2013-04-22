@@ -13,8 +13,9 @@ when /je m'identifie (par le formulaire|par javascript|par JS)? (avec des codes 
   par_js = par == nil || ["par javascript","par JS"].include?(par)
   comme = $2
   @mail, @password = case comme.strip
-  when "comme testeur"            then 
-    ["benoit.ackerman@yahoo.fr", "testeur"]
+  when "comme testeur"            then
+    dbenoit = get_data_benoit
+    [dbenoit[:mail], dbenoit[:password]]
   when "comme admin"              then 
     [DATA_PHIL[:mail], DATA_PHIL[:password]]
   when "avec des codes invalides" then 
