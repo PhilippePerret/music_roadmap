@@ -14,7 +14,6 @@ def notify_with_growl title, description, sticky = false
         "description \"#{description}#{add_sticky}\" "  +
         "application name \"Make_Extraits_Partitions\"" + sticky_bool
   cmd += " image mypic" if un_picto
-  puts "cmd: #{cmd}"
 
   return <<-APPLESCRIPT
   tell application "Growl"
@@ -68,7 +67,7 @@ notify "Ouvrir dans Gimp", "Ouvre la partition dans Gimp et choisis la page"
 sleep PAUSE
 notify "Croper la partition", "Dans Gimp, Crop la partition au maximum (MAJ + C)"
 sleep PAUSE
-notify "Dimension image", "Mets le canevas (Image > Taille du canevas) à 500 x 300"
+notify "Dimension image", "Mets le canevas (CMD + MAJ + T) à 500 x 300"
 sleep PAUSE
 notify "Dimension du calque", "CMD + T pour redimensionner l'image à 500.\nNOTE: Lie hauteur et largeur si c'est la première fois."
 sleep PAUSE
