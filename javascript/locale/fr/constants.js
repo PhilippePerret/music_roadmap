@@ -7,6 +7,8 @@ $.extend(window.Exercices,{
     'G0':"Gammes",
     'A0':"Arpèges",
     'C0':"Accords",
+    'LH':"Main gauche",
+    'RH':"Main droite",
     'R0':"Rythme",
     'T1':"Tierces",
     'S0':"Sixtes",
@@ -17,6 +19,6 @@ $.extend(window.Exercices,{
     'C1':"Chromatic",
     'P0':"Poignet",
     'D0':"Déliateur",
-    'E0':"Écarts"
+    'E0':"Extensions"
   }
 });

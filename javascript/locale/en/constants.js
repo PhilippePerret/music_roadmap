@@ -9,6 +9,8 @@ $.extend(window.Exercices,{
       'G0':"Scales",
       'A0':"Arpeggios",
       'C0':"Chords",
+      'LH':"Left hand",
+      'RH':"Right hand",
       'R0':"Rythm",
       'T1':"Thirds",
       'S0':"Sixths",
@@ -19,7 +21,7 @@ $.extend(window.Exercices,{
       'C1':"Chromatisme",
       'P0':"Wrist",
       'D0':"Unbinder",
-      'E0':"Strech"
+      'E0':"Extention"
     }
   }
 });
