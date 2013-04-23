@@ -34,7 +34,7 @@ window.DBE = {
       o = $(o);
       if (o.is(':checked')) ary.push( o.attr('id').replace(/^cb_dbex\-/,''))
     });
-    if (ary.length == 0) F.error(ERRORS.DBExercice.no_exercice_choosed);
+    if (ary.length == 0) F.error(ERROR.DBExercice.no_exercice_choosed);
     else{ 
       this.close();
       Exercices.Edition.close(); // normalement, c'est logique

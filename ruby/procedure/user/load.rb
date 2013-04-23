@@ -14,7 +14,7 @@ require_model 'user'
 def ajax_user_load
   duser = param(:user)
   RETOUR_AJAX[:user]  = user_load duser['mail'], duser['password']
-  RETOUR_AJAX[:error] = "ERRORS.User.unknown" if RETOUR_AJAX[:user].nil?
+  RETOUR_AJAX[:error] = "ERROR.User.unknown" if RETOUR_AJAX[:user].nil?
 end
 
 def user_load mail, password

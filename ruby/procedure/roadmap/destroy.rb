@@ -37,7 +37,7 @@ def roadmap_destroy rm, auth
     raise "bad_owner"   unless rm.owner_or_admin? auth
     return roadmap_can_be_removed rm # => nil si succès, ou message d'erreur
   rescue Exception => e
-    return "ERRORS.Roadmap.#{e.message}"
+    return "ERROR.Roadmap.#{e.message}"
   end
 end
 

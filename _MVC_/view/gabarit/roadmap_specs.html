@@ -4,9 +4,16 @@
 <div id="roadmap_specs-specs">
   <table width="100%">
     <tr>
-      <td id="td_label_roadmap" class="center" width="180">FEUILLE DE ROUTE</td>
-      <td>
-        <input type="text" id="roadmap_nom" value="" onchange="$.proxy(Roadmap.onchange_affixe, Roadmap, this.value, null)()" />
+      <td id="td_label_roadmap" class="center" width="100">FEUILLE DE ROUTE</td>
+      <td width="330">
+        <input 
+            type="text"
+            class="form"
+            id="roadmap_nom" 
+            value="" 
+            onchange="$.proxy(Roadmap.onchange_nom, Roadmap, this.value, null)()" 
+            onfocus="$.proxy(Roadmap.on_focus_nom, Roadmap)()"
+            />
       </td>
       <td colspan="2">
         <select id="roadmaps" onchange="$.proxy(Roadmap.open_by_menu, Roadmap, this.id)()"></select>

@@ -107,7 +107,7 @@ class Roadmap
   def check_nom_et_mail
     @nom = nil if @nom == ""
     @mail = nil if @mail == ""
-    raise "ERRORS.Roadmap.initialization_failed" if @nom.nil? || @mail.nil?
+    raise "ERROR.Roadmap.initialization_failed" if @nom.nil? || @mail.nil?
   end
   
   # -------------------------------------------------------------------

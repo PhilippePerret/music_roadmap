@@ -75,7 +75,6 @@ section#roadmap div#roadmap_specs {
 }
 section#roadmap div#roadmap_specs input[type=text] {
   padding             : 2px ;
-  width               : 160px;
 }
 
 /*

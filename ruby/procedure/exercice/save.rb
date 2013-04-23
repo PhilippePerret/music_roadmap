@@ -22,7 +22,7 @@ def exercice_save rm, data, owner
     raise "Roadmap.bad_owner" unless rm.owner_or_admin? owner
     raise "Exercices.Edit.id_required" unless data.has_key?('id') && data['id'] != nil
   rescue Exception => e
-    return "ERRORS.#{e.message}"
+    return "ERROR.#{e.message}"
   end
   # -- Tout est OK, on peut sauver l'exercice --
   

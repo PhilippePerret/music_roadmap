@@ -53,11 +53,11 @@ class User
   def roadmaps;     @roadmaps     ||= data['roadmaps']    end
   
   # Ajoute une roadmap à l'utilisateur (et sauve ses nouvelles données)
-  def add_roadmap nom, umail
-    # @FIXME: Ici, il faudra faire un check du nombre de roadmaps pour le
-    # limiter
-    @roadmaps << "#{nom}-#{umail}"
+  def add_roadmap nom
+    return false if roadmaps.count > 10
+    roadmaps << nom
     save
+    true
   end
   # => Return les data minimales (pour JS)
   def data_mini

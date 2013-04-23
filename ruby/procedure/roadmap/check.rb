@@ -17,16 +17,16 @@ def ajax_roadmap_check
   begin
     # puts "nom:#{nom} / umail:#{umail}"
     if nom.to_s == "" || umail.to_s == ""
-      raise "ERRORS.Roadmap.Specs.requises"
+      raise "ERROR.Roadmap.Specs.requises"
     end
     fdr = Roadmap.new nom, umail
   rescue Exception => e
     # Sera évalué en retour ajax
-    e.message = "\"#{e.message}\"" unless e.message.start_with?("ERRORS")
+    e.message = "\"#{e.message}\"" unless e.message.start_with?("ERROR")
     RETOUR_AJAX[:error] = e.message
   else
     if fdr.exists?
-      RETOUR_AJAX[:error] = "ERRORS.Roadmap.existe_deja"
+      RETOUR_AJAX[:error] = "ERROR.Roadmap.existe_deja"
     else
       RETOUR_AJAX[:error] = nil
     end

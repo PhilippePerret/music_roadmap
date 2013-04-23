@@ -99,7 +99,7 @@ $.extend(window.Exercices,{
       if ( data['tempo_min'] >= data['tempo_max'])  throw 'min_sup_to_min';
       if ( data['tempo'] < data['tempo_min'])       throw 'tempo_inf_to_min' ;
     } catch( cle_erreur ) {
-      F.error( ERRORS.Exercices.Edit[cle_erreur] ) ;
+      F.error( ERROR.Exercices.Edit[cle_erreur] ) ;
       return this.saving = false ;
     }
     var iex = exercice( data['id'] ) ;

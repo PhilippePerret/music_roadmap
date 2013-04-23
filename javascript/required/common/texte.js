@@ -12,4 +12,16 @@ window.Texte = {
     return txt;
   },
   
+  // Return +txt+ with only ASCII characters
+  NON_ASCII:{ "e":"éèêë", "E":"ÉÈÊË", "a": "àâä", "A":"ÀÄÂ", "i":"îîï", "c":"ç", "C":"Ç",
+  "o":"ôöò", "oe":"œ", "OE":"Œ"},
+  to_ascii:function(txt){
+    var bad, good;
+    for(good in this.NON_ASCII){
+      bad = new RegExp(this.NON_ASCII[good], "g");
+      txt = txt.replace(bad,good);
+    }
+    return txt;
+  }
+  
 }

@@ -15,7 +15,7 @@ def exercice_save_duree_travail rm, dataex, datauser
     raise "Roadmap.bad_owner" unless rm.owner_or_admin? datauser
     raise "Exercices.Edit.id_required" unless dataex.has_key?(:id) && dataex[:id] != nil
   rescue Exception => e
-    return "ERRORS.#{e.message}"
+    return "ERROR.#{e.message}"
   end
   
   # -- Tout est OK, on peut sauver la durée de travail sur l'exercice --

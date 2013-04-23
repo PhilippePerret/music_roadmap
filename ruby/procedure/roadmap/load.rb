@@ -8,7 +8,7 @@ def ajax_roadmap_load
   begin
     rm = Roadmap.new param(:roadmap_nom), param(:user_mail)
     if param(:check_if_exists).to_s == "true" && !rm.exists?
-      raise "ERRORS.Roadmap.unknown" 
+      raise "ERROR.Roadmap.unknown" 
     end
   rescue Exception => e
     RETOUR_AJAX[:roadmap] = nil
@@ -32,7 +32,7 @@ end
 # 
 def roadmap_load rm, umail = nil, only = nil
   rm = Roadmap.new rm, umail unless rm.class == Roadmap
-  return "ERRORS.Roadmap.unknown" unless rm.exists?
+  return "ERROR.Roadmap.unknown" unless rm.exists?
   
   # Les données qui seront retournées
   # Peut contenir, suivant la valeur de +only+ :

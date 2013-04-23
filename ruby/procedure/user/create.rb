@@ -8,7 +8,7 @@ require_model 'mail'
 def ajax_user_create
   begin
     duser = param(:user)
-    raise 'ERRORS.User.Signup.need_data' if duser.class != Hash
+    raise 'ERROR.User.Signup.need_data' if duser.class != Hash
     ok, md5 = user_create( param(:user).to_sym, param(:lang) )
     raise md5 if ok == false
     RETOUR_AJAX[:user]  = { :md5 => md5 }
@@ -26,14 +26,14 @@ end
 def user_create duser, lang = 'en'
   begin
     # Données requises
-    raise "ERRORS.User.mail_required" unless duser.has_key?(:mail)
-    raise "ERRORS.User.password_required" unless duser.has_key?(:password)
-    raise "ERRORS.User.Signup.instrument_required" unless duser.has_key?(:instrument)
+    raise "ERROR.User.mail_required" unless duser.has_key?(:mail)
+    raise "ERROR.User.password_required" unless duser.has_key?(:password)
+    raise "ERROR.User.Signup.instrument_required" unless duser.has_key?(:instrument)
     # MD5 et check de la non-existence
     # @note: l'instance a aussi besoin de connaître @instrument pour calculer
     # le md5
     user  = User.new( :mail => duser[:mail], :instrument => duser[:instrument] ) # virtual user
-    raise "ERRORS.User.Signup.already_exists" if user.exists?
+    raise "ERROR.User.Signup.already_exists" if user.exists?
     pwd   = duser.delete(:password)
     md5   = user.to_md5 pwd
     # Création de l'utilisateur

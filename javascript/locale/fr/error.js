@@ -2,7 +2,7 @@
     FICHIER LOCALES ERREURS
     =======================
 */
-window.ERRORS = {
+window.ERROR = {
   lang: 'fr',
   // USER
   User:{
@@ -25,17 +25,20 @@ window.ERRORS = {
   },
   // ROADMAP
   Roadmap: {
-    initialization_failed : "Impossible d'initialiser la feuille de route…",
-    required        : "Une feuille de route est requise !",
-    cant_create     : "Impossible de créer la feuille de route avec les données fournies…",
-    unknown         : "Feuille de route introuvable… Impossible de la charger.",
-    existe_deja     : "Cette feuille de route existe déjà.",
-    not_destroyed   : "# Impossible de détruire cette feuille de route…",
-    bad_owner       : "Vous devez être le possesseur de cette feuille de route pour procéder à cette opération !",
+    must_signin_to_create :"Vous devez être identifié (ou inscrit) ouvrir ou créer une feuille de route.",
+    initialization_failed :"Impossible d'initialiser la feuille de route…",
+    required              :"Une feuille de route est requise !",
+    too_many              :"Désolé, mais vous ne pouvez pas créer plus de dix feuilles de route…",
+    cant_create           :"Impossible de créer la feuille de route avec les données fournies…",
+    unknown               :"Feuille de route introuvable… Impossible de la charger.",
+    existe_deja           :"Cette feuille de route existe déjà.",
+    not_destroyed         :"# Impossible de détruire cette feuille de route…",
+    bad_owner             :"Vous devez être le possesseur de cette feuille de route pour procéder à cette opération !",
     Specs:{
-      requises      : "Le nom et le mot de passe de la feuille de route sont requis !",
-      need_a_nom    : "Il faut définir le nom de la feuille de route !",
-      invalid_nom   : "Le nom contient des caractères invalides…"
+      requises            :"Le nom de la feuille de route est requis !",
+      need_a_nom          :"Il faut définir le nom de la feuille de route !",
+      invalid_nom         :"Le nom contient des caractères invalides que j'ai supprimés ou remplacés…",
+      too_short_name      :"Ce nom est trop court (au moins 6 caractères, s'il vous plait)"
     },
     Data:{
       required                  : "Les données à dispatcher sont requises !",

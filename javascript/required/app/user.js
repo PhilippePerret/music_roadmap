@@ -65,7 +65,7 @@ window.User = {
   // 
   need_to_signin:function(fx_suite){
     if ( this.is_identified() ) return false ;
-    F.error(ERRORS.User.need_to_signin) ;
+    F.error(ERROR.User.need_to_signin) ;
     this.signin();
     this.fx_pour_suivre_signin = fx_suite ;
     return true ;
@@ -94,7 +94,7 @@ window.User = {
       if ( hdata.mail     == "" ) throw 'mail_required';
       if ( hdata.password == "" ) throw 'password_required';
     }catch(erreur){
-      F.error(ERRORS.User[erreur]);
+      F.error(ERROR.User[erreur]);
       return this.checking = false ;
     }
     Ajax.query({
@@ -114,7 +114,7 @@ window.User = {
       this.nom        = duser.nom ;
       this.mail       = duser.mail ;
       this.instrument = duser.instrument;
-      this.roadmaps = rajax.roadmaps ;
+      this.roadmaps   = rajax.roadmaps ;
       $('div#user_signin_form').remove();
       Aide.close() ;
       F.show(MESSAGE.User.welcome);
@@ -145,6 +145,18 @@ window.User = {
       this.fx_pour_suivre_signin = null ;
     }
   },
+  
+  // Return TRUE if user is identified and has roadmaps. FALSE otherwise
+  has_roadmaps:function(){
+    return this.roadmaps != null && this.roadmaps.length > 0;
+  },
+  
+  // Return TRUE if user has too many roadmap (10 max)
+  has_nombre_max_roadmaps:function(){
+    if (this.roadmaps == null) return false;
+    return this.roadmaps.length >= 10 ;
+  },
+  
   SIGNIN_LABELS:['TITRE','MAIL','PASSWORD'],
   SIGNIN_BUTTONS:['BTN_SIGNIN', 'BTN_WANT_SIGNUP'],
   prepare_signin_form: function(){
@@ -218,7 +230,7 @@ window.User = {
       if ( 'object' == typeof erreur ){
         erreur.dom.addClass('error');
         erreur.dom.focus();
-        errmes = ERRORS.User.Signup[erreur.locale] ;
+        errmes = ERROR.User.Signup[erreur.locale] ;
       }
       else{ errmes = erreur }
       F.error(errmes, {inner:'section#aide'});

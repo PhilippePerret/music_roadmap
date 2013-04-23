@@ -20,13 +20,13 @@ end
 
 def user_check hdata
   begin
-    raise "ERRORS.User.mail_required" unless hdata.has_key?(:mail)
-    raise "ERRORS.User.mail_required" if hdata[:mail].to_s == ""
-    raise "ERRORS.User.password_required" unless hdata.has_key?(:password)
-    raise "ERRORS.User.password_required" if hdata[:password].to_s == ""
+    raise "ERROR.User.mail_required" unless hdata.has_key?(:mail)
+    raise "ERROR.User.mail_required" if hdata[:mail].to_s == ""
+    raise "ERROR.User.password_required" unless hdata.has_key?(:password)
+    raise "ERROR.User.password_required" if hdata[:password].to_s == ""
     user = User.new hdata
-    raise "ERRORS.User.unknown" unless user.exists?
-    raise "ERRORS.User.unknown" unless user.valide_with?(hdata[:password])
+    raise "ERROR.User.unknown" unless user.exists?
+    raise "ERROR.User.unknown" unless user.valide_with?(hdata[:password])
     # On peut charger l'utilisateur
     require 'procedure/user/load'
     [true, user_load(hdata[:mail], hdata[:password]), user.roadmaps]

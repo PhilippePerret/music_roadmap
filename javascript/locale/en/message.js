@@ -9,6 +9,7 @@ window.MESSAGE = {
   },
   // ROADMAP
   Roadmap: {
+    how_to_make_a_good_nom: "For a valid name, don't use spaces and specials chars. If you want to open a roadmap of yours, use the select menu instead.",
     creating    : "Creating roadmap…",
     saving      : "Saving…",
     created     : "Roadmap successfully created",

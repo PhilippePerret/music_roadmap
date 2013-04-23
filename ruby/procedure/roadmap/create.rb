@@ -12,19 +12,20 @@ def roadmap_create data
   begin
     # puts "-> roadmap_create avec : #{data.inspect}"
     # Présence des données
-    raise unless data.has_key?(:nom) && data[:nom] != nil
+    # Check de l'Owner
     raise unless data.has_key?(:mail) && data[:mail] != nil
     raise unless data.has_key?(:md5) && data[:md5] != nil
-    raise unless data.has_key?(:salt) && data[:salt] != nil
-    raise unless data.has_key?(:partage) && data[:partage] != nil
-    # Check de l'Owner
     owner = User.new data[:mail]
     raise unless owner.md5 == data[:md5]
+    return "ERROR.Roadmap.too_many" if owner.roadmaps.count > 9
+    raise unless data.has_key?(:nom) && data[:nom] != nil
+    raise unless data.has_key?(:salt) && data[:salt] != nil
+    raise unless data.has_key?(:partage) && data[:partage] != nil
     # Unicité de la roadmap
     rm = Roadmap.new data[:nom], data[:mail]
     raise if rm.exists?
   rescue Exception => e
-    return "ERRORS.Roadmap.cant_create"
+    return "ERROR.Roadmap.cant_create"
   end
   
   begin
@@ -41,7 +42,7 @@ def roadmap_create data
     }
     File.open(rm.path_exercices,'wb') { |f| f.write data.to_json }
     # On ajoute cette roadmap à l'utilisateur
-    owner.add_roadmap "#{rm.nom}-#{rm.mail}"
+    owner.add_roadmap rm.nom
     # @note: les autres fichiers doivent être créés par la procédure save
     return nil # important
   rescue Exception => e

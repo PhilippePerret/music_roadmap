@@ -24,4 +24,4 @@ Et que je m'identifie par le formulaire comme testeur
 # Et que je m'identifie par le formulaire avec des codes invalides
 #   Then je ne dois pas être identifié
 #   Et la boite d'identification doit s'afficher
-#   Et le message d'erreur "ERRORS.User.unknown" doit être affiché
+#   Et le message d'erreur "ERROR.User.unknown" doit être affiché

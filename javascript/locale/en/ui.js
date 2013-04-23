@@ -63,7 +63,7 @@ window.LOCALE_UI = {
     },
   },
   Roadmap: {
-    open_your_rm  : "Open your roadmap",
+    open_your_rm  : "Display…",
     btn_save      : "Save",
     btn_saved     : "Saved",
     btn_saving    : "Saving…",

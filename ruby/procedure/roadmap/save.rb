@@ -9,11 +9,11 @@ def ajax_roadmap_save
 
   begin
     user_mail  = param(:mail)
-    raise "ERRORS.User.mail_required" if user_mail.to_s == ""
+    raise "ERROR.User.mail_required" if user_mail.to_s == ""
     user_md5 = param(:md5)
-    raise "ERRORS.User.md5_required" if user_md5.to_s == ""
+    raise "ERROR.User.md5_required" if user_md5.to_s == ""
     owner = User.new user_mail
-    raise "ERRORS.User.unknown" unless owner.exists?
+    raise "ERROR.User.unknown" unless owner.exists?
     
     nom = param(:roadmap_nom)
     rm = Roadmap.new nom, user_mail
@@ -22,9 +22,9 @@ def ajax_roadmap_save
     unless for_creation
       # Update
       # ------
-      raise "ERRORS.Roadmap.unknown"    unless rm.exists?
+      raise "ERROR.Roadmap.unknown"    unless rm.exists?
       is_owner_or_admin = rm.owner_or_admin?(user_mail, user_md5)
-      raise "ERRORS.Roadmap.bad_owner"  unless is_owner_or_admin
+      raise "ERROR.Roadmap.bad_owner"  unless is_owner_or_admin
     else
       # Création
       # --------
@@ -36,13 +36,12 @@ def ajax_roadmap_save
         :salt     => owner.salt,
         :partage  => 0
       }
-      puts "data: #{data.inspect}"
-      res = roadmap_create(data)
+      res = roadmap_create data
       raise res if res != nil
     end
   rescue Exception => e
     errmess = e.message
-    errmess = "# [Procédure roadmap/save] FATAL ERROR: #{errmess}" unless errmess.start_with?('ERRORS')
+    errmess = "# [Procédure roadmap/save] FATAL ERROR: #{errmess}" unless errmess.start_with?('ERROR')
     RETOUR_AJAX[:error] = errmess
     return
   end
@@ -71,7 +70,7 @@ end
 # @param  rm        Instance Roadmap de la feuille de route courante
 # 
 def roadmap_save keypath, data, rm
-  return "ERRORS.Roadmap.unknown" unless rm.exists?
+  return "ERROR.Roadmap.unknown" unless rm.exists?
   now = Time.now.to_i
   begin
     if data.class == Hash
@@ -90,6 +89,12 @@ def roadmap_save keypath, data, rm
       data = data.merge('updated_at' => now)
     end
   
+    # On ajoute toujours la paramètres 'ordre' à exercices.js, qui a pu être supprimé au
+    # cours de la requête ajax
+    if keypath == 'exercices'
+      data = data.merge('ordre' => []) unless data.has_key?('ordre')
+    end
+    
     # --- Enregistrement ---
     rm.build_folder
     File.open( rm.send("path_#{keypath}"), 'wb' ){ |f| f.write data.to_json }

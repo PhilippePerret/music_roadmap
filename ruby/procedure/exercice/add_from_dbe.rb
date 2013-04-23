@@ -32,7 +32,7 @@ def exercice_add_from_dbe rm, duser, inst_id, exs, options
     raise "unknown.bad_owner" unless rm.owner_or_admin? duser
     raise "Instrument.should_be_defined" if inst_id.nil?
   rescue Exception => e
-    return "ERRORS.#{e.message}"
+    return "ERROR.#{e.message}"
   end
 
   # DBExercice needs to know the language and the instrument

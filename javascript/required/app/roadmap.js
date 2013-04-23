@@ -20,6 +20,16 @@ window.Roadmap = {
   next_id_exercice:function(){
     return ++ this.last_id_exercice ;
   },
+  
+  // Called when we focuse in text-field roadmap_nom
+  on_focus_nom:function(){
+    var o = $('input#roadmap_nom');
+    o.select();
+    if (User.is_identified())
+      F.show(MESSAGE.Roadmap.how_to_make_a_good_nom);
+    else
+      F.error(ERROR.Roadmap.must_signin_to_create);
+  },
   // // => Retourne le nom de la feuille de route courante
   get_nom: function(){
     BT.add('-> Roadmap.get_nom') ;
@@ -55,6 +65,7 @@ window.Roadmap = {
   init: function(){
     BT.add('-> Roadmap.init') ;
     this.set("");
+    this.set_btns_roadmap();
     BT.add('<- Roadmap.init') ;
   },
   
@@ -108,11 +119,20 @@ window.Roadmap = {
   },
   
   // Masquer/afficher les boutons propres à la roadmap
+  // - Button to init a new roadmap (init)
+  // - Button to open a roadmap
+  // - Button to create a roadmap
+  // - Button to save the roadmap
+  // - Button to create a new exercice
+  // - General configuration of exercices @FIXME: Devrait être avec les exercices
+  // 
   set_btns_roadmap: function(){
     BT.add('-> Roadmap.set_btns_roadmap') ;
 
+    var userok = User.is_identified();
+    var ok_to_create  = userok && this.nom != null ;
+    var ok_to_open    = ok_to_create && this.loaded == false ;
     var des_exs = EXERCICES.length > 0 ;
-    var specsok_and_not_loaded = this.loaded == false && this.specs_ok() ;
     
     // -- Bouton par bouton --
     
@@ -124,17 +144,21 @@ window.Roadmap = {
     // Ne doit être visible que si les specs sont valides, que la roadmap
     // n'est pas chargée (attention : une autre roadmap peut avoir été
     // chargée)
-    UI.set_visible('a#btn_roadmap_open', specsok_and_not_loaded ) ;
+    UI.set_visible('a#btn_roadmap_open', ok_to_open ) ;
 		
     // :create
     // Ne doit être visible que si les specs sont valides et ne correspondent
     // pas à la roadmap chargée (=> loaded = false)
-    UI.set_visible('a#btn_roadmap_create', specsok_and_not_loaded );
+    UI.set_visible('a#btn_roadmap_create', ok_to_create );
     
     // :save
     // Ne doit être visible que si une roadmap est chargée (son état varie
     // ensuite en fonction de l'état de la sauvegarde)
-    this.set_etat_btn_save( this.modified ) ;
+    this.set_etat_btn_save( this.modified == true ) ;
+    
+    // :select#roadmaps
+    // Menu des roadmaps de l'utilisateur
+    UI.set_visible('select#roadmaps', User.has_roadmaps() );
     
     // Configuration générale des exercices
     // Visible seulement si une feuille de route est chargée
@@ -175,24 +199,24 @@ window.Roadmap = {
     return false ; // pour le a-lien
   },
   // Appelé quand on change la valeur du nom de la roadmap dans les specs
-  onchange_affixe:function(nom){
-    BT.add('-> Roadmap.onchange_affixe (nom='+nom) ;
+  onchange_nom:function(nom){
+    BT.add('-> Roadmap.onchange_nom (nom='+nom) ;
     if( nom != null ) {
-      if ( nom == "" ) nom = null ;
-      else {
-        nom_init = nom.toString();
-        nom = this.get_a_correct( nom ) ;
-        if( nom_init != nom ){
-          F.error(ERRORS.Roadmap.Specs.invalid_nom) 
+      try{
+        if ( nom == "" ) throw 'need_a_nom' ;
+        else {
+          if( this.get_a_correct_and_set( nom ) ) throw 'invalid_nom';
+          if( this.nom.length < 6 ) throw 'too_short_name';
         }
+      } catch (iderr){
+        this.set(this.nom = null) ;
+        F.error(ERROR.Roadmap.Specs[iderr]);
       }
-      this.nom = this.set(nom);
     }
     this.loaded = false ;
-    var afficher_alerte = nom == false ; // cf. N0006
-    this.are_specs_valides(true, afficher_alerte) ;
+    this.are_specs_valides(true, false) ;
     this.set_btns_roadmap();
-    BT.add('<- Roadmap.onchange_affixe') ;
+    BT.add('<- Roadmap.onchange_nom') ;
   },
   
   // Retourne true si le nom de la roadmap est défini et que le mail de l'utilisateur
@@ -202,7 +226,7 @@ window.Roadmap = {
     if ('undefined' == typeof with_message) with_message = false ;
     this.get();
     var ok = this.nom != null && User.mail != null ;
-    if ( with_message && !ok ) F.error(ERRORS.Roadmap.Specs.requises) ;
+    if ( with_message && !ok ) F.error(ERROR.Roadmap.Specs.requises) ;
     BT.add('<- Roadmap.specs_ok / return : ' + ok) ;
     return ok ;
   },
@@ -210,32 +234,33 @@ window.Roadmap = {
   // => Retourne true si le nom et le User.mail sont valides
   are_specs_valides: function(forcer_check, with_message ){
     BT.add('-> Roadmap.are_specs_valides') ;
+    if ( User.mail == null ) return false ;
     if ( 'undefined' == typeof with_message ) with_message = true ;
     if ( 'undefined' == typeof forcer_check ) forcer_check = false ;
     if (this.specs_valides !== null && !forcer_check) return this.specs_valides ;
-    this.get();
     try {
       if( this.nom == null ) {
-        UI.focus('roadmap_nom') ; 
-        throw 'need_a_nom' ;
-      } else if( this.affixe().replace(/[a-zA-Z0-9_-]/g, '') != "" ){
-        var nom_is_bad = this.nom.replace(/[a-zA-Z0-9_-]/g, '') != "" ;
-        this.set( this.get_a_correct(this.nom)) ;
-        UI.focus('roadmap_nom') ;
-        throw 'invalid_nom';
+        UI.focus('roadmap_nom');
+        throw 'need_a_nom';
       }
       // Tout semble OK
       this.specs_valides = true ;
     } catch( erreur ){ 
       this.specs_valides = false ;
-      if ( with_message ) Flash.error( ERRORS.Roadmap.Specs[erreur], {keep:false} ) ;
+      if ( with_message ) Flash.error( ERROR.Roadmap.Specs[erreur], {keep:false} ) ;
     }
     BT.add('<- Roadmap.are_specs_valides (return: this.specs_valides='+this.specs_valides+')') ;
     return this.specs_valides ;
   },
-  // Retourne un nom de roadmap correcte
-  get_a_correct: function( from ){
-    return from.replace(/ /g, '_').replace(/[^a-zA-Z0-9_-]/g, '') ;
+  // Compose un nom correct pour la roadmap et le met dans le champ
+  // return FALSE si seuls les espaces ont été corrigées, sinon return TRUE (erreur)
+  get_a_correct_and_set: function( from ){
+    from = from.replace(/ /g, '_');
+    from_init = from.toString();
+    from = Texte.to_ascii( from );
+    from = from.replace(/[^a-zA-Z0-9_-]/g, '');
+    this.set(from);
+    return from != from_init;
   },
 
   /*  Ouvre la roadmap voulue par un menu
@@ -284,9 +309,9 @@ window.Roadmap = {
       this.loaded = true ;
       var roadmap = rajax.roadmap ;
       this.last_id_exercice = parseInt(rajax.last_id_exercice, 10) ;
-      $.proxy(Exercices.reset_liste, Exercices)() ;
-      $.proxy(Roadmap.Data.dispatch, Roadmap.Data, roadmap)();
-      $.proxy(Roadmap.Data.show, Roadmap.Data)();
+      Exercices.reset_liste() ;
+      Roadmap.Data.dispatch(roadmap);
+      Roadmap.Data.show();
       Flash.show(MESSAGE.Roadmap.loaded) ;
     }
     // $.proxy(Roadmap.set_div_specs, Roadmap, ouvert = !this.loaded)() ;
@@ -332,8 +357,7 @@ window.Roadmap = {
     this.saving = true ;
     try{
       if( User.need_to_signin($.proxy(this.save,this))) throw 'need_login' ;
-      if ( !this.creating ){
-        // Quand ce n'est pas une création
+      if ( false == this.creating ){
         if ( this.modified == false ) throw 'unmodified' ;
         if ( this.is_locked() )        throw 'is_locked' ;
       }
@@ -389,8 +413,8 @@ window.Roadmap = {
       BT.add('-> Roadmap.create (première entrée)') ;
       try {
         if ( User.need_to_signin($.proxy(this.create,this)) ) throw null ;
-        this.get();
-        if ( this.are_specs_valides(forcer=true) !== true ) throw null ;
+        if ( this.are_specs_valides(forcer=true) !== true )   throw null ;
+        if ( User.has_nombre_max_roadmaps() ){F.error(ERROR.Roadmap.too_many); throw null;}
       } catch( erreur ){
         return this.end_create(false);
       }
@@ -406,6 +430,7 @@ window.Roadmap = {
       BT.add('-> Roadmap.create (retour ajax)') ;
       if ( false == traite_rajax( rajax ) ){
         F.show( MESSAGE.Roadmap.creating ) ;
+        this.md5 = User.md5 ;
         this.save() ;
       } else this.end_create(false);
     }
@@ -450,14 +475,15 @@ window.Roadmap = {
     var i, nom, umail;
     var menu = $('select#roadmaps');
     menu.html("");
-    if('undefined' == typeof(roadmaps) || roadmaps == null) return;
-    roadmaps.unshift(LOCALE_UI.Roadmap.open_your_rm+"…-");
+    if('undefined' == typeof(roadmaps) || roadmaps == null) return ;
+    menu.append('<option value="">' + LOCALE_UI.Roadmap.open_your_rm + '</option>');
     for(i in roadmaps){
       idrm = roadmaps[i];
       drm = idrm.split('-') ;
       nom = drm[0]; umail = drm[1];
       menu.append('<option value="'+idrm+'">' + nom + '</option>');
     }
+    UI.set_visible('select#roadmaps', true);
   },
   // /*
   //     Sous-objet Roadmap.Data
@@ -571,7 +597,7 @@ window.Roadmap = {
     //                Ou null si la roadmap n'est pas encore défini
     dispatch: function( data ){
       try {
-        if ( 'undefined' == typeof data ) throw 'ERRORS.Roadmap.Data.required' ;
+        if ( 'undefined' == typeof data ) throw 'ERROR.Roadmap.Data.required' ;
         if ('undefined' != typeof data.data_roadmap)
           this.dispatch_data(data.data_roadmap);
         if ( 'undefined' != typeof data.config_generale )
@@ -659,7 +685,7 @@ window.Roadmap = {
     var locked = User.md5 != this.md5 ;
     if ( locked == false ) return false ;
     if ('undefined' == typeof with_message) with_message = true ;
-    if ( with_message ) F.error(ERRORS.Roadmap.bad_owner) ;
+    if ( with_message ) F.error(ERROR.Roadmap.bad_owner) ;
     return true ;
   }
 }

@@ -20,7 +20,7 @@ def exercice_destroy rm, id, owner
     raise "Roadmap.bad_owner" unless rm.owner_or_admin? owner
     raise "Exercices.Edit.id_required" if id.nil?
   rescue Exception => e
-    return "ERRORS.#{e.message}"
+    return "ERROR.#{e.message}"
   end
   # -- Tout est OK, on peut détruire l'exercice --
   

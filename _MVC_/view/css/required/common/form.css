@@ -65,7 +65,8 @@ table.form td.libelle {
 
 table.form input[type="text"], 
 table.form input[type="password"], 
-table.form textarea
+table.form textarea, 
+input[type="text"].form, textarea.form
 {
   width         :98%;
   font-family   :Verdana;

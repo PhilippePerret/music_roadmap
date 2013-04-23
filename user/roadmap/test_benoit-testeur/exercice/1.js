@@ -1,1 +1,0 @@
-{"tempo_min":25,"auteur":"Hanon","with_next":null,"up_tempo":null,"image":null,"created_at":1365874115,"updated_at":1365874115,"abs_id":null,"note":null,"tempo":43,"suite":"harmonic","ended_at":null,"titre":"Exercice test","started_at":null,"obligatory":null,"types":["A0"],"created_at":null,"tempo_max":173,"recueil":"Cahier I","id":"1"}
