@@ -15,6 +15,8 @@ html << '<section id="section_exercices">'
 html << File.read(File.join(FOLDER_VIEWS, 'gabarit', 'boutons_exercices.html'))
 # Création édition
 html << File.read(File.join(FOLDER_VIEWS, 'gabarit', 'form_exercice.html'))
+# Formulaire de séance de travail (formulaire et compte rendu)
+html << File.read(File.join(FOLDER_VIEWS, 'gabarit', 'seance_travail.html'))
 # UL de la liste des exercices
 html << '<ul id="exercices"></ul>'
 html << '</section>' # section_exercices

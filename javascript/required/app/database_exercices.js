@@ -10,17 +10,13 @@ window.DBE = {
   opening:true,
   open:function(){
     this.opening = true;
-    var o = $('div#database_exercices');
-    o.show();
-    o.animate({opacity:1},400)
+    UI.animin($('div#database_exercices'));
     if ( this.ready == false ) this.prepare();
     return this.opening = false;
   },
   close:function(){
-    var o = $('div#database_exercices');
-    o.animate({opacity:0},400,function(){o.hide()})
+    UI.animout($('div#database_exercices'));
   },
-  
   /*
       Méthode centrale qui ajoute à la roadmap les exercices sélectionnnés dans la
       base de données

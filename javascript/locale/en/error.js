@@ -65,5 +65,9 @@ window.ERROR = {
   // DATABASE EXERCICES
   DBExercice:{
     no_exercice_choosed   :"You have to choose the exercices to add to your current roadmap!"
+  },
+  Seance:{
+    no_working_time       :"I need a working time!"
   }
+  
 }

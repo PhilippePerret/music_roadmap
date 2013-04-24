@@ -69,5 +69,8 @@ window.ERROR = {
   // DATABASE EXERCICES
   DBExercice:{
     no_exercice_choosed   :"Il faut choisir les exercices à ajouter à votre feuille de route courante !"
+  },
+  Seance:{
+    no_working_time       :"Il faut indiquer un temps de travail !"
   }
 }

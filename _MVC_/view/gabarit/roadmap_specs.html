@@ -62,7 +62,8 @@
   <a  href="#"
     ><span class="label_rapport">Rapport de travail</span></a>
   <a  href="#"
-    ><span class="label_confection">Confectionner une séance de travail</a>
+      onclick="return $.proxy(Seance.show_form, Seance)()"
+      ><span class="label_confection">Confectionner une séance de travail</a>
   <a  href="#"
       onclick="return $.proxy(Roadmap.set_div_specs, Roadmap)()"
   ><span class="label_roadmap">Feuille de route</span>…</a>

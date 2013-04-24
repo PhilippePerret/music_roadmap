@@ -537,16 +537,22 @@ $.extend(window.Exercices,{
     },
     // Peuplement des types
     // @note: TYPES est défini dans les locales constants.js
-    types_populated:false,
+    // 
+    // @param inner   If not defined, the div#exercice_cbs_types, otherwise, the container
+    //                of the checkboxes.
     types_populating:false,
-    types_populate:function(){ // @testok
-      // if ( this.types_populated ) return false ;
+    types_populate:function(inner, prefix){
+      if('undefined'==typeof inner){
+        inner   = $('div#exercice_cbs_types');
+        prefix  = "";
+      }
       this.types_populating = true ;
-      $('div#exercice_cbs_types').html('');
+      inner.html('');
       for(var idtype in Exercices.TYPES_EXERCICE){
         // On crée un checkbox par type
-        var id = "exercice_type_" + idtype ;
-        $('div#exercice_cbs_types').append(
+        var id = prefix + "exercice_type_" + idtype ;
+        if ($(id).length) return false; // déjà préparés
+        inner.append(
           '<span>' +
             '<input id="'+id+'" type="checkbox" />' +
             '<label for="'+id+'">'+Exercices.TYPES_EXERCICE[idtype]+'</label>' +
@@ -554,8 +560,7 @@ $.extend(window.Exercices,{
           )
       }
       // Il faut ajouter un clear both en dessous
-      $('div#exercice_cbs_types').append('<div style="clear:both;"></div>');
-      this.types_populated  = true ;
+      inner.append('<div style="clear:both;"></div>');
       this.types_populating = false ;
     },
     // Ouvre et ferme la boite des types
@@ -582,10 +587,15 @@ $.extend(window.Exercices,{
     },
     // Ramasse les types cochés
     // @return la liste des identifiants des types cochés
-    pickup_types:function(){ // @testok
+    // 
+    // @param   prefix    If provided, it's the prefix provided to build the list
+    //                    Default: ""
+    pickup_types:function(prefix){
+      if ('undefined'==typeof prefix) prefix = "" ;
       var checked = [] ;
+      var amorce = 'input#'+prefix+'exercice_type_' ;
       for(var id in Exercices.TYPES_EXERCICE){
-        if ( $('input#exercice_type_'+id).is(':checked') ) checked.push(id);
+        if ( $(amorce+id).is(':checked') ) checked.push(id);
       }
       return checked;
     },

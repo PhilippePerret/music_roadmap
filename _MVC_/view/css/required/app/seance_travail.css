@@ -1,0 +1,53 @@
+/*
+  Tout ce qui concerne la séance de travail (formulaire, rapport, etc.)
+*/
+section#seance_travail {
+  padding             :1em;
+  background-color    :white;
+}
+
+section#seance_travail div#seance_form_types {
+  padding             :1em;
+  background-color    :#ECECEC;
+}
+
+section#seance_travail div#seance_form div#seance_form_titre {
+  font-weight         :bold;
+  margin-bottom       :1em;
+  font-size           :1.3em;
+}
+section#seance_travail div#seance_form div#div_seance_form_duree {
+  margin-bottom       :2em;
+}
+
+/* Les libellés */
+section#seance_travail div#seance_form label.libelle {
+  display             :block;
+  font-size           :1.1em;
+  font-weight         :bold;
+  font-size           :1.1em;
+  font-style          :italic;
+  margin-bottom       :0.5em;
+  color               :#659460;
+}
+div#div_seance_form_duree label.libelle {
+  float               :left;
+  margin-right        :3.5em;
+  padding-top         :11px;
+}
+section#seance_travail div#seance_form div#seance_form_div_field_duree {
+  font-size       :1.7em;
+}
+section#seance_travail div#seance_form div#seance_form_div_field_duree select {
+  font-size       :1.0em;
+}
+
+section#seance_travail div#seance_form div#div_seance_form_options {
+  margin-top      :1em;
+}
+section#seance_travail div#seance_form_types > span {
+  display       :block;
+  float         :left;
+  margin-right  :1em;
+  width         :140px;
+}

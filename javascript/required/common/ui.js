@@ -72,6 +72,26 @@ $.extend(UI,{
     else return '<img src="'+UI.path_image('interrogation.png')+'" class="picto_aide" />';
   },
   
+  // Fait apparaitre par l'opacité l'élément o
+  // @note: l'élément doit avoir été défini avec display:none;opacity:0
+  // 
+  // @param   o         jQuery Element ou JID (<tag>#<id>)
+  // @param   params    Parameters. Pour le moment, seulement :duree, la durée
+  //                    (default: 500)
+  // 
+  animin:function(o,params){
+    if('undefined'==typeof params)params={};
+    if('undefined'==typeof params.duree) params.duree = 500;
+    $(o).css('opacity', '0').show();
+    $(o).animate({opacity:1}, params.duree);
+  },
+  // Inverse de la précédente
+  animout:function(o,params){
+    if('undefined'==typeof params)params={};
+    if('undefined'==typeof params.duree) params.duree = 500;
+    $(o).animate({opacity:0},params.duree,function(){$(o).hide()});
+  },
+  
   /*  App Status while loading
       -------------------------
   */
