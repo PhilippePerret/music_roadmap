@@ -25,7 +25,6 @@ window.ERROR = {
   },
   // ROADMAP
   Roadmap: {
-    must_signin_to_create :"Vous devez être identifié (ou inscrit) ouvrir ou créer une feuille de route.",
     initialization_failed :"Impossible d'initialiser la feuille de route…",
     required              :"Une feuille de route est requise !",
     too_many              :"Désolé, mais vous ne pouvez pas créer plus de dix feuilles de route…",

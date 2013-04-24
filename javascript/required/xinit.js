@@ -10,11 +10,14 @@ $(document).ready(function(){
   DEBUG = false ;
   // if(console) DEBUG = true ; else DEBUG = false ;
   
-  // Définition des éléments à surveiller au démarrage
+  // Définition des éléments à surveiller au démarrage. L'application est considérée comme
+  // chargée lorsque tous les éléments sont mis à true
+  // 
   UI.ready_states = {
-    length      : -1,       // calculé au premier hit
-    jquery      : false,    // mis à true à la fin de cette fonction
-    exedition   : false,    // préparation formulaire exercice
+    length      :-1,       // calculé au premier hit
+    jquery      :false,    // mis à true à la fin de cette fonction
+    exedition   :false,    // préparation formulaire exercice
+    home_text   :false
   };
   
   
@@ -54,19 +57,19 @@ $(document).ready(function(){
   $.proxy(UI.Textarea.select_on_focus, UI.Textarea)() ;
   
   // On replace la src des images
-  $.proxy(UI.set_src_images, UI)() ;
+  $.proxy(UI.humanize, UI)();
   // On définit l'image du drapeau de l'autre langue
-  $.proxy(UI.set_drapeau_autre_langue, UI)()
+  $.proxy(UI.set_flag_lang, UI)()
   
-  // On déclenche le timer qui va vérifier toutes les 30 secondes si
-  // les données sont modifiées. NON : ça sera lancé uniquement :
-  //  1. quand une feuille de route est chargée
-  //  2. quand l'utilisateur est le possesseur de la feuille de route
-  // window.timer_save = setInterval("Roadmap.save()", 30 * 1000) ;
-  
-  // On indique la fin du chargement de l'application
-  window.app_loading  = false ;
-  window.app_loaded   = true ;
-  
+  // On affiche le premier texte d'aide
+  var d = {
+      inner     :"ul#exercices",
+      id        :"app/accueil",
+      fx_suite  :$.proxy(UI.set_ready, UI, 'home_text')
+    }
+  $.proxy(Locale.show, Locale, d)();
+
+  // On indique que ce fichier a terminé. Mais d'autres processus sont peut-être encore
+  // en cours.
   $.proxy(UI.set_ready, UI, 'jquery')();
 })

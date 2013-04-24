@@ -100,7 +100,7 @@ section#partage a {
 section#bande_logo {
   background-color    :#000000;
   height              :auto;
-  width               :309px;
+  width               :332px;
   border-radius       :0 0 1em 0;
   padding             :0.5em 0 0.5em 1.1em;
   margin-bottom       :0.5em;
@@ -109,6 +109,11 @@ section#bande_logo {
 }
 section#bande_logo div#nom_site {
   font-size           : 1.23em ;
+}
+section#bande_logo a#btn_change_lang {
+	float 				:right;
+	margin-right	:4px;
+	margin-top		:4px;
 }
 /*
   METRONOME
@@ -135,7 +140,7 @@ a#btn_save_roadmap {
 }
 
 /* Drapeau pour autre langue */
-img#drapeau_autre_langue {
+img#flag_lang {
   width               :28px;
   margin-left         :12px;
   margin-top          :-5px;

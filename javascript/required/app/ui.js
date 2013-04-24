@@ -4,12 +4,14 @@ if('undefined'==typeof UI) UI = {} ;
 $.extend(UI,{
   FOLDER_IMAGES: "_MVC_/view/img/",
 
-  // Initialisationo de l'interface (chargement de la page)
-  // @note: Permet également de changer la langue de l'interface
+  // UI initialisation
+  // @note: also called when language changes
   init: function(){
-    this.set_drapeau_autre_langue() ;
-    this.set_noms_boutons() ;
+    this.set_flag_lang();
+    this.set_noms_boutons();
     this.set_labels();
+    Locale.update();
+    UI.humanize();
   },
   
   // Règle les boutons en fonction de la langue courante
@@ -51,7 +53,7 @@ $.extend(UI,{
     ]).each(function(i,o){
       $(o[0]).html(LOCALE_UI.Label[o[1]]);
     });
-    // Dans LOCALE_UI.Verb
+    // Dans LOCALE_UI.Verb @TODO: Faire traiter par humanize (LOCALE_UI.Class)
     $([
       ['.label_close', 'close'],
       ['.lab_and_save', 'and_save']
@@ -90,11 +92,12 @@ $.extend(UI,{
       jqo.replaceWith( js ) ; // pour forcer le rechargement
     }
     this.init();
-    return false ; // pour le a-lien
+    return false; // pour le a-lien
   },
-  // Pour passer en "plein écran", c'est-à-dire que la partie de la liste des
+  // Pour passer en "mode zen", c'est-à-dire que la partie de la liste des
   // exercice va prendre toute la page. EN fait, c'est plutôt un "ajuster
   // à l'écran"
+  // @TODO: Prendre vraiment toute la dimension de la page
   fullscreening: false, // true quand on est en fullscreen
   fullscreen: function(){
     // Ajuster à l'écran
@@ -117,9 +120,11 @@ $.extend(UI,{
   },
   // Règle le drapeau de l'autre langue (seulement en/fr pour le moment)
   // @NB: La langue est définie dans la constante JS LANG
-  set_drapeau_autre_langue: function(){
-    var p = "picto/drapeau/" + (LANG=='fr'?'en':'fr') + ".png" ;
-    $('img#drapeau_autre_langue').attr('src', this.path_image(p) ) ;
+  set_flag_lang: function(){
+    var relpath  = "picto/drapeau/" + (LANG=='fr'?'en':'fr') + ".png";
+    var img_path = this.path_image(relpath);
+    $('img#flag_lang').attr('src', img_path );
+    $('img#flag_lang').attr('data-src', relpath );
   },
   start_metronome: function(){this.onclick_metronome_anim(true)},
   stop_metronome: function(){ this.onclick_metronome_anim(false)},
@@ -132,9 +137,7 @@ $.extend(UI,{
     if ('undefined' == typeof forcer ) forcer = img.attr('src') == src_png ;
     img.attr('src', forcer ? src_gif : src_png) ;
   },
-  path_image: function(relpath){
-    return this.FOLDER_IMAGES + relpath ;
-  },
+  path_image: function(relpath){return this.FOLDER_IMAGES + relpath},
   
   /*
       Sous-objet UI.Captcha pour gérer le test de Turing

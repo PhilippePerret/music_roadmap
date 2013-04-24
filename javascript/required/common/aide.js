@@ -4,7 +4,7 @@
     
     @note: sera à mettre dans la librairie générale quand OK
     
-    Raccourci : H (comme “Help”)
+    Shortcut : H (comme “Help”)
     
     REQUIS
     ------
@@ -60,9 +60,7 @@ window.Aide = {
     this.section().draggable({ disabled:true }) ;
     this.bande_titre().bind('mousedown', $.proxy(this.moveon,this));
     this.bande_titre().bind('mouseup', $.proxy(this.moveoff,this));
-    // Transformer les balises <aide...> et <focus...>
-    this.set_liens();
-    this.set_focus();
+    UI.humanize('section#aide');
     if (this.displayed) this.close();
     this.inited   = true ;
     this.initing  = false ;
@@ -112,7 +110,7 @@ window.Aide = {
       Chaque méthode doit remettre la valeur par défaut après le traitement
   */
   apply_option_bandeau_titre:function( valeur ){
-    var titre = valeur ? LOCALE_UI.id.span.section_aide_titre : '&nbsp;'
+    var titre = valeur ? LOCALE_UI.Id.span.section_aide_titre : '&nbsp;'
     $('section#aide div#aide_bande_titre span#section_aide_titre').html( titre )
     Aide.options_disp['bandeau_titre'] = true ;
   },
@@ -366,10 +364,7 @@ window.Aide = {
     if( 'undefined' == typeof keep ) keep = true ;
     var div = this.div_aide(id) ;
     this.content()[keep ? 'append' : 'html'](div);
-    // Transformer les liens d'aide et les focus, et les images
-    this.set_liens();
-    this.set_focus();
-    UI.set_src_images();
+    UI.humanize(div);
     BT.add("<- Aide.put_in_section");
   },
   // Retourne le div d'aide préparé pour l'aide d'ID +id+
@@ -450,52 +445,12 @@ window.Aide = {
       '<section id="aide" style="display:none;">' +
         '<div id="aide_bande_titre">'+
           '<a class="btn_close" href="#" onclick="return $.proxy(Aide.close,Aide)()"></a>' +
-          '<span id="section_aide_move_txt">' + LOCALE_UI.id.span.section_aide_move_txt + '</span>'+
+          '<span id="section_aide_move_txt">' + LOCALE_UI.Id.span.section_aide_move_txt + '</span>'+
           '<span id="section_aide_titre">AIDE</span>'+
         '</div>' +
         '<div id="aide_content"></div>' +
       '</section>');
     Aide.built = true ;
-  },
-  
-  // Remplace les balises '<aide value="<id aide>">' par des pictogrammes
-  // cliquable ou un texte si l'attribut 'title' est défini
-  // @TODO: à mettre dans UI général quand OK
-  set_liens: function(){
-    var title, id, css;
-    $('aide').map(function(i,o){
-      o = $(o);
-      id = (id = o.attr('id')) ? ' id="'+id+'"' : "" ;      
-      o.replaceWith(
-        '<a'+id+' class="aide_lien" href="#" onclick="return $.proxy(H.show,H,\'' +
-        o.attr('value')+'\')()">'+ Aide.lien_title( o ) + '</a>'
-        );
-    });
-  },
-  // Remplace les balises '<focus value="<jq-id élément>" title="<titre>" />
-  // par des liens cliquable mettant l'élément en exercuce
-  set_focus: function(){
-    var jid, tit ;
-    $('focus').map(function(i,o){
-      o   = $(o);
-      jid = o.attr('value');
-      o.replaceWith(
-        '<a id="' + o.attr('id') + '" ' +
-        'class="aide_focus" href="#" onclick="return $.proxy(H.focus,H,\'' + 
-        jid+'\')()">&nbsp;' + Aide.lien_title(o) + '&nbsp;</a>' );
-    })
-  },
-  // => Retourne le titre du lien
-  // Si "title" existe ou un texte dans la balise aide, c'est le titre, sinon
-  // on met le picto du point d'interrogation
-  lien_title: function( o ){
-    var atitle = o.attr('title') ;
-    var html   = o.html().trim() ;
-    if ( 'undefined' != typeof atitle){
-      atitle = atitle.trim(); if ( atitle != "" ) return atitle;}
-    else if ( html != "" )  return html ;
-    else return '<img src="'+UI.path_image('interrogation.png')+'" class="picto_aide" />';
-  },
-  
+  }
 }
 window.H = Aide ;

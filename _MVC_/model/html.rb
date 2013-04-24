@@ -146,8 +146,6 @@ class Html
     #     de chargement
     def launch_watchers
       '<script type="text/javascript">' +
-        'app_loading = true;'     +
-        'app_loaded  = false;'    +
         "LANG = '#{lang}';"       +
         "OFFLINE = #{Params.offline?};"  +
         "ONLINE  = #{Params.online?};"   +

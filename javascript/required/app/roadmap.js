@@ -22,18 +22,20 @@ window.Roadmap = {
   },
   
   // Called when we focuse in text-field roadmap_nom
+  // If User is identified, display an advice to compose the name of the roadmap.
+  // Otherwise, set "Exemple" in the field and lock it.
   on_focus_nom:function(){
     var o = $('input#roadmap_nom');
     o.select();
     if (User.is_identified())
       F.show(MESSAGE.Roadmap.how_to_make_a_good_nom);
     else
-      F.error(ERROR.Roadmap.must_signin_to_create);
+      F.show(MESSAGE.Roadmap.must_signin_to_create);
   },
   // // => Retourne le nom de la feuille de route courante
   get_nom: function(){
     BT.add('-> Roadmap.get_nom') ;
-    this.set($('input#roadmap_nom').val(), false) ;
+    this.set($('input#roadmap_nom').val());
     BT.add('<- Roadmap.get_nom (return: this.nom='+this.nom+')') ;
     return this.nom;
   },
@@ -130,8 +132,10 @@ window.Roadmap = {
     BT.add('-> Roadmap.set_btns_roadmap') ;
 
     var userok = User.is_identified();
+    var rm_exemple = this.nom == "Exemple" && !userok ;
+    // --
     var ok_to_create  = userok && this.nom != null ;
-    var ok_to_open    = ok_to_create && this.loaded == false ;
+    var ok_to_open    = (ok_to_create && this.loaded == false) || rm_exemple ;
     var des_exs = EXERCICES.length > 0 ;
     
     // -- Bouton par bouton --

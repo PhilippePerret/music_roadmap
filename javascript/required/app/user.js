@@ -310,7 +310,7 @@ window.User = {
         '<option value="'+dinst['id']+'">' + dinst['name'] + '</option>');
     }
     $('select#instruments').append(
-      '<option value="other" class="other">' + LOCALE_UI.class.other + '</option>');
+      '<option value="other" class="other">' + LOCALE_UI.Class.other + '</option>');
     // Et placer le texte explicatif en fonction de la langue
     
   }

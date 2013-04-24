@@ -21,7 +21,6 @@ window.ERROR = {
   },
   // ROADMAP
   Roadmap: {
-    must_signin_to_create :"You must sign in (or sign up) to create or open a music roadmap.",
     initialization_failed : "Unable to initialize roadmap…",
     required        : "A Music raodmap required!",
     too_many        :"You can't create more than 10 roadmaps, sorry.",

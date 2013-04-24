@@ -1,9 +1,79 @@
 if('undefined'==typeof UI) UI = {} ;
 $.extend(UI,{
   
-  /*
-      Définit l'état de l'application au chargement de la page
-      --------------------------------------------------------
+  /*  Big method to "humanize" User Interface
+   *  ----------------------------------------
+   *    - Replace all coded tag (image, aide, focus, ...) with a valid HTML code
+   *    - Localize texts, according to LOCALE_UI.Class/Id
+   *   
+   *    @param  inner  DOM Element or jid ('<tag>#<id>') to humanize. If not provided, the body
+   *   
+   */
+  humanize:function(inner){
+    if ('undefined' == typeof inner ) inner = $('body');
+    else inner = $(inner);
+    this.set_liens(inner);
+    this.set_focus(inner);
+    this.set_src_images(inner);
+    this.set_js_locales(inner);
+  },
+  
+  // Walk through LOCALE_UI.Class and LOCALE_UI.Id to set the localized text.
+  // @note this is not the method which set the localized text that must be loaded by
+  // Ajax, but only the JS Locales
+  set_js_locales:function(inner){
+    if('undefined' == typeof LOCALE_UI) return ;
+    if('undefined' != typeof LOCALE_UI.Class) this.set_js_locales_by_class(inner);
+    if('undefined' != typeof LOCALE_UI.Id)    this.set_js_locales_by_id(inner);
+  },
+  set_js_locales_by_class:function(inner){
+    for(var css in LOCALE_UI.Class) $(inner).find('*.'+css).html(LOCALE_UI.Class[css]);
+  },
+  set_js_locales_by_id:function(inner){
+    for(var tag in LOCALE_UI.Id){
+      for(var id in LOCALE_UI.Id[tag])$(inner).find(tag+'#'+id).html(LOCALE_UI.Id[tag][id]);
+    } 
+  },
+  // Remplace les balises '<aide value="<id aide>">' par des pictogrammes
+  // cliquable ou un texte si l'attribut 'title' est défini
+  set_liens: function(inner){
+    var title, id, css;
+    $(inner).find('aide').map(function(i,o){
+      o = $(o);
+      id = (id = o.attr('id')) ? ' id="'+id+'"' : "" ;      
+      o.replaceWith(
+        '<a'+id+' class="aide_lien" href="#" onclick="return $.proxy(H.show,H,\'' +
+        o.attr('value')+'\')()">'+ UI.lien_title( o ) + '</a>'
+        );
+    });
+  },
+  // Remplace les balises '<focus value="<jq-id élément>" title="<titre>" />
+  // par des liens cliquable mettant l'élément en exercuce
+  set_focus: function(inner){
+    var jid, tit ;
+    $(inner).find('focus').map(function(i,o){
+      o   = $(o);
+      jid = o.attr('value');
+      o.replaceWith(
+        '<a id="' + o.attr('id') + '" ' +
+        'class="aide_focus" href="#" onclick="return $.proxy(H.focus,H,\'' + 
+        jid+'\')()">&nbsp;' + UI.lien_title(o) + '&nbsp;</a>' );
+    })
+  },
+  // => Retourne le titre du lien
+  // Si "title" existe ou un texte dans la balise aide, c'est le titre, sinon
+  // on met le picto du point d'interrogation
+  lien_title: function( o ){
+    var atitle = o.attr('title') ;
+    var html   = o.html().trim() ;
+    if ( 'undefined' != typeof atitle){
+      atitle = atitle.trim(); if ( atitle != "" ) return atitle;}
+    else if ( html != "" )  return html ;
+    else return '<img src="'+UI.path_image('interrogation.png')+'" class="picto_aide" />';
+  },
+  
+  /*  App Status while loading
+      -------------------------
   */
   
   ready:false,
@@ -15,7 +85,12 @@ $.extend(UI,{
   //   not_readies : null,     // compte à rebours
   //   jquery      : false,    // mis à true à la fin du document.ready de jQuery
   //   exedition   : false,    // formulaire exercice
+  //    home_text :false        // Text d'accueil
   // },
+  // 
+  // @param   foo   Attribute of ready_states to set to +is_ready+
+  // @param   is_ready  True (Default) if +foo+ is ready, false otherwise
+  // 
   set_ready:function(foo,is_ready){
     if ( this.ready_states.length == -1 ){
       // => Lancement

@@ -14,12 +14,16 @@
   <div class="fleft center" style="width:114px;">
     <aide value="application/mail_to_phil.rb" id="mail_to_phil">Écrire à Phil</aide>
   </div>
-  <a id="btn_change_lang" href="#" onclick="return $.proxy(UI.change_lang, UI)();">
-    <img id="drapeau_autre_langue" data-src="picto/drapeau/en.png" />
-  </a>
 </section>
 <!-- Bande logo -->
 <section id="bande_logo">
+  <a 
+    id="btn_change_lang" 
+    href="#"
+    onclick="return $.proxy(UI.change_lang, UI)();"
+    >
+      <img id="flag_lang" data-src="picto/drapeau/en.png" />
+    </a>
   <div id="nom_site">Feuille de Route Musicale</div>
   <div id="subtitle_site" class="petit italic">Gestion au quotidien de ses exercices de musique.</div>
 </section>

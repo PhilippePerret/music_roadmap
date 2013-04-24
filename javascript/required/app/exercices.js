@@ -13,7 +13,7 @@ $.extend(window.Exercices,{
     BT.add("<- Exercices.set_modified");
   },
   
-  // Remet la liste des exercices à rien
+  // Empty exercice list
   reset_liste: function(){
     window.EXERCICES = {length:0} ;
     $('ul#exercices').html("") ;

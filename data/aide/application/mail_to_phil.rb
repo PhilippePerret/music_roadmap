@@ -1,7 +1,8 @@
 =begin
 
-  Page spéciale qui remonte un formulaire, avec des notes, pour servir
-  de captcha
+  Envoyer un mail à Phil
+  
+  La page contient un captcha anti-robot
   
 =end
 begin
