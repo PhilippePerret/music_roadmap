@@ -59,6 +59,7 @@ table#exercice_form div#exercice_cbs_types label {
   LISTE DES EXERCICES
 */
 ul#exercices {
+  position              :relative;
   list-style            :none ;
   padding               :1em  ;
   margin                :0    ;
