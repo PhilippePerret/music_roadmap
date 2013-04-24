@@ -13,6 +13,10 @@ window.Seance = {
     UI.animin($('section#seance_travail'));
     return false;//pour le a-lien
   },
+  hide_form:function(){
+    UI.animout($('section#seance_travail'));
+    UI.animin($('ul#exercices'));
+  },
   show_start:function(){
     
   },
@@ -41,7 +45,9 @@ window.Seance = {
   // Retour ajax de la précédente
   build_suite:function(rajax){
     if(false==traite_rajax(rajax)){
-      
+      this.data_seance = rajax.data_seance ; // les données pour la séance
+      F.show(this.data_seance.message);
+      this.hide_form();
     }
     this.building = false;
   },
@@ -61,7 +67,8 @@ window.Seance = {
       working_time  :working_time,
       difficulties  :difficulties.join(','),
       obligatory    :$('input#seance_option_obligatory').is(':checked'),
-      new_game      :$('input#seance_option_newgamme').is(':checked')
+      new_game      :$('input#seance_option_newgamme').is(':checked'),
+      same_exercices:$('input#seance_option_sameex').is(':checked')
     }
   },
   // Prepare the form

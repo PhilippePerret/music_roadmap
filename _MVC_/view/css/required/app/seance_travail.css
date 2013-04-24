@@ -9,6 +9,7 @@ section#seance_travail {
 section#seance_travail div#seance_form_types {
   padding             :1em;
   background-color    :#ECECEC;
+  font-size           :0.9em;
 }
 
 section#seance_travail div#seance_form div#seance_form_titre {
@@ -49,5 +50,5 @@ section#seance_travail div#seance_form_types > span {
   display       :block;
   float         :left;
   margin-right  :1em;
-  width         :140px;
+  width         :115.9px;
 }

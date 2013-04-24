@@ -7,7 +7,8 @@
       CONFECTION D'UNE SÉANCE DE TRAVAIL
     </div>
     <div id="seance_form_champs">
-      <!-- les champs -->
+
+      <!-- DUREE DE LA SEANCE -->
       <div id="div_seance_form_duree">
         <label class="libelle">Durée de la séance de travail</label>
         <div id="seance_form_div_field_duree" class="field">
@@ -15,25 +16,32 @@
           <select id="seance_duree_minutes"></select> mns
         </div>
       </div>
+      
+      <!-- DIFFICULTES À ABORDER -->
       <div id="div_seance_form_types">
         <label class="libelle">Difficultés à aborder en priorité</label>
         <div id="seance_form_types" class="field"></div>
       </div>
+
       <!-- OPTIONS -->
       <div id="div_seance_form_options">
         <label class="libelle">Options</label>
         <div id="seance_form_options" class="field">
 
-          <span>
+          <div>
+            <input type="checkbox" id="seance_option_sameex" />
+            <label for="seance_option_sameex">Permettre la répétition d'exercices <aide value="seance/option_repetition_exercice.html"></aide></label>
+          </div>
+
+          <div>
             <input type="checkbox" id="seance_option_obligatory" checked="CHECKED" />
-            <label for="seance_option_obligatory">Inclure tous les exercices obligatoires</label>
-          </span>
+            <label for="seance_option_obligatory">Inclure tous les exercices obligatoires</label> <aide value="seance/options_ex_obligatoires"></aide>
+          </div>
 
-          <span>
+          <div>
             <input type="checkbox" id="seance_option_newgamme" checked="CHECKED" />
-            <label for="seance_option_newgamme">Nouvelle gamme de travail <span class="petit">(par exemple pour les exercices “touches blanches” à la Hanon)</span></label>
-          </span>
-
+            <label for="seance_option_newgamme">Nouvelle gamme de travail <span class="petit">(exercices “à la Hanon”)</label> <aide value="seance/options_new_gamme.html"></aide></span>
+          </div>
 
         </div>
       </div>
@@ -41,7 +49,7 @@
     <div id="seance_form_buttons" class="buttons">
       <a  href="#" 
           id="btn_confectionne_seance" 
-          class="btn"
+          class="gros btn"
           onclick="return $.proxy(Seance.build, Seance)()"
       >Prépare ma séance de travail !</a>
     </div>
