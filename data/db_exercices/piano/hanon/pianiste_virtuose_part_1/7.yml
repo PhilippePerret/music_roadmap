@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°7
 titre_en:     Exercice n°7
 suite:        white_keys
-types:        ['D0', 'P0']
+types:        ['D0', 'P0', 'LH', 'RH']
 tempo_min:    60
 tempo_max:    108
 nb_mesures:   57

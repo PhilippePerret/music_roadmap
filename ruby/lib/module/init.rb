@@ -11,14 +11,12 @@ require_model 'user'
 require 'params'
 Params.set_params
 
-# Update Database Exercice?
-# 
-# @note: Cela n'arrive que de façon "forcée", lorsqu'on veut initialiser les données Database
-# Exercices en supprimant le fichier `javascript/locale/fr/db_exercices/piano.js`
-# 
-# @TODO: Plus tard, il faudra une procédure qui checke les dates pendant un sleep time
-# 
-unless File.exists? File.join(APP_FOLDER, 'javascript', 'locale', 'db_exercices', 'fr', 'piano.js')
-  require File.join(FOLDER_LIB_RUBY, 'module', 'data_base_exercices.rb')
-  DataBaseExercices::update_each_instrument
+# Updates to do ?
+if File.exists? File.join(APP_FOLDER, '_force_update.rb')
+  require '_force_update.rb'
+  # Update Database Exercice?
+  if FORCE_UPDATE[:db_exercices]
+    require File.join(FOLDER_LIB_RUBY, 'module', 'data_base_exercices.rb')
+    DataBaseExercices::update_each_instrument
+  end
 end

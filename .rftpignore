@@ -8,3 +8,4 @@ README.md
 .rftpignore
 ./test
 rftp_data.rb
+_force_update.rb

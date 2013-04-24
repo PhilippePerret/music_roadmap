@@ -148,7 +148,13 @@ window.DBE = {
       } 
     }
     var o = $('div#dbe_listing');
-    for(auth_id in DB_EXERCICES){
+    // Sort authors by id (~name)
+    var sorted_authors = [];
+    for(auth_id in DB_EXERCICES) sorted_authors.push(auth_id);
+    sorted_authors.sort();
+    // Prepare each author
+    for(var iauth in sorted_authors){
+      var auth_id = sorted_authors[iauth];
       o.append(this.prepare_div_auteur(auth_id,DB_EXERCICES[auth_id]));
     }
     // Remplacer le noms des éléments DOM
@@ -176,16 +182,16 @@ window.DBE = {
     div += '<a href="#" class="dbe_auteur" data-auteur="'+id+'" onclick="return $.proxy(DBE.toggle_recueils, DBE, this)();">' + 
             dauteur['n'] + '</a>';
     div += '<div id="div_recueils_auteur-'+id+'" class="dbe_div_recueils" style="display:none">';
-    for(var recid in dauteur['r']){
-      div += this.prepare_div_recueil(id, recid, dauteur['r'][recid]);
+    for(var irec in dauteur['r']){
+      div += this.prepare_div_recueil(id, dauteur['r'][irec]);
     }
     div += '</div>'  ; // fin du div des recueils
     div +=  '</div>' ;
     return div;
   },
   // Prépare le div d'un recueil d'un auteur
-  prepare_div_recueil:function(autid, recid, drec){
-    var idcomplet = autid + "-" + recid ;
+  prepare_div_recueil:function(autid, drec){
+    var idcomplet = autid + "-" + drec.i;
     return  '<div id="div_receuil-'+idcomplet+'" class="dbe_div_recueil">' +
               '<div class="titre_recueil">' + 
                 this.titre_recueil_with_lien(idcomplet,drec) + 

@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°27
+titre_en:     Exercice n°27
+suite:        white_keys
+types:        ['D0', 'P0', 'LH', 'RH', 'T0']
+tempo_min:    60
+tempo_max:    108
+nb_mesures:   57
+nb_temps:     4
+duree_temps:  4
+metrique:     "4/4"
+note_fr:      "Prépare les doigts 4 et 5 pour la trille"
+note_en:      "Prepares the 4th and 5th fingers for the trill given further on"

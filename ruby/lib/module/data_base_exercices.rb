@@ -52,8 +52,8 @@ class AuteurExercice
   # 
   # @param    iauteur     Instance AuteurExercice of the auteur
   def self.add_auteur iauteur
-    @data_fr = @data_fr.merge iauteur.id => {:n => iauteur.patronyme, :r => {}}
-    @data_en = @data_en.merge iauteur.id => {:n => iauteur.patronyme, :r => {}}
+    @data_fr = @data_fr.merge iauteur.id => {:n => iauteur.patronyme, :r => []}
+    @data_en = @data_en.merge iauteur.id => {:n => iauteur.patronyme, :r => []}
   end
   
   # Inaugure a new recueil for author
@@ -62,17 +62,20 @@ class AuteurExercice
   # 
   def self.add_recueil irecueil
     auteur_id = irecueil.auteur.id
-    @data_fr[auteur_id][:r][irecueil.id] = {:t => irecueil.titre_fr, :e => []}
-    @data_en[auteur_id][:r][irecueil.id] = {:t => irecueil.titre_en, :e => []}
+    # @data_fr[auteur_id][:r][irecueil.id] = {:t => irecueil.titre_fr, :e => []}
+    # @data_en[auteur_id][:r][irecueil.id] = {:t => irecueil.titre_en, :e => []}
+    @data_fr[auteur_id][:r] << {:i => irecueil.id, :t => irecueil.titre_fr, :e => []}
+    @data_en[auteur_id][:r] << {:i => irecueil.id, :t => irecueil.titre_en, :e => []}
   end
   
-  # Add a exercice
-  # 
-  def self.add_exercice iex
-    auteur_id = iex.recueil.auteur.id
-    recueil_id = iex.recueil.id
-    @data_fr[auteur_id][:r][recueil_id][:e] << {:i => iex.id, :t => iex.titre, :y => iex.types, :g => iex.image?}
-  end
+  # # Add a exercice
+  # # NOTER QUE SI ON DOIT RÉ-UTILILSER ÇA, IL FAUT LE RECODER, CAR LA DONNÉES RECUEIL
+  # # (:r) N'EST PLUS UN HASH MAIS UN ARRAY, POUR QU'ILS SOIENT AFFICHÉS DANS L'ORDRE
+  # def self.add_exercice iex
+  #   auteur_id = iex.recueil.auteur.id
+  #   recueil_id = iex.recueil.id
+  #   @data_fr[auteur_id][:r][recueil_id][:e] << {:i => iex.id, :t => iex.titre, :y => iex.types, :g => iex.image?}
+  # end
   
   # -------------------------------------------------------------------
   #   Instance AuteurExercice
@@ -148,11 +151,17 @@ class AuteurExercice
   # @note: We don't treat exercices. The JS DB_EXERCICES table does not contain exercices
   # at starting point.
   def traite_recueils
-    Dir["#{path}/*"].each do |path_recueil|
+    liste_recueils.each do |path_recueil|
       next unless File.directory?(path_recueil)
       recueil = RecueilExercice.new self, path_recueil
       self.class.add_recueil recueil
     end
+  end
+  
+  # Return recueil (collection) list sorted
+  # 
+  def liste_recueils
+    Dir["#{path}/*"].sort_by{ |path| File.basename( path )}
   end
   
   def path_data
@@ -416,7 +425,8 @@ class DataBaseExercices
     AuteurExercice::data_fr = {}
     AuteurExercice::data_en = {}
     folder_instrument = File.join(folder_data, instid)
-    Dir["#{folder_instrument}/*"].each do |path|
+    liste_auteurs = Dir["#{folder_instrument}/*"].sort_by{ |path| File.basename(path)}
+    liste_auteurs.each do |path|
       next unless File.directory?(path)
       auteur = AuteurExercice.new path
       AuteurExercice::add_auteur auteur
