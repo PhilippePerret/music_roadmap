@@ -364,7 +364,7 @@ window.Aide = {
     if( 'undefined' == typeof keep ) keep = true ;
     var div = this.div_aide(id) ;
     this.content()[keep ? 'append' : 'html'](div);
-    UI.humanize(div);
+    UI.humanize(this.content());
     BT.add("<- Aide.put_in_section");
   },
   // Retourne le div d'aide préparé pour l'aide d'ID +id+
