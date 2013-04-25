@@ -210,7 +210,7 @@ Exercice.prototype.code_div_titre = function(){
   var recueil = this.recueil ? '<span class="ex_recueil">'+this.recueil+'</span>': "" ;
   var auteur  = this.auteur ? ' <span class="ex_auteur"> ('+this.auteur+')</span>':"";
   var titre   = '<span class="ex_titre">' + this.titre + '</span>' ;
-  titre = recueil + titre + auteur ;
+  titre = recueil + auteur + '<br />' + titre ;
   return '<div id="titre_ex-'+this.id+'" class="ex_titre">' + titre + '</div>' ;
 }
 Exercice.prototype.code_tempo = function(){
@@ -220,15 +220,13 @@ Exercice.prototype.code_tempo = function(){
   var meth = "$.proxy(Exercices.onchange_tempo, Exercices, '"+this.id+"', this.value)()" ;
   h += 'Tempo ' ;
   if ( this.tempo_risen ){
-    var sens = this.tempo_risen.substring(0,1) == '+' ? "augmenté" : "diminué" ;
+    var sens = LOCALE_UI.Label[this.tempo_risen.substring(0,1) == '+' ? 'increased' : "decreased"];
     h += '<span class="red">' + sens + ' (' + this.tempo_risen + ') </span>' ;
-  } else {
-    h += "courant" ;
   }
   h += ' <select id="tempo_ex-'+this.id+'" class="ex_tempo" onchange="'+meth+'">' +
         Exercices.Edition.options_list(this.tempo_min, this.tempo_max) + '</select>' ;
   h += this.span_tempo_de_a() ;
-  h += '<div>À la prochaine séance, ' + this.menu_up_tempo()+ '.</div>' ;
+  h += '<div>' + LOCALE_UI.Label.in_next_session + ', ' + this.menu_up_tempo()+ '.</div>' ;
   h += "</div>" ;
   return h ;
 }
@@ -244,12 +242,12 @@ Exercice.prototype.menu_up_tempo = function(){
   var liste_incs = [1, 2, 4] ;
   for(var i in liste_incs ){
     var inc = liste_incs[i] ;
-    pul = "pulsation" + (inc > 1 ? "s" : "") ;
+    pul = LOCALE_UI.Label.pulse + (inc > 1 ? "s" : "") ;
     options.unshift('<option value="'+inc+'">'+inc+" "+pul+"</option>");
     options.push('<option value="-'+inc+'">-'+inc+" "+pul+"</option>");
   }
   return '<select class="ex_menu_uptempo inherit" onchange="'+meth+'">' +
-            '<option value="0">augmenter/réduire de…</option>'+
+            '<option value="0">'+LOCALE_UI.Verb.increase + '/' +LOCALE_UI.Verb.decrease + ' ' + LOCALE_UI.Label.de_by + '…</option>'+
             options.join("") + '</select>';
 }
 // On monte le tempo quand il a été indiqué, à la précédente session, que ce
@@ -371,7 +369,7 @@ Exercice.prototype.save_duree_travail = function(rajax){
     this.ajax_on = true ;
     Ajax.query({
       data:{
-        proc:     'exercice/save_duree_travail',
+        proc:       'exercice/save_duree_travail',
         roadmap_nom :Roadmap.nom,
         user_mail   :User.mail,
         user_md5    :User.md5,

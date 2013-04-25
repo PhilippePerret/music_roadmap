@@ -310,12 +310,12 @@ $.extend(window.Exercices,{
       return F.error("Il n'y a aucun exercice à jouer ! Créez-en un d'abord ;-).");
     }
     if ( this.cur_exercice == null ){
+      // Start seance
       this.deselect_all() ;
-      // Premier exercice à utiliser
       this.suitex_ordre = this.ordre().join('-') ;
       this.suitex_ordre = this.suitex_ordre.split('-') ;
       if (!Roadmap.Data.start_to_end) this.suitex_ordre.reverse();
-      this.start_suitex() ;
+      this.start_suitex();
     } else {
       this.deselect(this.cur_exercice.id) ; // stop aussi le métronome
       this.cur_exercice = null ;
@@ -343,6 +343,9 @@ $.extend(window.Exercices,{
     $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.next_exercice).addClass('moyen') ;
     UI.set_invisible(this.els_hidden_while_working);
     UI.set_visible(this.els_visible_while_working);
+    Ajax.query({
+      data:{proc:"seance/start", rm_nom:Roadmap.nom, rm_mail:User.mail, md5:Roadmap.md5}
+    })
   },
   // Met fin au jeu des exercices
   // @note: dans tous les cas, on passe par cette méthode

@@ -27,7 +27,7 @@ window.MESSAGE = {
   // EXERCICE
   Exercice: {
     saved                     : "Exercice successfully saved!",
-    work_on_exercice_saved    : "Working time on exercice registered",
+    work_on_exercice_saved    : "Working time on this exercice has been recorded",
     really_save_duree_travail : "You've worked a hour on this exercice, really? If it's true, please confirm by clicking the link below."
   },
   DBExercice:{
