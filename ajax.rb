@@ -92,8 +92,7 @@ begin
 
 
   APP_FOLDER = File.expand_path('.')
-  require File.join(APP_FOLDER, 'ruby', 'lib', 'app', 'required', 'constants.rb')
-  Dir["#{APP_FOLDER}/ruby/lib/app/required/**/*.rb"].each { |m| require m }  
+  require File.join(APP_FOLDER, 'ruby', 'lib', 'module', 'init.rb')
   
   # dbg "-> Script ajax.rb"
   

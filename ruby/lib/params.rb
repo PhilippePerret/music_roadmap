@@ -4,8 +4,8 @@
 # 
 require 'cgi'
 require 'rack' # pour Rack::Utils.parse_nested_query(string)
-require 'hash' # mine
-require 'array' # mine
+# require 'hash' # mine
+# require 'array' # mine
 
 class Params
   # -------------------------------------------------------------------

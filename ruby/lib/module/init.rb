@@ -1,4 +1,7 @@
 require File.join(APP_FOLDER, 'ruby', 'lib', 'app', 'required', 'constants.rb')
+# Classes extentions
+Dir["#{APP_FOLDER}/ruby/lib/required/**/*.rb"].each { |m| require m }
+# App required-s
 Dir["#{APP_FOLDER}/ruby/lib/app/required/**/*.rb"].each { |m| require m }
 # require "_MVC_/model/html"
 
