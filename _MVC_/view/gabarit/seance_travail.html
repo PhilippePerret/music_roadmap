@@ -3,7 +3,7 @@
     Formulaire pour définir une séance de travail
   -->
   <div id="seance_form" class="form">
-    <div id="seance_form_titre">
+    <div id="seance_form_titre" class="titre_panneau">
       CONFECTION D'UNE SÉANCE DE TRAVAIL
     </div>
     <div id="seance_form_champs">
@@ -29,24 +29,35 @@
         <div id="seance_form_options" class="field">
 
           <div>
-            <input type="checkbox" id="seance_option_sameex" />
-            <label for="seance_option_sameex">Permettre la répétition d'exercices <aide value="seance/option_repetition_exercice.html"></aide></label>
+            <input type="checkbox" id="seance_option_same_ex" />
+            <label for="seance_option_same_ex">Répétition d'exercices <aide value="seance/option_same_ex.html"></aide></label>
           </div>
 
           <div>
             <input type="checkbox" id="seance_option_obligatory" checked="CHECKED" />
-            <label for="seance_option_obligatory">Inclure tous les exercices obligatoires</label> <aide value="seance/options_ex_obligatoires"></aide>
+            <label for="seance_option_obligatory">Exercices obligatoires</label> <aide value="seance/option_obligatory"></aide>
           </div>
 
           <div>
-            <input type="checkbox" id="seance_option_newgamme" checked="CHECKED" />
-            <label for="seance_option_newgamme">Nouvelle gamme de travail <span class="petit">(exercices “à la Hanon”)</label> <aide value="seance/options_new_gamme.html"></aide></span>
+            <input type="checkbox" id="seance_option_new_scale" checked="CHECKED" />
+            <label for="seance_option_new_scale">Nouvelle gamme</label> <aide value="seance/option_new_scale.html"></aide></span>
+          </div>
+
+          <div>
+            <input type="checkbox" id="seance_option_next_config" checked="CHECKED" />
+            <label for="seance_option_next_config">Configuration suivante</label> <aide value="seance/option_next_config.html"></aide></span>
           </div>
 
         </div>
       </div>
     </div>
+    <div style="clear:both;"></div>
     <div id="seance_form_buttons" class="buttons">
+      <a  href="#"
+          id="btn_cancel_seance"
+          class="fleft btn cancel"
+          onclick="return $.proxy(Seance.hide_form, Seance)()"
+          ></a>
       <a  href="#" 
           id="btn_confectionne_seance" 
           class="gros btn"
@@ -58,23 +69,27 @@
   <!-- 
     Rapport de début de séance de travail
   -->
-  <div id="seance_start" style="display:none;">
-    <div id="seance_start_titre">
+  <div id="seance_start" style="display:none;opacity:0;">
+    <div id="seance_start_titre" class="titre_panneau">
       DÉMARRAGE DE LA SESSION DE TRAVAIL
     </div>
-    <div id="seance_start_description">
-      
-    </div>
+    <div id="seance_start_description"></div>
     <div class="buttons">
-      <a  href="#" id="btn_start_seance" class="btn">Commencer !</a>
+      <a  href="#" 
+          id="btn_start_seance" 
+          class="gros btn"
+          onclick="return $.proxy(Seance.start, Seance)();"
+          >Commencer !</a>
     </div>
   </div>
   
   <!-- 
     Rapport de fin de séance de travail
   -->
-  <div id="seance_end" style="display:none;">
-    
+  <div id="seance_end" style="display:none;opacity:0;">
+    <div id="seance_end_titre" class="titre_panneau">
+      FIN DE LA SESSION DE TRAVAIL
+      </div>
+    <div id="seance_end_description"></div>
   </div>
-  
 </section>

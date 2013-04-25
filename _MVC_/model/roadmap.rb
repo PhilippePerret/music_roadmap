@@ -9,9 +9,9 @@
 
 require 'json'
 require 'digest/md5'
-require_model 'user'
-require_model 'exercice'
-require_model 'file_duree_jeu'
+require_model 'user'        unless defined?(User)
+require_model 'exercice'    unless defined?(Exercice)
+# require_model 'file_duree_jeu' # OBSOLETE
 
 class Roadmap
   
@@ -33,7 +33,7 @@ class Roadmap
   # Instanciation
   # 
   # @param  data    SOIT Hash contenant :nom et :mail
-  #                 SOIT String définissant :nom
+  #                 SOIT String définissant :nom (Roadmap name)
   # @param  mail    SOIT nil si data est un Hash
   #                 SOIT String définissant :mail si :nom est string
   def initialize data, mail = nil
@@ -85,6 +85,12 @@ class Roadmap
 
     return (hismail == mail) && ( hismd5 == md5 )
   end
+  
+  # Return owner of the roadmap (instance User)
+  def user
+    @user ||= User.new @mail
+  end
+  
   # => Retourne true si le dossier de l'exercice existe déjà
   def exists?
     File.exists?( folder )

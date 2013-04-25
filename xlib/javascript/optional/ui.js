@@ -80,13 +80,22 @@ window.UI = {
   
   
   // Définit la visibilité de l'élément et retourne son état
+  // 
+  // @param   o     a jID ("<tag>#<id>") or a Array of jID-s
+  // 
   set_visible: function(o, visible){
-    if ('undefined' == visible ) visible = true ;
-    $(o).css('visibility', visible ? 'visible' : 'hidden' ) ;
-    $(o).removeClass(visible ? 'invisible' : 'visible');
-    $(o).addClass(visible ? 'visible' : 'invisible');
-    return visible ;
+    if('object' == typeof o){
+      for(var i in o) this.set_invisible(o[i]) ;
+    } else {
+      if ('undefined' == typeof visible ) visible = true ;
+      $(o).css('visibility', visible ? 'visible' : 'hidden' ) ;
+      $(o).removeClass(visible ? 'invisible' : 'visible');
+      $(o).addClass(visible ? 'visible' : 'invisible');
+    }
+    return visible;
   },
+  // Rend l'élément invisible
+  set_invisible:function(o){this.set_visible(o,false)},
   
   // Permet de rendre l'élément DOM +id+ déplaçable (quand on garde la
   // souris pressée)

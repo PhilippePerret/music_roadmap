@@ -5,6 +5,8 @@ $.extend(window.Exercices,{
   },
   modified: false,
   
+  scale         :null,    // Scale of the day (Integer 0 (C) <-> 11 (B))
+  
   set_modified: function(ismod){
     if ('undefined' == typeof ismod ) ismod = true ;
     BT.add("-> Exercices.set_modified("+ismod.toString()+")");
@@ -34,6 +36,15 @@ $.extend(window.Exercices,{
     o.animate({opacity:0},500,function(){o.hide()});
     return false;
   },
+  
+  // Return Scale of the day (if not defined, "C")
+  _scale:function(){
+    if (this.scale === null) this.scale = 0;
+    return this.scale;
+  },
+  // Return Harmonic sequence of the day
+  // @note: Shortcut for:
+  _config:function(){return Roadmap.Data.get_config_generale()},
   
   // Demande de création d'un exercice
   id_new_exercice : null,    // Pour savoir si c'est un nouvel exercice
@@ -311,22 +322,27 @@ $.extend(window.Exercices,{
     }
     if ( this.suitex_ordre.length > 0 ){
       if ( this.suitex_ordre.length == 1 ){
-        $('a#btn_stop_exercices').hide() ;
-        $('a#btn_exercices_run').html("Sonner la fin des exercices") ;
+        UI.set_invisible('a#btn_stop_exercices');
+        $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.end_exercices);
       }
       // On passe au suivant
       this.cur_exercice = exercice( this.suitex_ordre.shift() ) ;
       this.cur_exercice.play() ; // pour le lancer
     } else {
-      // Il n'y a plus d'exercice
+      // No more exercices
       this.end_suitex() ;
     }
     return false ;
   },
+  
   // Démarrage du jeu des exercices
+  els_hidden_while_working:['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs'],
+  els_visible_while_working:['a#btn_stop_exercices'],
   start_suitex: function(){
-    $('a#btn_stop_exercices').show() ;
-    $('a#btn_exercices_run').html("Passer à l'exercice suivant").addClass('moyen') ;
+    $().show() ;
+    $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.next_exercice).addClass('moyen') ;
+    UI.set_invisible(this.els_hidden_while_working);
+    UI.set_visible(this.els_visible_while_working);
   },
   // Met fin au jeu des exercices
   // @note: dans tous les cas, on passe par cette méthode
@@ -335,8 +351,9 @@ $.extend(window.Exercices,{
     Metronome.stop() ;
     this.deselect_all();
     this.cur_exercice = null ;
-    $('a#btn_stop_exercices').hide() ;
-    $('a#btn_exercices_run').html("Lancer les exercices").removeClass('gros') ;
+    $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.play_exercices).removeClass('gros') ;
+    UI.set_invisible(this.els_visible_while_working);
+    UI.set_visible(this.els_hidden_while_working);
     return false ;
   },
   // Méthode appelée quand on change le tempo d'un exercice

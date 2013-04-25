@@ -38,25 +38,25 @@ window.LOCALE_UI = {
     working_time  : "Durée de travail"
   },
   User:{
-    logout                    : "Se déconnecter",
-    Signin:{
-      main_button             : "S'identifier / S'inscrire",
-      TITRE                   : "Identification",
-      MAIL                    : "Votre mail",
-      PASSWORD                : "Votre code secret",
-      BTN_SIGNIN              : "S'identifier",
-      BTN_WANT_SIGNUP         : "S'inscrire"
-    },
-    Signup:{
-      TITRE                   : "Inscription",
-      NAME                    : "Votre nom",
-      MAIL                    : "Votre mail (valide)",
-      MAIL_CONFIRMATION       : "Confirmation mail",
-      PASSWORD                : "Votre code secret",
-      PASSWORD_CONFIRMATION   : "Confirmation<br />code secret",
-      INSTRUMENT              : "Votre instrument",
-      DESCRIPTION             : "Quelques mots<br />sur vous",
-      btn_signup              : "S'inscrire"
+    logout                    :"Se déconnecter",
+    Signin:{                   
+      main_button             :"S'identifier / S'inscrire",
+      TITRE                   :"Identification",
+      MAIL                    :"Votre mail",
+      PASSWORD                :"Votre code secret",
+      BTN_SIGNIN              :"S'identifier",
+      BTN_WANT_SIGNUP         :"S'inscrire"
+    },                         
+    Signup:{                   
+      TITRE                   :"Inscription",
+      NAME                    :"Votre nom",
+      MAIL                    :"Votre mail (valide)",
+      MAIL_CONFIRMATION       :"Confirmation mail",
+      PASSWORD                :"Votre code secret",
+      PASSWORD_CONFIRMATION   :"Confirmation<br />code secret",
+      INSTRUMENT              :"Votre instrument",
+      DESCRIPTION             :"Quelques mots<br />sur vous",
+      btn_signup              :"S'inscrire"
     },
   },
   Roadmap: {
@@ -70,13 +70,16 @@ window.LOCALE_UI = {
   },
   Exercices: {
     Label:{
-      new_exercice          : "Nouvel Exercice",
-      play_exercices        : "Lancer les exercices",
-      activate_moving       : "Activer le déplacement",
-      stop_moving           : "Arrêter le déplacement",
-      sens_des_exercices    : "Exercices direction",
-      suites_harmoniques    : "Suites harmoniques",
-      ordre_exercices       : "Ordre des exercices"
+      new_exercice          :"Nouvel Exercice",
+      play_exercices        :"COMMENCER !",
+      next_exercice         :"Suivant",
+      stop_exercices        :"Finir",
+      end_exercices         :"C'est la fin",
+      activate_moving       :"Activer le déplacement",
+      stop_moving           :"Arrêter le déplacement",
+      sens_des_exercices    :"Exercices direction",
+      suites_harmoniques    :"Suites harmoniques",
+      ordre_exercices       :"Ordre des exercices"
     },
     Config:{
       Label:{

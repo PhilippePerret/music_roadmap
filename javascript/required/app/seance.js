@@ -5,31 +5,51 @@
 window.Seance = {
   ready     :false, // Set to true when form is ready
   
+  // Run seance
+  start:function(){
+    F.show("On commence la séance de travail !");
+    this.hide_section();
+  },
+  // Open section Seance (hidding exercices)
+  show_section:function(not_hidden){
+    UI.set_invisible('ul#exercices');
+    UI.animin($('section#seance_travail'));
+    $(['seance_form', 'seance_start', 'seance_end']).map(function(i,key){
+      if (key != not_hidden) UI.animout($('div#'+key));
+      else UI.animin($('div#'+key));
+    });
+  },
+  // Close section Seance (revealing exercices)
+  hide_section:function(){
+    UI.animout($('section#seance_travail'));
+    UI.set_visible('ul#exercices');
+  },
   // Open form to define working seance
   show_form:function(){
     this.prepare();
-    // On fait disparaitre les exercices pour afficher le div
-    UI.animout($('ul#exercices'));
-    UI.animin($('section#seance_travail'));
+    this.show_section('seance_form');
     return false;//pour le a-lien
   },
-  hide_form:function(){
-    UI.animout($('section#seance_travail'));
-    UI.animin($('ul#exercices'));
+  hide_form:function(for_good){
+    if('undefined' == typeof for_good) for_good = true;
+    if(for_good) this.hide_section();
+    else UI.animout($('div#seance_form'));
+    return false;//for a-link
   },
   show_start:function(){
-    
-  },
+    this.hide_form(false);UI.animin($('div#seance_start'))},
+  hide_start:function(){
+    UI.animout($('div#seance_start'))},
   show_end:function(){
-    
-  },
+    this.show_section('seance_end')},
+
   // Build the working seance
   building:false,
   build:function(){
     this.building = true;
     var params_seance = this.get_values();
     if( params_seance == null ) return this.building = false;
-    console.dir(params_seance);
+    // console.dir(params_seance);
     Ajax.query({
       data:{
         proc          :'seance/build',
@@ -46,8 +66,9 @@ window.Seance = {
   build_suite:function(rajax){
     if(false==traite_rajax(rajax)){
       this.data_seance = rajax.data_seance ; // les données pour la séance
-      F.show(this.data_seance.message);
-      this.hide_form();
+      $('div#seance_start_description').html(this.data_seance.message);
+      this.hide_form(false);
+      this.show_start();
     }
     this.building = false;
   },
@@ -63,12 +84,14 @@ window.Seance = {
     }
     // Difficulties
     var difficulties = Exercices.Edition.pickup_types('sw');
+    var options      = {};
+    $(['obligatory', 'new_scale', 'same_ex', 'next_config']).map(function(itm,key){
+        options[key] = $('input#seance_option_'+key).is(':checked');
+    });
     return {
       working_time  :working_time,
       difficulties  :difficulties.join(','),
-      obligatory    :$('input#seance_option_obligatory').is(':checked'),
-      new_game      :$('input#seance_option_newgamme').is(':checked'),
-      same_exercices:$('input#seance_option_sameex').is(':checked')
+      options       :options
     }
   },
   // Prepare the form

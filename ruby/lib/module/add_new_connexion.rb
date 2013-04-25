@@ -3,7 +3,7 @@
 # Un mail m'est envoyé avec les informations de connexion de l'utilisateur
 # ---
 begin
-  if online? # && Params::User::ip != '88.172.26.128'
+  if online? && Params::User::ip != '88.172.26.128'
     require 'procedure/mail/send'
     mail_send(
       :subject => "Connexion à Music Roadmap",

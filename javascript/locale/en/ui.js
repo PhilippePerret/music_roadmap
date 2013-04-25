@@ -42,25 +42,25 @@ window.LOCALE_UI = {
     working_time  : "Working time"
   },
   User:{
-    logout                    : "Log out",
-    Signin:{
-      main_button             : "Signin or Signup",
-      TITRE                   : "Sign In on Music Roadmap",
-      MAIL                    : "Your email",
-      PASSWORD                : "Your password",
-      BTN_SIGNIN              : "Sign In!",
-      BTN_WANT_SIGNUP         : "Sign up…"
-    },
-    Signup:{
-      TITRE                   : "Sign Up",
-      NAME                    : "Your name",
-      MAIL                    : "Your (valid) email",
-      MAIL_CONFIRMATION       : "Mail confirmation",
-      PASSWORD                : "Your password",
+    logout                    :"Log out",
+    Signin:{                   
+      main_button             :"Signin or Signup",
+      TITRE                   :"Sign In on Music Roadmap",
+      MAIL                    :"Your email",
+      PASSWORD                :"Your password",
+      BTN_SIGNIN              :"Sign In!",
+      BTN_WANT_SIGNUP         :"Sign up…"
+    },                         
+    Signup:{                   
+      TITRE                   :"Sign Up",
+      NAME                    :"Your name",
+      MAIL                    :"Your (valid) email",
+      MAIL_CONFIRMATION       :"Mail confirmation",
+      PASSWORD                :"Your password",
       PASSWORD_CONFIRMATION   :"Password confirmation",
-      INSTRUMENT              : "You play the…",
-      DESCRIPTION             : "A few words about you",
-      btn_signup              : "Sign up now!"
+      INSTRUMENT              :"You play the…",
+      DESCRIPTION             :"A few words about you",
+      btn_signup              :"Sign up now!"
     },
   },
   Roadmap: {
@@ -74,13 +74,16 @@ window.LOCALE_UI = {
   },
   Exercices: {
     Label:{
-      new_exercice          : "New Exercice",
-      play_exercices        : "Play exercices",
-      activate_moving       : "Activate moving",
-      stop_moving           : "Stop moving",
-      sens_des_exercices    : "Exercices direction",
-      suites_harmoniques    : "Harmonic suite",
-      ordre_exercices       : "Order of the exercices"
+      new_exercice          :"New Exercice",
+      play_exercices        :"START WORKING!",
+      next_exercice         :"Next one",
+      stop_exercices        :"Stop playing",
+      end_exercices         :"The end",
+      activate_moving       :"Activate moving",
+      stop_moving           :"Stop moving",
+      sens_des_exercices    :"Exercices direction",
+      suites_harmoniques    :"Harmonic suite",
+      ordre_exercices       :"Order of the exercices"
     },
     Config:{
       Label:{

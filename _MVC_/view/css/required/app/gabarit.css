@@ -17,6 +17,14 @@ body {
 }
 
 /*
+  Class générales
+*/
+div.titre_panneau {
+  font-weight         :bold;
+  margin-bottom       :1em;
+  font-size           :1.3em;
+}
+/*
   CONFIGURATION GÉNÉRALE DE L'EXERCICE
   ------------------------------------
 */

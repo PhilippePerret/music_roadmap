@@ -372,11 +372,14 @@ Exercice.prototype.save_duree_travail = function(rajax){
     Ajax.query({
       data:{
         proc:     'exercice/save_duree_travail',
-        roadmap_nom : Roadmap.nom,
-        user_mail   : User.mail,
-        user_md5    : User.md5,
-        ex_id       : this.id,
-        ex_w_duree  : this.w_duree
+        roadmap_nom :Roadmap.nom,
+        user_mail   :User.mail,
+        user_md5    :User.md5,
+        ex_id       :this.id,
+        ex_w_duree  :this.w_duree,
+        ex_tempo    :this.tempo,
+        scale       :Exercices._scale(),
+        config      :Exercices._config()
       },
       success: $.proxy(this.save_duree_travail, this)
     });

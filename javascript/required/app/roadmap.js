@@ -487,7 +487,7 @@ window.Roadmap = {
       nom = drm[0]; umail = drm[1];
       menu.append('<option value="'+idrm+'">' + nom + '</option>');
     }
-    UI.set_visible('select#roadmaps', true);
+    UI.set_visible('select#roadmaps');
   },
   // /*
   //     Sous-objet Roadmap.Data

@@ -4,17 +4,14 @@ READ ME DATABASE EXERCICES
 
 # Actualisation de la variable javascript DB_EXERCICES
 
-Pour le moment, on force l'actualisation en supprimer le fichier :
-
-    music_roadmap/javascript/locale/fr/db_exercices.js
-
-… et en rechargeant la page de music roadmap
+Pour forcer l'actualisation de la base de données (JS DB_EXERCICES), mettre la
+propriété :db_exercices du fichier _force_update.rb (racine) à true.
+Puis recharger la page.
 
 
-# Liste des types d'exercices
+# Liste des types d'exercices (difficultés abordées)
 
 On la trouve définie dans le fichier :
-
 
     music_roadmap/javascript/locale/fr/constants.js
 

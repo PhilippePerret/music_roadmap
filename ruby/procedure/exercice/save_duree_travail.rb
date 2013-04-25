@@ -4,7 +4,7 @@ require_model 'roadmap'
 
 def ajax_exercice_save_duree_travail
   rm = Roadmap.new param(:roadmap_nom), param(:user_mail)
-  dataex = {:id => param(:ex_id), :duree => param(:ex_w_duree)}
+  dataex = {:id => param(:ex_id), :duree => param(:ex_w_duree).to_i, :tempo => param(:ex_tempo).to_i}
   RETOUR_AJAX[:error] = exercice_save_duree_travail rm, dataex, {:mail => param(:user_mail), :md5 => param(:user_md5)}
 end
 
@@ -19,12 +19,21 @@ def exercice_save_duree_travail rm, dataex, datauser
   end
   
   # -- Tout est OK, on peut sauver la durée de travail sur l'exercice --
-  
+  # 
+  # @note: sera aussi ajouté la gamme (:scale) ou la suite harmonique (:hseq)
+  # si elles sont définies dans les paramètres.
+  # 
   begin
-    require_model 'file_duree_jeu'
+    require_model 'seance'
     require_model 'exercice'
     iex = Exercice.new(dataex[:id], {:roadmap => rm})
-    iex.add_new_jeu :date => Date.today.strftime("%y%m%d"), :duree => dataex[:duree].to_i
+    session = Seance.new rm
+    options = {}
+    [:scale, :config].each do |key|
+      options = options.merge key => param(key) unless param(key).nil?
+    end
+    working_data = {:duree => dataex[:duree].to_i, :tempo => dataex[:tempo]}
+    session.add_working_time iex, working_data, options
     return nil
   rescue Exception => e
     return e.message

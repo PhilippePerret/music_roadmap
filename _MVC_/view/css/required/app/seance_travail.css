@@ -4,6 +4,19 @@
 section#seance_travail {
   padding             :1em;
   background-color    :white;
+  position            :relative;
+  z-index             :1050;
+  width               :91%;
+}
+section#seance_travail div#seance_start,
+section#seance_travail div#seance_end,
+section#seance_travail div#seance_form {
+  position          :absolute;
+  top               :0;
+  left              :0;
+  padding           :1em;
+  background-color  :white;
+  width             :100%;
 }
 
 section#seance_travail div#seance_form_types {
@@ -13,9 +26,7 @@ section#seance_travail div#seance_form_types {
 }
 
 section#seance_travail div#seance_form div#seance_form_titre {
-  font-weight         :bold;
-  margin-bottom       :1em;
-  font-size           :1.3em;
+
 }
 section#seance_travail div#seance_form div#div_seance_form_duree {
   margin-bottom       :2em;
@@ -46,9 +57,17 @@ section#seance_travail div#seance_form div#seance_form_div_field_duree select {
 section#seance_travail div#seance_form div#div_seance_form_options {
   margin-top      :1em;
 }
+section#seance_travail div#seance_form div#seance_form_options > div {
+  float           :left;
+  width           :33%;
+}
 section#seance_travail div#seance_form_types > span {
   display       :block;
   float         :left;
   margin-right  :1em;
   width         :115.9px;
+}
+
+section#seance_travail div#seance_start div#seance_start_description {
+  padding       :2em;
 }

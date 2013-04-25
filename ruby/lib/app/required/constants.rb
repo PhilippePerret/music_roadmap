@@ -18,5 +18,3 @@ FOLDER_ROADMAP   = File.join(APP_FOLDER, 'user', 'roadmap')
 
 $: << FOLDER_RUBY
 $: << FOLDER_LIB_RUBY
-
-require 'array' # mine
