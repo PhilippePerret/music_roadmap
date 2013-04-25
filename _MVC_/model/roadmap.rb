@@ -9,9 +9,10 @@
 
 require 'json'
 require 'digest/md5'
+require 'date'
 require_model 'user'        unless defined?(User)
 require_model 'exercice'    unless defined?(Exercice)
-# require_model 'file_duree_jeu' # OBSOLETE
+require_model 'seance'      unless defined?(Seance)
 
 class Roadmap
   
@@ -222,6 +223,62 @@ class Roadmap
   # jeu
   # -------------------------------------------------------------------
   
+  # Start seance
+  # 
+  def start_seance
+    current_seance.run
+  end
+  
+  # Return current seance (so the session of today)
+  # 
+  def current_seance
+    @current_seance ||= Seance.new self
+  end
+  
+  # Return the +x+ last working seances of the roadmap, if they exist.
+  # 
+  # * RETURN
+  # 
+  #   An sorted Array of Hash with seance data
+  #   First is the oldest
+  # 
+  # * PARAMS
+  #   :rm::     Instance Roadmap of the roadmap
+  #   :x::      Number max of seances
+  # 
+  # * NOTE
+  #   
+  #   On pourrait boucler sur tous les fichiers jusqu'à trouver les x plus récents,
+  #   mais lorsque le musicien en sera à 2 ans de travail et 600 fichiers, ça sera un peu
+  #   lourd. Donc on fonctionne autrement : en incrémentant une date qu'on fait remonter
+  #   de aujourd'hui à la date de création de la roadmap ou du nombre de fichiers jusqu'à
+  #   trouver notre bonheur.
+  # 
+  def self.get_last x = 50
+    return [] unless File.exists? folder_seances
+
+    # Tous les fichiers séances (Array of file names)
+    # 
+    ary_files = Dir["#{folder_seances}/*.msh"].collect{|path| File.basename(path)}
+    ary_files.sort!
+    oldest_date = Date.strptime(ary_files.first, '%y%m%d')
+    
+    # Prendre les 50 derniers
+    lejour = Date.today
+    ary_seances = []
+    fold = folder_seances
+    while ary.count < 50 && lejour >= oldest_date
+      lejour_str = lejour.strftime("%y%m%d")
+      if ary_files.include?( "#{lejour_str}.msh" )
+        path = File.join(fold,"#{lejour_str}.msh")
+        ary_seances << Marshal.load(File.read(path))
+      end
+      lejour -= 1
+    end
+    
+    ary_seances
+  end
+  
   # Définit et retourne l'instance FileDureeJeu qui gère le fichier "durees_jeux" de la
   # roadmam, où sont enregistrés toutes les données des jeux de l'exercice.
   # 
@@ -259,6 +316,11 @@ class Roadmap
     @path_config_generale ||= File.join(folder, 'config_generale.js')
   end
   # --- EXERCICES ---
+  # Return path to folder seance(s)
+  # 
+  def folder_seances
+    @folder_seances ||= File.join( folder, 'seance' )
+  end
   # Dossier contenant les exercices, les images, les fichiers midi/son if any
   def folder_exercices
     @folder_exercices ||= File.join( folder, 'exercice' )

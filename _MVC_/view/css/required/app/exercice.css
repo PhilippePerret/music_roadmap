@@ -83,16 +83,14 @@ li.ex a.ex_id {
   margin-right          :1em ;
   font-size             :12.3px;
 }
+li.ex span.ex_recueil,li.ex span.ex_auteur{font-size:15.5px;}
 li.ex span.ex_recueil {
-  font-variant          :small-caps ;
-  margin-right          :8px ;
+  font-variant          :small-caps;
+  margin-right          :8px;
 }
 li.ex div.ex_titre {
   font-weight           :bold ;
   font-size             :1.4em ;
-}
-li.ex span.ex_auteur {
-  font-size             :0.9em ;
 }
 li.ex select.ex_tempo/*, li.ex select.ex_tempo option*/ {
   font-family           :Verdana ;

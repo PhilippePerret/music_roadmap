@@ -27,6 +27,15 @@ require_model 'seance/building'
 
 class Seance
   
+  # -------------------------------------------------------------------
+  #   Class Seance
+  # -------------------------------------------------------------------
+  
+  
+  # -------------------------------------------------------------------
+  #   Instance Seance
+  # -------------------------------------------------------------------
+  
   # Roadmap of the instance Seance (instance Roadmap)
   # 
   attr_reader :roadmap
@@ -60,6 +69,46 @@ class Seance
     end
   end
   
+  # Save data of seance
+  # 
+  def save
+    file.data= data
+    file.save
+  end
+  
+  # data (in file)
+  # 
+  def data
+    @data ||= file.data
+  end
+  
+  # Start seance
+  # 
+  # Set the :start attribute. If seance already exists, the :start and :end attributes 
+  # becomes Array(s) of starts and ends. Otherwise, a Fixnum of Time.now
+  #
+  # * NOTES
+  # 
+  #   :end is also set to now. It's important when :start and :end attributes are 
+  #   Array (when multiple seance a day), so the add exercice method can update the 
+  #   proper value (the last of the :end Array).
+  # 
+  def run
+    now = Time.now.to_i
+    @data = file.data
+    if exists? && @data[:start].class == Fixnum
+      @data[:start] = [@data[:start]] 
+      @data[:end]   = [@data[:end]] 
+      @data[:start] << now
+      @data[:end]   << now
+    else
+      @data[:start] = now
+      @data[:end]   = now
+    end
+    save
+  end
+    
+
   # Add a working time for exercice +ex+ (instance of Exercice)
   # 
   # * PARAMS
@@ -88,7 +137,7 @@ class Seance
   def build_with_params params
     Building.new(self, params).data
   end
-  
+
   # Return the Roadmap of the working session (instance Roadmap)
   def roadmap
     @roadmap ||= Roadmap.new @params[:rm_nom]
@@ -97,6 +146,11 @@ class Seance
   # Return User of the session (instance User)
   def user
     @user ||= User.new @params[:mail]
+  end
+  
+  # Return true if seance exists (file)
+  def exists?
+    file.exists?
   end
   
   # Return sfile of the session (instance Seance::SFile - @see below)
@@ -166,22 +220,35 @@ class Seance
     # 
     attr_reader :seance
     
+    # Data in file
+    # 
+    # Use data and data= methods
+    # 
+    @data = nil 
+    
     # Initialize a Seance::SFile file
     # 
     def initialize seance
       @seance = seance
     end
     
+    # Return true if seance file exists
+    def exists?
+      File.exists? path
+    end
+    
     # Save updated data
     # 
     def save
-      File.open(path, 'wb'){|f| f.write @data.to_json}
-      File.open(path_marshal, 'wb'){|f| f.write Marshal.dump(@data)}
+      File.open(path, 'wb'){|f| f.write Marshal.dump(@data)}
     end
     
-    # Add a working time +time+ (Fixnum, number of seconds) for exercice 
-    # +iex+ (instance Exercice)
+    # Add a working time for exercice +iex+ (instance Exercice)
     # 
+    # * PRODUCT
+    #   - Had data for exercice
+    #   - Update de :end attribute of the seance
+    #   
     # * PARAMS
     #   :iex::      Instance Exercice of the exercice
     #   :dwork::    {:time => Working time on the exercice, :tempo => tempo}
@@ -194,50 +261,104 @@ class Seance
       dwork = dwork.merge :id => iex.id
       unless options.nil?
         [:scale, :config].each do |key|
-          dwork = dwork.merge key => options[key] if options.has_key?(key)
+          @data = @data.merge key => options[key] if options.has_key?(key)
         end
       end
-      data[:exercices] << dwork
+      @data[:exercices] << dwork
+      update_end
       save
       true
+    end
+    
+    # Update end time of the seance
+    # 
+    def update_end
+      now = Time.now.to_i
+      if @data[:end].class == Array
+        @data[:end][-1] = now
+      else        
+        @data[:end] = now
+      end
     end
     
     # Return data for this Seance::SFile from file
     # 
     def data
       @data ||= begin
-        if File.exists? path_marshal
-          Marshal.load(File.read(path_marshal))
-        elsif File.exists? path
-          JSON.parse(File.read(path)).to_sym
+        if File.exists? path
+          Marshal.load(File.read(path))
         else
           data_init
         end
       end
     end
     
+    # Set data
+    def data= data
+      @data = data
+    end
+    
     # Return a Hash for initial data of a Seance::SFile
     # 
     def data_init
       {
-        :day          => seance.day,
-        :exercices    => [],  # Exercices list (Array of simple Hashes)
-        :id_exercices => [],  # Just a Array of exercices Ids of seance
-        :scale        => nil, # Scale of the day (e.g. "A#", "Bb")
-        :harmonic_seq => nil  # String (e.g. "whitekey" or "harmonic" (1))
+        :day                => seance.day,
+        :start              => nil, # Start time (timestamp) of the seance (Fixnum)
+                                    # If several seances a day, it's a array of starts
+                                    # @note: Set when "START!" is hired by musician, and the 
+                                    # "seance/start.rb" procedure
+        :end                => nil, # End time (timestamp) of the seance (Fixnum)
+                                    # If several seances a day, it's a array of ends
+                                    # @note: Set when "STOP!" is hired by musician, and the 
+                                    # "seance/stop.rb" procedure
+        :working_time       => nil, # Working time, according to :start and :end
+        :real_working_time  => nil, # Effective duration of the work, calculated with
+                                    # exercice working time, unlike :working_time, calculated
+                                    # upon :start and :end.
+        :exercices          => [],  # Exercices list (Array of simple Hashes)
+                                    # Simple hash contains: {:id => , :tempo => , :time => working time}
+        :id_exercices       => [],  # Just a Array of exercices Ids of the seance
+        :scale              => nil, # Scale of the day (a Fixnum from 0 — C — to 11 — B —)
+        :harmonic_seq       => nil, # String (e.g. "whitekey" or "harmonic" (1))
+        :config             => nil  # General configuration of exercices (NIL or Hash containing
+                                    # :maj_to_rel, :down_to_up, :start_to_end)
       }
       # (1) As defined in Javascript
     end
     
-    # Return path for this Seance::SFile
+    # Working time
     # 
-    def path
-      @path ||= File.join(seance.folder, seance.day)
+    def working_time
+      data[:working_time] || calc_working_time
+    end
+    def calc_working_time
+      starts, stops = if data[:end].class == Fixnum
+        [[data[:start]], [data[:end]]]
+      else
+        [data[:start], data[:end]]
+      end
+      wt = 0
+      while start = starts.pop
+        stop = stops.pop
+        wt  += stop - start
+      end
+      data[:working_time] = wt
+      save
+    end
+
+    # Return effective working time
+    # 
+    def real_working_time
+      if data[:real_working_time].nil?
+        data[:real_working_time] = data[:exercices].collect{|ex| ex[:time]}.inject(:+)
+        save
+      end
+      data[:real_working_time]
     end
     
     # Return path for marshal file
-    def path_marshal
-      @path_marshal ||= File.join(seance.folder, "#{seance.day}.msh")
+    def path
+      @path ||= File.join(seance.folder, "#{seance.day}.msh")
     end
   end
 end
