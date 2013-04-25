@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°40
+titre_en:     Exercice n°40
+suite:        white_keys
+types:        ['LH', 'RH', 'G0', 'C1']
+tempo_min:    60
+tempo_max:    120
+nb_mesures:   104
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+note_fr:      null
+note_en:      null

@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°35
+titre_en:     Exercice n°35
+suite:        white_keys
+types:        ['D0', 'P0', 'LH', 'RH', 'G1']
+tempo_min:    40
+tempo_max:    72
+nb_mesures:   68
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+note_fr:      "Cet exercice est de la plus haute importance"
+note_en:      "This exercice is of the highest importance"

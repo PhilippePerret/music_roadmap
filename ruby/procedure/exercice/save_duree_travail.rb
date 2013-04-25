@@ -26,14 +26,14 @@ def exercice_save_duree_travail rm, dataex, datauser
   begin
     require_model 'seance'
     require_model 'exercice'
-    iex = Exercice.new(dataex[:id], {:roadmap => rm})
-    session = Seance.new rm
+    iex     = Exercice.new(dataex[:id], {:roadmap => rm})
+    seance  = Seance.new rm
     options = {}
     [:scale, :config].each do |key|
       options = options.merge key => param(key) unless param(key).nil?
     end
-    working_data = {:duree => dataex[:duree].to_i, :tempo => dataex[:tempo]}
-    session.add_working_time iex, working_data, options
+    working_data = {:time => dataex[:duree].to_i, :tempo => dataex[:tempo]}
+    seance.add_working_time iex, working_data, options
     return nil
   rescue Exception => e
     return e.message

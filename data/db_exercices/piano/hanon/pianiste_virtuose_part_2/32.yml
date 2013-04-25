@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°32
+titre_en:     Exercice n°32
+suite:        white_keys
+types:        ['D0', 'P0', 'LH', 'RH', 'G1']
+tempo_min:    40
+tempo_max:    72
+nb_mesures:   27
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+note_fr:      null
+note_en:      null

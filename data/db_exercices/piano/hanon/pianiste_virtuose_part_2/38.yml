@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°38
+titre_en:     Exercice n°38
+suite:        white_keys
+types:        ['LH', 'RH', 'G0']
+tempo_min:    60
+tempo_max:    108
+nb_mesures:   128
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+note_fr:      "Exercice préparatoire à l'étude des gammes"
+note_en:      "Preparatory exercice for the study of scales"

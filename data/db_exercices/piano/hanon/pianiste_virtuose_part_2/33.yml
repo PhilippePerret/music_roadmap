@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°33
+titre_en:     Exercice n°33
+suite:        white_keys
+types:        ['D0', 'P0', 'LH', 'RH', 'G1']
+tempo_min:    40
+tempo_max:    72
+nb_mesures:   53
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+note_fr:      null
+note_en:      null
