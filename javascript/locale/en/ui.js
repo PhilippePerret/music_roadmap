@@ -4,13 +4,24 @@ window.LOCALE_UI = {
   // Au changement de langue, l'application parcourt les éléments définis dans 'Class' et
   // 'Id' ci-dessous et les remplace par les textes localisés s'il les trouve.
   Class:{
-    other       : "Other…",
-    cancel      : "Cancel"
+    other             :"Other…",
+    cancel            :"Cancel",
+    duree             :"Duration",
+    lab_modify        :"Modify…",
+    lab_current       :"Current",
+    lab_difficulties  :"Difficulties",
+    lab_roadmap       :"Roadmap",
+    lab_rapport       :"Work Report",
+    lab_obligatory    :"Obligatory",
+    lab_with_next     :"Linked to next"
   },
   Id:{
     span:{
       section_aide_titre      :"HELP",
-      section_aide_move_txt   :"(move this box by <br>clicking-dragging this bar)"
+      section_aide_move_txt   :"(move this box by <br>clicking-dragging this bar)",
+      label_nb_mesures        :"Number of measures",
+      label_nb_beats          :"Beats per measure",
+      label_confection        :"Prepare a work session"
     }
   },
   // -- Fin des remplacements automatiques --
@@ -97,16 +108,16 @@ window.LOCALE_UI = {
       down_to_up            : "Up and down",
       up_to_down            : "Down and up",
       maj_to_rel            : "Major to Relative <div class=\"petit\">(C->Am -> F->Dm -> Bb->Gm etc.)</div>",
-      rel_to_maj            : "Relative to Major <div class=\"petit\">(Am->C -> Em->G -> Bm->D etc.)</div>",
+      rel_to_maj            : "Relative to Major <div class=\"petit\">(Am->C -> Em->G -> Bm->D etc.)</div>"
     },
     Edition:{
-      types_of_exercice     :"Types of this exercice…"
+      types_of_exercice     :"Difficulties of this exercice…"
     }
   },
   Exercice: {
     create_new_exercice     :"Save this new exercice",
     create_new_morceau      :"Save this new piece",
-    update                  : "Update this exercice",
+    update                  :"Update this exercice",
     save_duree_travail      :"Yes, save time working on this exercice"
   },
   DBExercice:{
@@ -115,9 +126,9 @@ window.LOCALE_UI = {
     add_selected            :"Add selected exercices to current roadmap"
   },
   Seance:{
-    start                   :"START WORKING!",
+    start                   :"Start session!",
     stop                    :"Stop working",
-    next_exercice           :"Next one",
+    next_exercice           :"Next exercice",
     end_exercices           :"The end"    
   }
 }

@@ -164,14 +164,13 @@ div#open_roadmap_specs {
   padding-top     :4px;
 }
 div#open_roadmap_specs a {
-  background-color: #615654;
-  color: white !important;
-  display: block;
-  float: right;
-  font-family: cursive;
-  letter-spacing: 1px;
-  margin-right: 1em;
-  margin-top: -4px;
-  padding: 1px 8px;
-  text-align: center;
+  display       :block;
+  float         :right;
+  font-family   :Verdana;
+  font-variant  :small-caps;
+  font-size     :0.8em;
+  color         :#FFE0A1 !important;
+  margin-right  :1em;
+  padding       :1px 8px;
+  text-align    :center;
 }

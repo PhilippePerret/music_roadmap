@@ -63,37 +63,39 @@
     <td>
       <span id="span_obligatory">
         <input type="checkbox" id="exercice_obligatory">
-        <label id="label_exercice_obligatory" for="exercice_obligatory"></label>
+        <label class="lab_obligatory" for="exercice_obligatory"></label>
         <aide value="exercice/prop/obligatory"></aide>
       </span>
       <span id="span_with_next">
         <input type="checkbox" id="exercice_with_next">
-        <label id="label_exercice_with_next" for="exercice_with_next"></label>
+        <label class="lab_with_next" for="exercice_with_next"></label>
         <aide value="exercice/prop/with_next"></aide>
       </span>
     </td>
   </tr>
   <tr>
-    <td class="libelle">
-      Types
-    </td>
+    <td class="libelle"><span class="lab_difficulties"></span></td>
     <td>
-      <div class="left">
-        <a  href="#"
-            id="btn_toggle_types_exercices"
-            class="petit btn"
-            onclick="return $.proxy(Exercices.Edition.toggle_types, Exercices.Edition)();">modifier…</a> 
-        <aide value="exercice/prop/type"></aide>
+      <div style="position:relative;">
+        <div class="left">
+          <a  href="#"
+              id="btn_toggle_types_exercices"
+              class="petit btn lab_modify"
+              style="display:inline-block;width:60px;"
+              onclick="return $.proxy(Exercices.Edition.toggle_types, Exercices.Edition)();"
+              ></a> 
+          <aide value="exercice/prop/type"></aide>
+        </div>
+        <div id="exercice_cbs_types" style="display:none;position:absolute;top:1.6em;"></div>
       </div>
-      <div id="exercice_cbs_types" style="display:none;"></div>
     </td>
   </tr>
   <tr>
     <td class="libelle">Tempi</td>
     <td>
-      Courant <select id="exercice_tempo" class="tempo"></select> 
-      Minimum <select id="exercice_tempo_min" class="tempo"></select> 
-      Maximum <select id="exercice_tempo_max" class="tempo"></select>
+      <span class="lab_current"></span> <select id="exercice_tempo" class="tempo"></select> 
+      Min. <select id="exercice_tempo_min" class="tempo"></select> 
+      Max. <select id="exercice_tempo_max" class="tempo"></select>
     </td>
   </tr>
   <tr>
@@ -105,6 +107,19 @@
         <option value="whitekey">Touches blanches (“à la Hanon”)</option>
         <option value="none">Aucune</option>
       </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="libelle">
+      <span class="duree"></span>
+      <aide value="exercice/form/duree.html"></aide>
+    </td>
+    <td>
+      <span id="label_nb_mesures"></span>
+      <input type="text" id="exercice_nb_mesures" class="petit" />
+      <span id="label_nb_beats"></span>
+      <input type="text" id="exercice_nb_temps" class="petit" />
+      <aide value="exercice/form/nb_beats"></aide>
     </td>
   </tr>
   <tr class="buttons">

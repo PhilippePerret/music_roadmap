@@ -12,7 +12,7 @@ $.extend(UI,{
   humanize:function(inner){
     if ('undefined' == typeof inner ) inner = $('body');
     else inner = $(inner);
-    this.set_liens(inner);
+    this.set_liens_aide(inner);
     this.set_focus(inner);
     this.set_src_images(inner);
     this.set_js_locales(inner);
@@ -36,15 +36,26 @@ $.extend(UI,{
   },
   // Remplace les balises '<aide value="<id aide>">' par des pictogrammes
   // cliquable ou un texte si l'attribut 'title' est défini
-  set_liens: function(inner){
-    var title, id, css;
+  nbhelplink:0,
+  set_liens_aide: function(inner){
+    var title, uid, id, css, sty;
     $(inner).find('aide').map(function(i,o){
       o = $(o);
-      id = (id = o.attr('id')) ? ' id="'+id+'"' : "" ;      
+      uid = o.attr('id');
+      if ( ! uid ) uid = "helplink" + (++ UI.nbhelplink);
+      id = ' id="'+uid+'"';
+      css = o.attr('class'); sty = o.attr('style');
       o.replaceWith(
-        '<a'+id+' class="aide_lien" href="#" onclick="return $.proxy(H.show,H,\'' +
+        '<a'+id+' href="#" onclick="return $.proxy(H.show,H,\'' +
         o.attr('value')+'\')()">'+ UI.lien_title( o ) + '</a>'
         );
+      $('#'+uid).attr('style', sty);
+      // Set class css
+      if('undefined' == typeof css) css = [];
+      else if(css != "") css = css.split(' ');
+      else css = [];
+      css.push('aide_lien');
+      $('#'+uid).addClass(css.join(' '));
     });
   },
   // Remplace les balises '<focus value="<jq-id élément>" title="<titre>" />

@@ -1,13 +1,24 @@
 window.LOCALE_UI = {
   lang: 'fr',
   Class:{
-    other       : "Autre…",
-    cancel      : "Renoncer"
+    other             :"Autre…",
+    cancel            :"Renoncer",
+    duree             :"Durée",
+    lab_modify        :"Modifier…",
+    lab_current       :"Courant",
+    lab_difficulties  :"Difficultés",
+    lab_roadmap       :"Feuille de route",
+    lab_rapport       :"Rapport de travail",
+    lab_obligatory    :"Obligatoire",
+    lab_with_next     :"Lié au suivant"
   },
   Id:{
     span:{
       section_aide_titre      :"AIDE",
-      section_aide_move_txt   :"(déplacer cette boite en <br>cliquant-déplaçant cette barre)"
+      section_aide_move_txt   :"(déplacer cette boite en <br>cliquant-déplaçant cette barre)",
+      label_nb_mesures        :"Nombre de mesures",
+      label_nb_beats          :"Temps par mesure",
+      label_confection        :"Confectionner une séance de travail"
     }
   },
   Verb:{
@@ -96,7 +107,7 @@ window.LOCALE_UI = {
       rel_to_maj            : "Ton Relatif vers Majeur <div class=\"petit\">(Am->C -> Em->G -> Bm->D etc.)</div>",
     },
     Edition:{
-      types_of_exercice     :"Types de l'exercice…"
+      types_of_exercice     :"Difficultés de l'exercice…"
     }
   },
   Exercice: {
@@ -111,7 +122,7 @@ window.LOCALE_UI = {
     add_selected            :"Ajouter les exercices sélectionnés à la feuille de route"
   },
   Seance:{
-    start                   :"COMMENCER !",
+    start                   :"Commencer !",
     stop                    :"Finir",
     next_exercice           :"Suivant",
     end_exercices           :"C'est la fin"    

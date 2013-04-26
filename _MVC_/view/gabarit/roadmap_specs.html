@@ -60,12 +60,15 @@
 -->
 <div id="open_roadmap_specs" style="display:none;" class="right">
   <a  href="#"
-    ><span class="label_rapport">Rapport de travail</span></a>
-  <a  href="#"
-      onclick="return $.proxy(Seance.show_form, Seance)()"
-      ><span class="label_confection">Confectionner une séance de travail</a>
-  <a  href="#"
+      id="btn_toggle_roadmap_specs"
       onclick="return $.proxy(Roadmap.set_div_specs, Roadmap)()"
-  ><span class="label_roadmap">Feuille de route</span>…</a>
+  ><span class="lab_roadmap"></span>…</a>
+  <a  href="#"
+      id="btn_show_report"
+    ><span class="lab_rapport"></span></a>
+  <a  href="#"
+      id="btn_seance_show_form"
+      onclick="return $.proxy(Seance.show_form, Seance)()"
+      ><span id="label_confection"></span></a>
   &nbsp;
 </div>

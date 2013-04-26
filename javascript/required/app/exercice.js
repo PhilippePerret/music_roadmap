@@ -12,7 +12,8 @@ window.EXERCICE_PROPERTIES = [
   'id', 'abs_id', 'titre', 'recueil', 'auteur', 'suite', 
   'tempo', 'tempo_min', 'tempo_max', 'up_tempo',
   'types', 'obligatory', 'with_next',
-  'note', 'started_at', 'ended_at', 'created_at', 'updated_at'
+  'note', 'started_at', 'ended_at', 'created_at', 'updated_at',
+  'nb_mesures', 'nb_temps'
   ];
 
 // Au lieu de créer une instance à chaque fois, on passe par cette méthode

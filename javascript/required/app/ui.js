@@ -49,7 +49,6 @@ $.extend(UI,{
       ['div#subtitle_site', 'subtitle'],
       ['a#mail_to_phil', 'mail_to_phil'],
       ['td#td_label_roadmap', 'ROADMAP'],
-      ['.label_roadmap', 'roadmap']
     ]).each(function(i,o){
       $(o[0]).html(LOCALE_UI.Label[o[1]]);
     });

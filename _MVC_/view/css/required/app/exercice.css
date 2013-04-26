@@ -45,12 +45,13 @@ div#database_exercices {
 table#exercice_form div#exercice_cbs_types {
   background-color          :#E0E0E0;
   padding                   :0.5em;
+  z-index                   :10;
 }
 table#exercice_form div#exercice_cbs_types span {
   margin-right              :0.5em;
   display                   :block;
   float                     :left;
-  width                     :82px;
+  width                     :111px;
 }
 table#exercice_form div#exercice_cbs_types label {
   font-size                 :0.85em;

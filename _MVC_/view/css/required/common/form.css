@@ -78,6 +78,13 @@ input[type="text"].form, textarea.form
   padding       :3.2px;
   color         :#402095;
 }
+
+table.form input[type="text"].petit {
+  font-size   :12px !important;
+  padding     :0 !important;
+  text-align  :center;
+  width       :27px;
+}
 table.form .error {
   background-color      :#FFBDC3;
 }

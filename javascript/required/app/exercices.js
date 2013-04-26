@@ -418,6 +418,8 @@ $.extend(window.Exercices,{
         oid = 'table#exercice_form #exercice_' + k ;
         switch ( k ){
           case 'types': data['types'] = this.pickup_types(); break;
+          case 'nb_mesures':
+          case 'nb_temps':
           case 'tempo':
           case 'tempo_min':
           case 'tempo_max': data[k] = parseInt($(oid).val(),10); break;
@@ -457,8 +459,6 @@ $.extend(window.Exercices,{
       
       // Labels, boutons et autres textes
       var h = {
-        "label#label_exercice_obligatory" :LOCALE_UI.Label.obligatory,
-        "label#label_exercice_with_next"  :LOCALE_UI.Label.link_to_next,
         "a#btn_toggle_types_exercices"    :LOCALE_UI.Verb.modify,
         "a#seach_ex_in_database"          :LOCALE_UI.DBExercice.search_in_db
       }

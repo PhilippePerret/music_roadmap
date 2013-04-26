@@ -67,7 +67,7 @@ window.ERROR = {
     no_exercice_choosed   :"You have to choose the exercices to add to your current roadmap!"
   },
   Seance:{
-    no_working_time       :"I need a working time!"
+    no_working_time       :"I need a working time!",
     no_exercices          :"No exercice to play!"
   }
   
