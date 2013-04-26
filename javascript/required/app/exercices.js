@@ -300,65 +300,7 @@ $.extend(window.Exercices,{
   play: function(id){
     exercice(id).play() ;
   },
-  // Lancer les exercices ou passe au suivant
-  // @note: il faudrait tenir compte de start_to_end des config générales
-  cur_exercice      : null,   // L'exercice en cours de jeu (métronome)
-  suitex_ordre      : null,   // La suite d'exercice, dans un sens ou l'autre
-  suitex: function(){
-    var len = this.ordre().length ;
-    if ( len.length == 0 ){
-      return F.error("Il n'y a aucun exercice à jouer ! Créez-en un d'abord ;-).");
-    }
-    if ( this.cur_exercice == null ){
-      // Start seance
-      this.deselect_all() ;
-      this.suitex_ordre = this.ordre().join('-') ;
-      this.suitex_ordre = this.suitex_ordre.split('-') ;
-      if (!Roadmap.Data.start_to_end) this.suitex_ordre.reverse();
-      this.start_suitex();
-    } else {
-      this.deselect(this.cur_exercice.id) ; // stop aussi le métronome
-      this.cur_exercice = null ;
-    }
-    if ( this.suitex_ordre.length > 0 ){
-      if ( this.suitex_ordre.length == 1 ){
-        UI.set_invisible('a#btn_stop_exercices');
-        $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.end_exercices);
-      }
-      // On passe au suivant
-      this.cur_exercice = exercice( this.suitex_ordre.shift() ) ;
-      this.cur_exercice.play() ; // pour le lancer
-    } else {
-      // No more exercices
-      this.end_suitex() ;
-    }
-    return false ;
-  },
-  
-  // Démarrage du jeu des exercices
-  els_hidden_while_working:['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs'],
-  els_visible_while_working:['a#btn_stop_exercices'],
-  start_suitex: function(){
-    $().show() ;
-    $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.next_exercice).addClass('moyen') ;
-    UI.set_invisible(this.els_hidden_while_working);
-    UI.set_visible(this.els_visible_while_working);
-    Ajax.query({
-      data:{proc:"seance/start", rm_nom:Roadmap.nom, rm_mail:User.mail, md5:Roadmap.md5}
-    })
-  },
-  // Met fin au jeu des exercices
-  // @note: dans tous les cas, on passe par cette méthode
-  end_suitex: function( forcer_arret ){
-    if( forcer_arret === true ) this.cur_exercice.play(); // pour l'arrêter
-    Metronome.stop() ;
-    this.deselect_all();
-    this.cur_exercice = null ;
-    $('a#btn_exercices_run').html(LOCALE_UI.Exercices.Label.play_exercices).removeClass('gros') ;
-    UI.set_invisible(this.els_visible_while_working);
-    UI.set_visible(this.els_hidden_while_working);
-    return false ;
-  },
+
   // Méthode appelée quand on change le tempo d'un exercice
   onchange_tempo: function(id, tempo){
     var iex = exercice( id )
@@ -389,8 +331,7 @@ $.extend(window.Exercices,{
     BT.add('-> Exercices.set_boutons (EXERCICES.length='+EXERCICES.length+')') ;
     var locked = Roadmap.is_locked(0) ;
     // Boutons généraux
-    var m = EXERCICES.length > 0 ? 'show' : 'hide' ;
-    $('a#btn_exercices_run')[m]() ;
+    UI.set_visible('a#btn_exercices_run', EXERCICES.length > 0);
     this.set_btn_move(locked) ;
     this.set_btn_create(locked);
     this.set_btns_edition(locked);
