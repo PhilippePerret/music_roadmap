@@ -10,4 +10,9 @@ div#btns_exercices a#btn_fullscreen img {
   margin-top          : -4px  ;
   margin-right        : -16px ;
 }
+
+div#btns_exercices a#btn_exercices_run {
+  display             :inline-block;
+  width               :130px;
+}
   

@@ -17,6 +17,14 @@ a.btn_close:hover {
   background-image:url(http://www.atelier-icare.net/img/pictos/mac/b_close_over.png);
 }
 
+a.violet {
+  color             :white !important;
+  background-color  :#9056DF !important;
+  border-color      :#EFCFFF #70007F #70007F #DFBFAF !important;
+}
+a.violet:active{
+  border-color      :#70007F #DFBFAF #EFCFFF #70007F !important;
+}
 code {font-size:14.7px;}
 
 .inherit {
