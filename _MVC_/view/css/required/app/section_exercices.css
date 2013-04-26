@@ -2,17 +2,23 @@ section#section_exercices {
 }
 /*Séparation entre les boutons de la barre exercices*/
 div#btns_exercices a {
-  margin-right        : 1em ;
+  margin-right        :1em;
 }
 
 div#btns_exercices a#btn_fullscreen img {
-  width               : 30px  ;
-  margin-top          : -4px  ;
-  margin-right        : -16px ;
+  width               :30px;
+  margin-top          :0;
+  margin-right        :0;
 }
 
 div#btns_exercices a#btn_exercices_run {
   display             :inline-block;
   width               :130px;
 }
-  
+
+div#btns_exercices a#btn_fullscreen {
+  margin-right        :5px !important;
+}
+div#btns_exercices a#btn_exercices_move {
+  margin-top          :2.4px;
+}

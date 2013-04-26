@@ -72,7 +72,7 @@ div#roadmap_specs select#roadmaps {
 div#btns_exercices {
   height              :35px;
   background-color    :#9E5600;
-  padding             :0.3em 0.7em 0;
+  padding             :0.3em 0 0 0.7em;
 }
 section#roadmap div#roadmap_specs {
 /*  width               : 100% ;*/
