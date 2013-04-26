@@ -138,7 +138,7 @@ window.Roadmap = {
     var ok_to_open    = (ok_to_create && this.loaded == false) || rm_exemple ;
     var des_exs = EXERCICES.length > 0 ;
     
-    // -- Bouton par bouton --
+    // -- Visibilité par bouton --
     
     // :init
     // Ne doit être visible que s'il y a des exercices
