@@ -362,12 +362,12 @@ window.Roadmap = {
     try{
       if( User.need_to_signin($.proxy(this.save,this))) throw 'need_login' ;
       if ( false == this.creating ){
-        if ( this.modified == false ) throw 'unmodified' ;
-        if ( this.is_locked() )        throw 'is_locked' ;
+        if ( this.modified == false ) throw '' ;
+        if ( this.is_locked() )       throw 'is_locked' ;
       }
       if( this.specs_ok(true) == false ) return this.end_save() ;
     }catch(erreur){
-      // F.show("Save interrompu: " + erreur,{keep:true});
+      if (erreur != '') F.error(ERROR.Roadmap[error]);
       this.saving = false; 
       return false;
     }
@@ -505,12 +505,17 @@ window.Roadmap = {
     // --- Paramètres généraux ---
     DATA_GENERALES:[
       // @WARNING: IL FAUT ABSOLUMENT GARDER LES TROIS PREMIÈRES EN PREMIER
-      'down_to_up', 'maj_to_rel', 'start_to_end', 'last_changed'
+      // Car quand on clique que le bouton pour passer à la configuration suivante, on
+      // tourne sur ces trois premiers paramètres pour les passer alternativement de
+      // true à false (ou inversement)
+      // @see `next_config_generale' ci-dessous
+      'down_to_up', 'maj_to_rel', 'start_to_end', 'scale', 'last_changed'
     ],
-    down_to_up      : true,               // cf. N0001
-    start_to_end    : true,               // cf. N0002
-    maj_to_rel      : true,               // cf. N0003
-    last_changed    : 'down_to_up',       // cf. N0004
+    down_to_up      :true,               // cf. N0001
+    start_to_end    :true,               // cf. N0002
+    maj_to_rel      :true,               // cf. N0003
+    scale           :0,
+    last_changed    :'down_to_up',       // cf. N0004
     
     // --- Les Données générales des exercices ---
     // Pour l'obtenir     : Exercices.ordre()
@@ -524,6 +529,7 @@ window.Roadmap = {
       this.down_to_up     = true ;
       this.start_to_end   = true ;
       this.maj_to_rel     = true ;
+      this.scale          = 0 ;
       this.last_changed   = 'down_to_up' ;
       this.show() ;
       window.EXERCICES = {length:0} ;
@@ -532,54 +538,40 @@ window.Roadmap = {
       }
     },
     
-  //   // Passer à la configuration générale suivante
-  //   next_config_generale: function(){
-  //     // Index de la nouvelle configuration
-  //     var index_config = this.DATA_GENERALES.indexOf( this.last_changed ) ;
-  //     index_config += 1 ; if ( index_config > 2 ) index_config = 0 ;
-  //     // Modifier le paramètre suivant
-  //     var config = this.DATA_GENERALES[index_config] ;
-  //     this.toggle( config ) ;
-  //     this.last_changed = config.toString() ;
-  //     // L'enregistrer ? (sauf si exemple (non, peu importe))
-  //     if ($('input[type=checkbox]#save_config_generale_courante').is(':checked')){
-  //       $.proxy(Roadmap.save_config_generale, Roadmap)() ;
-  //     }
-  //   },
-  //   // Inverse une donnée générale
-  //   // @param   key   La clé, par exemple 'down_to_up'
-  //   toggle: function( key ){
-  //     this[key] = ! this[key] ;
-  //     Roadmap.UI.Set[key]()   ; // dans l'interface
-  //   },
+    // Passer à la configuration générale suivante
+    next_config_generale: function(){
+      // Index de la nouvelle configuration
+      var index_config = this.DATA_GENERALES.indexOf( this.last_changed ) ;
+      index_config += 1 ; if ( index_config > 2 ) index_config = 0 ;
+      // Modifier le paramètre suivant
+      var config = this.DATA_GENERALES[index_config] ;
+      this.toggle( config ) ;
+      this.last_changed = config.toString();
+      // On change de gamme
+      ++ this.scale ;
+      if (this.scale >= 12) this.scale = 0;
+      // Save it ?
+      if ($('input[type=checkbox]#save_config_generale_courante').is(':checked')){
+        Roadmap.set_modified();
+        Roadmap.save();
+      }
+    },
+    // Inverse une donnée générale
+    // @param   key   La clé, par exemple 'down_to_up'
+    toggle: function( key ){
+      this[key] = ! this[key] ;
+      Roadmap.UI.Set[key]()   ;// Display it
+    },
     // => Retourne les données de la configuration générale
     get_config_generale:function(){
       return {
         down_to_up          :this.down_to_up, 
         start_to_end        :this.start_to_end,
         maj_to_rel          :this.maj_to_rel,
+        scale               :this.scale,
         last_changed        :this.last_changed
       }
     },
-  //   // => Retourne les data à enregistrer dans le fichier exercices.js
-  //   data_exercices: function(){
-  //     // Pour le moment, seul l'ordre est enregistré
-  //     var ordre = this.EXERCICES['ordre'].join('.') ;
-  //     return {
-  //       'ordre': ordre,
-  //     }
-  //   },
-  //   // => Retourne toutes les données réglées, sous forme de Hash, pour
-  //   //    leur enregistrement par exemple.
-  //   // 
-  //   // @TODO: si de longues listes sont utilisées, penser à les passer en
-  //   // string
-  //   // get_exercices: function(){
-  //   //   return {
-  //   //     created_at: null, updated_at: null,
-  //   //     exercices: {} // à définir
-  //   //   } ; // pour le moment (ensuite : données des exercices)
-  //   // },
     
     // Règle l'interface avec les données spécifiées
     show: function(){
@@ -621,7 +613,10 @@ window.Roadmap = {
       if ( data == null )
         F.show( "Aucune configuration générale n'est définie pour cette feuille de route.") ;
       else {
-        for( cle in data ) this[cle] = data[cle] ;
+        for( cle in data ){ 
+          if (cle == 'scale') data[cle] = parseInt(data[cle],10);
+          this[cle] = data[cle];
+        }
       }
     },
     // On construit tous les exercices

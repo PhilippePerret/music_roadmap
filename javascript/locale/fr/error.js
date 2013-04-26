@@ -26,6 +26,7 @@ window.ERROR = {
   // ROADMAP
   Roadmap: {
     initialization_failed :"Impossible d'initialiser la feuille de route…",
+    is_locked             :"Cette feuille de route est verrouillée",
     required              :"Une feuille de route est requise !",
     too_many              :"Désolé, mais vous ne pouvez pas créer plus de dix feuilles de route…",
     cant_create           :"Impossible de créer la feuille de route avec les données fournies…",

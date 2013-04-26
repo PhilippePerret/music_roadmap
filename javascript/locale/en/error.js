@@ -21,19 +21,20 @@ window.ERROR = {
   },
   // ROADMAP
   Roadmap: {
-    initialization_failed : "Unable to initialize roadmap…",
-    required        : "A Music raodmap required!",
-    too_many        :"You can't create more than 10 roadmaps, sorry.",
-    cant_create     : "Unable to create the roadmap with these data",
-    unknown         : "Unknown roadmap… Unable to load it.",
-    existe_deja     : "This roadmap already exists…",
-    not_destroyed   : "# Unabled to destroy this roadmap…",
-    bad_owner       : "You can't do that! This roadmap is not yours!",
+    initialization_failed :"Unable to initialize roadmap…",
+    is_locked             :"This roadmap is locked. Unable to save it.",
+    required              :"A Music raodmap required!",
+    too_many              :"You can't create more than 10 roadmaps, sorry.",
+    cant_create           :"Unable to create the roadmap with these data",
+    unknown               :"Unknown roadmap… Unable to load it.",
+    existe_deja           :"This roadmap already exists…",
+    not_destroyed         :"# Unabled to destroy this roadmap…",
+    bad_owner             :"You can't do that! This roadmap is not yours!",
     Specs:{
-      requises        :"Roadmap Name is required!",
-      need_a_nom      :"A Roadmap's name is required!",
-      invalid_nom     :"Roadmap Name is invalid…",
-      too_short_name  :"The name is too short (at least 6 characters please)"
+      requises            :"Roadmap Name is required!",
+      need_a_nom          :"A Roadmap's name is required!",
+      invalid_nom         :"Roadmap Name is invalid…",
+      too_short_name      :"The name is too short (at least 6 characters please)"
     },
     Data:{
       required                  : "Data to dispatch required!",
