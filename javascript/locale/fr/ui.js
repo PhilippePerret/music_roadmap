@@ -78,10 +78,6 @@ window.LOCALE_UI = {
   Exercices: {
     Label:{
       new_exercice          :"Nouvel Exercice",
-      play_exercices        :"COMMENCER !",
-      next_exercice         :"Suivant",
-      stop_exercices        :"Finir",
-      end_exercices         :"C'est la fin",
       activate_moving       :"Activer le déplacement",
       stop_moving           :"Arrêter le déplacement",
       sens_des_exercices    :"Exercices direction",
@@ -113,5 +109,11 @@ window.LOCALE_UI = {
     titre                   :"BASE DE DONNÉES D’EXERCICES",
     search_in_db            :"Choisir des exercices dans la base de données des exercices",
     add_selected            :"Ajouter les exercices sélectionnés à la feuille de route"
+  },
+  Seance:{
+    start                   :"COMMENCER !",
+    stop                    :"Finir",
+    next_exercice           :"Suivant",
+    end_exercices           :"C'est la fin"    
   }
 }

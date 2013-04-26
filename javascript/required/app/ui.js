@@ -62,8 +62,6 @@ $.extend(UI,{
     });
     // Dans LOCALE_UI.Exercices.Label
     $([
-      ['a#btn_exercices_run', 'play_exercices'],
-      ['a#btn_stop_exercices', 'stop_exercices'],
       ['a#btn_exercice_create', 'new_exercice'],
       ['a#btn_exercices_move', 'activate_moving'],
       ['span#lab_ordre_exercices', 'ordre_exercices'],
@@ -71,6 +69,13 @@ $.extend(UI,{
       ['span#lab_sens_exercices', 'sens_des_exercices']
     ]).each(function(i,o){
       $(o[0]).html(LOCALE_UI.Exercices.Label[o[1]]);
+    });
+    // Dans LOCALE_UI.Seance
+    $([
+      ['a#btn_exercices_run',   'start'],
+      ['a#btn_stop_exercices',  'stop']
+    ]).each(function(i,o){
+      $(o[0]).html(LOCALE_UI.Seance[o[1]]);
     });
   },
 

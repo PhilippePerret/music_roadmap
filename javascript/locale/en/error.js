@@ -68,6 +68,7 @@ window.ERROR = {
   },
   Seance:{
     no_working_time       :"I need a working time!"
+    no_exercices          :"No exercice to play!"
   }
   
 }

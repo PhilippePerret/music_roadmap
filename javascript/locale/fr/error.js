@@ -71,6 +71,7 @@ window.ERROR = {
     no_exercice_choosed   :"Il faut choisir les exercices à ajouter à votre feuille de route courante !"
   },
   Seance:{
-    no_working_time       :"Il faut indiquer un temps de travail !"
+    no_working_time       :"Il faut indiquer un temps de travail !",
+    no_exercices          :"Il n'y a aucun exercice à jouer !"
   }
 }

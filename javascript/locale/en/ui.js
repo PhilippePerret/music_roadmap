@@ -82,10 +82,6 @@ window.LOCALE_UI = {
   Exercices: {
     Label:{
       new_exercice          :"New Exercice",
-      play_exercices        :"START WORKING!",
-      next_exercice         :"Next one",
-      stop_exercices        :"Stop playing",
-      end_exercices         :"The end",
       activate_moving       :"Activate moving",
       stop_moving           :"Stop moving",
       sens_des_exercices    :"Exercices direction",
@@ -117,5 +113,11 @@ window.LOCALE_UI = {
     titre                   :"DATABASE EXERCICES",
     search_in_db            :"Choose exercices in Database Exercices",
     add_selected            :"Add selected exercices to current roadmap"
+  },
+  Seance:{
+    start                   :"START WORKING!",
+    stop                    :"Stop working",
+    next_exercice           :"Next one",
+    end_exercices           :"The end"    
   }
 }
