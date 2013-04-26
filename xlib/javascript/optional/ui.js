@@ -81,14 +81,16 @@ window.UI = {
   
   // Définit la visibilité de l'élément et retourne son état
   // 
+  // @note: Le changement se fait par une classe 'invisible' et une class 'visible',
+  //        pas par la propriété "visibility".
+  // 
   // @param   o     a jID ("<tag>#<id>") or a Array of jID-s
   // 
   set_visible: function(o, visible){
     if('object' == typeof o){
-      for(var i in o) this.set_invisible(o[i]) ;
+      for(var i in o) this.set_visible(o[i], visible) ;
     } else {
-      if ('undefined' == typeof visible ) visible = true ;
-      $(o).css('visibility', visible ? 'visible' : 'hidden' ) ;
+      if ('undefined' == typeof visible )visible = true ;
       $(o).removeClass(visible ? 'invisible' : 'visible');
       $(o).addClass(visible ? 'visible' : 'invisible');
     }
