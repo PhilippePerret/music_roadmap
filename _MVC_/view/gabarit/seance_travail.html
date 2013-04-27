@@ -3,9 +3,7 @@
     Formulaire pour définir une séance de travail
   -->
   <div id="seance_form" class="form">
-    <div id="seance_form_titre" class="titre_panneau">
-      CONFECTION D'UNE SÉANCE DE TRAVAIL
-    </div>
+    <div id="seance_form_titre" class="titre_panneau"></div>
     <div id="seance_form_champs">
       <!-- POUR REJOUER LA SÉANCE (IF ANY) -->
       <div id="seance_div_replay" style="display:none;">
@@ -13,11 +11,11 @@
             id="btn_seance_replay"
             class="gros btn"
             onclick="return $.proxy(Seance.replay,Seance)()"
-        >BOUTON REJOUER LA SÉANCE</a>
+        ></a>
       </div>
       <!-- DUREE DE LA SEANCE -->
       <div id="div_seance_form_duree">
-        <label class="libelle">Durée de la séance de travail</label>
+        <label id="seance_lab_duree" class="libelle"></label>
         <div id="seance_form_div_field_duree" class="field">
           <select id="seance_duree_heures"></select> hrs
           <select id="seance_duree_minutes"></select> mns
@@ -26,7 +24,7 @@
       
       <!-- DIFFICULTES À ABORDER -->
       <div id="div_seance_form_types">
-        <label class="libelle">Difficultés à aborder en priorité</label>
+        <label id="seance_lab_difficulties" class="libelle"></label>
         <div id="seance_form_types" class="field"></div>
       </div>
 
@@ -37,22 +35,22 @@
 
           <div>
             <input type="checkbox" id="seance_option_same_ex" />
-            <label for="seance_option_same_ex">Répétition d'exercices <aide value="seance/option_same_ex.html"></aide></label>
+            <label id="seance_lab_opt_same_ex" for="seance_option_same_ex"></label> <aide value="seance/option_same_ex.html"></aide>
           </div>
 
           <div>
             <input type="checkbox" id="seance_option_obligatory" checked="CHECKED" />
-            <label for="seance_option_obligatory">Exercices obligatoires</label> <aide value="seance/option_obligatory"></aide>
+            <label id="seance_lab_opt_obligatory" for="seance_option_obligatory"></label> <aide value="seance/option_obligatory"></aide>
           </div>
 
           <div>
             <input type="checkbox" id="seance_option_new_scale" checked="CHECKED" />
-            <label for="seance_option_new_scale">Nouvelle gamme</label> <aide value="seance/option_new_scale.html"></aide></span>
+            <label id="seance_lab_opt_new_scale" for="seance_option_new_scale"></label> <aide value="seance/option_new_scale.html"></aide></span>
           </div>
 
           <div>
             <input type="checkbox" id="seance_option_next_config" checked="CHECKED" />
-            <label for="seance_option_next_config">Configuration suivante</label> <aide value="seance/option_next_config.html"></aide></span>
+            <label id="seance_lab_opt_next_config" for="seance_option_next_config"></label> <aide value="seance/option_next_config.html"></aide></span>
           </div>
 
         </div>
@@ -66,31 +64,49 @@
           onclick="return $.proxy(Seance.cancel_seance, Seance)()"
           ></a>
       <a  href="#" 
-          id="btn_confectionne_seance" 
+          id="btn_seance_prepare" 
           class="gros btn"
           onclick="return $.proxy(Seance.build, Seance)()"
-      >Prépare ma séance de travail !</a>
+      ></a>
     </div>
   </div>
   
   <!-- 
-    Rapport de début de séance de travail
+    AFFICHAGE DES DONNÉES DE LA SESSION (AVANT DÉMARRAGE)
   -->
   <div id="seance_start" style="display:none;opacity:0;">
-    <div id="seance_start_titre" class="titre_panneau">
-      DÉMARRAGE DE LA SESSION DE TRAVAIL
+    <div id="seance_start_titre" class="titre_panneau"></div>
+    <!-- Description de la séance avant démarrage -->
+    <div id="seance_start_description">
+      <div>
+        <span id="seance_lib_working_time" class="libelle capitalize"></span>
+        <span id="seance_data_working_time" class="data capitalize"></span>
+      </div>
+      <div>
+        <span id="seance_lib_scale" class="libelle capitalize"></span>
+        <span id="seance_data_scale" class="data capitalize" style="display:inline-block;"></span>
+        <img  id="seance_data_img_scale" style="display:block;width:300px;" src="" />
+      </div>
+      <div>
+        <span id="seance_lib_suite_harmonique" class="libelle capitalize"></span>
+        <span id="seance_data_suite_harmonique" class="data"></span>
+        <img  id="seance_data_img_suite_harmonique" src="" />
+      </div>
+      <div style="margin-top:2em;">
+        <span id="seance_lib_suite_exercices" class="libelle capitalize"></span>
+        <div id="seance_data_suite_exercices"></div>
+      </div>
     </div>
-    <div id="seance_start_description"></div>
     <div class="buttons">
       <a  href="#"
           class="cancel btn fleft"
           onclick="return $.proxy(Seance.cancel_seance, Seance)()"
           ></a>
       <a  href="#" 
-          id="btn_start_seance" 
+          id="btn_seance_start" 
           class="gros btn"
           onclick="return $.proxy(Seance.start, Seance)();"
-          >Commencer !</a>
+          ></a>
     </div>
   </div>
   
@@ -98,9 +114,7 @@
     Rapport de fin de séance de travail
   -->
   <div id="seance_end" style="display:none;opacity:0;">
-    <div id="seance_end_titre" class="titre_panneau">
-      FIN DE LA SESSION DE TRAVAIL
-      </div>
+    <div id="seance_end_titre" class="titre_panneau"></div>
     <div id="seance_end_description"></div>
   </div>
 </section>

@@ -57,7 +57,7 @@ window.LOCALE_UI = {
     TITLE           :"FEUILLE DE ROUTE MUSICALE",
     title           :"Feuille de Route Musicale",
     today           :"Aujourd'hui",
-    working_time    :"Durée de travail"
+    working_time    :"durée de travail"
   },
   User:{
     logout                    :"Se déconnecter",
@@ -101,14 +101,15 @@ window.LOCALE_UI = {
     },
     Config:{
       Label:{
-        next_config         : "Configuration suivante",
+        next_config           :"Configuration suivante",
+        libelle_harmonic_seq  :"Suite harmonique"
       },
       start_to_end          : "Du premier au dernier",
       end_to_start          : "Du dernier au premier",
       down_to_up            : "Monter puis redescendre",
       up_to_down            : "Descendre puis remonter",
-      maj_to_rel            : "Ton Majeur vers Relatif <div class=\"petit\">(C->Am -> F->Dm -> Bb->Gm etc.)</div>",
-      rel_to_maj            : "Ton Relatif vers Majeur <div class=\"petit\">(Am->C -> Em->G -> Bm->D etc.)</div>",
+      maj_to_rel            : "Ton Majeur vers Relatif mineur",
+      rel_to_maj            : "Ton Relatif vers Relatif Majeur",
     },
     Edition:{
       types_of_exercice     :"Difficultés de l'exercice…"
@@ -126,11 +127,21 @@ window.LOCALE_UI = {
     add_selected            :"Ajouter les exercices sélectionnés à la feuille de route"
   },
   Seance:{
+    form_title              :"CONFECTION D'UNE SÉANCE DE TRAVAIL",
+    start_title             :"DÉMARRAGE DE LA SESSION DE TRAVAIL",
+    end_title               :"FIN DE LA SESSION DE TRAVAIL",
+    label_duree             :"Durée de la séance de travail",
+    label_difficulties      :"Difficultés à aborder",
+    option_same_ex          :"Répétition d'exercices",
+    option_obligatory       :"Exercices obligatoires",
+    option_new_scale        :"Nouvelle gamme",
+    option_next_config      :"Configuration suivante",
+    btn_prepare             :"Prépare ma séance de travail !",
     start                   :"Démarrer",
     stop                    :"Finir la séance",
     pause                   :"Pause",
     restart                 :"Reprendre",
-    replay                  :"Rejoue la même séance de travail",
+    replay                  :"Rejouer la même séance de travail",
     next_exercice           :"Suivant",
     end_exercices           :"Finir"    
   }

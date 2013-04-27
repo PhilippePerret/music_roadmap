@@ -96,23 +96,24 @@ window.LOCALE_UI = {
   },
   Exercices: {
     Label:{
-      new_exercice          :"New Exercice",
-      activate_moving       :"Activate moving",
-      stop_moving           :"Stop moving",
-      sens_des_exercices    :"Exercices direction",
-      suites_harmoniques    :"Harmonic suite",
-      ordre_exercices       :"Order of the exercices"
+      new_exercice            :"New Exercice",
+      activate_moving         :"Activate moving",
+      stop_moving             :"Stop moving",
+      sens_des_exercices      :"Exercices direction",
+      suites_harmoniques      :"Harmonic suite",
+      ordre_exercices         :"Order of the exercices"
     },
     Config:{
       Label:{
-        next_config         : "Next settings",
+        next_config           :"Next settings",
+        libelle_harmonic_seq  :"Harmonic sequence"
       },
-      start_to_end          : "From first to last exercice",
-      end_to_start          : "From Last to first exercice",
-      down_to_up            : "Up and down",
-      up_to_down            : "Down and up",
-      maj_to_rel            : "Major to Relative <div class=\"petit\">(C->Am -> F->Dm -> Bb->Gm etc.)</div>",
-      rel_to_maj            : "Relative to Major <div class=\"petit\">(Am->C -> Em->G -> Bm->D etc.)</div>"
+      start_to_end            :"From first to last exercice",
+      end_to_start            :"From Last to first exercice",
+      down_to_up              :"Up and down",
+      up_to_down              :"Down and up",
+      maj_to_rel              :"Major to Relative",
+      rel_to_maj              :"Relative to Major"
     },
     Edition:{
       types_of_exercice     :"Difficulties of this exercice…"
@@ -130,6 +131,16 @@ window.LOCALE_UI = {
     add_selected            :"Add selected exercices to current roadmap"
   },
   Seance:{
+    form_title              :"WORKING SESSION DEFINITION",
+    start_title             :"WORKING SESSION OVERVIEW",
+    end_title               :"WORKING SESSION ENDING",
+    label_duree             :"Duration of the working session",
+    label_difficulties      :"Difficulties to focus on",
+    option_same_ex          :"Unable same exercice",
+    option_obligatory       :"Obligatories",
+    option_new_scale        :"New scale",
+    option_next_config      :"Next general configuration",
+    btn_prepare             :"Prepare the working session!",
     start                   :"Start session",
     stop                    :"End session",
     pause                   :"Pause",

@@ -79,8 +79,8 @@ section#seance_travail div#seance_start div#seance_start_description {
 section#seance_travail div#seance_start_description span.libelle {
   display         :inline-block;
   font-weight     :bold;
-  width           :200px;
-  color           :#555;
+  width           :150px;
+  color           :#55A555;
 }
 section#seance_travail div#seance_start_description span.data {
 

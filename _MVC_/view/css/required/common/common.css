@@ -5,6 +5,9 @@ body {
   padding:      0;
 }
 
+.capitalize{
+  text-transform    :capitalize;
+}
 a.btn_close {
   background-image:url(http://www.atelier-icare.net/img/pictos/mac/b_close.png);
   width :16px;

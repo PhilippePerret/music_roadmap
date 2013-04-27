@@ -503,7 +503,7 @@ window.Roadmap = {
     // -------------------------------------------------------------------
     
     // --- Paramètres généraux ---
-    DATA_GENERALES:[
+    GENERAL_CONFIG_PROPERTIES:[
       // @WARNING: IL FAUT ABSOLUMENT GARDER LES TROIS PREMIÈRES EN PREMIER
       // Car quand on clique que le bouton pour passer à la configuration suivante, on
       // tourne sur ces trois premiers paramètres pour les passer alternativement de
@@ -541,29 +541,21 @@ window.Roadmap = {
     // Passer à la configuration générale suivante
     next_config_generale: function(){
       // Index de la nouvelle configuration
-      var index_config = this.DATA_GENERALES.indexOf( this.last_changed ) ;
+      var index_config = this.GENERAL_CONFIG_PROPERTIES.indexOf( this.last_changed ) ;
       index_config += 1 ; if ( index_config > 2 ) index_config = 0 ;
       // Modifier le paramètre suivant
-      var config = this.DATA_GENERALES[index_config] ;
+      var config = this.GENERAL_CONFIG_PROPERTIES[index_config] ;
       this.toggle( config ) ;
       this.last_changed = config.toString();
       // On change de gamme
       ++ this.scale ;
       if (this.scale >= 24) this.scale = 0;
-      this.display_current_scale();
+      this.show();
       // Save it ?
       if ($('input[type=checkbox]#save_config_generale_courante').is(':checked')){
         Roadmap.set_modified();
         Roadmap.save();
       }
-    },
-    // Affiche la gamme courante
-    display_current_scale:function(){
-      $('img#gconfig_img_cur_scale').attr('src', UI.path_image("note/gamme/"+this.scale+".jpg"));
-      var nom_scale = LOCALE_UI.Label.today + ", ";
-      nom_scale += LOCALE_UI.Label.scale + " " + LOCALE_UI.Label.de_of + " ";
-      nom_scale += IDSCALE_TO_HSCALE[LANG][this.scale];
-      $('div#gconfig_nom_cur_scale').html(nom_scale);
     },
     // Inverse une donnée générale
     // @param   key   La clé, par exemple 'down_to_up'
@@ -573,12 +565,19 @@ window.Roadmap = {
     },
     // => Retourne les données de la configuration générale
     get_config_generale:function(){
-      return {
-        down_to_up          :this.down_to_up, 
-        start_to_end        :this.start_to_end,
-        maj_to_rel          :this.maj_to_rel,
-        scale               :this.scale,
-        last_changed        :this.last_changed
+      var d = {}, prop;
+      for(var i in this.GENERAL_CONFIG_PROPERTIES){
+        prop    = this.GENERAL_CONFIG_PROPERTIES[i];
+        d[prop] = this[prop];
+      }
+      return d;
+    },
+    // Define data of general config
+    set_config_generale:function(data){
+      if (data == null) return F.show(MESSAGE.Roadmap.no_config_generale);
+      for(var i in this.GENERAL_CONFIG_PROPERTIES){
+        var prop = this.GENERAL_CONFIG_PROPERTIES[i];
+        if('undefined' != typeof data[prop]) this[prop] = data[prop];
       }
     },
     
@@ -586,15 +585,15 @@ window.Roadmap = {
     show: function(){
       // Afficher les data générales
       var i, cle;
-      for(i in this.DATA_GENERALES){ 
-        cle = this.DATA_GENERALES[i];
+      for(i in this.GENERAL_CONFIG_PROPERTIES){ 
+        cle = this.GENERAL_CONFIG_PROPERTIES[i];
         if ('function' == typeof Roadmap.UI.Set[cle] )
           Roadmap.UI.Set[cle]() ;
         else
           Flash.error("Il faut implémenter Roadmap.UI.Set."+cle,{keep:true});
       }
     },
-    
+     
     // Dispatch les données envoyées
     // ------------------------------
     // @param data    Hash des données telles que remontées par la procédure
@@ -606,7 +605,7 @@ window.Roadmap = {
         if ('undefined' != typeof data.data_roadmap)
           this.dispatch_data(data.data_roadmap);
         if ( 'undefined' != typeof data.config_generale )
-          this.dispatch_config_generale(data.config_generale) ;
+          this.set_config_generale(data.config_generale) ;
         if ( 'undefined' != typeof data.data_exercices )
           this.dispatch_exercices(data.data_exercices, data.exercices);
       } catch( erreur ) { return F.error(erreur) }
@@ -617,19 +616,6 @@ window.Roadmap = {
       Roadmap.md5      = data.md5 ;
       if ('undefined' == typeof data.partage) data.partage = 0 ;
       Roadmap.partage  = parseInt(data.partage, 10);
-    },
-    dispatch_config_generale: function(data){
-      if ( data == null )
-        F.show(MESSAGE.Roadmap.no_config_generale);
-      else {
-        for( cle in data ){ 
-          if (cle == 'scale'){ 
-            data[cle] = parseInt(data[cle],10);
-          }
-          this[cle] = data[cle];
-        }
-        this.display_current_scale();
-      }
     },
     // On construit tous les exercices
     // @note: C'est en ruby que le classement est fait selon la liste 'ordre'
@@ -676,6 +662,15 @@ window.Roadmap = {
           )
       },
       
+      // Affiche la gamme courante
+      scale:function(){
+        var scale = Roadmap.Data.scale;
+        $('img#gconfig_img_cur_scale').attr('src', UI.path_image("note/gamme/"+scale+".jpg"));
+        var nom_scale = LOCALE_UI.Label.today + ", ";
+        nom_scale += LOCALE_UI.Label.scale + " " + LOCALE_UI.Label.de_of + " ";
+        nom_scale += IDSCALE_TO_HSCALE[LANG][scale];
+        $('div#gconfig_nom_cur_scale').html(nom_scale);
+      },
       // Juste parce que toutes les data sont passées en revue (N0005)
       last_changed: function(){},
     },

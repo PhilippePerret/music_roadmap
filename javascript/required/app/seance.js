@@ -186,6 +186,8 @@ window.Seance = {
       //   console.dir(this.data_seance);
       // }
       this.show_data_seance();
+      Roadmap.Data.set_config_generale(this.data_seance);
+      Roadmap.Data.show();
       this.hide_form(false);
       this.show_start();
     }
@@ -200,7 +202,6 @@ window.Seance = {
   },
   // Affiche les données de la séance construite
   show_data_seance:function(){
-    var scaleh = IDSCALE_TO_HSCALE[LANG][this.data_seance.scale];
     var liste_ex = [];
     this.set_exercices_stack( this.data_seance.suite_ids);
     // Prepare display of exercice (human list)
@@ -208,27 +209,21 @@ window.Seance = {
       var iex = exercice(this.data_seance.suite_ids[i]);
       liste_ex.push(iex.titre_complet());
     }
+    // Display data
     liste_ex = liste_ex.join('<br>');
-    var wtimeh = Time.seconds_to_horloge( this.data_seance.working_time);
-    // Finalize message
-    var message = [] ;
-    wtimeh = this.label_and_data(LOCALE_UI.Label.working_time, wtimeh, ": ");
-    message.push(wtimeh) ;
-    message.push(this.label_and_data(LOCALE_UI.Label.scale,scaleh,": ")) ;
-    message.push('<img style="width:300px;" src="_MVC_/view/img/note/gamme/'+this.data_seance.scale+'.jpg" />');
-    message.push(this.label_and_data(LOCALE_UI.Label.suite_exercices,liste_ex,":<br />"));
-    message = message.join('<br>');
-    $('div#seance_start_description').html(message);
+    var sens = this.data_seance.maj_to_rel?'maj_to_rel':'rel_to_maj' ;
+    $('span#seance_data_working_time').html(Time.seconds_to_horloge(this.data_seance.working_time));
+    $('span#seance_data_scale').html(IDSCALE_TO_HSCALE[LANG][this.data_seance.scale]);
+    $('img#seance_data_img_scale').attr('src',UI.path_image('note/gamme/'+this.data_seance.scale+'.jpg'));
+    $('span#seance_data_suite_harmonique').html(LOCALE_UI.Exercices.Config[sens]);
+    $('img#seance_data_img_suite_harmonique').attr('src',UI.path_image('note/harmonic/'+sens+'.jpg'));
+    $('div#seance_data_suite_exercices').html(liste_ex);
   },
   // 
   cancel_seance:function(){
     this.hide_section();
     this.ordre_stack = null; // empties the stack
     return false;//for a-link
-  },
-  label_and_data: function(label, data, separator){
-    return '<span class="libelle">' + label + '</span>' + separator +
-            '<span class="data">' + data + "</span>" ;
   },
   // Relève les data du formulaire
   get_values:function(){
@@ -266,11 +261,27 @@ window.Seance = {
   display_button_replay:function(show){
     $('div#seance_div_replay')[show?'show':'hide']();
   },
-  // Set the localized texte in form
-  LOCALES:{'a#btn_seance_replay':LOCALE_UI.Seance.replay},
+  // Set the localized texte in seance windows
+  LOCALES:{
+    'div#seance_form_titre'           :'Seance.form_title',
+    'div#seance_start_titre'          :'Seance.start_title',
+    'div#seance_end_titre'            :'Seance.end_title',
+    'label#seance_lab_duree'          :'Seance.label_duree',
+    'label#seance_lab_difficulties'   :'Seance.label_difficulties',
+    'label#seance_lab_opt_same_ex'    :'Seance.option_same_ex',
+    'label#seance_lab_opt_obligatory' :'Seance.option_obligatory',
+    'label#seance_lab_opt_new_scale'  :'Seance.option_new_scale',
+    'label#seance_lab_opt_next_config':'Seance.option_next_config',
+    'a#btn_seance_prepare'            :'Seance.btn_prepare',
+    'a#btn_seance_start'              :'Seance.start',
+    'a#btn_seance_replay'             :'Seance.replay',
+    'span#seance_lib_working_time'    :'Label.working_time',
+    'span#seance_lib_scale'           :'Label.scale',
+    'span#seance_lib_suite_harmonique':'Exercices.Config.Label.libelle_harmonic_seq',
+    'span#seance_lib_suite_exercices' :'Label.suite_exercices'
+  },
   localize_form:function(){
-    // @TODO:
-    for(var jid in this.LOCALES){$(jid).html(this.LOCALES[jid])}
+    for(var jid in this.LOCALES){$(jid).html(eval('LOCALE_UI.'+this.LOCALES[jid]))}
   },
   prepare_types_exercices:function(){
     var o = $('div#seance_form_types');
