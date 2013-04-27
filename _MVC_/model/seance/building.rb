@@ -202,11 +202,12 @@ DEBUG
         pioches_ids = pioches_ids.sort_by{|idex| @nb_fois_per_exercice[idex]}
         pioches_ids = pioches_ids.shuffle
         while rest_working_time > 0 && pioches_ids.count > 0
-          @ids_exercices << pioches_ids.pop
+          other_id = pioches_ids.pop
+          @ids_exercices << other_id
           rest_working_time   -= @time_per_exercice[other_id]
           total_working_time  += @time_per_exercice[other_id]
         end
-        break if pioches_ids.count == 0
+        break if pioches_ids.empty?
       end
       @total_working_time = total_working_time
     end
