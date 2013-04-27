@@ -38,6 +38,7 @@ window.LOCALE_UI = {
   },
   Label:{
     de_by           :"de",
+    de_of           :"de",
     details         :"détails",
     decreased       :"diminué",
     extrait         :"extrait",
@@ -50,11 +51,12 @@ window.LOCALE_UI = {
     pulse           :"pulsation",
     roadmap         :"Feuille de route",
     ROADMAP         :"FEUILLE DE ROUTE",
-    scale           :"Gamme",
+    scale           :"gamme",
     subtitle        :"Gestion au quotidien de ses exercices de musique",
     suite_exercices :"Suite exercices",
     TITLE           :"FEUILLE DE ROUTE MUSICALE",
     title           :"Feuille de Route Musicale",
+    today           :"Aujourd'hui",
     working_time    :"Durée de travail"
   },
   User:{
@@ -128,6 +130,7 @@ window.LOCALE_UI = {
     stop                    :"Finir la séance",
     pause                   :"Pause",
     restart                 :"Reprendre",
+    replay                  :"Rejoue la même séance de travail",
     next_exercice           :"Suivant",
     end_exercices           :"Finir"    
   }

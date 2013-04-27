@@ -550,11 +550,20 @@ window.Roadmap = {
       // On change de gamme
       ++ this.scale ;
       if (this.scale >= 24) this.scale = 0;
+      this.display_current_scale();
       // Save it ?
       if ($('input[type=checkbox]#save_config_generale_courante').is(':checked')){
         Roadmap.set_modified();
         Roadmap.save();
       }
+    },
+    // Affiche la gamme courante
+    display_current_scale:function(){
+      $('img#gconfig_img_cur_scale').attr('src', UI.path_image("note/gamme/"+this.scale+".jpg"));
+      var nom_scale = LOCALE_UI.Label.today + ", ";
+      nom_scale += LOCALE_UI.Label.scale + " " + LOCALE_UI.Label.de_of + " ";
+      nom_scale += IDSCALE_TO_HSCALE[LANG][this.scale];
+      $('div#gconfig_nom_cur_scale').html(nom_scale);
     },
     // Inverse une donnée générale
     // @param   key   La clé, par exemple 'down_to_up'
@@ -611,12 +620,15 @@ window.Roadmap = {
     },
     dispatch_config_generale: function(data){
       if ( data == null )
-        F.show( "Aucune configuration générale n'est définie pour cette feuille de route.") ;
+        F.show(MESSAGE.Roadmap.no_config_generale);
       else {
         for( cle in data ){ 
-          if (cle == 'scale') data[cle] = parseInt(data[cle],10);
+          if (cle == 'scale'){ 
+            data[cle] = parseInt(data[cle],10);
+          }
           this[cle] = data[cle];
         }
+        this.display_current_scale();
       }
     },
     // On construit tous les exercices
