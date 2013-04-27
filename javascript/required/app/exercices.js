@@ -365,9 +365,7 @@ $.extend(window.Exercices,{
   set_btn_next_config_generale:function(locked){
     if ('undefined' == typeof locked) locked = Roadmap.is_locked(0) ;
     $('div#div_cb_save_config').toggleClass('invisible', locked) ;
-    if( locked ){
-      $('input#save_config_generale_courante').attr('checked',false);
-    }
+    if( locked ) $('input#config_generale_cb_save').attr('checked',false);
   },
   // Règle le bouton pour créer un nouvel exercice/morceau
   set_btn_create:function(locked){

@@ -25,6 +25,7 @@ window.LOCALE_UI = {
     }
   },
   // -- Fin des remplacements automatiques --
+  colon         :": ",
   Verb:{
     and_save    :"and save",
     Cancel      :"Cancel",
@@ -53,6 +54,7 @@ window.LOCALE_UI = {
     mail_to_phil              :"Mail to Phil",
     obligatory                :"Obligatory",
     pulse                     :"pulse",
+    resume                    :"Summary",
     roadmap                   :"Roadmap",
     scale                     :"scale",
     subtitle                  :"Deal with your daily music exercices",
@@ -104,16 +106,18 @@ window.LOCALE_UI = {
       ordre_exercices         :"Order of the exercices"
     },
     Config:{
+      title_volant            :"Click to set next general configuration of exercices",
+      cb_save                 :"Save general config on change",
+      start_to_end            :"from first to last exercice",
+      end_to_start            :"from Last to first exercice",
+      down_to_up              :"Up and then down the exercice",
+      up_to_down              :"Down and then up the exercice",
+      maj_to_rel              :"major to Relative",
+      rel_to_maj              :"relative to Major",
       Label:{
         next_config           :"Next settings",
         libelle_harmonic_seq  :"Harmonic sequence"
-      },
-      start_to_end            :"From first to last exercice",
-      end_to_start            :"From Last to first exercice",
-      down_to_up              :"Up and down",
-      up_to_down              :"Down and up",
-      maj_to_rel              :"Major to Relative",
-      rel_to_maj              :"Relative to Major"
+      }
     },
     Edition:{
       types_of_exercice     :"Difficulties of this exercice…"
@@ -141,6 +145,7 @@ window.LOCALE_UI = {
     option_new_scale        :"New scale",
     option_next_config      :"Next general configuration",
     btn_prepare             :"Prepare the working session!",
+    direction               :"Direction",
     start                   :"Start session",
     stop                    :"End session",
     pause                   :"Pause",

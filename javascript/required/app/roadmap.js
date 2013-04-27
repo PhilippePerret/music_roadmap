@@ -552,16 +552,21 @@ window.Roadmap = {
       if (this.scale >= 24) this.scale = 0;
       this.show();
       // Save it ?
-      if ($('input[type=checkbox]#save_config_generale_courante').is(':checked')){
+      if ( this.config_generale_must_be_saved()){
         Roadmap.set_modified();
         Roadmap.save();
       }
+      return false;//for a-link
+    },
+    // Return TRUE si la case pour enregistrer la configuration générale et cochée
+    config_generale_must_be_saved:function(){
+      return $('input#config_generale_cb_save').is(':checked');
     },
     // Inverse une donnée générale
     // @param   key   La clé, par exemple 'down_to_up'
     toggle: function( key ){
       this[key] = ! this[key] ;
-      Roadmap.UI.Set[key]()   ;// Display it
+      Roadmap.Data.show();// Update display
     },
     // => Retourne les données de la configuration générale
     get_config_generale:function(){
@@ -584,14 +589,9 @@ window.Roadmap = {
     // Règle l'interface avec les données spécifiées
     show: function(){
       // Afficher les data générales
-      var i, cle;
-      for(i in this.GENERAL_CONFIG_PROPERTIES){ 
-        cle = this.GENERAL_CONFIG_PROPERTIES[i];
-        if ('function' == typeof Roadmap.UI.Set[cle] )
-          Roadmap.UI.Set[cle]() ;
-        else
-          Flash.error("Il faut implémenter Roadmap.UI.Set."+cle,{keep:true});
-      }
+      if (Roadmap.UI.ready == false ) Roadmap.UI.prepare();
+      Roadmap.UI.Set.scale();
+      Roadmap.UI.Set.config_generale();
     },
      
     // Dispatch les données envoyées
@@ -635,33 +635,49 @@ window.Roadmap = {
   //  Toutes les méthodes qui règles l'interface
   // -------------------------------------------------------------------
   UI: {
-        
+    ready:false, // set to true when UI roadmap is localized
+    prepare:function(){
+      $('a#btn_next_config_img').attr('title',LOCALE_UI.Exercices.Config.title_volant);
+      $('label#config_generale_label_cbsave').html(LOCALE_UI.Exercices.Config.cb_save);
+      // @TODO: Autres éléments localisés ?
+      this.ready = false;
+    },
     // -------------------------------------------------------------------
     // Sous-objet Roadmap.UI.Set
     // Définit une valeur dans l'interface
     // -------------------------------------------------------------------
     
     Set:{
+      // Shortcuts
+      downToUp:function(){return Roadmap.Data.down_to_up},
+      firstToLast:function(){return Roadmap.Data.start_to_end},
+      majToRel:function(){return Roadmap.Data.maj_to_rel},
+      
+      // Règle le volant de la configuration générale et son texte
+      config_generale:function(){
+        $('img#config_generale_volant').attr('src', this.config_generale_img_path());
+        $('div#config_generale_resume').html(this.config_generale_resume())
+      },
+      // Return summary of current general config
+      config_generale_resume:function(){
+        var ary = [];
+        ary.push(LOCALE_UI.Exercices.Config[this.downToUp()?'up_to_down':'down_to_up']);
+        ary.push(LOCALE_UI.Exercices.Config[this.majToRel()?'maj_to_rel':'rel_to_maj']);
+        ary.push(LOCALE_UI.Exercices.Config[this.firstToLast()?'start_to_end':'end_to_start']);
+        return LOCALE_UI.Label.resume + LOCALE_UI.colon + ary.join(', ') + ".";
+      },
+      // Return path to config generale image
+      config_generale_img_path:function(){
+        var ary = [];
+        ary.push(this.downToUp()    ? 'dtu' : 'utd');
+        ary.push(this.majToRel()    ? 'mtr' : 'rtm');
+        ary.push(this.firstToLast() ? 'ftl' : 'ltf');
+        return UI.path_image('config/volant/'+ary.join('_')+'.png');
+      },
       // Mets le texte +texte+ dans le SPAN d'identifiant +id+
       set_valeur_texte: function(id, texte){
         $('span#'+id).html( texte ) ;
       },
-      down_to_up:function(){
-        this.set_valeur_texte('down_to_up',
-          LOCALE_UI.Exercices.Config[Roadmap.Data.down_to_up ? 'down_to_up' : 'up_to_down']
-        )
-      },
-      start_to_end:function(){
-        this.set_valeur_texte('start_to_end',
-          LOCALE_UI.Exercices.Config[Roadmap.Data.start_to_end ? 'start_to_end' : 'end_to_start']
-        )
-      },
-      maj_to_rel:function(){
-        this.set_valeur_texte('maj_to_rel',
-          LOCALE_UI.Exercices.Config[Roadmap.Data.maj_to_rel ? 'maj_to_rel' : 'rel_to_maj']
-          )
-      },
-      
       // Affiche la gamme courante
       scale:function(){
         var scale = Roadmap.Data.scale;
@@ -670,9 +686,7 @@ window.Roadmap = {
         nom_scale += LOCALE_UI.Label.scale + " " + LOCALE_UI.Label.de_of + " ";
         nom_scale += IDSCALE_TO_HSCALE[LANG][scale];
         $('div#gconfig_nom_cur_scale').html(nom_scale);
-      },
-      // Juste parce que toutes les data sont passées en revue (N0005)
-      last_changed: function(){},
+      }
     },
   //   // -------------------------------------------------------------------
   //   // Sous-objet   Roadmap.UI.Get

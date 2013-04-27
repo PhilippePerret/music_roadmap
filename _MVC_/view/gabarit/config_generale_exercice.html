@@ -2,47 +2,28 @@
 
   <!-- VOLANT DE CONFIGURATION GÉNÉRALE -->
   <div id="div_volant_config_generale" style="position:relative;">
-    <img src="_MVC_/view/img/config/volant-lumiere.png" style="margin-left:34px;width:216px;" />
+    <a  href="#" 
+        id="btn_next_config_img"
+        onclick="return $.proxy(Roadmap.Data.next_config_generale,Roadmap.Data)()"
+        title=""
+        >
+        <img id="config_generale_volant" src="" />
+        </a>
   </div>
+  <!-- Case à cocher pour enregistrer la configuration générale -->
+  <div id="config_generale_boutons">
+    <div id="div_cb_save_config">
+      <input id="config_generale_cb_save" type="checkbox" checked=CHECKED />
+      <label id="config_generale_label_cbsave" class="lab_and_save" for="config_generale_cb_save" style="color:white;"></label>
+    </div>
+  </div>
+  <!-- Résumé configuration générale -->
+  <div id="config_generale_resume"></div>
 
   <!-- GAMME COURANTE -->
   <div id="div_cur_scale">
     <div id="gconfig_nom_cur_scale"></div>
     <img id="gconfig_img_cur_scale" src="" />
-  </div>
-
-  <!-- down_to_up -->
-  <div id="div_down_to_up" class="param">
-    <span class="titre"><span id="lab_sens_exercices">Sens des exercices</span> <aide value="config-generale/sens-exercice"></aide></span>
-    <span id="down_to_up" class="valeur">Monter puis descendre</span>
-  </div>
-
-  <!-- maj_to_rel -->
-  <div id="div_maj_to_rel" class="param">
-    <span class="titre"><span id="lab_suites_harmoniques">Suites harmoniques</span> <aide value="config-generale/suite-harmonique"></aide>
-      </span>
-    <span id="maj_to_rel" class="valeur">
-      Majeur vers Relatif<div class="petit"> (C->Am -> F->Dm -> Bb->Gm etc.)</div></span>
-  </div>
-
-  <!-- start_to_end -->
-  <div id="div_start_to_end" class="param">
-    <span class="titre"><span id="lab_ordre_exercices">Ordre des exercices</span> <aide value="config-generale/ordre-exercices"></aide>
-    </span>
-    <span id="start_to_end" class="valeur">Du premier au dernier</span>
-  </div>
-  
-  <!-- Boutons -->
-  <div class="boutons gmgt" style="margin-bottom:1em;">
-    <a  href="#" 
-        id="btn_next_config"
-        onclick="$.proxy(Roadmap.Data.next_config_generale,Roadmap.Data)()"
-        class="btn"
-    >Passer à la configuration suivante</a>
-    <div id="div_cb_save_config" class="center mgt">
-      <input id="save_config_generale_courante" type="checkbox" checked=CHECKED />
-      <label class="lab_and_save" for="save_config_generale_courante" style="color:white;">et l'enregistrer</label>
-    </div>
   </div>
   
 </div>

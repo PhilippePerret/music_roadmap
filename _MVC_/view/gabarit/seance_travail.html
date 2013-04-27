@@ -76,22 +76,32 @@
   -->
   <div id="seance_start" style="display:none;opacity:0;">
     <div id="seance_start_titre" class="titre_panneau"></div>
-    <!-- Description de la séance avant démarrage -->
+    <!-- DESCRIPTION DE LA SÉANCE AVANT DÉMARRAGE -->
     <div id="seance_start_description">
+      <!-- Temps de travail -->
       <div>
         <span id="seance_lib_working_time" class="libelle capitalize"></span>
         <span id="seance_data_working_time" class="data capitalize"></span>
       </div>
+      <!-- Gamme -->
       <div>
         <span id="seance_lib_scale" class="libelle capitalize"></span>
         <span id="seance_data_scale" class="data capitalize" style="display:inline-block;"></span>
-        <img  id="seance_data_img_scale" style="display:block;width:300px;" src="" />
+        <img  id="seance_data_img_scale" style="width:300px;" src="" />
       </div>
+      <!-- Suite harmonique -->
       <div>
         <span id="seance_lib_suite_harmonique" class="libelle capitalize"></span>
         <span id="seance_data_suite_harmonique" class="data"></span>
         <img  id="seance_data_img_suite_harmonique" src="" />
       </div>
+      <!-- Direction (en descendant ou en montant) -->
+      <div>
+        <span id="seance_lib_downtoup" class="libelle capitalize"></span>
+        <span id="seance_data_downtoup" class="data"></span>
+        <img  id="seance_data_img_downtoup" src="" />
+      </div>
+      <!-- Liste triée des exercices -->
       <div style="margin-top:2em;">
         <span id="seance_lib_suite_exercices" class="libelle capitalize"></span>
         <div id="seance_data_suite_exercices"></div>

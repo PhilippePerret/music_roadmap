@@ -30,10 +30,10 @@ div.titre_panneau {
 */
 div#config_generale {
   position        :absolute;
-  left            :56em;
+  left            :55em;
   top             :11em;
   padding         :0   ;
-  width           :15em;
+  width           :16em;
   opacity         :0.81;
 }
 

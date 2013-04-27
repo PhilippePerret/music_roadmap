@@ -72,6 +72,9 @@ section#seance_travail div#seance_form div#seance_div_replay {
   text-align    :right;
   padding       :0 0 1.5em;
 }
+section#seance_travail div#seance_start div#seance_start_description > div {
+  margin-top    :0.6em;
+}
 section#seance_travail div#seance_start div#seance_start_description {
   padding       :2em;
 }
@@ -85,3 +88,5 @@ section#seance_travail div#seance_start_description span.libelle {
 section#seance_travail div#seance_start_description span.data {
 
 }
+section#seance_travail img#seance_data_img_scale {display:block;}
+section#seance_travail img#seance_data_img_downtoup{width:30px;vertical-align:middle;}

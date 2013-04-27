@@ -81,7 +81,13 @@ Exercice.prototype.li = function(){
 // (et focus sur son menu tempo)
 Exercice.prototype.select = function(){
   this.li().addClass('selected') ;
+  this.scroll_to();
   this.li().find('select.ex_tempo').focus();
+}
+// Scroll jusqu'à l'exercice
+Exercice.prototype.scroll_to = function(){
+  oex = document.getElementById('li_ex-'+this.id);
+  $('ul#exercices').scrollTo(oex.offsetTop - 10);
 }
 Exercice.prototype.deselect = function(){
   this.li().removeClass('selected') ;

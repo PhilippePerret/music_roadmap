@@ -38,7 +38,7 @@ code {font-size:14.7px;}
   margin            : 0 ;
 }
 
-img { border: 0 ;}
+img { border:0;}
 /* 
   Par défaut, les éléments qui définissent la class 'no_js' ne sont
   pas affichés. Un <noscript> permet de surclasser cette définition pour

@@ -210,14 +210,19 @@ window.Seance = {
       liste_ex.push(iex.titre_complet());
     }
     // Display data
-    liste_ex = liste_ex.join('<br>');
-    var sens = this.data_seance.maj_to_rel?'maj_to_rel':'rel_to_maj' ;
+    liste_ex    = liste_ex.join('<br>');
+    var sens    = this.data_seance.maj_to_rel?'maj_to_rel':'rel_to_maj';
+    var imgsens = UI.path_image('note/harmonic/'+sens+'.jpg')
+    var dir     = this.data_seance.down_to_up?'down_to_up':'up_to_down';
+    var imgdir  = UI.path_image('config/direction/'+dir+'.png');
     $('span#seance_data_working_time').html(Time.seconds_to_horloge(this.data_seance.working_time));
     $('span#seance_data_scale').html(IDSCALE_TO_HSCALE[LANG][this.data_seance.scale]);
     $('img#seance_data_img_scale').attr('src',UI.path_image('note/gamme/'+this.data_seance.scale+'.jpg'));
     $('span#seance_data_suite_harmonique').html(LOCALE_UI.Exercices.Config[sens]);
-    $('img#seance_data_img_suite_harmonique').attr('src',UI.path_image('note/harmonic/'+sens+'.jpg'));
+    $('img#seance_data_img_suite_harmonique').attr('src', imgsens);
     $('div#seance_data_suite_exercices').html(liste_ex);
+    $('span#seance_data_downtoup').html(LOCALE_UI.Exercices.Config[dir]);
+    $('img#seance_data_img_downtoup').attr('src', imgdir);
   },
   // 
   cancel_seance:function(){
@@ -276,6 +281,7 @@ window.Seance = {
     'a#btn_seance_start'              :'Seance.start',
     'a#btn_seance_replay'             :'Seance.replay',
     'span#seance_lib_working_time'    :'Label.working_time',
+    'span#seance_lib_downtoup'        :'Seance.direction',
     'span#seance_lib_scale'           :'Label.scale',
     'span#seance_lib_suite_harmonique':'Exercices.Config.Label.libelle_harmonic_seq',
     'span#seance_lib_suite_exercices' :'Label.suite_exercices'

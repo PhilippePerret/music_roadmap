@@ -1,5 +1,5 @@
 div#div_cur_scale {
-  margin-left       :0.7em;
+  margin-left       :2.4em;
   text-align        :center;
   background-color  :#eee;
   width             :230px;
@@ -14,4 +14,23 @@ div#div_cur_scale div#gconfig_nom_cur_scale {
 div#div_cur_scale img#gconfig_img_cur_scale {
 /*  opacity           :0.67;*/
   width             :100%;
+}
+
+div#config_generale div#config_generale_resume {
+  font-size         :10pt;
+  margin            :12px 0 1em 3em;
+  text-align        :justify;
+}
+div#config_generale div#config_generale_boutons {
+  margin-left       :2em;
+}
+
+div#config_generale img#config_generale_volant {
+  margin-left   :34px;
+  width         :216px;
+}
+
+div#config_generale label#config_generale_label_cbsave {
+  color         :white;
+  font-size     :0.85em;
 }

@@ -30,12 +30,6 @@ $.extend(UI,{
     ]).each(function(i,o){
       $(o[0]).html(LOCALE_UI.Roadmap[o[1]])
     });
-    // Configuration des exercices
-    $([
-      ['a#btn_next_config', 'next_config']
-    ]).each(function(i,o){
-      $(o[0]).html(LOCALE_UI.Exercices.Config.Label[o[1]])
-    });
   },
   
   // Règle les labels en fonction de la langue courante
@@ -97,8 +91,10 @@ $.extend(UI,{
       jqo.replaceWith( js ) ; // pour forcer le rechargement
     }
     this.init();
-    // Pour forcer l'actualisation des panneaux de préparation séance
+    // Pour forcer l'actualisation des éléments
     Seance.ready = false;
+    Roadmap.UI.prepare();
+    Roadmap.Data.show();
     return false; // pour le a-lien
   },
   // Pour passer en "mode zen", c'est-à-dire que la partie de la liste des

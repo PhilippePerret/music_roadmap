@@ -31,7 +31,7 @@ window.Time = {
     // Formatage
     var hrl = "";
     if (hrs > 0 || complet) hrl += hrs + del_hour ;
-    if (complet) if (mns < 10){mns = "0"+mns}; 
+    if (complet || hrs > 0) if (mns < 10){mns = "0"+mns}; 
     hrl += mns + del_mns ;
     if (scs < 10) scs = "0" + scs ;
     hrl += scs;

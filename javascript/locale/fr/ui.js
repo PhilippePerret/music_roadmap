@@ -21,6 +21,8 @@ window.LOCALE_UI = {
       label_confection        :"Confectionner une séance de travail"
     }
   },
+  // -------------------------- Fin remplacements autos ----------------------------
+  colon         :" : ",
   Verb:{
     and_save    :"et l'enregistrer",
     Cancel      :"Renoncer",
@@ -49,6 +51,7 @@ window.LOCALE_UI = {
     mail_to_phil    :"Écrire à Phil",
     obligatory      :"Obligatoire",
     pulse           :"pulsation",
+    resume          :"Résumé",
     roadmap         :"Feuille de route",
     ROADMAP         :"FEUILLE DE ROUTE",
     scale           :"gamme",
@@ -92,24 +95,26 @@ window.LOCALE_UI = {
   },
   Exercices: {
     Label:{
-      new_exercice          :"Nouvel Exercice",
-      activate_moving       :"Activer le déplacement",
-      stop_moving           :"Arrêter le déplacement",
-      sens_des_exercices    :"Exercices direction",
-      suites_harmoniques    :"Suites harmoniques",
-      ordre_exercices       :"Ordre des exercices"
+      new_exercice            :"Nouvel Exercice",
+      activate_moving         :"Activer le déplacement",
+      stop_moving             :"Arrêter le déplacement",
+      sens_des_exercices      :"Exercices direction",
+      suites_harmoniques      :"Suites harmoniques",
+      ordre_exercices         :"Ordre des exercices"
     },
     Config:{
+      title_volant            :"Cliquez pour passer à la configuration suivante.",
+      cb_save                 :"Enregistrer la configuration (cliquer le volant pour passer à la suivante)",
+      start_to_end            :"du premier au dernier",
+      end_to_start            :"du dernier au premier",
+      down_to_up              :"Monter puis redescendre l'exercice",
+      up_to_down              :"Descendre puis remonter l'exercice",
+      maj_to_rel              :"ton MAJEUR vers Relatif mineur",
+      rel_to_maj              :"ton Relatif vers Relatif MAJEUR",
       Label:{
         next_config           :"Configuration suivante",
         libelle_harmonic_seq  :"Suite harmonique"
-      },
-      start_to_end          : "Du premier au dernier",
-      end_to_start          : "Du dernier au premier",
-      down_to_up            : "Monter puis redescendre",
-      up_to_down            : "Descendre puis remonter",
-      maj_to_rel            : "Ton Majeur vers Relatif mineur",
-      rel_to_maj            : "Ton Relatif vers Relatif Majeur",
+      }
     },
     Edition:{
       types_of_exercice     :"Difficultés de l'exercice…"
@@ -128,7 +133,7 @@ window.LOCALE_UI = {
   },
   Seance:{
     form_title              :"CONFECTION D'UNE SÉANCE DE TRAVAIL",
-    start_title             :"DÉMARRAGE DE LA SESSION DE TRAVAIL",
+    start_title             :"APERÇU DE LA SESSION DE TRAVAIL",
     end_title               :"FIN DE LA SESSION DE TRAVAIL",
     label_duree             :"Durée de la séance de travail",
     label_difficulties      :"Difficultés à aborder",
@@ -136,6 +141,7 @@ window.LOCALE_UI = {
     option_obligatory       :"Exercices obligatoires",
     option_new_scale        :"Nouvelle gamme",
     option_next_config      :"Configuration suivante",
+    direction               :"Direction",
     btn_prepare             :"Prépare ma séance de travail !",
     start                   :"Démarrer",
     stop                    :"Finir la séance",
