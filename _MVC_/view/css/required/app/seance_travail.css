@@ -67,7 +67,11 @@ section#seance_travail div#seance_form_types > span {
   margin-right  :1em;
   width         :115.9px;
 }
-
+/* Le div avec le bouton "Replay" */
+section#seance_travail div#seance_form div#seance_div_replay {
+  text-align    :right;
+  padding       :0 0 1.5em;
+}
 section#seance_travail div#seance_start div#seance_start_description {
   padding       :2em;
 }

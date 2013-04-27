@@ -24,11 +24,17 @@ window.Seance = {
   // Defines the order of the exercices to play (according to the exercice displayed
   // on the page)
   // @return True if OK, FALSE if no exercice to play
-  set_exercices_stack:function(){
-    var cur_order = Exercices.ordre();
-    if ( cur_order.length == 0 ) return F.error(ERROR.Seance.no_exercices);
-    this.ordre_stack = $(cur_order).toArray();
-    if (!Roadmap.Data.start_to_end) this.ordre_stack.reverse();
+  // If +ordre+ is defined, it's an Array with exercice ids to play. Used by the
+  // building seance functionnality. So we don't use the exercice suite defined in the
+  // listing but this +ordre+ (where exercices can be repeated)
+  set_exercices_stack:function(cur_order){
+    if(this.ordre_stack != null) return true; // déjà défini
+    if('undefined' == typeof cur_order){
+      cur_order = Exercices.ordre();
+      if ( cur_order.length == 0 ) return F.error(ERROR.Seance.no_exercices);
+      if (!Roadmap.Data.start_to_end) this.ordre_stack.reverse();
+    }
+    this.ordre_stack = $(cur_order).toArray();//clone
     return true;
   },
   // Initialize the seance file at starting (Ajax call)
@@ -104,10 +110,18 @@ window.Seance = {
     if( forcer_arret === true ) this.cur_exercice.play(); // pour l'arrêter
     Metronome.stop() ;
     Exercices.deselect_all();
-    this.cur_exercice = null ;
+    this.cur_exercice = null;
+    this.ordre_stack  = null; // important
     this.set_working_ui(this.running = false);
     return false;//for a-link
   },
+  
+  // Fin des méthodes de jeu de la séance (start, pause, etc.)
+  // -------------------------------------------------------------------
+  
+  // -------------------------------------------------------------------
+  // Début des méthodes pour la définition d'une séance de travail
+  // 
   
   // Open section Seance (hidding exercices)
   show_section:function(not_hidden){
@@ -166,23 +180,37 @@ window.Seance = {
   // Retour ajax de la précédente
   build_suite:function(rajax){
     if(false==traite_rajax(rajax)){
-      this.data_seance = rajax.data_seance ; // les données pour la séance
+      this.data_seance = rajax.data_seance ; // les données remontées pour la séance
+      // if(console){
+      //   console.log("Data remontées pour la séance:");
+      //   console.dir(this.data_seance);
+      // }
       this.show_data_seance();
       this.hide_form(false);
       this.show_start();
     }
     this.building = false;
   },
+  // Quand le musicien demande à rejouer la même séance de travail
+  replay:function(){
+    if(this.data_seance == null) return F.error(ERROR.Seance.no_data);
+    this.set_exercices_stack( this.data_seance.suite_ids);
+    this.start();
+    return false;//for a-link
+  },
   // Affiche les données de la séance construite
   show_data_seance:function(){
     var scaleh = IDSCALE_TO_HSCALE[LANG][this.data_seance.scale];
     var liste_ex = [];
+    this.set_exercices_stack( this.data_seance.suite_ids);
+    // Prepare display of exercice (human list)
     for( var i in this.data_seance.suite_ids){
       var iex = exercice(this.data_seance.suite_ids[i]);
       liste_ex.push(iex.titre_complet());
     }
     liste_ex = liste_ex.join('<br>');
     var wtimeh = Time.seconds_to_horloge( this.data_seance.working_time);
+    // Finalize message
     var message = [] ;
     wtimeh = this.label_and_data(LOCALE_UI.Label.working_time, wtimeh, ": ");
     message.push(wtimeh) ;
@@ -191,6 +219,12 @@ window.Seance = {
     message.push(this.label_and_data(LOCALE_UI.Label.suite_exercices,liste_ex,":<br />"));
     message = message.join('<br>');
     $('div#seance_start_description').html(message);
+  },
+  // 
+  cancel_seance:function(){
+    this.hide_section();
+    this.ordre_stack = null; // empties the stack
+    return false;//for a-link
   },
   label_and_data: function(label, data, separator){
     return '<span class="libelle">' + label + '</span>' + separator +
@@ -220,6 +254,7 @@ window.Seance = {
   },
   // Prepare the form
   prepare:function(){
+    this.display_button_replay(this.data_seance != null);
     if (this.ready) return false;
     this.localize_form();
     this.prepare_menu_heures();
@@ -227,9 +262,15 @@ window.Seance = {
     this.prepare_types_exercices();
     this.ready = true;
   },
+  // Hide or show the replay button
+  display_button_replay:function(show){
+    $('div#seance_div_replay')[show?'show':'hide']();
+  },
   // Set the localized texte in form
+  LOCALES:{'a#btn_seance_replay':LOCALE_UI.Seance.replay},
   localize_form:function(){
     // @TODO:
+    for(var jid in this.LOCALES){$(jid).html(this.LOCALES[jid])}
   },
   prepare_types_exercices:function(){
     var o = $('div#seance_form_types');
