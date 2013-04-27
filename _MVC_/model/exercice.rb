@@ -4,10 +4,6 @@ require_model 'file_duree_jeu'
 
 # Class Exercice gérant les exercices
 # 
-# Pour le moment (18 avr 2013), sert surtout pour enregistrer les données de durées de 
-# jeu de l'exercice. Mais la classe devra permettre de gérer les rapports, les confections
-# de séance de travail.
-# 
 class Exercice
   
   # Identifiant de l'exercice
@@ -61,6 +57,7 @@ class Exercice
   # 
   # NIL si l'exercice ne s'y trouve pas encore
   # 
+  # OBSOLÈTE
   attr_accessor :offset_in_duree_jeu
     
   # Data dans le fichier .js de l'exercice
@@ -86,7 +83,7 @@ class Exercice
     @fois, @duree_totale, @duree_moyenne = 0, 0, 0
   end
   
-  # Return le Hash des données de l'exercice (les clés restent des Strings, par des Symbols)
+  # Return le Hash des données de l'exercice (les clés restent des Strings, PAS des Symbols)
   # 
   def data
     @data_js ||= JSON.parse(File.read(path))
@@ -98,14 +95,15 @@ class Exercice
     @path ||= @roadmap.path_exercice( id )
   end
   
-  # Relève la ligne de code de l'exercice dans le fichier de données des data pour
-  # dispatcher les données ici, afin de pouvoir les traiter (par exemple ajouter une
-  # durée de jeu sur cet exercice)
-  # 
-  def get_data_in_duree_jeu
-    @line = @roadmap.file_duree_jeu.line_code_exercice self
-    explode_line unless @line.to_s == ""
-  end
+  # # Relève la ligne de code de l'exercice dans le fichier de données des data pour
+  # # dispatcher les données ici, afin de pouvoir les traiter (par exemple ajouter une
+  # # durée de jeu sur cet exercice)
+  # # 
+  # # OBSOLETE
+  # def get_data_in_duree_jeu
+  #   @line = @roadmap.file_duree_jeu.line_code_exercice self
+  #   explode_line unless @line.to_s == ""
+  # end
   
   # Ajoute un jeu de l'exercice 
   # 
@@ -120,24 +118,24 @@ class Exercice
   # * PRODUCTS
   #   L'actualisation des données de l'instance Exercice, prête pour que la ligne soit
   #   actualisée dans le fichier
-  # 
-  def add_new_jeu hdata
-    get_data_in_duree_jeu
-    @line_code = nil # pour forcer la reformation de la ligne de code de l'exercice.
-    if @exercices_str.to_s == ""
-      @exercices_str = ""
-    else
-      @exercices_str = @exercices_str.strip
-      @exercices_str += ":"
-    end
-    @exercices_str << "#{hdata[:date]}#{hdata[:duree]}"
-    # Incrémentation des valeurs de l'exercice
-    @fois           += 1
-    @duree_totale   += hdata[:duree]
-    @duree_moyenne  =  @duree_totale / @fois
-    # On actualise le fichier de données de durée de jeu
-    @roadmap.file_duree_jeu.update self
-  end
+  # OBSOLETE
+  # def add_new_jeu hdata
+  #   get_data_in_duree_jeu
+  #   @line_code = nil # pour forcer la reformation de la ligne de code de l'exercice.
+  #   if @exercices_str.to_s == ""
+  #     @exercices_str = ""
+  #   else
+  #     @exercices_str = @exercices_str.strip
+  #     @exercices_str += ":"
+  #   end
+  #   @exercices_str << "#{hdata[:date]}#{hdata[:duree]}"
+  #   # Incrémentation des valeurs de l'exercice
+  #   @fois           += 1
+  #   @duree_totale   += hdata[:duree]
+  #   @duree_moyenne  =  @duree_totale / @fois
+  #   # On actualise le fichier de données de durée de jeu
+  #   @roadmap.file_duree_jeu.update self
+  # end
 
   # Analyse et "explose" dans les propriétés de l'instance les données tirées de la ligne
   # enregistrée dans le fichier de données de jeu des exercices.

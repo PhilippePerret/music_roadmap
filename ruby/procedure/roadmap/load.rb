@@ -61,10 +61,7 @@ def roadmap_load rm, umail = nil, only = nil
   
   
   if ( only.nil? || only.has_key?(:config_generale))
-    d = if rm.config_generale?
-      JSON.parse( File.read(rm.path_config_generale)) 
-    else {} end 
-    data = data.merge :config_generale => d
+    data = data.merge :config_generale => rm.config_generale
   end
   
   if ( only.nil? || only.has_key?(:data_exercices))

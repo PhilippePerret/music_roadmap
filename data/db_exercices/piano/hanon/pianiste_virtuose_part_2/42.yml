@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°42
+titre_en:     Exercice n°42
+suite:        white_keys
+types:        ['LH', 'RH', 'E0', 'A0']
+tempo_min:    60
+tempo_max:    120
+nb_mesures:   72
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+note_fr:      null
+note_en:      null

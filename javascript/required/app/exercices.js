@@ -1,3 +1,19 @@
+window.IDSCALE_TO_HSCALE = {
+  fr:{
+    0:"Do", 1:"Réb (DO#)", 2:"Ré", 3:"Mib (Ré#)", 4:"Mi", 5:"Fa", 6:"Fa#/Solb",
+    7:"Sol", 8:"Lab (Sol#)", 9:"La", 10:"Sib (La#)", 11:"Si",
+    12:"Dom", 13:"Do#m (Rébm)", 14:"Rém", 15:"Ré#m/Mibm", 16:"Mim", 17:"Fam",
+    18:"Fa#m (Solbm)", 19:"Solm", 20:"Sol#m (Labm)", 21:"Lam", 22:"Sibm (La#m)", 
+    23:"Sim"
+  },
+  en:{
+    0:"C", 1:"Db (C#)", 2:"D", 3:"Eb (D#)", 4:"E", 5:"F", 6:"F#/Gb",
+    7:"G", 8:"Ab (G#)", 9:"A", 10:"Bb (A#)", 11:"B",
+    12:"Cm", 13:"C#m (Dbm)", 14:"Dm", 15:"D#m/Ebm", 16:"Em", 17:"Fm",
+    18:"F#m (Gbm)", 19:"Gm", 20:"G#m (Abm)", 21:"Am", 22:"Bbm (A#m)", 23:"Bm"
+  }
+  
+}
 if('undefined' == typeof window.Exercices){ 
   window.Exercices = {};}
 $.extend(window.Exercices,{
@@ -5,7 +21,7 @@ $.extend(window.Exercices,{
   },
   modified: false,
   
-  scale         :null,    // Scale of the day (Integer 0 (C) <-> 11 (B))
+  scale         :null,    // Scale of the day (Integer 0 (C) <-> 23 (Bm))
   
   set_modified: function(ismod){
     if ('undefined' == typeof ismod ) ismod = true ;
@@ -331,7 +347,7 @@ $.extend(window.Exercices,{
     BT.add('-> Exercices.set_boutons (EXERCICES.length='+EXERCICES.length+')') ;
     var locked = Roadmap.is_locked(0) ;
     // Boutons généraux
-    UI.set_visible('a#btn_exercices_run', EXERCICES.length > 0);
+    UI.set_visible('a#btn_seance_play', EXERCICES.length > 0);
     this.set_btn_move(locked) ;
     this.set_btn_create(locked);
     this.set_btns_edition(locked);

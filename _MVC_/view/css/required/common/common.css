@@ -49,8 +49,10 @@ img { border: 0 ;}
 .translucide:hover  { opacity: 1;   }
 
 /* Visible ou invisible */
-.visible            {visibility:visible !important;}
-.invisible,.hidden  {visibility:hidden !important;}
+.visible    {visibility:visible !important;}
+.invisible  {visibility:hidden !important;}
+/* Hidden ou showed */
+.hidden     {display:none !important;}
 
 /* Élément "hot", ie dangereux, risqué, etc. 
   Placé ici pour qu'il s'impose aux autres */

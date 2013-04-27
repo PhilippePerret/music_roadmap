@@ -53,7 +53,9 @@ window.LOCALE_UI = {
     obligatory      :"Obligatory",
     pulse           :"pulse",
     roadmap         :"Roadmap",
+    scale           :"Scale",
     subtitle        :"Deal with your daily music exercices",
+    suite_exercices :"Exercices suite",
     TITLE           :"MUSIC ROADMAP",
     title           :"Music Roadmap",
     ROADMAP         :"ROADMAP",
@@ -126,8 +128,10 @@ window.LOCALE_UI = {
     add_selected            :"Add selected exercices to current roadmap"
   },
   Seance:{
-    start                   :"Start session!",
-    stop                    :"Stop working",
+    start                   :"Start session",
+    stop                    :"End session",
+    pause                   :"Pause",
+    restart                 :"Restart",
     next_exercice           :"Next exercice",
     end_exercices           :"The end"    
   }

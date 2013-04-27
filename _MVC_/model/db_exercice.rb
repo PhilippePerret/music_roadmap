@@ -139,7 +139,10 @@ class DBExercice
         :titre      => titre,
         :auteur     => auteur_to_hum,
         :recueil    => recueil_to_hum,
-        :tempo      => data['tempo_min'],
+        :nb_mesures => data['nb_mesures'].to_i,
+        :nb_temps   => data['nb_temps'].to_i,
+        :tempo      => data['tempo_min'].to_i,
+        :types      => nil,
         :up_tempo   => nil,
         :obligatory => nil,
         :with_next  => nil,
@@ -151,7 +154,7 @@ class DBExercice
         :image      => nil
       }
       # Duplicated values (from dbexercices to roadmap exercice)
-      [:tempo_min, :tempo_max, :suite, :type].each do |prop|
+      [:tempo_min, :tempo_max, :suite, :types].each do |prop|
         dex = dex.merge prop => data[prop.to_s]
       end
       # Create in Roadmap folder

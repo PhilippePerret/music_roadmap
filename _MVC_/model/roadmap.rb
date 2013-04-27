@@ -38,13 +38,14 @@ class Roadmap
   # @param  mail    SOIT nil si data est un Hash
   #                 SOIT String définissant :mail si :nom est string
   def initialize data, mail = nil
+    @exercices = {}
     data = {:nom => data, :mail => mail} unless data.class == Hash
     set data
     check_nom_et_mail
   end
   
   # --- Méthodes de checks ---
-
+  
   
   # =>  Return true si l'utilisateur est le possesseur de la rm ou un
   #     administrateur
@@ -83,7 +84,7 @@ class Roadmap
       # # -- / débug --
       return false
     end
-
+  
     return (hismail == mail) && ( hismd5 == md5 )
   end
   
@@ -91,6 +92,54 @@ class Roadmap
   def user
     @user ||= User.new @mail
   end
+  
+  # Return config generale
+  # 
+  # @note: Keys are Symbol-s
+  # 
+  def config_generale
+    @config_generale ||= begin
+      if config_generale?
+        JSON.parse(File.read(path_config_generale)).to_sym
+      else
+        {
+          :start_to_end => true,
+          :maj_to_rel   => true,
+          :updated_at   => nil,
+          :created_at   => Time.now.to_i,
+          :down_to_up   => true,
+          :last_changed => 'start_to_end',
+          :scale        => 0
+        }
+      end
+    end
+  end
+  
+  # Define and save next config except if +dont_save+ is true (default: false)
+  # 
+  LOOP_CONFIG_ATTRIBUTES = {
+    :down_to_up   => :maj_to_rel, 
+    :maj_to_rel   => :start_to_end, 
+    :start_to_end => :down_to_up
+    }
+  def next_config_generale dont_save = false
+    d = config_generale
+    param_to_change     = LOOP_CONFIG_ATTRIBUTES[d[:last_changed].to_sym].to_sym
+    d[param_to_change]  = !d[param_to_change]
+    d[:last_changed]    = param_to_change
+    d[:scale] = (d[:scale] == 23) ? 0 : (d[:scale].to_i + 1)
+    @config_generale = d
+    save_config_generale unless dont_save
+    @config_generale
+  end
+  
+  # Save config générale
+  # 
+  def save_config_generale
+    File.open(path_config_generale, 'wb'){|f| f.write @config_generale.to_json}
+  end
+  
+  
   
   # => Retourne true si le dossier de l'exercice existe déjà
   def exists?
@@ -120,7 +169,7 @@ class Roadmap
   # -------------------------------------------------------------------
   #   Data (dans data.js)
   # -------------------------------------------------------------------
-
+  
   # =>  Retourne une valeur du fichier 'data.js' ou nil si le fichier
   #     n'existe pas, ou toutes les données si aucun paramètre
   # @param  key     La clé dans le fichier
@@ -144,7 +193,7 @@ class Roadmap
   def created_at; get_datajs 'created_at' end
   # =>  Retourne la date de dernière modification
   def updated_at; get_datajs 'updated_at' end
-
+  
   # Retourne l'instance Exercice de l'exercice d'identifiant idex
   # 
   # @note: Les exercices déjà relevés sont conservés dans l'attribut @exercices de la
@@ -239,7 +288,7 @@ class Roadmap
   # 
   # * RETURN
   # 
-  #   An sorted Array of Hash with seance data
+  #   A sorted Array of Hash with seance data
   #   First is the oldest
   # 
   # * PARAMS
@@ -254,12 +303,13 @@ class Roadmap
   #   de aujourd'hui à la date de création de la roadmap ou du nombre de fichiers jusqu'à
   #   trouver notre bonheur.
   # 
-  def self.get_last x = 50
+  def get_last x = 50
     return [] unless File.exists? folder_seances
-
+    
     # Tous les fichiers séances (Array of file names)
     # 
     ary_files = Dir["#{folder_seances}/*.msh"].collect{|path| File.basename(path)}
+    return [] if ary_files.empty?
     ary_files.sort!
     oldest_date = Date.strptime(ary_files.first, '%y%m%d')
     
@@ -267,7 +317,7 @@ class Roadmap
     lejour = Date.today
     ary_seances = []
     fold = folder_seances
-    while ary.count < 50 && lejour >= oldest_date
+    while ary_seances.count < 50 && lejour >= oldest_date
       lejour_str = lejour.strftime("%y%m%d")
       if ary_files.include?( "#{lejour_str}.msh" )
         path = File.join(fold,"#{lejour_str}.msh")

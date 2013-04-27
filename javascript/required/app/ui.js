@@ -71,8 +71,9 @@ $.extend(UI,{
     });
     // Dans LOCALE_UI.Seance
     $([
-      ['a#btn_exercices_run',   'start'],
-      ['a#btn_stop_exercices',  'stop']
+      ['a#btn_seance_play', 'start'],
+      ['a#btn_seance_end',  'stop'],
+      ['a#btn_seance_pause', 'pause']
     ]).each(function(i,o){
       $(o[0]).html(LOCALE_UI.Seance[o[1]]);
     });

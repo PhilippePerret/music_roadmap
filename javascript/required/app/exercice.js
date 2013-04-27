@@ -207,6 +207,13 @@ Exercice.prototype.onclick_pour_extrait = function(){
   return ' onclick="return $.proxy(Exercices.show_partition,Exercices,\''+this.extrait+'\')()"';
   
 }
+// Return title for simple listing
+Exercice.prototype.titre_complet = function(){
+  titre = this.titre;
+  if(this.recueil)  titre += " - " + this.recueil;
+  if(this.auteur)   titre += " - " + this.auteur;
+  return titre;
+}
 Exercice.prototype.code_div_titre = function(){
   var recueil = this.recueil ? '<span class="ex_recueil">'+this.recueil+'</span>': "" ;
   var auteur  = this.auteur ? ' <span class="ex_auteur"> ('+this.auteur+')</span>':"";

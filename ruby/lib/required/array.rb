@@ -4,6 +4,19 @@
 
 class Array
   
+  # Remplace les valeurs string comme "true" ou "false" par des valeurs
+  # réelles (true ou false)
+  def values_str_to_real
+    self.collect! do |e|
+      case e
+      when "true" then true
+      when "false" then false
+      when "null", "nil" then nil
+      else e
+      end
+    end
+  end
+  
   # =>  Renvoie un array ou les clés string des hash (if any) sont
   #     remplacées par des clés symboliques ('cle' => :cle)
   #     DANS TOUS LES ÉLÉMENTS ET SOUS-ÉLÉMENTS

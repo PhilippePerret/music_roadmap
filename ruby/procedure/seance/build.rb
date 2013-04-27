@@ -3,10 +3,9 @@
   Construction d'une séance de travail
   
 =end
-require_model 'roadmap' unless defined?(Roadmap)
+# require_model 'roadmap' unless defined?(Roadmap)
 
 def ajax_seance_build
-  
   res = seance_build(
     Roadmap.new( param(:rm_nom), param(:user_mail) ), 
     {:mail => param(:user_mail), :md5 => param(:user_md5) },
@@ -29,7 +28,11 @@ def seance_build rm, duser, params
     return e.message
   end
   # OK, build working seance
-  require_model 'seance'
-  seance = Seance.new rm
-  seance.build_with_params params
+  begin
+    require_model 'seance'
+    seance = Seance.new rm
+    seance.build_with_params params
+  rescue Exception => e
+    e.message + "<br />" + e.backtrace.join('<br />')
+  end
 end

@@ -50,7 +50,9 @@ window.LOCALE_UI = {
     pulse           :"pulsation",
     roadmap         :"Feuille de route",
     ROADMAP         :"FEUILLE DE ROUTE",
+    scale           :"Gamme",
     subtitle        :"Gestion au quotidien de ses exercices de musique",
+    suite_exercices :"Suite exercices",
     TITLE           :"FEUILLE DE ROUTE MUSICALE",
     title           :"Feuille de Route Musicale",
     working_time    :"Durée de travail"
@@ -122,9 +124,11 @@ window.LOCALE_UI = {
     add_selected            :"Ajouter les exercices sélectionnés à la feuille de route"
   },
   Seance:{
-    start                   :"Commencer !",
-    stop                    :"Finir",
+    start                   :"Démarrer",
+    stop                    :"Finir la séance",
+    pause                   :"Pause",
+    restart                 :"Reprendre",
     next_exercice           :"Suivant",
-    end_exercices           :"C'est la fin"    
+    end_exercices           :"Finir"    
   }
 }

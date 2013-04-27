@@ -19,6 +19,7 @@ $.extend(window.Exercices,{
     'C1':"Chromatismes",
     'P0':"Poignet",
     'D0':"Déliateur",
-    'E0':"Extensions"
+    'E0':"Extensions",
+    'NR':"Notes répétées"
   }
 });

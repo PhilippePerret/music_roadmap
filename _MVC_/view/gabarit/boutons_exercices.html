@@ -5,7 +5,7 @@
       class="btn fleft invisible"
       style="margin-top:-0.2em;"
       title="Reclasser les exercices dans un ordre différent"
-      >Activer le déplacement</a>
+      >BOUTON POUR DÉPLACER LES EXERCICES</a>
 
   <!-- Flottant à droite -->
   <a  id="btn_fullscreen"
@@ -14,16 +14,24 @@
       title="Zen mode"
       ><img data-src="picto_fullscreen.png" /></a>
   
-  <a  id="btn_stop_exercices"
-      class="btn invisible"
+  <a  id="btn_seance_end"
+      class="btn hidden"
       onclick="return $.proxy(Seance.stop, Seance, true)()"
       title="Interrompre le jeu de la suite d'exercice."
-      >Stopper les exercices</a>
-  <a  id="btn_exercices_run"
+      >BOUTON POUR STOPPER LES EXERCICES</a>
+      
+  <a  id="btn_seance_pause"
+      class="btn hidden"
+      onclick="return $.proxy(Seance.pause, Seance)()"
+      title="Mettre en pause la séance."
+      >BOUTON PAUSE</a>
+
+  <a  id="btn_seance_play"
       class="moyen btn violet invisible"
       onclick="return $.proxy(Seance.start, Seance)()"
       title="Passer d'un exercice à un autre, dans l'ordre du jour, en réglant chaque fois le métronome à la bonne vitesse, pour exemple ou suivi."
-      >Lancer les exercices</a>
+      >BOUTON POUR LANCER LA SÉANCE</a>
+      
   <a  id="btn_exercice_create" 
       onclick="return $.proxy(Exercices.new, Exercices)()"
       class="btn invisible"

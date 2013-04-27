@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°45
+titre_en:     Exercice n°45
+suite:        white_keys
+types:        ['LH', 'RH', 'NR']
+tempo_min:    60
+tempo_max:    120
+nb_mesures:   49
+nb_temps:     4
+duree_temps:  4
+metrique:     "4/4"
+note_fr:      null
+note_en:      null

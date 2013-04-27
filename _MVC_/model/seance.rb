@@ -260,7 +260,10 @@ class Seance
       data[:id_exercices] << iex.id unless data[:id_exercices].include? iex.id
       dwork = dwork.merge :id => iex.id
       unless options.nil?
-        [:scale, :config].each do |key|
+        @data[:scale] ||= []
+        @data[:scale] << options[:scale] if options.has_key?(:scale)
+        @data[:scale].uniq!
+        [:config].each do |key|
           @data = @data.merge key => options[key] if options.has_key?(key)
         end
       end
@@ -318,7 +321,7 @@ class Seance
         :exercices          => [],  # Exercices list (Array of simple Hashes)
                                     # Simple hash contains: {:id => , :tempo => , :time => working time}
         :id_exercices       => [],  # Just a Array of exercices Ids of the seance
-        :scale              => nil, # Scale of the day (a Fixnum from 0 — C — to 11 — B —)
+        :scale              => nil, # Scale of the day (NIL or a Array of Fixnum-s from 0 — C — to 23 — Bm —)
         :harmonic_seq       => nil, # String (e.g. "whitekey" or "harmonic" (1))
         :config             => nil  # General configuration of exercices (NIL or Hash containing
                                     # :maj_to_rel, :down_to_up, :start_to_end)

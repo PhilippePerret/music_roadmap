@@ -61,7 +61,7 @@ def exercice_add_from_dbe rm, duser, inst_id, exs, options
   end
   
   
-  unless list_new_ids.empty? # => aucun exercice n'a pu être enregistré
+  unless list_new_ids.empty?
     # Actualiser le dernier id d'exercice
     rm.update_last_id_exercice list_new_ids.last
     # Ajouter à l'ordre des exercices de la roadmap

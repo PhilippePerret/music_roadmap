@@ -19,6 +19,7 @@ $.extend(window.Exercices,{
     'C1':"Chromatisme",
     'P0':"Wrist",
     'D0':"Unbinder",
-    'E0':"Extention"
+    'E0':"Extention",
+    'NR':"Repeated Key"
   }
 });

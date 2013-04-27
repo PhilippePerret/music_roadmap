@@ -11,11 +11,14 @@ div#btns_exercices a#btn_fullscreen img {
   margin-right        :0;
 }
 
-div#btns_exercices a#btn_exercices_run {
+div#btns_exercices a#btn_seance_play {
   display             :inline-block;
   width               :170px;
 }
-
+div#btns_exercices a#btn_seance_pause {
+  display             :inline-block;
+  width               :100px;
+}
 div#btns_exercices a#btn_fullscreen {
   margin-right        :5px !important;
 }

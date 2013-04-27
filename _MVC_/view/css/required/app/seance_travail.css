@@ -71,3 +71,13 @@ section#seance_travail div#seance_form_types > span {
 section#seance_travail div#seance_start div#seance_start_description {
   padding       :2em;
 }
+
+section#seance_travail div#seance_start_description span.libelle {
+  display         :inline-block;
+  font-weight     :bold;
+  width           :200px;
+  color           :#555;
+}
+section#seance_travail div#seance_start_description span.data {
+
+}

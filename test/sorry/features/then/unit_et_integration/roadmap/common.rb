@@ -74,7 +74,7 @@ when /la roadmap #{STRING} doit être affichée/ then
   
   # Les boutons roadmap/exercices doivent être affichés
   Browser should display a :id => 'btn_exercice_create'
-  Browser should display a :id => 'btn_exercices_run'
+  Browser should display a :id => 'btn_seance_play'
   Browser should display a :id => 'btn_exercices_move'
 
 when "les specs de la roadmap doivent être masquées" then

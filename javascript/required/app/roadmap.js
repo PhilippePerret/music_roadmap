@@ -549,7 +549,7 @@ window.Roadmap = {
       this.last_changed = config.toString();
       // On change de gamme
       ++ this.scale ;
-      if (this.scale >= 12) this.scale = 0;
+      if (this.scale >= 24) this.scale = 0;
       // Save it ?
       if ($('input[type=checkbox]#save_config_generale_courante').is(':checked')){
         Roadmap.set_modified();

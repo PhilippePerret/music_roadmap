@@ -10,9 +10,6 @@ window.Seance = {
   running         :false,   // True when we work on the exercices suite
   cur_exercice    :null,    // Current exercice (instance of Exercice)
   ordre_stack     :null,    // Stack of the exercices to play
-  // Buttons to hide/show during working session
-  hiddens_while_working:['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs'],
-  visibles_while_working:['a#btn_stop_exercices'],
 
   // Start working session
   start:function(){
@@ -39,32 +36,37 @@ window.Seance = {
     Ajax.query({data:{proc:"seance/start", rm_nom:Roadmap.nom, rm_mail:User.mail, md5:Roadmap.md5}})
   },
   // Set UI when we work the exercices or when stop
+  // - The buttons to create and move exercices are hidden
+  // - The buttons to stop, play, pause are shown
+  // Buttons to hide/show during working session
+  HIDDENS_WHILE_WORKING:new DArray(['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs']),
+  SHOWED_WHILE_WORKING:new DArray(['a#btn_seance_end','a#btn_seance_pause']),
   set_working_ui:function(on){
     var method_btn_run;
-    var orun = $('a#btn_exercices_run');
     if (on){
       // When running
-      UI.set_invisible(this.hiddens_while_working);
-      UI.set_visible(this.visibles_while_working);
+      this.HIDDENS_WHILE_WORKING.hide();
+      this.SHOWED_WHILE_WORKING.show();
     } else {
       // Stopping
-      UI.set_visible(this.hiddens_while_working);
-      UI.set_invisible(this.visibles_while_working);
+      this.HIDDENS_WHILE_WORKING.show();
+      this.SHOWED_WHILE_WORKING.hide();
     }
+    var orun = $('a#btn_seance_play');
     orun.html(LOCALE_UI.Seance[on ? 'next_exercice' : 'start']);
     orun.attr('onclick', "return $.proxy(Seance." + 
               (on ? 'next_exercice' : 'start') + ", Seance)()");
   },
   // Play next exercice of the session
+  // (call by button 'Next exercice')
   next_exercice:function(){
-    Exercices.deselect(this.cur_exercice.id) ; // stop aussi le métronome
-    this.cur_exercice = null ;
+    this.stop_cur_exercice();
     if ( this.ordre_stack.length > 0 ){
       // Still exercices
       if ( this.ordre_stack.length == 1 ){
         // Last exercice
-        UI.set_invisible('a#btn_stop_exercices');
-        $('a#btn_exercices_run').html(LOCALE_UI.Seance.end_exercices);
+        UI.set_invisible('a#btn_seance_end');
+        $('a#btn_seance_play').html(LOCALE_UI.Seance.end_exercices);
       }
       this.play_first_in_stack();
     } else {
@@ -73,10 +75,28 @@ window.Seance = {
     }
     return false;// for a-link
   },
+  // Stop exercice (with next exercice is required or pause)
+  stop_cur_exercice:function(){
+    if(this.pause_on) this.pause();
+    else{
+      Exercices.deselect(this.cur_exercice.id) ; // stop aussi l'exercice et le métronome
+      this.cur_exercice = null ;
+    }
+  },
   // Play the first exercice in the stack
   play_first_in_stack:function(){
     this.cur_exercice = exercice(this.ordre_stack.shift());
     this.cur_exercice.play();
+    this.pause_on = false;
+  },
+  // Pause the seance
+  pause_on:false,
+  pause:function(){
+    var o = $('a#btn_seance_pause');
+    this.cur_exercice.play(); //start or stop
+    this.pause_on = !this.pause_on;
+    o.html(LOCALE_UI.Seance[this.pause_on?'restart':'pause']);
+    return false;//for a-link
   },
   // To Stop the working session
   // +forcer_arret+ is true when called from "Stop seance" button.
@@ -147,11 +167,34 @@ window.Seance = {
   build_suite:function(rajax){
     if(false==traite_rajax(rajax)){
       this.data_seance = rajax.data_seance ; // les données pour la séance
-      $('div#seance_start_description').html(this.data_seance.message);
+      this.show_data_seance();
       this.hide_form(false);
       this.show_start();
     }
     this.building = false;
+  },
+  // Affiche les données de la séance construite
+  show_data_seance:function(){
+    var scaleh = IDSCALE_TO_HSCALE[LANG][this.data_seance.scale];
+    var liste_ex = [];
+    for( var i in this.data_seance.suite_ids){
+      var iex = exercice(this.data_seance.suite_ids[i]);
+      liste_ex.push(iex.titre_complet());
+    }
+    liste_ex = liste_ex.join('<br>');
+    var wtimeh = Time.seconds_to_horloge( this.data_seance.working_time);
+    var message = [] ;
+    wtimeh = this.label_and_data(LOCALE_UI.Label.working_time, wtimeh, ": ");
+    message.push(wtimeh) ;
+    message.push(this.label_and_data(LOCALE_UI.Label.scale,scaleh,": ")) ;
+    message.push('<img style="width:300px;" src="_MVC_/view/img/note/gamme/'+this.data_seance.scale+'.jpg" />');
+    message.push(this.label_and_data(LOCALE_UI.Label.suite_exercices,liste_ex,":<br />"));
+    message = message.join('<br>');
+    $('div#seance_start_description').html(message);
+  },
+  label_and_data: function(label, data, separator){
+    return '<span class="libelle">' + label + '</span>' + separator +
+            '<span class="data">' + data + "</span>" ;
   },
   // Relève les data du formulaire
   get_values:function(){

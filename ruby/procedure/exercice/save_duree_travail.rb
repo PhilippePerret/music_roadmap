@@ -30,9 +30,16 @@ def exercice_save_duree_travail rm, dataex, datauser
     seance  = Seance.new rm
     options = {}
     [:scale, :config].each do |key|
-      options = options.merge key => param(key) unless param(key).nil?
+      unless param(key).nil?
+        val = case key
+          when :scale then 
+            param(key).to_i
+          else param(key)
+          end
+        options = options.merge key => val
+      end
     end
-    working_data = {:time => dataex[:duree].to_i, :tempo => dataex[:tempo]}
+    working_data = {:time => dataex[:duree].to_i, :tempo => dataex[:tempo], :scale => param(:scale).to_i}
     seance.add_working_time iex, working_data, options
     return nil
   rescue Exception => e
