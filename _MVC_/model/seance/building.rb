@@ -228,20 +228,7 @@ DEBUG
     def work_time_per_exercice
       @time_per_exercice = {}
       exercices.each do |idex, iex|
-        nb_mesures  = iex.data['nb_mesures']
-        nb_temps    = iex.data['nb_temps']
-        tempo       = iex.data['tempo'].to_i
-        duree = 
-          if @average_working_time_in_seances[idex] != nil
-            @average_working_time_in_seances[idex]
-          elsif !(nb_mesures.nil? || nb_temps.nil?)
-            # Calculated with mesure, beats and tempo
-            (60.0 / tempo) * nb_temps * nb_mesures
-          else
-            # default value
-            120
-          end
-        @time_per_exercice = @time_per_exercice.merge idex => duree
+        @time_per_exercice = @time_per_exercice.merge idex => iex.working_time
       end
     end
     

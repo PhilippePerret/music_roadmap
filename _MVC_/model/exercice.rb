@@ -105,6 +105,14 @@ class Exercice
     @data_js ||= JSON.parse(File.read(path))
   end
   
+  # Return the working time for the exercie.
+  # 
+  # Evaluated either on the base of current tempo, number of measures, number
+  # of beats per measure, or on the base of working time recorded in sessions (seances)
+  def working_time
+    @working_time ||= duree_at tempo
+  end
+  
   # Retourne la durée maximale du travail sur l'exercice.
   # 
   # Cette durée est calculée par rapport au tempo min de l'exercice, son 
@@ -113,19 +121,19 @@ class Exercice
   # travail précédentes pour déterminer ce temps, ou on utilise des valeurs
   # par défaut.
   def duree_max
-    
+    @duree_max ||= duree_at tempo_max
   end
   
   # Retourne la durée minimum de travail sur l'exercice
   # 
   # @see `duree_max' ci-dessus pour le détail
   def duree_min
-    
+    @duree_min ||= duree_at tempo_min
   end
   
   # Return la durée du travail de l'exercice au tempo fourni en argument.
-  def duree_at tempo
-    (60.0 / tempo) * nombre_temps * nombre_mesures
+  def duree_at this_tempo
+    (60.0 / this_tempo) * nombre_temps * nombre_mesures
   end
   
   # Return number of beats of exercice (Fixnum) (default: 4)
@@ -164,12 +172,19 @@ class Exercice
     seances_working_time / ( (60.0 / tempo) * nombre_temps )
   end
   
-  # Return the average working time of exercice in working session, in seconds.
+  # Return the average working time of exercice in working sessions, in seconds.
   # Default: 120
   def seances_working_time
-    @seances_working_time ||= begin
-      
+    @seances_working_time ||= data_in_seances[:average_duration]
+  end
+  
+  # Return exercice data in the +x+ last seances
+  # 
+  def data_in_seances x = 50
+    if @data_in_seances == nil || @data_in_seances[:x_last] != x
+      @data_in_seances = Seance.exercice self, x
     end
+    @data_in_seances
   end
 
 
