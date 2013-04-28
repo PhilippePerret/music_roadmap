@@ -31,11 +31,12 @@ a.violet:active{
 code {font-size:14.7px;}
 
 .inherit {
-  font-family       : inherit !important ;
-  font-size         : inherit !important ;
-  font-weight       : inherit !important ;
-  border            : 0 ;
-  margin            : 0 ;
+  font-family  :inherit !important;
+  font-size    :inherit !important;
+  font-weight  :inherit !important;
+  border       :0;
+  margin       :0;
+  background   :inherit !important;
 }
 
 img { border:0;}

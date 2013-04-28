@@ -70,16 +70,52 @@ ul#exercices {
   border-bottom         :18px solid #C07051;
 }
 ul#exercices li.ex {
-  position              :relative ;
-  margin-bottom         :0.5em ;
-  padding               :0.5em ;
-  background-color      :white ;
-  clear                 :both  ;
-  border-radius         :0.6em ;
+  position              :relative;
+  margin-bottom         :0.5em;
+  padding               :0.5em;
+  background-color      :white;
+  clear                 :both;
+  border-radius         :0.3em;
 }
 ul#exercices li.ex.selected {
-  background-color       :#cdd7d7 !important ;
+  background-color       :#cdd7d7 !important;
 }
+/* Le Div de l'image quand l'exercice n'est pas sélectionné */
+ul#exercices li.ex div.div_ex_image {
+  float           :left;
+  margin-right    :1em;
+  max-height      :90px;
+}
+/* Le Div de l'image quand l'exercice est sélectionné */
+ul#exercices li.ex.selected div.div_ex_image {
+  float           :none !important;
+  width           :520px;
+  height          :300px;
+  max-height      :300px;
+  overflow-y      :scroll; /* au cas où l'image dépasserait */
+  overflow-x      :hidden;
+  border          :solid #5a7d6c;
+  border-width    :7px 2px;
+}
+ul#exercices li.ex.selected div.ex_titre {
+  font-size:13px !important;
+  display:inline !important;
+  margin-right:8px !important;
+}
+li.ex.selected div.ex_titre > span {font-size:14px !important;}
+li.ex.selected span.ex_titre{display:inline;margin-left:1em;}
+li.ex span.ex_titre{display:block;}
+li.ex.selected div.div_up_tempo {
+  display     :inline;
+  margin-left :1em;
+  font-weight :bold !important;
+}
+  
+/* Vignette de l'exercice (mais contient l'extrait quand sélectionné)*/
+li.ex img.ex_image {
+
+}
+
 li.ex a.ex_id {
   margin-right          :1em ;
   font-size             :12.3px;
@@ -90,8 +126,9 @@ li.ex span.ex_recueil {
   margin-right          :8px;
 }
 li.ex div.ex_titre {
-  font-weight           :bold ;
-  font-size             :1.4em ;
+  display               :inline-block;
+  font-weight           :bold;
+  font-size             :1.4em;
 }
 li.ex select.ex_tempo/*, li.ex select.ex_tempo option*/ {
   font-family           :Verdana ;
@@ -108,12 +145,6 @@ li.ex div.ex_note {
   border                :1px solid #7BD161;
   font-size             :0.9em;
   background-color      :#D1EADE;
-}
-/* Vignette de l'exercice */
-li.ex img.ex_image {
-  max-height            :90px;
-  float                 :right;
-  margin-right          :3.0em;
 }
 
 li.ex div.btns_edition {
