@@ -170,7 +170,7 @@ DEBUG
       )
     end
 
-    # Set @ids_exercices to contain only the exercices to work on.
+    # Keep in @ids_exercices only the exercices to work on.
     # 
     def select_exercices
       # @nb_fois_per_exercice

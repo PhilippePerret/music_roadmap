@@ -1,6 +1,9 @@
 
-require_model 'roadmap'
-require_model 'file_duree_jeu'
+require_model 'roadmap' unless defined?(Roadmap)
+require_model 'seance'  unless defined?(Seance)
+
+# OBSOLETE:
+# require_model 'file_duree_jeu'
 
 # Class Exercice gérant les exercices
 # 
@@ -42,23 +45,23 @@ class Exercice
   # 
   attr_reader :exercices
   
-  # Index de l'exercice dans la première ligne du fichier de données de jeu.
-  # Rappel: cette première ligne contient simplement l'index de l'exercice associé à la
-  # longueur de sa ligne de données dans le fichier, et elle est transformée en array de
-  # "<id exercice>:<longueur ligne data>"
-  # 
-  attr_accessor :index_in_first_line
+  # # Index de l'exercice dans la première ligne du fichier de données de jeu.
+  # # Rappel: cette première ligne contient simplement l'index de l'exercice associé à la
+  # # longueur de sa ligne de données dans le fichier, et elle est transformée en array de
+  # # "<id exercice>:<longueur ligne data>"
+  # # OBSOLETE
+  # attr_accessor :index_in_first_line
   
-  # Durée actuelle de la donnée de l'exercice dans le fichier de données de jeux
-  # 
-  attr_accessor :len_init_in_duree_jeu
+  # # Durée actuelle de la donnée de l'exercice dans le fichier de données de jeux
+  # # OBSOLETE
+  # attr_accessor :len_init_in_duree_jeu
   
-  # Offset du début de la ligne de code de l'exercice dans le fichier de données de jeux
-  # 
-  # NIL si l'exercice ne s'y trouve pas encore
-  # 
-  # OBSOLÈTE
-  attr_accessor :offset_in_duree_jeu
+  # # Offset du début de la ligne de code de l'exercice dans le fichier de données de jeux
+  # # 
+  # # NIL si l'exercice ne s'y trouve pas encore
+  # # 
+  # # OBSOLÈTE
+  # attr_accessor :offset_in_duree_jeu
     
   # Data dans le fichier .js de l'exercice
   # 
@@ -83,11 +86,122 @@ class Exercice
     @fois, @duree_totale, @duree_moyenne = 0, 0, 0
   end
   
-  # Return le Hash des données de l'exercice (les clés restent des Strings, PAS des Symbols)
+  # Return current tempo of the exercice (Fixnum)
+  def tempo
+    @tempo ||= data['tempo'].to_i
+  end
+  # Return max tempo of the exercice (Fixnum)
+  def tempo_max
+    @tempo_max ||= data['tempo_max'].to_i
+  end
+  # Return min tempo of the exercice (Fixnum)
+  def tempo_min
+    @tempo_min ||= data['tempo_min'].to_i
+  end
+  
+  # Return Hash Data of the exercices (keys are String-s, NOT Symbol-s)
   # 
   def data
     @data_js ||= JSON.parse(File.read(path))
   end
+  
+  # Retourne la durée maximale du travail sur l'exercice.
+  # 
+  # Cette durée est calculée par rapport au tempo min de l'exercice, son 
+  # nombre de temps par mesure et son nombre de mesures.
+  # Si ces informations ne sont pas fournies, on se sert des séances de 
+  # travail précédentes pour déterminer ce temps, ou on utilise des valeurs
+  # par défaut.
+  def duree_max
+    
+  end
+  
+  # Retourne la durée minimum de travail sur l'exercice
+  # 
+  # @see `duree_max' ci-dessus pour le détail
+  def duree_min
+    
+  end
+  
+  # Return la durée du travail de l'exercice au tempo fourni en argument.
+  def duree_at tempo
+    (60.0 / tempo) * nombre_temps * nombre_mesures
+  end
+  
+  # Return number of beats of exercice (Fixnum) (default: 4)
+  def nombre_temps
+    @nombre_temps ||= begin
+      data['nb_temps'].nil? ? 4 : data['nb_temps'].to_i
+    end
+  end
+  
+  # Return number of measures of exercice (Fixnum)
+  # 
+  # If number of measures if defined in data, return this value. Otherwise, 
+  # evaluate this number according to:
+  #   - the average working time of exercice in seances
+  #   - the number of beats or 4 (default value)
+  #   - the tempo used to play the exercice (may be different for
+  #     each time)
+  # For example, if the working time is 120 (2 minutes) and the number of
+  # beats is 4 (default), and the tempo is 60, then the number of measures
+  # is:
+  #   nb_mesures = working_time / ( (60.0 / tempo) * nb_beats )
+  # So:
+  #   nb_mesures = 120 / ( 60.0 / 60 * 4)
+  #   nb_mesures = 120 / 4 = 30
+  # 
+  # If neither data['nb_mesures'] nor seances are defined, working time is
+  # set to 120 (2 minutes = default value)
+  def nombre_mesures
+    @nombre_mesures ||= data['nb_mesures'].nil? ? calc_nombre_mesures : data['nb_mesures'].to_i
+  end
+  
+  # Calculate number of measures in exercice
+  # 
+  # @sea `nombre_mesures' above for details
+  def calc_nombre_mesures
+    seances_working_time / ( (60.0 / tempo) * nombre_temps )
+  end
+  
+  # Return the average working time of exercice in working session, in seconds.
+  # Default: 120
+  def seances_working_time
+    @seances_working_time ||= begin
+      
+    end
+  end
+
+
+  # Retourne la durée en fonction des séances précédentes
+  # 
+  # * NOTES
+  # 
+  #   Cette durée est calculée en fonction de la durée de travail enregistrée,
+  #   et du tempo enregistré pour cette durée. On extrapole ensuite la durée
+  #   avec le tempo min ou max.
+  # 
+  #   Le code qui appelle cette méthode devrait définir avant la variable
+  #   globale $seances contenant les informations sur les séances relevées
+  #   pour ne pas avoir à répéter la lecture de ces séances dans le cas d'un
+  #   appel intensif (sur tous les exercices par exemple)
+  #   Si cette variable globale n'est pas définie, on la détermine la première
+  #   fois que le code est appelé.
+  # 
+  # * RETURN
+  # 
+  #   Durée max de l'exercice (Fixnum)
+  # 
+  def duree_max_in_seances
+    
+  end
+  # Retourne la durée min en fonction des séances
+  # 
+  # @see `duree_max_in_seances' above for details
+  def duree_min_in_seances
+    
+  end
+  
   
   # Retourne le path à l'exercice 
   # 
@@ -104,85 +218,53 @@ class Exercice
   #   @line = @roadmap.file_duree_jeu.line_code_exercice self
   #   explode_line unless @line.to_s == ""
   # end
-  
-  # Ajoute un jeu de l'exercice 
-  # 
-  # Cette méthode est appelée lorsque l'exercice a été joué assez longtemps et que donc ce
-  # temps de travail peut être inscrit dans les données des exercices joués.
-  # 
-  # * PARAMS
-  #   :hdata::    Un Hash qui définit :
-  #               :date::   Le jour au format "AAMMJJ"
-  #               :duree::  La durée du jeu de l'exercice (Fixnum, nombre de secondes)
-  # 
-  # * PRODUCTS
-  #   L'actualisation des données de l'instance Exercice, prête pour que la ligne soit
-  #   actualisée dans le fichier
-  # OBSOLETE
-  # def add_new_jeu hdata
-  #   get_data_in_duree_jeu
-  #   @line_code = nil # pour forcer la reformation de la ligne de code de l'exercice.
-  #   if @exercices_str.to_s == ""
-  #     @exercices_str = ""
-  #   else
-  #     @exercices_str = @exercices_str.strip
-  #     @exercices_str += ":"
-  #   end
-  #   @exercices_str << "#{hdata[:date]}#{hdata[:duree]}"
-  #   # Incrémentation des valeurs de l'exercice
-  #   @fois           += 1
-  #   @duree_totale   += hdata[:duree]
-  #   @duree_moyenne  =  @duree_totale / @fois
-  #   # On actualise le fichier de données de durée de jeu
-  #   @roadmap.file_duree_jeu.update self
-  # end
 
-  # Analyse et "explose" dans les propriétés de l'instance les données tirées de la ligne
-  # enregistrée dans le fichier de données de jeu des exercices.
+  # # Analyse et "explose" dans les propriétés de l'instance les données tirées de la ligne
+  # # enregistrée dans le fichier de données de jeu des exercices.
+  # # 
+  # # À titre de rappel, cette ligne est composée de :
+  # #   <id exercice>TAB<nombre fois joué>TAB<durée totale de jeu>TAB<durée moyenne>TAB<exercices>
+  # #   Où <exercices> ci-dessus est composé de données duo "AAMMJJ<duree>", séparés par des ":"
+  # #   Par exemple "13010155" pour 55 secondes jouées le 01 janvier 2013
+  # # 
+  # def explode_line
+  #   @id, foi, tot, moy, @exercices_str = @line.split("\t")
+  #   @fois           = foi.to_i
+  #   @duree_totale   = tot.to_i
+  #   @duree_moyenne  = moy.to_i
+  #   # @exercices      = per_day.nil? ? [] : per_day.split(':').collect{|ex| date_duree_to_h ex}
+  # end
   # 
-  # À titre de rappel, cette ligne est composée de :
-  #   <id exercice>TAB<nombre fois joué>TAB<durée totale de jeu>TAB<durée moyenne>TAB<exercices>
-  #   Où <exercices> ci-dessus est composé de données duo "AAMMJJ<duree>", séparés par des ":"
-  #   Par exemple "13010155" pour 55 secondes jouées le 01 janvier 2013
+  # # Implose la ligne, pour enregistrement
+  # def implode_line
+  #   "#{@id}\t#{@fois}\t#{@duree_totale}\t#{@duree_moyenne}\t#{@exercices_str}\n"
+  # end
   # 
-  def explode_line
-    @id, foi, tot, moy, @exercices_str = @line.split("\t")
-    @fois           = foi.to_i
-    @duree_totale   = tot.to_i
-    @duree_moyenne  = moy.to_i
-    # @exercices      = per_day.nil? ? [] : per_day.split(':').collect{|ex| date_duree_to_h ex}
-  end
-  
-  # Implose la ligne, pour enregistrement
-  def implode_line
-    "#{@id}\t#{@fois}\t#{@duree_totale}\t#{@duree_moyenne}\t#{@exercices_str}\n"
-  end
-  
-  # Line de code (doit être remis à nil dès la modification des données)
-  def line_code
-    @line_code ||= implode_line
-  end
-  
-  # Retourne la longueur de la ligne de code
-  def len
-    line_code.length
-  end
-  
-  # Renvoie le code à enregistrer dans le fichier des données de jeu pour les fois où les
-  # exercices ont été joués.
+  # # Line de code (doit être remis à nil dès la modification des données)
+  # def line_code
+  #   @line_code ||= implode_line
+  # end
   # 
-  def exercices_to_data
-    @exercices.collect do |ex| "#{ex[:date]}#{ex[:duree]}" end.join(':')
-  end
-  
-  # Reçoit la durée-date (tout collé dans le fichier de données) et return un Hash
-  # contenant {:date => "AAMMJJ", :duree => <nombre de secondes>}
-  def date_duree_to_h this
-    {
-      :date   => this[0..5],
-      :duree  => this[6..-1].to_i
-    }
-  end
+  # # Retourne la longueur de la ligne de code
+  # def len
+  #   line_code.length
+  # end
+  # 
+  # # Renvoie le code à enregistrer dans le fichier des données de jeu pour les fois où les
+  # # exercices ont été joués.
+  # # 
+  # def exercices_to_data
+  #   @exercices.collect do |ex| "#{ex[:date]}#{ex[:duree]}" end.join(':')
+  # end
+  # 
+  # # Reçoit la durée-date (tout collé dans le fichier de données) et return un Hash
+  # # contenant {:date => "AAMMJJ", :duree => <nombre de secondes>}
+  # def date_duree_to_h this
+  #   {
+  #     :date   => this[0..5],
+  #     :duree  => this[6..-1].to_i
+  #   }
+  # end
   
   # Return l'identifiant absolu ou NIL s'il n'existe pas
   def abs_id
@@ -192,6 +274,9 @@ class Exercice
   # Return the Instrument ID or NIL if it doesn't exist
   # 
   # @note: Instrument ID exists only for exercices from DB Exercices
+  # @todo: Mais on pourrait imaginer de mettre l'instrument de l'user, puisqu'il doit
+  # le définir. Ou alors, ici, renvoyer l'instrument de l'utilisateur. Mais une instance
+  # exercice sera-t-elle forcément toujours liée à un utilisateur ?
   # 
   def instrument
     @instrument ||= data['instrument']
@@ -223,7 +308,9 @@ class Exercice
     end
   end
   
-  # Return le vrai path à la vignette, soit propre, soit tirée de la BD Exercices
+  # Return le vrai path à la vignette, soit propre, donc dans le dossier
+  # exercices de l'utilisateur, soit tirée de la BD Exercices, donc dans 
+  # le dossier data/db_exercices/
   def real_path_vignette
     @real_path_vignette ||= begin
       File.exists?( path_vignette ) ? path_vignette : path_vignette_bde
