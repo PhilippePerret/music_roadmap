@@ -30,7 +30,142 @@ class Seance
   # -------------------------------------------------------------------
   #   Class Seance
   # -------------------------------------------------------------------
+  class << self
+    # Current roadmap
+    # 
+    attr_reader :roadmap
+    
+    # Hash containing seances data of current roadman
+    # @see self.lasts below
+    # 
+    attr_reader :seances_data
+  end
   
+  # Return data of exercice +iex+ in the +x+ last seances
+  # 
+  # * USAGE
+  # 
+  #   dex = Seance.exercice iex[, x_last_seances_default_50]
+  # 
+  # * PARAMS
+  #   :iex::      Instance Exercice of the exercice (Exercice)
+  #   :x::        Search only the x last seances (Fixnum -- default: 50)
+  # 
+  # * RETURN
+  # 
+  #   An Hash containing:
+  #     {
+  #       :id               => Exercice ID (Fixnum but as String)
+  #       :x_last           => The x last seances seached
+  #       :number_of_times  => <the exercice has been played this number of times>
+  #       :average_duration =>  Average playing time (Fixnum, seconds)
+  #                             @note: set to 120 if exercice has not been worked
+  #       :total_duration   => Total working time
+  #       :durations        => Array of working times of exercice
+  #       :data             => Array containing Hash-s with something like:
+  #                           { :day    => seance day ("YYMMDD"), 
+  #                             :time   => Working time (Fixnum, seconds), 
+  #                             :tempo  => Tempo used (Fixnum), 
+  #                             :scale  => Scale used (Fixnum, 0-11 = C->B, 12-23 = Cm->Bm),
+  #                             :id     => Exercice ID
+  #                           }
+  #       :tempos           => Array of tempi used for the exercice
+  #       :scales           => Array of scales used for the exercice
+  #       :seances          => Array of seance String days (["YYMMJJ", ...])
+  #     }
+  # 
+  def self.exercice iex, x = 50
+    data_exercice = {
+      :id               => iex.id,
+      :number_of_times  => 0,
+      :total_duration   => nil,
+      :average_duration => 120, # default
+      :durations        => [],
+      :data             => [],
+      :tempos           => [],
+      :scales           => [],
+      :seances          => []
+    }
+    lasts(iex.roadmap,x)[:seances].each do |jour, dseance|
+      next unless dseance[:id_exercices].include?( iex.id )
+      data_exercice[:seances] << jour
+      dseance[:exercices].each do |dex|
+        next unless dex[:id] == iex.id
+        data_exercice[:number_of_times] += 1
+        data_exercice[:data]      << dex.merge(:day => jour)
+        data_exercice[:tempos]    << dex[:tempo]
+        data_exercice[:scales]    << dex[:scale]
+        data_exercice[:durations] << dex[:time]
+      end
+    end
+    if data_exercice[:number_of_times] > 0
+      data_exercice[:total_duration] = data_exercice[:durations].inject(:+)
+      data_exercice[:average_duration] = 
+         data_exercice[:total_duration] / data_exercice[:number_of_times]
+    end
+    data_exercice
+  end
+  
+  # Return the +x+ last seances of roadmap +roadmap+
+  # 
+  # * PARAMS
+  #   :roadmap::    Instance Roadmap of the roadmap
+  #   :x::          Number of last seances required (default: 50)
+  # 
+  # * RETURN
+  # 
+  #   {
+  #     :x            => Number of seances needed,
+  #     :sorted_days  => [day list, from earliest to oldest],
+  #     :seances      => <Hash of seance> (*)
+  #   }
+  #   (*) An Hash where key is the seance day ("YYMMDD") and the value
+  #   an Hash of seance Data (@note: NOT instance Seance).
+  # 
+  def self.lasts roadmap, x = 50
+    return @seances_data if @seances_data != nil && @seances_data[:x] == x
+    @roadmap = roadmap
+    hseances = {
+      :x            => x,
+      :sorted_days  => [],
+      :seances      => {}
+    }
+    if File.exists? roadmap.folder_seances
+      last_files( x ).each do |path|
+        hseance = Marshal.load File.read( path )
+        hseances[:sorted_days] << hseance[:day]
+        hseances[:seances] = hseances[:seances].merge hseance[:day] => hseance
+      end
+    end
+    @seances_data = hseances
+  end
+  # Return up to +x+ last files of seances of current roadmap (:roadmap)
+  # 
+  # There can be a lot of seance files (more than 600 for a musician
+  # signed up since 2 years). So we first get all filenames (marshal only)
+  # then we uprise from today to oldest day until we have +x+ files.
+  # 
+  # * RETURN
+  # 
+  #   Sorted list (from youngest to oldest) of the file paths.
+  # 
+  def self.last_files x = 50
+    # Tous les fichiers séances (Array of file names)
+    # 
+    all_files = Dir["#{@roadmap.folder_seances}/*.msh"].collect{|path| File.basename(path)}
+    return [] if all_files.empty?
+    all_files.sort!
+    oldest_date = Date.strptime(all_files.first, '%y%m%d')
+    # Only the lasts x
+    lejour, choosed_files, fold = Date.today, [], @roadmap.folder_seances
+    while choosed_files.count < x && lejour >= oldest_date
+      nfile = lejour.strftime("%y%m%d") + '.msh'
+      choosed_files << File.join(fold, nfile) if all_files.include?( nfile )
+      lejour -= 1
+    end
+    
+    choosed_files
+  end
   
   # -------------------------------------------------------------------
   #   Instance Seance
@@ -191,6 +326,7 @@ class Seance
     
     # Return the working session files of the day (instance of Seance::SFile)
     # 
+    # @note: @roadmap must be defined
     # @note: The file may exist or not
     # 
     def self.today

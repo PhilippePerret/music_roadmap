@@ -304,29 +304,8 @@ class Roadmap
   #   trouver notre bonheur.
   # 
   def get_last x = 50
-    return [] unless File.exists? folder_seances
-    
-    # Tous les fichiers séances (Array of file names)
-    # 
-    ary_files = Dir["#{folder_seances}/*.msh"].collect{|path| File.basename(path)}
-    return [] if ary_files.empty?
-    ary_files.sort!
-    oldest_date = Date.strptime(ary_files.first, '%y%m%d')
-    
-    # Prendre les 50 derniers
-    lejour = Date.today
-    ary_seances = []
-    fold = folder_seances
-    while ary_seances.count < 50 && lejour >= oldest_date
-      lejour_str = lejour.strftime("%y%m%d")
-      if ary_files.include?( "#{lejour_str}.msh" )
-        path = File.join(fold,"#{lejour_str}.msh")
-        ary_seances << Marshal.load(File.read(path))
-      end
-      lejour -= 1
-    end
-    
-    ary_seances
+    dlasts = Seance::lasts self, x
+    dlasts[:sorted_days].collect{ |jour| dlasts[:seances][jour] }
   end
   
   # Définit et retourne l'instance FileDureeJeu qui gère le fichier "durees_jeux" de la
