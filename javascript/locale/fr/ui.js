@@ -105,8 +105,8 @@ window.LOCALE_UI = {
     Config:{
       title_volant            :"Cliquez pour passer à la configuration suivante.",
       cb_save                 :"Enregistrer la configuration (cliquer le volant pour passer à la suivante)",
-      first_to_last            :"du premier au dernier",
-      last_to_first            :"du dernier au premier",
+      first_to_last           :"du premier exercice au dernier (sauf si séance)",
+      last_to_first           :"du dernier exercice au premier (sauf si séance)",
       down_to_up              :"Monter puis redescendre l'exercice",
       up_to_down              :"Descendre puis remonter l'exercice",
       maj_to_rel              :"ton MAJEUR vers Relatif mineur",
@@ -137,6 +137,7 @@ window.LOCALE_UI = {
     end_title               :"FIN DE LA SESSION DE TRAVAIL",
     label_duree             :"Durée de la séance de travail",
     label_difficulties      :"Difficultés à aborder",
+    label_aleatoire         :"Ordre aléatoire",
     option_same_ex          :"Répétition d'exercices",
     option_obligatory       :"Exercices obligatoires",
     option_new_scale        :"Nouvelle gamme",

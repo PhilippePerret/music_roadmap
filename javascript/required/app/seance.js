@@ -32,7 +32,7 @@ window.Seance = {
     if('undefined' == typeof cur_order){
       cur_order = Exercices.ordre();
       if ( cur_order.length == 0 ) return F.error(ERROR.Seance.no_exercices);
-      if (!Roadmap.Data.first_to_last) this.ordre_stack.reverse();
+      if (!Roadmap.Data.first_to_last) cur_order.reverse();
     }
     this.ordre_stack = $(cur_order).toArray();//clone
     return true;
@@ -273,6 +273,7 @@ window.Seance = {
     'div#seance_end_titre'            :'Seance.end_title',
     'label#seance_lab_duree'          :'Seance.label_duree',
     'label#seance_lab_difficulties'   :'Seance.label_difficulties',
+    'label#seance_lab_opt_aleatoire'  :'Seance.label_aleatoire',
     'label#seance_lab_opt_same_ex'    :'Seance.option_same_ex',
     'label#seance_lab_opt_obligatory' :'Seance.option_obligatory',
     'label#seance_lab_opt_new_scale'  :'Seance.option_new_scale',

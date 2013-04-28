@@ -108,8 +108,8 @@ window.LOCALE_UI = {
     Config:{
       title_volant            :"Click to set next general configuration of exercices",
       cb_save                 :"Save general config on change",
-      first_to_last            :"from first to last exercice",
-      last_to_first            :"from Last to first exercice",
+      first_to_last           :"from first to last exercice (except if session)",
+      last_to_first           :"from Last to first exercice (except if session)",
       down_to_up              :"Up and then down the exercice",
       up_to_down              :"Down and then up the exercice",
       maj_to_rel              :"major to Relative",
@@ -140,6 +140,7 @@ window.LOCALE_UI = {
     end_title               :"WORKING SESSION ENDING",
     label_duree             :"Duration of the working session",
     label_difficulties      :"Difficulties to focus on",
+    label_aleatoire         :"Random order",
     option_same_ex          :"Unable same exercice",
     option_obligatory       :"Obligatories",
     option_new_scale        :"New scale",

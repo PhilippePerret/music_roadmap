@@ -12,6 +12,11 @@ while read line; do
   if [[ "$line" == *git* ]]; then
     continue
   fi
+
+  # Passer les fichiers Marshal
+  if [[ "$line" == *msh ]]; then
+    continue
+  fi
   
   echo "$line"
   sudo chown "$proprio" "$line"

@@ -649,9 +649,9 @@ window.Roadmap = {
     
     Set:{
       // Shortcuts
-      downToUp:function(){return Roadmap.Data.down_to_up},
-      firstToLast:function(){return Roadmap.Data.first_to_last},
-      majToRel:function(){return Roadmap.Data.maj_to_rel},
+      downToUp:function(){    return Roadmap.Data.down_to_up},
+      firstToLast:function(){ return Roadmap.Data.first_to_last},
+      majToRel:function(){    return Roadmap.Data.maj_to_rel},
       
       // Règle le volant de la configuration générale et son texte
       config_generale:function(){
