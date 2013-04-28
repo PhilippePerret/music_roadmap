@@ -32,7 +32,7 @@ window.Seance = {
     if('undefined' == typeof cur_order){
       cur_order = Exercices.ordre();
       if ( cur_order.length == 0 ) return F.error(ERROR.Seance.no_exercices);
-      if (!Roadmap.Data.start_to_end) this.ordre_stack.reverse();
+      if (!Roadmap.Data.first_to_last) this.ordre_stack.reverse();
     }
     this.ordre_stack = $(cur_order).toArray();//clone
     return true;

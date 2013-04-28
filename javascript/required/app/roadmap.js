@@ -509,10 +509,10 @@ window.Roadmap = {
       // tourne sur ces trois premiers paramètres pour les passer alternativement de
       // true à false (ou inversement)
       // @see `next_config_generale' ci-dessous
-      'down_to_up', 'maj_to_rel', 'start_to_end', 'scale', 'last_changed'
+      'down_to_up', 'maj_to_rel', 'first_to_last', 'scale', 'last_changed'
     ],
     down_to_up      :true,               // cf. N0001
-    start_to_end    :true,               // cf. N0002
+    first_to_last    :true,               // cf. N0002
     maj_to_rel      :true,               // cf. N0003
     scale           :0,
     last_changed    :'down_to_up',       // cf. N0004
@@ -527,7 +527,7 @@ window.Roadmap = {
     // Initialisation de toutes les données (nouveau document)
     init_all: function(){
       this.down_to_up     = true ;
-      this.start_to_end   = true ;
+      this.first_to_last   = true ;
       this.maj_to_rel     = true ;
       this.scale          = 0 ;
       this.last_changed   = 'down_to_up' ;
@@ -650,7 +650,7 @@ window.Roadmap = {
     Set:{
       // Shortcuts
       downToUp:function(){return Roadmap.Data.down_to_up},
-      firstToLast:function(){return Roadmap.Data.start_to_end},
+      firstToLast:function(){return Roadmap.Data.first_to_last},
       majToRel:function(){return Roadmap.Data.maj_to_rel},
       
       // Règle le volant de la configuration générale et son texte
@@ -661,9 +661,9 @@ window.Roadmap = {
       // Return summary of current general config
       config_generale_resume:function(){
         var ary = [];
-        ary.push(LOCALE_UI.Exercices.Config[this.downToUp()?'up_to_down':'down_to_up']);
+        ary.push(LOCALE_UI.Exercices.Config[this.downToUp()?'down_to_up':'up_to_down']);
         ary.push(LOCALE_UI.Exercices.Config[this.majToRel()?'maj_to_rel':'rel_to_maj']);
-        ary.push(LOCALE_UI.Exercices.Config[this.firstToLast()?'start_to_end':'end_to_start']);
+        ary.push(LOCALE_UI.Exercices.Config[this.firstToLast()?'first_to_last':'last_to_first']);
         return LOCALE_UI.Label.resume + LOCALE_UI.colon + ary.join(', ') + ".";
       },
       // Return path to config generale image

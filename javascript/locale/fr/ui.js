@@ -98,15 +98,15 @@ window.LOCALE_UI = {
       new_exercice            :"Nouvel Exercice",
       activate_moving         :"Activer le déplacement",
       stop_moving             :"Arrêter le déplacement",
-      sens_des_exercices      :"Exercices direction",
+      sens_des_exercices      :"Ordre des exercices",
       suites_harmoniques      :"Suites harmoniques",
       ordre_exercices         :"Ordre des exercices"
     },
     Config:{
       title_volant            :"Cliquez pour passer à la configuration suivante.",
       cb_save                 :"Enregistrer la configuration (cliquer le volant pour passer à la suivante)",
-      start_to_end            :"du premier au dernier",
-      end_to_start            :"du dernier au premier",
+      first_to_last            :"du premier au dernier",
+      last_to_first            :"du dernier au premier",
       down_to_up              :"Monter puis redescendre l'exercice",
       up_to_down              :"Descendre puis remonter l'exercice",
       maj_to_rel              :"ton MAJEUR vers Relatif mineur",

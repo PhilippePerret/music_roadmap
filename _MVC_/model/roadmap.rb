@@ -103,12 +103,12 @@ class Roadmap
         JSON.parse(File.read(path_config_generale)).to_sym
       else
         {
-          :start_to_end => true,
+          :first_to_last => true,
           :maj_to_rel   => true,
           :updated_at   => nil,
           :created_at   => Time.now.to_i,
           :down_to_up   => true,
-          :last_changed => 'start_to_end',
+          :last_changed => 'first_to_last',
           :scale        => 0
         }
       end
@@ -119,8 +119,8 @@ class Roadmap
   # 
   LOOP_CONFIG_ATTRIBUTES = {
     :down_to_up   => :maj_to_rel, 
-    :maj_to_rel   => :start_to_end, 
-    :start_to_end => :down_to_up
+    :maj_to_rel   => :first_to_last, 
+    :first_to_last => :down_to_up
     }
   def next_config_generale dont_save = false
     d = config_generale

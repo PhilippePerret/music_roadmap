@@ -108,8 +108,8 @@ window.LOCALE_UI = {
     Config:{
       title_volant            :"Click to set next general configuration of exercices",
       cb_save                 :"Save general config on change",
-      start_to_end            :"from first to last exercice",
-      end_to_start            :"from Last to first exercice",
+      first_to_last            :"from first to last exercice",
+      last_to_first            :"from Last to first exercice",
       down_to_up              :"Up and then down the exercice",
       up_to_down              :"Down and then up the exercice",
       maj_to_rel              :"major to Relative",

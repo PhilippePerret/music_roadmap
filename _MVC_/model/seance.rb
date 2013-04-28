@@ -324,7 +324,7 @@ class Seance
         :scale              => nil, # Scale of the day (NIL or a Array of Fixnum-s from 0 — C — to 23 — Bm —)
         :harmonic_seq       => nil, # String (e.g. "whitekey" or "harmonic" (1))
         :config             => nil  # General configuration of exercices (NIL or Hash containing
-                                    # :maj_to_rel, :down_to_up, :start_to_end)
+                                    # :maj_to_rel, :down_to_up, :first_to_last)
       }
       # (1) As defined in Javascript
     end
