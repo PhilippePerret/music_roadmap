@@ -83,6 +83,7 @@ Exercice.prototype.select = function(){
   this.li().addClass('selected') ;
   this.scroll_to();
   this.li().find('select.ex_tempo').focus();
+  this.set_image_extrait(true);
 }
 // Scroll jusqu'à l'exercice
 Exercice.prototype.scroll_to = function(){
@@ -91,6 +92,7 @@ Exercice.prototype.scroll_to = function(){
 }
 Exercice.prototype.deselect = function(){
   this.li().removeClass('selected') ;
+  this.set_image_extrait(false);
 }
 // Mise en édition de l'exercice
 Exercice.prototype.edit = function(){
@@ -202,10 +204,15 @@ Exercice.prototype.code_btns_edition = function(){
 // Return le code d'affichage de la vignette (if any)
 Exercice.prototype.code_vignette = function(){
   if ( this.vignette == null ) return "" ;
-  return '<img class="ex_image" id="image_ex-'+this.id+'"'+
-          ' src="' + this.vignette + '"' + 
-          this.onclick_pour_extrait() +
-          ' />' ;
+  return '<div id="div_ex_image-'+this.id+'" class="div_ex_image">' +
+            '<img class="ex_image" id="image_ex-'+this.id+'"'+
+            ' src="' + this.vignette + '"' + 
+            this.onclick_pour_extrait() +
+            ' />' + 
+          '</div>';
+}
+Exercice.prototype.set_image_extrait = function(extrait){
+  $('img#image_ex-'+this.id).attr('src', this[extrait ? 'extrait':'vignette']);
 }
 // Return le code HTML onclick="..." pour afficher l'extrait (if any)
 Exercice.prototype.onclick_pour_extrait = function(){
@@ -224,7 +231,7 @@ Exercice.prototype.code_div_titre = function(){
   var recueil = this.recueil ? '<span class="ex_recueil">'+this.recueil+'</span>': "" ;
   var auteur  = this.auteur ? ' <span class="ex_auteur"> ('+this.auteur+')</span>':"";
   var titre   = '<span class="ex_titre">' + this.titre + '</span>' ;
-  titre = recueil + auteur + '<br />' + titre ;
+  titre = recueil + auteur + titre ;
   return '<div id="titre_ex-'+this.id+'" class="ex_titre">' + titre + '</div>' ;
 }
 Exercice.prototype.code_tempo = function(){
@@ -232,7 +239,6 @@ Exercice.prototype.code_tempo = function(){
   h += '<div id="tempi_ex-'+this.id+'" class="ex_tempo">' ;
   h += '<a class="ex_id" onclick="$.proxy(Exercices.show_path,Exercices,\''+this.id+'\')()">[ID '+this.id + "]</a>" ;      // ID
   var meth = "$.proxy(Exercices.onchange_tempo, Exercices, '"+this.id+"', this.value)()" ;
-  h += 'Tempo ' ;
   if ( this.tempo_risen ){
     var sens = LOCALE_UI.Label[this.tempo_risen.substring(0,1) == '+' ? 'increased' : "decreased"];
     h += '<span class="red">' + sens + ' (' + this.tempo_risen + ') </span>' ;
@@ -240,7 +246,7 @@ Exercice.prototype.code_tempo = function(){
   h += ' <select id="tempo_ex-'+this.id+'" class="ex_tempo" onchange="'+meth+'">' +
         Exercices.Edition.options_list(this.tempo_min, this.tempo_max) + '</select>' ;
   h += this.span_tempo_de_a() ;
-  h += '<div>' + LOCALE_UI.Label.in_next_session + ', ' + this.menu_up_tempo()+ '.</div>' ;
+  h += '<div class="div_up_tempo">' + LOCALE_UI.Label.in_next_session + ', ' + this.menu_up_tempo()+ '</div>' ;
   h += "</div>" ;
   return h ;
 }
