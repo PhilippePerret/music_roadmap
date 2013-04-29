@@ -458,7 +458,7 @@ class Seance
                                     # Simple hash contains: {:id => , :tempo => , :time => working time}
         :id_exercices       => [],  # Just a Array of exercices Ids of the seance
         :scale              => nil, # Scale of the day (NIL or a Array of Fixnum-s from 0 — C — to 23 — Bm —)
-        :harmonic_seq       => nil, # String (e.g. "whitekey" or "harmonic" (1))
+        :harmonic_seq       => nil, # String (e.g. "WK" or "harmonic" (1))
         :config             => nil  # General configuration of exercices (NIL or Hash containing
                                     # :maj_to_rel, :down_to_up, :first_to_last)
       }
