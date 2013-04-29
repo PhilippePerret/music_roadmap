@@ -100,14 +100,7 @@
   </tr>
   <tr>
     <td class="libelle">Suite</td>
-    <td>
-      <select id="exercice_suite">
-        <option value="normale">Normale (définie par l'exercice)</option>
-        <option value="harmonic">Harmonique (C->Am -> F->Dm etc. ou inverse)</option>
-        <option value="whitekey">Touches blanches (“à la Hanon”)</option>
-        <option value="none">Aucune</option>
-      </select>
-    </td>
+    <td><select id="exercice_suite"></select> <aide value="exercice/form/suite_harmonique"></aide></td>
   </tr>
   <tr>
     <td class="libelle">
@@ -127,7 +120,7 @@
     <td>
       <a  href="#"
           onclick="return $.proxy(Exercices.Edition.close, Exercices.Edition)()" 
-          class="btn cancel"
+          class="btn cancel fleft"
           ></a>
       <a  href="#"
           id="btn_exercice_save" 

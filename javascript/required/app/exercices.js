@@ -468,6 +468,8 @@ $.extend(window.Exercices,{
       this.preparing = true ;
       // Tempos
       this.menus_tempo_populate();
+      // Suites harmoniques
+      this.peuple_menu_suites_harmoniques();
       // Types
       this.types_populate();
       
@@ -573,6 +575,17 @@ $.extend(window.Exercices,{
         if ( $(amorce+id).is(':checked') ) checked.push(id);
       }
       return checked;
+    },
+    // Peuplement du menu suites harmoniques
+    peuple_menu_suites_harmoniques:function(){
+      var k, val, oselect = $('select#exercice_suite');
+      oselect.html('');
+      for(k in Exercices.TYPES_SUITE_HARMONIQUE){
+        if (k.length == 2){
+          val = Exercices.TYPES_SUITE_HARMONIQUE[k];
+          oselect.append('<option value="'+k+'">'+val+'</option>');
+        }
+      }
     },
     // Peuplement des menus tempo
     options_tempo: null,
