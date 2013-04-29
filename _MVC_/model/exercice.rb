@@ -133,7 +133,7 @@ class Exercice
   
   # Return la durée du travail de l'exercice au tempo fourni en argument.
   def duree_at this_tempo
-    (60.0 / this_tempo) * nombre_temps * nombre_mesures
+    ((60.0 / this_tempo) * nombre_temps * nombre_mesures).to_i
   end
   
   # Return number of beats of exercice (Fixnum) (default: 4)
@@ -176,6 +176,11 @@ class Exercice
   # Default: 120
   def seances_working_time
     @seances_working_time ||= data_in_seances[:average_duration]
+  end
+  
+  # Return the number of times that the exercice has been played
+  def number_of_times
+    @number_times_played ||=  data_in_seances[:number_of_times]
   end
   
   # Return exercice data in the +x+ last seances

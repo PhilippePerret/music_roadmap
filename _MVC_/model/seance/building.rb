@@ -76,14 +76,14 @@ class Seance
       # -> @ids_exercices
       # -> @exercices
       # -> @seances
-      # -> @average_working_time_in_seances
+      # -> @average_working_time
       # -> @nb_fois_per_exercice
       # ---------------------
       # Set a @ids_exercices Array with exercices of roadmap ('ordre')
       # Set a @exercices Hash with instance Exercice of exercices in 'ordre'
       #       (key is exercice ID — String)
       # Set a @seances Array with Hashes of up to 50 last seance.
-      # Set a @average_working_time_in_seances Hash where key is exercice ID and value is
+      # Set a @average_working_time Hash where key is exercice ID and value is
       # average working time in last seance. Worth to note that the value can
       # be nil.
       # Set a @nb_fois_per_exercice Hash where key is exercice ID and value if the
@@ -147,7 +147,7 @@ Types : #{types.inspect}
 Options : #{options.inspect}
 Gammes inutilisées: #{@unused_scales.join(', ')}
 Exercices ne correspondant pas au type: #{@others_idex.inspect}
-Temps moyen de travail dans les séances : #{@average_working_time_in_seances.inspect}
+Temps moyen de travail dans les séances : #{@average_working_time.inspect}
 Temps moyen calculé : #{@time_per_exercice.inspect}
 Nombre de fois par exercice : #{@nb_fois_per_exercice.inspect}
 ***
@@ -226,41 +226,28 @@ DEBUG
     #   exercice in last sessions (@seances)
     # 
     def work_time_per_exercice
-      @time_per_exercice = {}
-      exercices.each do |idex, iex|
-        @time_per_exercice = @time_per_exercice.merge idex => iex.working_time
-      end
+      tpe = {}
+      exercices.each { |idex, iex| tpe = tpe.merge idex => iex.working_time }
+      @time_per_exercice = tpe
     end
     
     # Define the average working time of exercice +idex+ in last seances
     # 
     # * PRODUCTS
-    #   - @average_working_time_in_seances where key is the exercice ID and
+    #   - @average_working_time where key is the exercice ID and
     #   value is the average working time of the exercice
     #   - @nb_fois_per_exercice : the number of times per exercices (note all
     #     exercices defined in @ids_exercices has a key, and maybe the 0 value if
     #     exercice has not been worked yet)
     # 
-    def average_working_time_per_exercice_in_last_seances
-      @average_working_time_in_seances = {}
-      @nb_fois_per_exercice = {}
-      @ids_exercices.each{|idex| @nb_fois_per_exercice = @nb_fois_per_exercice.merge( idex => 0)}
-      return nil if @seances.empty?
-      getted = {}
-      @seances.each do |hseance|
-        hseance[:exercices].each do |hex|
-          idex = hex[:id]
-          unless getted.has_key?(idex)
-            getted = getted.merge(idex => []) 
-          end
-          getted[idex] << hex[:time]
-          @nb_fois_per_exercice[idex] += 1
-        end
+    def average_working_times
+      nbf, awk = {}, {}
+      exercices.each do |idex, iex|
+        nbf = nbf.merge idex => iex.number_of_times
+        awk = awk.merge idex => iex.seances_working_time
       end
-      getted.each do |idex, ary_times|
-        moyenne = ary_times.inject(:+) / ary_times.count
-        @average_working_time_in_seances = @average_working_time_in_seances.merge(idex => moyenne)
-      end
+      @nb_fois_per_exercice = nbf
+      @average_working_time = awk
     end
 
     # Filter @ids_exercices to keep only the exercices of required difficulties
@@ -333,10 +320,11 @@ DEBUG
       @ids_exercices.each do |idex|
         @exercices = @exercices.merge idex => roadmap.exercice( idex )
       end
-      @seances        = roadmap.get_last 50 # Array of Hash (not instances)
+      hseances = Seance::lasts(roadmap)
+      @seances = hseances[:sorted_days].collect{|jour|hseances[:seances][jour]}
       @last_scales    = get_last_scales 23
       @unused_scales  = get_unused_scales
-      average_working_time_per_exercice_in_last_seances
+      average_working_times
     end
     
     # Return scales unused during the last sessions
@@ -365,25 +353,7 @@ DEBUG
       end
       scales
     end
-    
-    
-    # Search what to use
-    # 
-    def confectionne
-      # On a besoin de :
-      #   - La liste des exercices de la roadmap
-      #   - Le rapport des précédentes séances, si elles existent, et à concurence de
-      #     50 séances.
-      
-      # Sous quelle forme présenter la données à traiter ?
-      # Comme ça, je dirais qu'on a déjà besoin d'un hash avec en clé les id des exercices
-      # et en valeur des données telles que :
-      #   - le nombre de fois où l'exercice a été joué
-      #   - le temps de travail sur l'exercice
-      # 
-      
-    end
-    
+
     # Analyze params provided by musician
     # 
     def analyze_params

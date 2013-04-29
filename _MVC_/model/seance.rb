@@ -35,7 +35,7 @@ class Seance
     # 
     attr_reader :roadmap
     
-    # Hash containing seances data of current roadman
+    # Hash containing seances data of current roadmad
     # @see self.lasts below
     # 
     attr_reader :seances_data
