@@ -57,7 +57,8 @@ $(document).ready(function(){
   $.proxy(UI.Textarea.select_on_focus, UI.Textarea)() ;
   
   // On replace la src des images
-  $.proxy(UI.humanize, UI)();
+  // $.proxy(UI.humanize, UI)();
+  
   // On définit l'image du drapeau de l'autre langue
   $.proxy(UI.set_flag_lang, UI)()
   
