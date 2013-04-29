@@ -5,3 +5,14 @@
 .texte_cliquable {
   color             : #009 ;
 }
+
+span.suivi_by_aide a {
+  visibility      :hidden;
+  margin-left     :5px;
+}
+span.suivi_by_aide a img {
+  opacity         :0.9 !important;
+}
+span.suivi_by_aide:hover a {
+  visibility      :visible;
+}

@@ -13,6 +13,7 @@ $.extend(UI,{
     if ('undefined' == typeof inner ) inner = $('body');
     else inner = $(inner);
     this.set_liens_aide(inner);
+    this.add_liens_aide(inner);
     this.set_focus(inner);
     this.set_src_images(inner);
     this.set_js_locales(inner);
@@ -34,6 +35,22 @@ $.extend(UI,{
       for(var id in LOCALE_UI.Id[tag])$(inner).find(tag+'#'+id).html(LOCALE_UI.Id[tag][id]);
     } 
   },
+  // Ajoute le lien d'aide à toutes les balises qui contiennent aide-value
+  add_liens_aide:function(inner){
+    var span_with_aide, aide_value, outerHtml;
+    $(inner).find('*[aide-value]').map(function(i,o){
+      aide_value = $(o).attr('aide-value');
+      outerHtml = $(this).clone().wrap('<p>').parent().html();
+      span_with_aide = 
+        '<span class="suivi_by_aide">' + 
+        outerHtml + UI.alink_aide('', aide_value, UI.point_dinterrogation()) +
+        '</span>';
+      $(o).replaceWith(span_with_aide);
+    });
+  },
+  point_dinterrogation:function(){
+    return '<img src="'+UI.path_image('interrogation.png')+'" class="picto_aide" />';
+  },
   // Remplace les balises '<aide value="<id aide>">' par des pictogrammes
   // cliquable ou un texte si l'attribut 'title' est défini
   nbhelplink:0,
@@ -45,10 +62,9 @@ $.extend(UI,{
       if ( ! uid ) uid = "helplink" + (++ UI.nbhelplink);
       id = ' id="'+uid+'"';
       css = o.attr('class'); sty = o.attr('style');
-      o.replaceWith(
-        '<a'+id+' href="#" onclick="return $.proxy(H.show,H,\'' +
-        o.attr('value')+'\')()">'+ UI.lien_title( o ) + '</a>'
-        );
+      title = UI.lien_title(o);
+      if (title == null) title = UI.point_dinterrogation();
+      o.replaceWith(UI.alink_aide(id, o.attr('value'), title));
       $('#'+uid).attr('style', sty);
       // Set class css
       if('undefined' == typeof css) css = [];
@@ -57,6 +73,10 @@ $.extend(UI,{
       css.push('aide_lien');
       $('#'+uid).addClass(css.join(' '));
     });
+  },
+  alink_aide:function(id, hvalue, title){
+    return '<a'+id+' href="#" onclick="return $.proxy(H.show,H,\'' +
+    hvalue+'\')()">'+ title + '</a>';
   },
   // Remplace les balises '<focus value="<jq-id élément>" title="<titre>" />
   // par des liens cliquable mettant l'élément en exercuce
@@ -80,7 +100,7 @@ $.extend(UI,{
     if ( 'undefined' != typeof atitle){
       atitle = atitle.trim(); if ( atitle != "" ) return atitle;}
     else if ( html != "" )  return html ;
-    else return '<img src="'+UI.path_image('interrogation.png')+'" class="picto_aide" />';
+    else return null;
   },
   
   // Fait apparaitre par l'opacité l'élément o
