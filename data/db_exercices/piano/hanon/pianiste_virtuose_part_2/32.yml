@@ -1,6 +1,6 @@
 titre_fr:     Exercice n°32
 titre_en:     Exercice n°32
-suite:        white_keys
+suite:        WK
 types:        ['D0', 'P0', 'LH', 'RH', 'G1']
 tempo_min:    40
 tempo_max:    72

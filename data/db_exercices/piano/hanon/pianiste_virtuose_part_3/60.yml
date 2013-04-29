@@ -1,0 +1,12 @@
+titre_fr:     Exercice n°60
+titre_en:     Exercice n°60
+suite:        HA
+types:        ['LH', 'RH', 'P0', 'C0', 'TR']
+tempo_min:    48
+tempo_max:    72
+nb_mesures:   64
+nb_temps:     4
+duree_temps:  4
+metrique:     "4/4"
+note_fr:      null
+note_en:      null
