@@ -95,6 +95,7 @@ $.extend(UI,{
     Seance.ready = false;
     Roadmap.UI.prepare();
     Roadmap.Data.show();
+    Exercices.Edition.prepare();
     return false; // pour le a-lien
   },
   // Pour passer en "mode zen", c'est-à-dire que la partie de la liste des
