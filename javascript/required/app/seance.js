@@ -19,7 +19,7 @@ window.Seance = {
     this.set_working_ui(this.running = true);
     this.play_first_in_stack();
     this.initialize_seance_file();
-    return false;//for the a-link
+    return false;//for a-link
   },
   // Defines the order of the exercices to play (according to the exercice displayed
   // on the page)
@@ -46,7 +46,7 @@ window.Seance = {
   // - The buttons to stop, play, pause are shown
   // Buttons to hide/show during working session
   HIDDENS_WHILE_WORKING:new DArray(['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs']),
-  SHOWED_WHILE_WORKING:new DArray(['a#btn_seance_end','a#btn_seance_pause']),
+  SHOWED_WHILE_WORKING: new DArray(['a#btn_seance_end','a#btn_seance_pause']),
   set_working_ui:function(on){
     var method_btn_run;
     if (on){
@@ -81,10 +81,20 @@ window.Seance = {
     }
     return false;// for a-link
   },
+  // Return true if exercices stack is empty
+  no_more_exercice:function(){
+    return this.ordre_stack.length == 0;
+  },
   // Stop exercice (with next exercice is required or pause)
-  stop_cur_exercice:function(){
+  // 
+  stop_cur_exercice:function(fin){
     if(this.pause_on) this.pause();
     else{
+      // Si c'est le dernier exercice, il faut définir la méthode qui 
+      // suivra l'enregistrement (ou non) de la durée de travail sur
+      // l'exercice. Cette méthode ouvrira le rapport de travail.
+      if('undefined'==typeof fin) fin = this.no_more_exercice();
+      if(fin) this.cur_exercice.fx_after_save = $.proxy(this.stop_suite,this);
       Exercices.deselect(this.cur_exercice.id) ; // stop aussi l'exercice et le métronome
       this.cur_exercice = null ;
     }
@@ -106,14 +116,21 @@ window.Seance = {
   },
   // To Stop the working session
   // +forcer_arret+ is true when called from "Stop seance" button.
+  // @note: in every case, the `stop_suite' will be called after or not 
+  // saving the working time on the last exercice.
+  stopping:false,
   stop:function(forcer_arret){
-    if( forcer_arret === true ) this.cur_exercice.play(); // pour l'arrêter
-    Metronome.stop() ;
-    Exercices.deselect_all();
-    this.cur_exercice = null;
-    this.ordre_stack  = null; // important
-    this.set_working_ui(this.running = false);
+    this.stopping = true;
+    if( forcer_arret === true ) this.stop_cur_exercice(true);
+    Metronome.stop();
     return false;//for a-link
+  },
+  // After stop, we display the report
+  stop_suite:function(){
+    this.set_working_ui(this.running = false);
+    this.ordre_stack = null;
+    this.stopping = false;
+    Rapport.show();
   },
   
   // Fin des méthodes de jeu de la séance (start, pause, etc.)
@@ -126,7 +143,7 @@ window.Seance = {
   // Open section Seance (hidding exercices)
   show_section:function(not_hidden){
     UI.set_invisible('ul#exercices');
-    UI.animin($('section#seance_travail'));
+    UI.animin($('section#seance'));
     $(['seance_form', 'seance_start', 'seance_end']).map(function(i,key){
       if (key != not_hidden) UI.animout($('div#'+key));
       else UI.animin($('div#'+key));
@@ -135,7 +152,7 @@ window.Seance = {
   },
   // Close section Seance (revealing exercices)
   hide_section:function(){
-    UI.animout($('section#seance_travail'));
+    UI.animout($('section#seance'));
     UI.set_visible('ul#exercices');
     this.section_opened = false;
   },

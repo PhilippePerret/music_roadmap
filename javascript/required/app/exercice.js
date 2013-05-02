@@ -167,6 +167,16 @@ Exercice.prototype.dispatch = function(data){
 // Convenient alias
 Exercice.prototype.update = Exercice.prototype.dispatch
 
+// Return techniques (types) of exercice as human string
+Exercice.prototype.types_as_human = function(delimiter){
+  if('undefined' == typeof delimiter) delimiter = ", ";
+  var techs = [];
+  for(var i in this.types){
+    techs.push(Exercices.TYPES_EXERCICE[this.types[i]]);
+  }
+  return techs.join(delimiter) + ".";
+}
+
 // => Retourne le code HTML du li de l'exercice
 Exercice.prototype.code_html = function(){
   // log("-> <Exercice>.code_html") ;
@@ -201,7 +211,7 @@ Exercice.prototype.code_btns_edition = function(){
   div += '</div>' ;
   return div ;
 }
-// Return le code d'affichage de la vignette (if any)
+// Return le code d'affichage de la vignette for main listing (if any)
 Exercice.prototype.code_vignette = function(){
   if ( this.vignette == null ) return "" ;
   return '<div id="div_ex_image-'+this.id+'" class="div_ex_image">' +
@@ -210,6 +220,14 @@ Exercice.prototype.code_vignette = function(){
             this.onclick_pour_extrait() +
             ' />' + 
           '</div>';
+}
+// Return HTML code for vignette in listing but ul#exercices (e.g. in report)
+Exercice.prototype.vignette_listing = function(){
+  if ( this.vignette == null ) return "" ;
+  return '<img class="ex_vignette"' +
+            ' src="' + this.vignette + '"' + 
+            this.onclick_pour_extrait() +
+            ' />';
 }
 Exercice.prototype.set_image_extrait = function(extrait){
   $('img#image_ex-'+this.id).attr('src', this[extrait ? 'extrait':'vignette']);
@@ -220,7 +238,7 @@ Exercice.prototype.onclick_pour_extrait = function(){
   return ' onclick="return $.proxy(Exercices.show_partition,Exercices,\''+this.extrait+'\')()"';
   
 }
-// Return title for simple listing
+// Return title for simple listing (e.g. in report)
 Exercice.prototype.titre_complet = function(){
   titre = this.titre;
   if(this.recueil)  titre += " - " + this.recueil;
@@ -313,16 +331,16 @@ Exercice.prototype.code_note = function(){
 // Lance ou arrête le métronome
 // @param dont_stop_metronome Si mis à true, le métronome continue de battre
 //                            Cela arrive quand un autre exercice et lancé.
-Exercice.prototype.play = function( dont_stop_metronome ){
+Exercice.prototype.play = function(dont_stop_metronome){
   var running;
-  if (this.playing){ this.stop_exercice( dont_stop_metronome ) ; running = false }
+  if (this.playing){ this.stop_exercice(dont_stop_metronome) ; running = false }
   else{              this.start_exercice() ; running = true }
   this.set_btn_metronome(running);
 }
 // Méthode appelée par Exercices.deselect() si l'exercice était en train
 // de jouer.
 Exercice.prototype.stop = function(){
-  this.play( true ) ;
+  this.play(true) ;
 }
 
 // Met en route le jeu de l'exercice
@@ -379,6 +397,9 @@ Exercice.prototype.calc_duree_travail = function(){
     // Temps insuffisant pour mémoriser l'exercice
     F.show("L'exercice n'a été travaillé que "+this.w_duree+" secondes, je ne l'enregistre pas.");
     this.playing = false ;
+    // Si une méthode après sauvegarde (de la durée, ici) a été définie, il
+    // faut l'appeler maintenant
+    this.call_method_after_save();
   }
 }
 
@@ -406,7 +427,15 @@ Exercice.prototype.save_duree_travail = function(rajax){
     if (false == traite_rajax(rajax)){
       F.show(MESSAGE.Exercice.work_on_exercice_saved);
     }
+    // Est-ce qu'une méthode est à appeler après la sauvegarde ?
+    this.call_method_after_save();
     this.playing = false;
     this.ajax_on = false;
+  }
+}
+Exercice.prototype.call_method_after_save = function(){
+  if('function' == typeof this.fx_after_save){
+    this.fx_after_save();
+    this.fx_after_save = null;
   }
 }

@@ -87,11 +87,13 @@ class Html
     # ensuite sa construction complète.
     def body
       launch_watchers         +
+      header                  +
       bande_logo              +
       section_donation        +
       section_config_generale +
       section_roadmap         +
-      div_flash         #+
+      div_flash               +
+      footer
       # '<div><a href="aide.html">AIDE (non opérationnel)</a></div>' # +
       #       "<p>ma page HTML</p>" +
       #       "<a href=''>Un lien car les tests testent la présence d'un lien</a>" +
@@ -100,6 +102,14 @@ class Html
       #       "<button id=\"bouton_create\" onclick=\"Creer_div()\">Créer un div dans la page</button>"
     end
     
+    # Return header of the HTML page
+    def header
+      '<!-- Pour gérer une image de fond --><div id="background"></div>'
+    end
+    # Return footer of the HTML page
+    def footer
+      ""
+    end
     # => Retourne l'adresse du gabarit
     def folder_gabarit
       @folder_gabarit ||= File.join(FOLDER_VIEWS, 'gabarit')

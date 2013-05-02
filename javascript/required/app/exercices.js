@@ -23,6 +23,37 @@ $.extend(window.Exercices,{
   
   scale         :null,    // Scale of the day (Integer 0 (C) <-> 23 (Bm))
   
+  // Les couleurs à utiliser en fonction du type de l'exercice
+  // Cf. dans les fichiers localisés pour avoir tous les types
+  COLORS_FOR_TYPE:{
+    'WT':'404060', // pour simplifier code (fond de colonne working time in report)
+    
+    'G0':'F00', 
+    'A0':'00F',
+    'C0':'0F0',  
+    'LH':'FF0', 
+    'RH':'0FF', 
+    'R0':'F0F',
+    
+    'T1':"500",
+    'S0':"005",
+    'O0':"050",
+
+    'G1':"550",
+    'L0':"055",
+    'T0':"A55555",
+    
+    'TR':"F88",
+    'NR':"8F8",
+    'NT':"88F",
+    
+    'C1':"FF8",
+    'P0':"F8F",
+    'D0':"8FF",
+    'E0':"888"
+    
+    },
+  
   set_modified: function(ismod){
     if ('undefined' == typeof ismod ) ismod = true ;
     BT.add("-> Exercices.set_modified("+ismod.toString()+")");
@@ -210,10 +241,13 @@ $.extend(window.Exercices,{
     this.selections.push( id ) ;
     this.selected = exercice(id);
   },
-  deselect: function(id){
+  deselect: function(id, fx_suite){
     var ex = exercice(id)
     ex.deselect();
-    if ( ex.playing ) ex.stop();
+    if ( ex.playing ){ 
+      ex.fx_to_follow_stop = fx_suite;
+      ex.stop();
+    }
     this.selections.splice(this.selections.indexOf(id), 1) ;
   },
   deselect_all: function(){

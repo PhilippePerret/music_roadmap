@@ -13,7 +13,16 @@ body {
   max-width         :1200px;
   min-width         :400px;
   background-color  :#607060;
-/*  background-image  : url('../../../img/fond_bois.jpg');*/
+}
+div#background {
+  opacity:0.049;
+  z-index:-1;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-image  :url('http://www.music-roadmap.net/data/db_exercices/piano/cramer/84_studies_book_1/4-extrait.jpg');
 }
 
 /*
@@ -173,4 +182,10 @@ div#open_roadmap_specs a {
   margin-right  :1em;
   padding       :1px 8px;
   text-align    :center;
+}
+
+/* TITRES DE SECTIONS */
+div.titre_section {
+  font-family   :Verdana;
+  font-size     :16pt;
 }

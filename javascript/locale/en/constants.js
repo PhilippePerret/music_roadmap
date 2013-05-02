@@ -4,6 +4,8 @@
 if('undefined' == typeof window.Exercices) window.Exercices = {};
 $.extend(window.Exercices,{
   TYPES_EXERCICE:{
+    'WT':"Total Working Time",
+    
     'G0':"Scales",
     'A0':"Arpeggios",
     'C0':"Chords",

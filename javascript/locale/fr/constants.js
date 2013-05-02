@@ -4,6 +4,12 @@
 if('undefined' == typeof window.Exercices){ window.Exercices = {};}
 $.extend(window.Exercices,{
   TYPES_EXERCICE:{
+    /*
+        QUAND UN TYPE EST AJOUTÉ, PENSER À AJOUTER SA COULEUR À
+        Exercices.COLORS_FOR_TYPE
+    */
+    'WT':"Temps total de travail", // pour simplifier codes JS
+    
     'G0':"Gammes",
     'A0':"Arpèges",
     'C0':"Accords",

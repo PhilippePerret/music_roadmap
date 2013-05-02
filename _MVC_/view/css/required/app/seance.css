@@ -1,16 +1,16 @@
 /*
   Tout ce qui concerne la séance de travail (formulaire, rapport, etc.)
 */
-section#seance_travail {
+section#seance {
   padding             :1em;
   background-color    :white;
   position            :relative;
   z-index             :1050;
   width               :91%;
 }
-section#seance_travail div#seance_start,
-section#seance_travail div#seance_end,
-section#seance_travail div#seance_form {
+section#seance div#seance_start,
+section#seance div#seance_end,
+section#seance div#seance_form {
   position          :absolute;
   top               :0;
   left              :0;
@@ -19,21 +19,21 @@ section#seance_travail div#seance_form {
   width             :100%;
 }
 
-section#seance_travail div#seance_form_types {
+section#seance div#seance_form_types {
   padding             :1em;
   background-color    :#ECECEC;
   font-size           :0.9em;
 }
 
-section#seance_travail div#seance_form div#seance_form_titre {
+section#seance div#seance_form div#seance_form_titre {
 
 }
-section#seance_travail div#seance_form div#div_seance_form_duree {
+section#seance div#seance_form div#div_seance_form_duree {
   margin-bottom       :2em;
 }
 
 /* Les libellés */
-section#seance_travail div#seance_form label.libelle {
+section#seance div#seance_form label.libelle {
   display             :block;
   font-size           :1.1em;
   font-weight         :bold;
@@ -47,46 +47,53 @@ div#div_seance_form_duree label.libelle {
   margin-right        :3.5em;
   padding-top         :11px;
 }
-section#seance_travail div#seance_form div#seance_form_div_field_duree {
+section#seance div#seance_form div#seance_form_div_field_duree {
   font-size       :1.7em;
 }
-section#seance_travail div#seance_form div#seance_form_div_field_duree select {
+section#seance div#seance_form div#seance_form_div_field_duree select {
   font-size       :1.0em;
 }
 
-section#seance_travail div#seance_form div#div_seance_form_options {
+section#seance div#seance_form div#div_seance_form_options {
   margin-top      :1em;
 }
-section#seance_travail div#seance_form div#seance_form_options > div {
+section#seance div#seance_form div#seance_form_options > div {
   float           :left;
   width           :33%;
 }
-section#seance_travail div#seance_form_types > span {
+section#seance div#seance_form_types > span {
   display       :block;
   float         :left;
   margin-right  :1em;
   width         :115.9px;
 }
 /* Le div avec le bouton "Replay" */
-section#seance_travail div#seance_form div#seance_div_replay {
+section#seance div#seance_form div#seance_div_replay {
   text-align    :right;
   padding       :0 0 1.5em;
 }
-section#seance_travail div#seance_start div#seance_start_description > div {
+/* Pour les résultats calculés de la session de travail */
+section#seance div#seance_start_description span.data {
+  font-size     :1.2em;
+  font-weight   :bold;
+}
+/* Contient le temps calculé pour la séance */
+section#seance span#seance_data_working_time {
+}
+section#seance div#seance_start div#seance_start_description > div {
   margin-top    :0.6em;
 }
-section#seance_travail div#seance_start div#seance_start_description {
+section#seance div#seance_start div#seance_start_description {
   padding       :2em;
 }
 
-section#seance_travail div#seance_start_description span.libelle {
+section#seance div#seance_start_description span.libelle {
   display         :inline-block;
   font-weight     :bold;
   width           :150px;
   color           :#55A555;
 }
-section#seance_travail div#seance_start_description span.data {
-
+section#seance img#seance_data_img_scale {
+  width           :300px;
 }
-section#seance_travail img#seance_data_img_scale {display:block;}
-section#seance_travail img#seance_data_img_downtoup{width:30px;vertical-align:middle;}
+section#seance img#seance_data_img_downtoup{width:30px;vertical-align:middle;}

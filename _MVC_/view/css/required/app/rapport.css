@@ -1,0 +1,166 @@
+section#rapport {
+  background-color    :white;
+  padding             :1em;
+}
+/* Boutons pour le rapport par mois */
+section#rapport div#calendar_month_buttons {
+  
+}
+section#section_calendar div#rapport_cal_buttons_open a {
+  margin-left     :2em;
+  color           :#000069;
+  font-size       :12px;
+  font-family     :Geneva,Arial;
+}
+/* Tous les sous-titres */
+section#rapport div.soustitre {
+  font-size     :19.5px;
+  font-weight   :bold;
+  margin-top    :1.2em;
+  margin-bottom :1em;
+}
+/* Les spans avec mois et année */
+section#rapport div#calendar_month_buttons span {
+  display         :inline-block;
+}
+section#rapport div#calendar_month_buttons span#calendar_current_month {
+  width       :150px;
+  font-weight :bold;
+  line-height :18pt;
+}
+
+/* Les liens mois avant/après */
+section#rapport div#calendar_month_buttons a {
+  margin        :0;
+}
+table#table_calendar {
+  border:1px solid;
+}
+
+tr.calendar_week {
+  height      :4em;
+}
+
+tr#calendar_day_names {
+  height      :16px;
+}
+tr#calendar_day_names td {
+  font-size   :0.9em;
+  font-style  :italic;
+  color       :#555;
+  text-align  :center;
+  padding     :0.8em 0 0;
+}
+
+/* Cellule pour un jour */
+table#table_calendar td.calendar_day {
+  width       :6em;
+  height      :4em;
+  border      :1px solid #ccc;
+  padding     :0;
+}
+/* Jour sélectionné (en général jour courant) */
+table#table_calendar td.calendar_day.selected {
+  background-color  :#9ee;
+  border-color      :#0080AF;
+}
+table#table_calendar td.calendar_day > div {
+  position    :relative;
+  height      :inherit;
+}
+table#table_calendar td.calendar_day div.calendar_day_number {
+  position    :absolute;
+  font-size   :40px;
+  color       :#eeeeff;
+  padding     :4px;
+  z-index     :0;
+}
+table#table_calendar td.calendar_day div.calendar_day_content {
+  position    :absolute;
+  height      :100%;
+  width       :100%;
+  top         :0;
+  left        :0;
+  z-index     :10;
+}
+table#table_calendar td.calendar_day div.calendar_day_content div.col_wk {
+/*  background-color  :#404060; DÉFINI PAR Exercices.COLORS_FOR_TYPE['MK'] */
+}
+table#table_calendar td.calendar_day div.calendar_day_content div.col_ty {
+  float           :right;
+}
+table#table_calendar td.calendar_day div.calendar_day_content div.str_wk {
+  position    :absolute;
+  right       :4px;
+  top         :4px;
+  font-family :Georgia;
+  font-size   :9pt;
+}
+
+/* LÉGENDES */
+section#rapport div#rapport_cal_legends_titre {
+  margin-top    :1em;
+  margin-bottom :4px;
+}
+div#rapport_cal_by_type_content > div {
+  display       :inline-block;
+  width         :215px;
+}
+span.legend_type {
+  margin-right  :10px;
+  font-size     :0.85em;
+}
+span.legend_type span.type {
+  display       :inline-block;
+  width         :100px;
+}
+div#rapport_day_by_type_content span.legend_type span.type {
+  font-size     :14px;
+}
+span.legend_type span.time {
+  font-weight   :bold;
+}
+span.legend_type span.legend_type_color {
+  display       :inline-block;
+  width         :20px;
+  height        :11px;
+  margin-right  :4px;
+}
+span.legend_type span.legend_type_name {
+  display     :inline-block;
+}
+
+/*
+  RAPPORT PAR JOUR ET PAR EXERCICE
+*/
+section#section_rapport_byday {
+  margin-top      :1em;
+  clear           :both;
+}
+section#section_rapport_byday div.content,
+section#section_calendar div#rapport_cal_by_ex_content {
+  padding         :1em;
+  font-size       :0.9em;
+}
+/*  Les divs contenant les exercices, aussi bien pour le jour courant que 
+    le mois courant
+*/
+div.rapport_div_ex {
+  margin-bottom   :8px;
+  border-bottom   :1px solid #ccc;
+}
+div.rapport_div_ex div.titre {
+  font-weight     :bold;
+  font-size       :1.1em;
+}
+div.rapport_div_ex div.time {
+  font-family     :Georgia;
+}
+div.rapport_div_ex div.time,
+div.rapport_div_ex div.types {
+  line-height     :16pt;
+}
+div.rapport_div_ex img.ex_vignette {
+  width           :140px;
+  margin-right    :1em;
+}

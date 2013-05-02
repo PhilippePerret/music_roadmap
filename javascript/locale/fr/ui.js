@@ -1,5 +1,7 @@
 window.LOCALE_UI = {
   lang: 'fr',
+  JOURS:['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'],
+  MOIS:['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
   Class:{
     other             :"Autre…",
     cancel            :"Renoncer",
@@ -60,12 +62,13 @@ window.LOCALE_UI = {
     TITLE           :"FEUILLE DE ROUTE MUSICALE",
     title           :"Feuille de Route Musicale",
     today           :"Aujourd'hui",
-    working_time    :"durée de travail"
+    working_time    :"durée de travail",
+    Working_time    :"Durée de travail"
   },
   User:{
     logout                    :"Se déconnecter",
     Signin:{                   
-      main_button             :"S'identifier / S'inscrire",
+      main_button             :"S'identifier (ou s'inscrire)",
       TITRE                   :"Identification",
       MAIL                    :"Votre mail",
       PASSWORD                :"Votre code secret",
@@ -109,15 +112,15 @@ window.LOCALE_UI = {
       last_to_first           :"du dernier exercice au premier (sauf si séance)",
       down_to_up              :"Monter puis redescendre l'exercice",
       up_to_down              :"Descendre puis remonter l'exercice",
-      maj_to_rel              :"ton MAJEUR vers Relatif mineur",
-      rel_to_maj              :"ton Relatif vers Relatif MAJEUR",
+      maj_to_rel              :"TON MAJEUR vers Relatif mineur",
+      rel_to_maj              :"Ton mineur vers RELATIF MAJEUR",
       Label:{
         next_config           :"Configuration suivante",
         libelle_harmonic_seq  :"Suite harmonique"
       }
     },
     Edition:{
-      types_of_exercice     :"Difficultés de l'exercice…"
+      types_of_exercice       :"Techniques"
     }
   },
   Exercice: {
@@ -151,5 +154,18 @@ window.LOCALE_UI = {
     replay                  :"Rejouer la même séance de travail",
     next_exercice           :"Suivant",
     end_exercices           :"Finir"    
+  },
+  Rapport:{
+    per_month               :"pour le mois courant",
+    titre                   :"RAPPORT DE TRAVAIL",
+    total_working_time      :"Temps de travail total",
+    titre_by_ex             :"Temps de travail par exercice",
+    titre_by_type           :"Temps de travail par techniques",
+    btns_close              :"Retourner aux exercices",
+    legends_titre           :"Légende des couleurs par type de difficulté",
+    rapport_du              :"Rapport du ",
+    btn_open_legend         :"Légende des couleurs",
+    btn_open_by_type        :"Détail par technique",
+    btn_open_by_ex          :"Détail par exercice"
   }
 }

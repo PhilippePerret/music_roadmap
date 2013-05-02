@@ -63,6 +63,11 @@ window.ERROR = {
   Exercice: {
     
   },
+  // RAPPORT
+  Rapport:{
+    no_data               :"Data required to build a report",
+    no_data_for_day       :"No exercice played during this day."
+  },
   // DATABASE EXERCICES
   DBExercice:{
     no_exercice_choosed   :"You have to choose the exercices to add to your current roadmap!"

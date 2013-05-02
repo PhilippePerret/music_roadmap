@@ -1,5 +1,7 @@
 window.LOCALE_UI = {
   lang: 'en',
+  JOURS:['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+  MOIS:['january', 'february', 'march', 'april', 'may', 'june', 'jully', 'august', 'september', 'october', 'november', 'december'],
   // -- Remplacements automatique --
   // Au changement de langue, l'application parcourt les éléments définis dans 'Class' et
   // 'Id' ci-dessous et les remplace par les textes localisés s'il les trouve.
@@ -63,12 +65,13 @@ window.LOCALE_UI = {
     title                     :"Music Roadmap",
     today                     :"Today",
     ROADMAP                   :"ROADMAP",
-    working_time              :"Working time"
+    working_time              :"working time",
+    Working_time              :"Working time"
   },
   User:{
     logout                    :"Log out",
     Signin:{                   
-      main_button             :"Signin or Signup",
+      main_button             :"Signin (or Signup)",
       TITRE                   :"Sign In on Music Roadmap",
       MAIL                    :"Your email",
       PASSWORD                :"Your password",
@@ -112,15 +115,15 @@ window.LOCALE_UI = {
       last_to_first           :"from Last to first exercice (except if session)",
       down_to_up              :"Up and then down the exercice",
       up_to_down              :"Down and then up the exercice",
-      maj_to_rel              :"major to Relative",
-      rel_to_maj              :"relative to Major",
+      maj_to_rel              :"MAJOR to Relative",
+      rel_to_maj              :"Relative to MAJOR",
       Label:{
         next_config           :"Next settings",
         libelle_harmonic_seq  :"Harmonic sequence"
       }
     },
     Edition:{
-      types_of_exercice     :"Difficulties of this exercice…"
+      types_of_exercice     :"Technics"
     }
   },
   Exercice: {
@@ -154,5 +157,18 @@ window.LOCALE_UI = {
     replay                  :"Replay same working session",
     next_exercice           :"Next exercice",
     end_exercices           :"The end"    
+  },
+  Rapport:{
+    per_month               :"for current month",
+    titre                   :"SESSION REPORT",
+    total_working_time      :"Total working time",
+    legends_titre           :"Color per difficulty type",
+    titre_by_ex             :"Working times per exercice",
+    titre_by_type           :"Working times per technic",
+    btns_close              :"Back to exercices",
+    rapport_du              :"Report of the ",
+    btn_open_legend         :"Color legend",
+    btn_open_by_type        :"Details per technique",
+    btn_open_by_ex          :"Details per exercice"
   }
 }

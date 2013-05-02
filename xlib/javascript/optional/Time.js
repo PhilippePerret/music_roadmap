@@ -12,7 +12,25 @@ window.Time = {
     var divisor = millisecondes ? 1 : 1000 ;
     return parseInt(new Date().valueOf()/divisor,10) ;
   },
-  
+  // Get a Date and return String YYMMDD.
+  // If +date+ is not provide, get current day
+  date_to_yymmdd:function(date){
+    if ('undefined' == typeof date) date = new Date();
+    return this.yymmdd(date.getFullYear(), date.getMonth()+1, date.getDate());
+  },
+  yymmdd:function(year,month,day){
+    year = year.toString();
+    if (year.length == 4) year = year.substring(2);
+    if (month < 10) month = "0"+month;
+    if (day   < 10) day   = "0"+day;
+    return year + month + day;
+  },
+  ymd_to_d_m_y:function(ymd){
+    return ymd.substring(4)+' '+ymd.substring(2,4)+' '+this.current_millenary()+ymd.substring(0,2);
+  },
+  current_millenary:function(){
+    return new Date().getFullYear().toString().substring(0,2);
+  },
   // Return a "MM:SS" from a number of seconds
   // 
   // @param   secs      Integer, number of seconds

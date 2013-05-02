@@ -139,6 +139,39 @@ class Seance
     end
     @seances_data = hseances
   end
+  
+  # Return data of seances from day +from+ (YYMMDD) to day +to+ (YYMMDD) of the 
+  # roadmap +rm+.
+  # 
+  # Return an Hash containing
+  #   :from         => from (YYMMDD)
+  #   :to           => to   (YYMMDD)
+  #   :sorted_days  => Array of days (YYMMDD)
+  #   :seances      => Hash of data seances where key is the day (YYMMDD) and
+  #                    value is the hash data of the seance as recorded in the file
+  #   :rm_first_seance  => Day (YYMMDD) of the very first seance of the roadmap
+  #   :rm_last_seance   => Day (YYMMDD) of the very last seance of the roadmap
+  # 
+  def self.get_from_to rm, from, to
+    @roadmap = rm
+    hseances = {
+      :from             => from,
+      :to               => to,
+      :sorted_days      => [],
+      :seances          => {},
+      :rm_first_seance  => all_days[0],
+      :rm_last_seance   => all_days[-1]
+    }
+    all_days.each do |seance_day|
+      next  if seance_day < from
+      break if seance_day > to
+      hseances[:sorted_days] << seance_day
+      hseances[:seances] = hseances[:seances].merge seance_day => data_seance(seance_day)
+    end
+    
+    return hseances
+  end
+  
   # Return up to +x+ last files of seances of current roadmap (:roadmap)
   # 
   # There can be a lot of seance files (more than 600 for a musician
@@ -152,19 +185,34 @@ class Seance
   def self.last_files x = 50
     # Tous les fichiers séances (Array of file names)
     # 
-    all_files = Dir["#{@roadmap.folder_seances}/*.msh"].collect{|path| File.basename(path)}
-    return [] if all_files.empty?
-    all_files.sort!
-    oldest_date = Date.strptime(all_files.first, '%y%m%d')
+    return [] if all_days.empty?
+    oldest_date = Date.strptime(all_days.first, '%y%m%d')
     # Only the lasts x
     lejour, choosed_files, fold = Date.today, [], @roadmap.folder_seances
     while choosed_files.count < x && lejour >= oldest_date
       nfile = lejour.strftime("%y%m%d") + '.msh'
-      choosed_files << File.join(fold, nfile) if all_files.include?( nfile )
+      choosed_files << File.join(fold, nfile) if all_days.include?( nfile )
       lejour -= 1
     end
     
     choosed_files
+  end
+  
+  # Return an Array of all seances day of the current roadmap
+  # 
+  # @note:    Seances are sorted from oldest to earliest
+  # 
+  def self.all_days
+    @all_days ||= begin
+      ary = Dir["#{@roadmap.folder_seances}/*.msh"].collect{|path| File.basename(path, File.extname(path))}
+      ary.sort
+    end
+  end
+  
+  # Return data of seance of the day +day+ of the current roadmap (@roadmap)
+  # 
+  def self.data_seance day
+    Marshal.load File.read(File.join(@roadmap.folder_seances, "#{day}.msh"))
   end
   
   # -------------------------------------------------------------------
