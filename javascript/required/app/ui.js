@@ -25,6 +25,7 @@ $.extend(UI,{
   SHOWS_ON_RAPPORT    :new DArray([]),
   HIDDENS_ON_SEANCE   :new DArray(['a#btn_exercices_move', 'a#btn_exercice_create']),
   SHOWS_ON_SEANCE     :new DArray([]),
+<<<<<<< HEAD
   current_volet:null;
   open_volet:function(volet, hide){
     if(this.current_volet != null){
@@ -33,23 +34,51 @@ $.extend(UI,{
       this.open_volet(volet_to_hide, true);
     }
     if('undefined'==typeof hide) hide = false;
+=======
+  current_volet:'exercices',
+  open_volet:function(volet, hide){
+    if(this.current_volet != null){
+      var volet_to_hide   = this.current_volet.toString();
+      this.current_volet  = null;
+      this.open_volet(volet_to_hide, true);
+    }
+    if('undefined' == typeof hide) hide = false;
+    console.dir({volet:volet, hide:hide});
+>>>>>>> Centralisation des ouvertures
     var meth_hide = hide ? 'hide' : 'show';
     var meth_show = hide ? 'show' : 'hide';
     switch(volet){
       case 'rapport':
         this.HIDDENS_ON_RAPPORT[meth_hide]();
         this.SHOWS_ON_RAPPORT[meth_show]();
+<<<<<<< HEAD
         if( ! hide ) Rapport.show();
         break;
       case 'exercices':
+=======
+        if( hide ) Rapport.hide_section();
+        else Rapport.show();
+        break;
+      case 'exercices':
+        if(hide)UI.set_invisible('ul#exercices');
+        else    UI.set_visible('ul#exercices');
+>>>>>>> Centralisation des ouvertures
         break;
       case 'seance':
         this.HIDDENS_ON_SEANCE[meth_hide]();
         this.SHOWS_ON_SEANCE[meth_show]();
+<<<<<<< HEAD
         if( ! hide ) Seance.show_form();
         break;
     }
     this.current_volet = volet;
+=======
+        if( hide )Seance.hide_section();
+        else      Seance.show_form();
+        break;
+    }
+    this.current_volet = volet.toString();
+>>>>>>> Centralisation des ouvertures
     return false;//for a-link
   },
   hide_volet:function(volet){

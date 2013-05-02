@@ -142,7 +142,6 @@ window.Seance = {
   
   // Open section Seance (hidding exercices)
   show_section:function(not_hidden){
-    UI.set_invisible('ul#exercices');
     UI.animin($('section#seance'));
     $(['seance_form', 'seance_start', 'seance_end']).map(function(i,key){
       if (key != not_hidden) UI.animout($('div#'+key));
@@ -153,7 +152,6 @@ window.Seance = {
   // Close section Seance (revealing exercices)
   hide_section:function(){
     UI.animout($('section#seance'));
-    UI.set_visible('ul#exercices');
     this.section_opened = false;
   },
   // Open form to define working seance

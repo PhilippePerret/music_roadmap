@@ -17,7 +17,6 @@ window.Rapport = {
     return false;//for a-link
   },
   show_section:function(){
-    UI.set_invisible('ul#exercices');
     UI.animin($('section#rapport'));
   },
   hide_section:function(){
