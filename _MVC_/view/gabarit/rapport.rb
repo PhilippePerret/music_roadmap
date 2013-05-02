@@ -65,7 +65,7 @@ def bouton_close margin_top = 0, margin_bottom = 0
 <div style="float:right;clear:both;margin-top:#{margin_top}px;margin-bottom:#{margin_bottom}px;">
   <a  href="#"
       class="btns_rapport_close btn nav"
-      onclick="return $.proxy(Rapport.hide_section, Rapport)()"
+      onclick="return $.proxy(UI.open_volet, UI, 'exercices')()"
       ></a>
 </div>
   EOB

@@ -21,70 +21,50 @@ $.extend(UI,{
    *  à chaque "volet" soit affiché/masqué. Et on appelle la méthode générale 
    *  d'ouverture du volet.
    */
-  HIDDENS_ON_RAPPORT  :new DArray(['a#btn_exercices_move', 'a#btn_exercice_create', 'a#btn_seance_play']),
+  HIDDENS_ON_RAPPORT  :new DArray([]),
   SHOWS_ON_RAPPORT    :new DArray([]),
-  HIDDENS_ON_SEANCE   :new DArray(['a#btn_exercices_move', 'a#btn_exercice_create']),
-  SHOWS_ON_SEANCE     :new DArray([]),
-<<<<<<< HEAD
-  current_volet:null;
-  open_volet:function(volet, hide){
-    if(this.current_volet != null){
-      var volet_to_hide = this.current_volet.toString();
-      this.current_volet = null;
-      this.open_volet(volet_to_hide, true);
-    }
-    if('undefined'==typeof hide) hide = false;
-=======
+  HIDDENS_ON_SEANCE   :new DArray([]),
+  SHOWS_ON_SEANCE     :new DArray(['a#btn_seance_play']),
+  SHOWS_ON_EXERCICES  :new DArray(['a#btn_seance_play', 'a#btn_exercices_move', 'a#btn_exercice_create']),
   current_volet:'exercices',
-  open_volet:function(volet, hide){
-    if(this.current_volet != null){
-      var volet_to_hide   = this.current_volet.toString();
-      this.current_volet  = null;
-      this.open_volet(volet_to_hide, true);
-    }
+  open_volet:function(volet){
+    if(this.current_volet != null) this.close_volet(this.current_volet);
     if('undefined' == typeof hide) hide = false;
-    console.dir({volet:volet, hide:hide});
->>>>>>> Centralisation des ouvertures
-    var meth_hide = hide ? 'hide' : 'show';
-    var meth_show = hide ? 'show' : 'hide';
     switch(volet){
       case 'rapport':
-        this.HIDDENS_ON_RAPPORT[meth_hide]();
-        this.SHOWS_ON_RAPPORT[meth_show]();
-<<<<<<< HEAD
-        if( ! hide ) Rapport.show();
+        this.HIDDENS_ON_RAPPORT.hide();
+        this.SHOWS_ON_RAPPORT.show();
+        Rapport.show();
         break;
       case 'exercices':
-=======
-        if( hide ) Rapport.hide_section();
-        else Rapport.show();
-        break;
-      case 'exercices':
-        if(hide)UI.set_invisible('ul#exercices');
-        else    UI.set_visible('ul#exercices');
->>>>>>> Centralisation des ouvertures
+        UI.set_visible('ul#exercices');
+        this.SHOWS_ON_EXERCICES.show();
         break;
       case 'seance':
-        this.HIDDENS_ON_SEANCE[meth_hide]();
-        this.SHOWS_ON_SEANCE[meth_show]();
-<<<<<<< HEAD
-        if( ! hide ) Seance.show_form();
-        break;
-    }
-    this.current_volet = volet;
-=======
-        if( hide )Seance.hide_section();
-        else      Seance.show_form();
+        this.HIDDENS_ON_SEANCE.hide();
+        this.SHOWS_ON_SEANCE.show();
+        Seance.show_form();
         break;
     }
     this.current_volet = volet.toString();
->>>>>>> Centralisation des ouvertures
     return false;//for a-link
   },
-  hide_volet:function(volet){
-    
+  close_volet:function(volet){
+    switch(volet){
+      case 'rapport':
+        Rapport.hide_section();
+        break;
+      case 'exercices':
+        UI.set_invisible('ul#exercices');
+        this.SHOWS_ON_EXERCICES.hide();
+        break;
+      case 'seance':
+        Seance.hide_section();
+        this.SHOWS_ON_SEANCE.hide();
+        break;
+    }
+    this.current_volet = null;
   },
-  
   // Règle les boutons en fonction de la langue courante
   set_noms_boutons: function(){
     // Boutons User
