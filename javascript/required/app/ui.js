@@ -14,6 +14,48 @@ $.extend(UI,{
     UI.humanize();
   },
   
+  /*
+   *  Open a "volet" (rapport, exercices, session preparation, etc.)
+   *  ---------------------------------------------------------------
+   *  C'est dans cette méthode qu'on doit s'assurer que tous les éléments propres
+   *  à chaque "volet" soit affiché/masqué. Et on appelle la méthode générale 
+   *  d'ouverture du volet.
+   */
+  HIDDENS_ON_RAPPORT  :new DArray(['a#btn_exercices_move', 'a#btn_exercice_create', 'a#btn_seance_play']),
+  SHOWS_ON_RAPPORT    :new DArray([]),
+  HIDDENS_ON_SEANCE   :new DArray(['a#btn_exercices_move', 'a#btn_exercice_create']),
+  SHOWS_ON_SEANCE     :new DArray([]),
+  current_volet:null;
+  open_volet:function(volet, hide){
+    if(this.current_volet != null){
+      var volet_to_hide = this.current_volet.toString();
+      this.current_volet = null;
+      this.open_volet(volet_to_hide, true);
+    }
+    if('undefined'==typeof hide) hide = false;
+    var meth_hide = hide ? 'hide' : 'show';
+    var meth_show = hide ? 'show' : 'hide';
+    switch(volet){
+      case 'rapport':
+        this.HIDDENS_ON_RAPPORT[meth_hide]();
+        this.SHOWS_ON_RAPPORT[meth_show]();
+        if( ! hide ) Rapport.show();
+        break;
+      case 'exercices':
+        break;
+      case 'seance':
+        this.HIDDENS_ON_SEANCE[meth_hide]();
+        this.SHOWS_ON_SEANCE[meth_show]();
+        if( ! hide ) Seance.show_form();
+        break;
+    }
+    this.current_volet = volet;
+    return false;//for a-link
+  },
+  hide_volet:function(volet){
+    
+  },
+  
   // Règle les boutons en fonction de la langue courante
   set_noms_boutons: function(){
     // Boutons User

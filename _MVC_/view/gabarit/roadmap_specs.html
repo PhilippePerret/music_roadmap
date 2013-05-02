@@ -65,12 +65,12 @@
   ><span class="lab_roadmap"></span>…</a>
   <a  href="#"
       id="btn_show_report"
-      onclick="return $.proxy(Rapport.show, Rapport)()"
+      onclick="return $.proxy(UI.open_volet, UI, 'rapport')()"
     ><span class="lab_rapport"></span></a>
   <a  href="#"
       id="btn_seance_show_form"
       class="bold"
-      onclick="return $.proxy(Seance.show_form, Seance)()"
+      onclick="return $.proxy(UI.open_volet, UI, 'seance')()"
       ><span id="label_confection"></span></a>
   &nbsp;
 </div>
