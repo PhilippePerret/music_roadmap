@@ -1,0 +1,11 @@
+titre_fr:     Étude n°20
+titre_en:     Study n°20
+suite:        null
+types:        ['LH', 'RH', 'NT', 'E0']
+tempo_min:    60
+tempo_max:    88
+nb_temps:     2
+duree_temps:  2
+metrique:     "2/2"
+nb_mesures:   35
+tune:         16

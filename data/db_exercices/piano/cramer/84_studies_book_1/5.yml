@@ -8,3 +8,4 @@ nb_temps:     3
 duree_temps:  4
 metrique:     "3/4"
 nb_mesures:   30
+tune:         0

@@ -8,3 +8,4 @@ nb_mesures:   29
 nb_temps:     2
 duree_temps:  6
 metrique:     "12/8"
+tune:         16

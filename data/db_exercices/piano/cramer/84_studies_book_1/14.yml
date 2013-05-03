@@ -1,0 +1,11 @@
+titre_fr:     Étude n°14
+titre_en:     Study n°14
+suite:        null
+types:        ['LH', 'RH', 'SY', 'G0', 'A0', 'NT']
+tempo_min:    40
+tempo_max:    58
+nb_temps:     2
+duree_temps:  3
+metrique:     "6/4"
+nb_mesures:   30
+tune:         14

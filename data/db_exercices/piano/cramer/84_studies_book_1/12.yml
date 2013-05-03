@@ -1,0 +1,11 @@
+titre_fr:     Étude n°12
+titre_en:     Study n°12
+suite:        null
+types:        ['T1', 'S0', 'TR']
+tempo_min:    100
+tempo_max:    138
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+nb_mesures:   32
+tune:         21

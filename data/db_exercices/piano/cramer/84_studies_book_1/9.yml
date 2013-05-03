@@ -1,0 +1,11 @@
+titre_fr:     Étude n°9
+titre_en:     Study n°9
+suite:        null
+types:        ['LH', 'D0', 'C0']
+tempo_min:    100
+tempo_max:    132
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+nb_mesures:   32
+tune:         7
