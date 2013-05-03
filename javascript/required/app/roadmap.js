@@ -319,7 +319,7 @@ window.Roadmap = {
       Flash.show(MESSAGE.Roadmap.loaded) ;
     }
     // $.proxy(Roadmap.set_div_specs, Roadmap, ouvert = !this.loaded)() ;
-    Exercices.set_boutons() ;
+    UI.open_volet('exercices');
     this.set_btns_roadmap() ;
     this.set_div_specs( ouvert = !this.loaded ) ;
     BT.add('<- Roadmap.end_open (return: this.loaded='+this.loaded+')') ;

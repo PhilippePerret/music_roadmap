@@ -502,6 +502,8 @@ $.extend(window.Exercices,{
       this.preparing = true ;
       // Tempos
       this.menus_tempo_populate();
+      // Tonalités
+      this.peuple_menu_tonalites();
       // Suites harmoniques
       this.peuple_menu_suites_harmoniques();
       // Types
@@ -560,6 +562,7 @@ $.extend(window.Exercices,{
       this.types_populating = true ;
       inner.html('');
       for(var idtype in Exercices.TYPES_EXERCICE){
+        if(idtype == 'WT') continue;
         // On crée un checkbox par type
         var id = prefix + "exercice_type_" + idtype ;
         if ($(id).length) return false; // déjà préparés
@@ -609,6 +612,15 @@ $.extend(window.Exercices,{
         if ( $(amorce+id).is(':checked') ) checked.push(id);
       }
       return checked;
+    },
+    // Peuple le menu des tonalités
+    peuple_menu_tonalites:function(){
+      var itune, option, dtune = IDSCALE_TO_HSCALE[LANG];
+      $('select#exercice_tune').append('<option value="">--</option>');
+      for(itune in dtune){
+        option = '<option value="'+itune+'">'+dtune[itune]+'</option>';
+        $('select#exercice_tune').append(option);
+      }
     },
     // Peuplement du menu suites harmoniques
     peuple_menu_suites_harmoniques:function(){

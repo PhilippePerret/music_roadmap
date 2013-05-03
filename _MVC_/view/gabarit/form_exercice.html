@@ -24,6 +24,7 @@
         <a  href="#" 
             class="btn nav bold"
             id="seach_ex_in_database"
+            aide-value="dbe/presentation"
             onclick="return $.proxy(DBE.open, DBE)()"
             ></a>
       </div>
@@ -62,13 +63,11 @@
     <td>
       <span id="span_obligatory">
         <input type="checkbox" id="exercice_obligatory">
-        <label class="lab_obligatory" for="exercice_obligatory"></label>
-        <aide value="exercice/prop/obligatory"></aide>
+        <label class="lab_obligatory" for="exercice_obligatory" aide-value="exercice/prop/obligatory"></label>
       </span>
       <span id="span_with_next">
         <input type="checkbox" id="exercice_with_next">
-        <label class="lab_with_next" for="exercice_with_next"></label>
-        <aide value="exercice/prop/with_next"></aide>
+        <label class="lab_with_next" for="exercice_with_next" aide-value="exercice/prop/with_next"></label>
       </span>
     </td>
   </tr>
@@ -80,10 +79,10 @@
           <a  href="#"
               id="btn_toggle_types_exercices"
               class="petit btn lab_modify"
+              aide-value="exercice/prop/type"
               style="display:inline-block;width:60px;"
               onclick="return $.proxy(Exercices.Edition.toggle_types, Exercices.Edition)();"
-              ></a> 
-          <aide value="exercice/prop/type"></aide>
+              ></a>
         </div>
         <div id="exercice_cbs_types" style="display:none;position:absolute;top:1.6em;"></div>
       </div>
@@ -98,20 +97,22 @@
     </td>
   </tr>
   <tr>
-    <td class="libelle">Suite</td>
-    <td><select id="exercice_suite"></select> <aide value="exercice/form/suite_harmonique"></aide></td>
+    <!-- Tonalité / Suite harmonique -->
+    <td class="libelle lab_tune"></td>
+    <td>
+      <select id="exercice_tune" aide-value="exercice/form/tune"></select>
+      <select id="exercice_suite" aide-value="exercice/form/suite_harmonique"></select>
+    </td>
   </tr>
   <tr>
     <td class="libelle">
-      <span class="duree"></span>
-      <aide value="exercice/form/duree.html"></aide>
+      <span class="duree" aide-value="exercice/form/duree.html"></span>
     </td>
     <td>
       <span id="label_nb_mesures"></span>
       <input type="text" id="exercice_nb_mesures" class="petit" />
       <span id="label_nb_beats"></span>
-      <input type="text" id="exercice_nb_temps" class="petit" />
-      <aide value="exercice/form/nb_beats"></aide>
+      <input type="text" id="exercice_nb_temps" class="petit" aide-value="exercice/form/nb_beats" />
     </td>
   </tr>
   <tr class="buttons">

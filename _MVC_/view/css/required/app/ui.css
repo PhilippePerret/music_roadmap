@@ -6,13 +6,13 @@
   color             : #009 ;
 }
 
-span.suivi_by_aide a {
+span.suivi_by_aide a.to_help {
   visibility      :hidden;
   margin-left     :5px;
 }
-span.suivi_by_aide a img {
+span.suivi_by_aide a.to_help img {
   opacity         :0.9 !important;
 }
-span.suivi_by_aide:hover a {
+span.suivi_by_aide:hover a.to_help {
   visibility      :visible;
 }

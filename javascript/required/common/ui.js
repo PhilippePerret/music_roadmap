@@ -75,7 +75,7 @@ $.extend(UI,{
     });
   },
   alink_aide:function(id, hvalue, title){
-    return '<a'+id+' href="#" onclick="return $.proxy(H.show,H,\'' +
+    return '<a'+id+' class="to_help" href="#" onclick="return $.proxy(H.show,H,\'' +
     hvalue+'\')()">'+ title + '</a>';
   },
   // Remplace les balises '<focus value="<jq-id élément>" title="<titre>" />

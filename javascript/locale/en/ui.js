@@ -12,9 +12,10 @@ window.LOCALE_UI = {
     lab_modify        :"Modify…",
     lab_current       :"Current",
     lab_difficulties  :"Difficulties",
+    lab_obligatory    :"Obligatory",
     lab_roadmap       :"Roadmap",
     lab_rapport       :"Work Report",
-    lab_obligatory    :"Obligatory",
+    lab_tune          :"Tune",
     lab_with_next     :"Linked to next"
   },
   Id:{

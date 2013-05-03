@@ -29,6 +29,7 @@ $.extend(window.Exercices,{
     'NR':"Notes répétées",
     'NT':"Notes tenues",
     
+    'SY':"Synchronisation",
     'C1':"Chromatismes",
     'P0':"Poignet",
     'D0':"Déliateur",

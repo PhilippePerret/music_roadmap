@@ -6,12 +6,13 @@ window.LOCALE_UI = {
     other             :"Autre…",
     cancel            :"Renoncer",
     duree             :"Durée",
-    lab_modify        :"Modifier…",
     lab_current       :"Courant",
     lab_difficulties  :"Difficultés",
+    lab_modify        :"Modifier…",
+    lab_obligatory    :"Obligatoire",
     lab_roadmap       :"Feuille de route",
     lab_rapport       :"Rapport de travail",
-    lab_obligatory    :"Obligatoire",
+    lab_tune          :"Tonalité",
     lab_with_next     :"Lié au suivant"
   },
   Id:{

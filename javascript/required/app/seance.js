@@ -3,8 +3,8 @@
     Gestion des séances de travail
 */
 window.Seance = {
-  ready     :false, // Set to true when form is ready
-  section_opened:false,     // True if section seance is opened
+  ready           :false,   // Set to true when form is ready
+  section_opened  :false,   // True if section seance is opened
   
   // During session
   running         :false,   // True when we work on the exercices suite
@@ -13,10 +13,9 @@ window.Seance = {
 
   // Start working session
   start:function(){
-    if(this.section_opened) this.hide_section();
+    if(this.section_opened)UI.open_volet('running_seance');
     if(false == this.set_exercices_stack()) return;
     Exercices.deselect_all() ;
-    this.set_working_ui(this.running = true);
     this.play_first_in_stack();
     this.initialize_seance_file();
     return false;//for a-link
@@ -42,22 +41,7 @@ window.Seance = {
     Ajax.query({data:{proc:"seance/start", rm_nom:Roadmap.nom, rm_mail:User.mail, md5:Roadmap.md5}})
   },
   // Set UI when we work the exercices or when stop
-  // - The buttons to create and move exercices are hidden
-  // - The buttons to stop, play, pause are shown
-  // Buttons to hide/show during working session
-  HIDDENS_WHILE_WORKING:new DArray(['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs']),
-  SHOWED_WHILE_WORKING: new DArray(['a#btn_seance_end','a#btn_seance_pause']),
   set_working_ui:function(on){
-    var method_btn_run;
-    if (on){
-      // When running
-      this.HIDDENS_WHILE_WORKING.hide();
-      this.SHOWED_WHILE_WORKING.show();
-    } else {
-      // Stopping
-      this.HIDDENS_WHILE_WORKING.show();
-      this.SHOWED_WHILE_WORKING.hide();
-    }
     var orun = $('a#btn_seance_play');
     orun.html(LOCALE_UI.Seance[on ? 'next_exercice' : 'start']);
     orun.attr('onclick', "return $.proxy(Seance." + 
@@ -127,9 +111,8 @@ window.Seance = {
   },
   // After stop, we display the report
   stop_suite:function(){
-    this.set_working_ui(this.running = false);
-    this.ordre_stack = null;
-    this.stopping = false;
+    this.ordre_stack  = null;
+    this.stopping     = false;
     Rapport.show();
   },
   
@@ -149,15 +132,14 @@ window.Seance = {
     });
     this.section_opened = true;
   },
-  // Close section Seance (revealing exercices)
+  // Close section Seance
   hide_section:function(){
     UI.animout($('section#seance'));
     this.section_opened = false;
   },
   // Open form to define working seance
-  show_form:function(){
-    this.prepare();
-    this.show_section('seance_form');
+  show:function(){
+    UI.open_volet('seance');
     return false;//pour le a-lien
   },
   hide_form:function(for_good){
@@ -167,7 +149,10 @@ window.Seance = {
     return false;//for a-link
   },
   show_start:function(){
-    this.hide_form(false);UI.animin($('div#seance_start'))},
+    this.hide_form(false);
+    UI.animin($('div#seance_start'));
+    UI.set_visible('a#btn_seance_play');
+  },
   hide_start:function(){
     UI.animout($('div#seance_start'))},
   show_end:function(){
@@ -241,7 +226,7 @@ window.Seance = {
   },
   // 
   cancel_seance:function(){
-    this.hide_section();
+    UI.open_volet('exercices');
     this.ordre_stack = null; // empties the stack
     return false;//for a-link
   },

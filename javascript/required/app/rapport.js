@@ -12,7 +12,7 @@ window.Rapport = {
   */
   show:function(params){
     this.prepare();
-    this.show_section();
+    UI.open_volet('rapport');
     this.load(); // par défaut, le rapport du mois
     return false;//for a-link
   },
@@ -21,7 +21,6 @@ window.Rapport = {
   },
   hide_section:function(){
     UI.animout($('section#rapport'));
-    UI.set_visible('ul#exercices');
     return false;//for a-link
   },
   loading: false,
@@ -65,12 +64,35 @@ window.Rapport = {
     
   },
   prepare:function(){
-    if(this.ready) return ;
+    if(this.ready) return;
     // Nom du jour de la semaine
     for(var i=0; i<7; ++i)$('td#calendar_day_name-'+i).html(LOCALE_UI.JOURS[i]);
     // Other Dom elements
     for(var jid in this.LOCALES) $('section#rapport '+jid).html(LOCALE_UI.Rapport[this.LOCALES[jid]]);
     this.ready = true;
+  },
+  
+  /* -------------------------------------------------------------------
+   *  Report methods for tunes
+   -------------------------------------------------------------------*/
+  ByTune:{
+    tunes         :null,
+    tunes_sorted  :null,
+    
+    // Get tunes of seance
+    tunes_of_seance:function(dseance){
+      var hex, htune;
+      if(this.tunes==null)this.tunes={};
+      for(var i in dseance.exercices){
+        hex = dseance.exercices[i];
+      }
+    },
+    // Sort tunes by working times
+    sort_tunes:function(){
+      this.tunes_sorted = [];
+      for(var idtune in this.tunes)this.tunes_sorted.push([idtune, this.tunes[idtune].time]);
+      this.tunes_sorted.sort(function(a,b){return a[1] < b[1]});
+    }
   },
   /* -------------------------------------------------------------------
    *  Report methods for an exercice

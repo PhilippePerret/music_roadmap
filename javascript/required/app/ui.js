@@ -21,29 +21,43 @@ $.extend(UI,{
    *  à chaque "volet" soit affiché/masqué. Et on appelle la méthode générale 
    *  d'ouverture du volet.
    */
-  HIDDENS_ON_RAPPORT  :new DArray([]),
-  SHOWS_ON_RAPPORT    :new DArray([]),
-  HIDDENS_ON_SEANCE   :new DArray([]),
-  SHOWS_ON_SEANCE     :new DArray(['a#btn_seance_play']),
-  SHOWS_ON_EXERCICES  :new DArray(['a#btn_seance_play', 'a#btn_exercices_move', 'a#btn_exercice_create']),
+  HIDDENS_ON_RAPPORT    :new DArray(['a#btn_seance_play', 'a#btn_exercices_move', 'a#btn_exercice_create']),
+  SHOWS_ON_RAPPORT      :new DArray([]),
+  HIDDENS_ON_SEANCE     :new DArray([]),
+  SHOWS_ON_SEANCE       :new DArray(['a#btn_seance_play']),
+  SHOWS_ON_EXERCICES    :new DArray(['a#btn_seance_play', 'a#btn_exercices_move', 'a#btn_exercice_create']),
+  HIDDENS_WHILE_WORKING :new DArray(['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs']),
+  SHOWED_WHILE_WORKING  :new DArray(['a#btn_seance_play','a#btn_seance_end','a#btn_seance_pause']),
   current_volet:'exercices',
   open_volet:function(volet){
-    if(this.current_volet != null) this.close_volet(this.current_volet);
+    if(this.current_volet != null){
+      if (this.current_volet == volet) return false;
+      this.close_volet(this.current_volet);
+    }
+    // console.log("open volet "+volet);
     if('undefined' == typeof hide) hide = false;
     switch(volet){
       case 'rapport':
         this.HIDDENS_ON_RAPPORT.hide();
-        this.SHOWS_ON_RAPPORT.show();
-        Rapport.show();
+        // this.SHOWS_ON_RAPPORT.show();
+        Rapport.show_section();
         break;
       case 'exercices':
         UI.set_visible('ul#exercices');
+        Exercices.set_boutons() ;
         this.SHOWS_ON_EXERCICES.show();
         break;
       case 'seance':
         this.HIDDENS_ON_SEANCE.hide();
         this.SHOWS_ON_SEANCE.show();
-        Seance.show_form();
+        Seance.prepare();
+        Seance.show_section('seance_form');
+        break;
+      case 'running_seance':
+        UI.set_visible('ul#exercices');
+        this.HIDDENS_WHILE_WORKING.hide();
+        this.SHOWED_WHILE_WORKING.show();
+        Seance.set_working_ui(true);
         break;
     }
     this.current_volet = volet.toString();
@@ -61,6 +75,11 @@ $.extend(UI,{
       case 'seance':
         Seance.hide_section();
         this.SHOWS_ON_SEANCE.hide();
+        break;
+      case 'running_seance':
+        this.SHOWED_WHILE_WORKING.hide();
+        Seance.set_working_ui(false);
+        this.close_volet('exercices');
         break;
     }
     this.current_volet = null;
