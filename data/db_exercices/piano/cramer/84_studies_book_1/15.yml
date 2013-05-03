@@ -1,7 +1,7 @@
 titre_fr:     Étude n°15
 titre_en:     Study n°15
 suite:        null
-types:        ['LH', 'RH', 'A0', 'D0']
+types:        ['LH', 'RH', 'AR', 'DL']
 tempo_min:    50
 tempo_max:    76
 nb_temps:     2

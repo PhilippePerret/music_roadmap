@@ -1,0 +1,11 @@
+titre_fr:     Étude n°30
+titre_en:     Study n°30
+suite:        null
+types:        ['RH', 'LH', 'SY', 'NT', 'DL']
+tempo_min:    100
+tempo_max:    132
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tune:         22
+nb_mesures:   50

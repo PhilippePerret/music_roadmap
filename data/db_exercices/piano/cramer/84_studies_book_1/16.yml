@@ -1,7 +1,7 @@
 titre_fr:     Étude n°16
 titre_en:     Study n°16
 suite:        null
-types:        ['LH', 'G0', 'D0']
+types:        ['LH', 'G0', 'DL']
 tempo_min:    100
 tempo_max:    132
 nb_temps:     4

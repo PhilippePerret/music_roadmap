@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°5
 titre_en:     Exercice n°5
 suite:        WK
-types:        ['D0', 'P0', 'LH', 'RH']
+types:        ['DL', 'P0', 'LH', 'RH']
 tempo_min:    60
 tempo_max:    108
 nb_mesures:   57

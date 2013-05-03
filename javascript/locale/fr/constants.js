@@ -11,12 +11,12 @@ $.extend(window.Exercices,{
     'WT':"Temps total de travail", // pour simplifier codes JS
     
     'G0':"Gammes",
-    'A0':"Arpèges",
+    'AR':"Arpèges",
     'C0':"Accords",
     
     'LH':"Main gauche",
     'RH':"Main droite",
-    'R0':"Rythme",
+    'RY':"Rythme",
     
     'T1':"Tierces",
     'S0':"Sixtes",
@@ -29,10 +29,11 @@ $.extend(window.Exercices,{
     'NR':"Notes répétées",
     'NT':"Notes tenues",
     
+    'PO':"Polyphonie",
     'SY':"Synchronisation",
     'C1':"Chromatismes",
     'P0':"Poignet",
-    'D0':"Déliateur",
+    'DL':"Déliateur",
     'E0':"Extensions"
   },
   TYPES_SUITE_HARMONIQUE:{

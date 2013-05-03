@@ -1,7 +1,7 @@
 titre_fr:     Étude n°14
 titre_en:     Study n°14
 suite:        null
-types:        ['LH', 'RH', 'SY', 'G0', 'A0', 'NT']
+types:        ['LH', 'RH', 'SY', 'G0', 'AR', 'NT']
 tempo_min:    40
 tempo_max:    58
 nb_temps:     2

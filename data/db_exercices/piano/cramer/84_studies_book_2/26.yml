@@ -1,0 +1,11 @@
+titre_fr:     Étude n°26
+titre_en:     Study n°26
+suite:        null
+types:        ['LH', 'RH', 'DL', 'AR', 'NT', 'PO', 'RY']
+tempo_min:    40
+tempo_max:    60
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tune:         6
+nb_mesures:   86

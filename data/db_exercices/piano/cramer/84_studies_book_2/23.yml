@@ -1,0 +1,11 @@
+titre_fr:     Étude n°23
+titre_en:     Study n°23
+suite:        null
+types:        ['RH', 'AR', 'S0']
+tempo_min:    132
+tempo_max:    152
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+tune:         9
+nb_mesures:   40
