@@ -19,7 +19,14 @@ window.Seance = {
         evt.stopPropagation();
         return false;
         break;
+      case Key_p:
+      case Key_P:
+        evt.stopPropagation();
+        if(this.running) this.pause();
+        return false;
+        break;
       case Key_s:
+      case Key_S:
         evt.stopPropagation();
         if(this.running) this.stop(true);
         return false;
