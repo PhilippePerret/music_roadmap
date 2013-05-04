@@ -287,7 +287,7 @@ Exercice.prototype.code_tempo_et_tones = function(){
 // l'instance au moment où on doit enregistrer son temps de travail, pour savoir
 // dans quelle tonalité l'exercice/morceau a été joué
 Exercice.prototype.code_tones = function(){
-  return '<select id="tone_ex-'+this.id+'" class="tones" aide-value="exercice/prop/tone">' +
+  return '<select id="tone_ex-'+this.id+'" class="tones">' +
           Exercices.Edition.options_of_select_tones() + 
           '</select>';
 }
