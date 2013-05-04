@@ -669,7 +669,6 @@ function Button( params ) {
       data_prop = liste[_i] ;
       prop_name = data_prop[0] ;
       if ( defined( button[prop_name] ) ) continue ;
-      console.log("Définition de " + prop_name) ;
       button[prop_name] = data_prop[ 1 ] ;
     }
 

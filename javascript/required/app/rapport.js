@@ -554,7 +554,6 @@ window.Rapport = {
       var mois = (Rapport.data.month+1).toString();
       if(mois.length < 2) mois = "0"+mois;
       var year = Rapport.data.year.toString().substring(2);
-      console.log("Jour : "+year+mois+jour);
       return year+mois+jour;
     },
 

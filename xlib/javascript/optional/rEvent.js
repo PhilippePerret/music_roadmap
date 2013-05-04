@@ -245,7 +245,7 @@ window.REvent={
     return false;
   },
   on_keypress_textarea:function(otarget){
-    console.log("--> REvent::on_keypress_textarea") ;
+    // console.log("--> REvent::on_keypress_textarea") ;
     if (      ! REvent.ON 
           ||  ! this.ON_KEYPRESS_ON_TEXTAREA 
           ||    (BoiteEdition && BoiteEdition.ON)
