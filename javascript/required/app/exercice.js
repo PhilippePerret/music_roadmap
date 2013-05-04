@@ -416,7 +416,7 @@ Exercice.prototype.calc_duree_travail = function(){
     this.save_duree_travail();
   } else {
     // Temps insuffisant pour mémoriser l'exercice
-    F.show(MESSAGE.Exercice.working_time_insuffisant + " ("+this.w_duree+")");
+    F.show(MESSAGE.Exercice.working_time_insuffisant + " (" + this.w_duree + "\")");
     this.playing = false ;
     // Si une méthode après sauvegarde (de la durée, ici) a été définie, il
     // faut l'appeler maintenant
