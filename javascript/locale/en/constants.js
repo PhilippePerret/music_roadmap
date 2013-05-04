@@ -36,8 +36,8 @@ $.extend(window.Exercices,{
     '00'  :"None",
     'NO_description':"The exercice defines the harmonic suite",
     'HA_description':"From Major relative to minor relative or vice versa",
-    'WK_description':"On white keys, “Hanon-like”; this can be played in all tunes",
-    'TO_description':"Pass through several or all tunes",
+    'WK_description':"On white keys, “Hanon-like”; this can be played in all tones",
+    'TO_description':"Pass through several or all tones",
     '00_description':"No harmonic suite"
   }
 });

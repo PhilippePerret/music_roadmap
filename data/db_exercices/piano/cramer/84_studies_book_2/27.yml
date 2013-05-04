@@ -7,5 +7,5 @@ tempo_max:    152
 nb_temps:     2
 duree_temps:  2
 metrique:     "C barré"
-tune:         8
+tone:         8
 nb_mesures:   62

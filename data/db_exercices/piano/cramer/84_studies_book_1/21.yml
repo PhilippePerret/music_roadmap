@@ -7,5 +7,5 @@ tempo_max:    84
 nb_temps:     4
 duree_temps:  6
 metrique:     "12/8"
-tune:         7
+tone:         7
 nb_mesures:   21

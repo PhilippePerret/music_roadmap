@@ -13,7 +13,7 @@ window.EXERCICE_PROPERTIES = [
   'tempo', 'tempo_min', 'tempo_max', 'up_tempo',
   'types', 'obligatory', 'with_next',
   'note', 'started_at', 'ended_at', 'created_at', 'updated_at',
-  'nb_mesures', 'nb_temps', 'tune'
+  'nb_mesures', 'nb_temps', 'tone'
   ];
 
 // Au lieu de créer une instance à chaque fois, on passe par cette méthode
@@ -34,34 +34,35 @@ function Exercice(data){
   this.recueil    =null;  // Le recueil contenant l'exercice
   this.auteur     =null;  // Auteur de l'exercice (p.e. "Hanon")
   this.types      =null;  // Types de l'exercice (sur deux lettres/chiffres séparés par ',')
-  this.tempo      =120 ;  // Tempo actuel
-  this.suite      =null;  // Le type de suite (harmonic, normale, etc.)
-  this.tune       =null;  // Tonalité (0-C à 23-Bm)
-  this.extrait    =null;  // Null ou path relatif à l'image de l'extrait
-  this.vignette   =null;  // Null ou path relatif à la vignette
+  this.tempo      =120;   // Tempo actuel
   this.tempo_min  =null;  // Tempo minimum requis
   this.tempo_max  =null;  // Tempo maximum requis
+  this.suite      =null;  // Le type de suite (harmonic, normale, etc.)
+  this.tone       =null;  // Tonalité (0-C à 23-Bm)
+  this.extrait    =null;  // Null ou path relatif à l'image de l'extrait
+  this.vignette   =null;  // Null ou path relatif à la vignette
   this.up_tempo   =null;  // Mis à true si on doit augmenter le tempo la prochaine fois
   this.note       =null;  // Note sur l'exercice
-  this.obligatory =false;  // Pour savoir s'il est obligatoire
-  this.with_next  =false;  // Pour savoir s'il est lié au suivant
+  this.obligatory =false; // Pour savoir s'il est obligatoire
+  this.with_next  =false; // Pour savoir s'il est lié au suivant
   this.started_at =null;  // Début du travail de l'exercice
   this.ended_at   =null;  // Fin du travail de l'exercice
   this.created_at =null;
   this.updated_at =null;
   
   // Propriétés volatiles
-  this.playing      = false ;
-  this.w_duree      = null  ; // Le temps de travail si l'exercice est
-                              // travaillé au cours de la session
-  this.w_start      = null  ; // Début du travail (défini par play) (en sec)
-  this.w_end        = null  ; // Fin du travail (défini par play) (en sec)
-  this.tempo_risen  = false ; // mis à '+' ou '-' si le tempo a été changé
-                              // Ne surtout pas mettre après l'appel de
-                              // `rise_tempo' ci-dessous
+  this.loaded       =false; // Set by 'dispatch' method if data are defined
+  this.playing      =false;
+  this.w_duree      =null;  // Le temps de travail si l'exercice est
+                            // travaillé au cours de la session
+  this.w_start      =null;  // Début du travail (défini par play) (en sec)
+  this.w_end        =null;  // Fin du travail (défini par play) (en sec)
+  this.tempo_risen  =false; // mis à '+' ou '-' si le tempo a été changé
+                            // Ne surtout pas mettre après l'appel de
+                            // `rise_tempo' ci-dessous
   
   if ( "string" == typeof data ){
-    this.id = data ;
+    this.id = data;
   } else {
     this.dispatch( data ) ;
     // S'il y a eu une demande changement de tempo pour la prochaine séance
@@ -77,6 +78,23 @@ function Exercice(data){
 Exercice.prototype.li = function(){
   return $('ul#exercices > li#li_ex-'+this.id);
 }
+
+// Dispatch les données +data+
+// @note: toutes les valeurs "" sont mises à null
+Exercice.prototype.dispatch = function(data){
+  for( var k in data ) {
+    if ( data[k] == "" ) data[k] = null ;
+    this[k] = data[k] ;
+  }
+  // Est-ce qu'on peut considérer l'exercice comme chargé ?
+  if(this.id == null || this.titre==null) return;
+  if(this.tempo==null || this.tempo_min==null || this.tempo_max==null)return;
+  // Otherwise, exercice is loaded
+  this.loaded = true;
+}
+// Convenient alias
+Exercice.prototype.update = Exercice.prototype.dispatch
+
 // Sélection/Déselection de l'exercice
 // (et focus sur son menu tempo)
 Exercice.prototype.select = function(){
@@ -156,16 +174,6 @@ Exercice.prototype.as_hash = function(){
     data[k] = this[k] ;}
   return data ;
 }
-// Dispatch les données +data+
-// @note: toutes les valeurs "" sont mises à null
-Exercice.prototype.dispatch = function(data){
-  for( var k in data ) {
-    if ( data[k] == "" ) data[k] = null ;
-    this[k] = data[k] ;
-  }
-}
-// Convenient alias
-Exercice.prototype.update = Exercice.prototype.dispatch
 
 // Return techniques (types) of exercice as human string
 Exercice.prototype.types_as_human = function(delimiter){
@@ -417,7 +425,7 @@ Exercice.prototype.save_duree_travail = function(rajax){
         ex_id       :this.id,
         ex_w_duree  :this.w_duree,
         ex_tempo    :this.tempo,
-        scale       :Exercices._scale(),
+        tone        :this.get_tone() || this.tone || Exercices._tone(),
         config      :Exercices._config()
       },
       success: $.proxy(this.save_duree_travail, this)
@@ -432,6 +440,11 @@ Exercice.prototype.save_duree_travail = function(rajax){
     this.playing = false;
     this.ajax_on = false;
   }
+}
+Exercice.prototype.get_tone = function(){
+  var menutone = $('li#li_ex-'+this.id+' select#tone_ex-'+this.id);
+  if(menutone.length == 0) return null;
+  return parseInt(menutone.val(),10);
 }
 Exercice.prototype.call_method_after_save = function(){
   if('function' == typeof this.fx_after_save){

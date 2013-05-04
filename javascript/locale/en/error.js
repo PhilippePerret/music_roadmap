@@ -74,6 +74,7 @@ window.ERROR = {
   },
   Seance:{
     no_working_time       :"I need a working time!",
+    no_exercice_found     :"No exercice in your roadmap matchs the criteria you have defined.",
     no_exercices          :"No exercice to play!"
   }
   

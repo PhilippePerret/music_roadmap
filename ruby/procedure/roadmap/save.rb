@@ -49,7 +49,7 @@ def ajax_roadmap_save
   # Sauvegarde possible
   unless param(:config_generale).nil?
     gconfig = param(:config_generale)
-    gconfig['scale'] = gconfig['scale'].to_i
+    gconfig['tone'] = gconfig['tone'].to_i
     roadmap_save 'config_generale', gconfig, rm
   end
   unless param(:data_exercices).nil?

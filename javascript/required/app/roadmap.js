@@ -509,13 +509,13 @@ window.Roadmap = {
       // tourne sur ces trois premiers paramètres pour les passer alternativement de
       // true à false (ou inversement)
       // @see `next_config_generale' ci-dessous
-      'down_to_up', 'maj_to_rel', 'first_to_last', 'scale', 'last_changed'
+      'down_to_up', 'maj_to_rel', 'first_to_last', 'tone', 'last_changed'
     ],
-    down_to_up      :true,               // cf. N0001
-    first_to_last    :true,               // cf. N0002
-    maj_to_rel      :true,               // cf. N0003
-    scale           :0,
-    last_changed    :'down_to_up',       // cf. N0004
+    down_to_up      :true,            // cf. N0001
+    first_to_last    :true,           // cf. N0002
+    maj_to_rel      :true,            // cf. N0003
+    tone           :0,
+    last_changed    :'down_to_up',    // cf. N0004
     
     // --- Les Données générales des exercices ---
     // Pour l'obtenir     : Exercices.ordre()
@@ -527,9 +527,9 @@ window.Roadmap = {
     // Initialisation de toutes les données (nouveau document)
     init_all: function(){
       this.down_to_up     = true ;
-      this.first_to_last   = true ;
+      this.first_to_last  = true ;
       this.maj_to_rel     = true ;
-      this.scale          = 0 ;
+      this.tone          = 0 ;
       this.last_changed   = 'down_to_up' ;
       this.show() ;
       window.EXERCICES = {length:0} ;
@@ -548,8 +548,8 @@ window.Roadmap = {
       this.toggle( config ) ;
       this.last_changed = config.toString();
       // On change de gamme
-      ++ this.scale ;
-      if (this.scale >= 24) this.scale = 0;
+      ++ this.tone ;
+      if (this.tone >= 24) this.tone = 0;
       this.show();
       // Save it ?
       if ( this.config_generale_must_be_saved()){
@@ -590,7 +590,7 @@ window.Roadmap = {
     show: function(){
       // Afficher les data générales
       if (Roadmap.UI.ready == false ) Roadmap.UI.prepare();
-      Roadmap.UI.Set.scale();
+      Roadmap.UI.Set.tone();
       Roadmap.UI.Set.config_generale();
     },
      
@@ -679,13 +679,13 @@ window.Roadmap = {
         $('span#'+id).html( texte ) ;
       },
       // Affiche la gamme courante
-      scale:function(){
-        var scale = Roadmap.Data.scale;
-        $('img#gconfig_img_cur_scale').attr('src', UI.path_image("note/gamme/"+scale+".jpg"));
-        var nom_scale = LOCALE_UI.Label.today + ", ";
-        nom_scale += LOCALE_UI.Label.scale + " " + LOCALE_UI.Label.de_of + " ";
-        nom_scale += IDSCALE_TO_HSCALE[LANG][scale];
-        $('div#gconfig_nom_cur_scale').html(nom_scale);
+      tone:function(){
+        var tone = Roadmap.Data.tone;
+        $('img#gconfig_img_cur_tone').attr('src', UI.path_image("note/gamme/"+tone+".jpg"));
+        var nom_tone = LOCALE_UI.Label.today + ", ";
+        nom_tone += LOCALE_UI.Label.tone + " " + LOCALE_UI.Label.de_of + " ";
+        nom_tone += IDSCALE_TO_HSCALE[LANG][tone];
+        $('div#gconfig_nom_cur_tone').html(nom_tone);
       }
     },
   //   // -------------------------------------------------------------------

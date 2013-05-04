@@ -7,5 +7,5 @@ tempo_max:    132
 nb_temps:     2
 duree_temps:  4
 metrique:     "2/4"
-tune:         0
+tone:         0
 nb_mesures:   48

@@ -12,7 +12,7 @@ window.LOCALE_UI = {
     lab_obligatory    :"Obligatoire",
     lab_roadmap       :"Feuille de route",
     lab_rapport       :"Rapport de travail",
-    lab_tune          :"Tonalité",
+    lab_tone          :"Tonalité",
     lab_with_next     :"Lié au suivant"
   },
   Id:{
@@ -57,7 +57,7 @@ window.LOCALE_UI = {
     resume          :"Résumé",
     roadmap         :"Feuille de route",
     ROADMAP         :"FEUILLE DE ROUTE",
-    scale           :"gamme",
+    tone           :"gamme",
     subtitle        :"Gestion au quotidien de ses exercices de musique",
     suite_exercices :"Suite exercices",
     TITLE           :"FEUILLE DE ROUTE MUSICALE",
@@ -144,7 +144,7 @@ window.LOCALE_UI = {
     label_aleatoire         :"Ordre aléatoire",
     option_same_ex          :"Répétition d'exercices",
     option_obligatory       :"Exercices obligatoires",
-    option_new_scale        :"Nouvelle gamme",
+    option_new_tone        :"Nouvelle gamme",
     option_next_config      :"Configuration suivante",
     direction               :"Direction",
     btn_prepare             :"Prépare ma séance de travail !",
@@ -162,11 +162,13 @@ window.LOCALE_UI = {
     total_working_time      :"Temps de travail total",
     titre_by_ex             :"Temps de travail par exercice",
     titre_by_type           :"Temps de travail par techniques",
+    titre_by_tone           :"Temps de travail par tonalité",
     btns_close              :"Retourner aux exercices",
     legends_titre           :"Légende des couleurs par type de difficulté",
     rapport_du              :"Rapport du ",
     btn_open_legend         :"Légende des couleurs",
     btn_open_by_type        :"Détail par technique",
+    btn_open_by_tone        :"Détail par tonalité",
     btn_open_by_ex          :"Détail par exercice"
   }
 }

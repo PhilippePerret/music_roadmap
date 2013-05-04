@@ -15,7 +15,7 @@ window.LOCALE_UI = {
     lab_obligatory    :"Obligatory",
     lab_roadmap       :"Roadmap",
     lab_rapport       :"Work Report",
-    lab_tune          :"Tune",
+    lab_tone          :"Tune",
     lab_with_next     :"Linked to next"
   },
   Id:{
@@ -59,7 +59,7 @@ window.LOCALE_UI = {
     pulse                     :"pulse",
     resume                    :"Summary",
     roadmap                   :"Roadmap",
-    scale                     :"scale",
+    tone                     :"tone",
     subtitle                  :"Deal with your daily music exercices",
     suite_exercices           :"Exercices suite",
     TITLE                     :"MUSIC ROADMAP",
@@ -147,7 +147,7 @@ window.LOCALE_UI = {
     label_aleatoire         :"Random order",
     option_same_ex          :"Unable same exercice",
     option_obligatory       :"Obligatories",
-    option_new_scale        :"New scale",
+    option_new_tone        :"New tone",
     option_next_config      :"Next general configuration",
     btn_prepare             :"Prepare the working session!",
     direction               :"Direction",
@@ -166,10 +166,12 @@ window.LOCALE_UI = {
     legends_titre           :"Color per difficulty type",
     titre_by_ex             :"Working times per exercice",
     titre_by_type           :"Working times per technic",
+    titre_by_tone           :"Working times per tone",
     btns_close              :"Back to exercices",
     rapport_du              :"Report of the ",
     btn_open_legend         :"Color legend",
     btn_open_by_type        :"Details per technique",
+    btn_open_by_tone        :"Details per tone",
     btn_open_by_ex          :"Details per exercice"
   }
 }

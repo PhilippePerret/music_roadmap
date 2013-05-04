@@ -20,7 +20,7 @@ def exercice_save_duree_travail rm, dataex, datauser
   
   # -- Tout est OK, on peut sauver la durée de travail sur l'exercice --
   # 
-  # @note: sera aussi ajouté la gamme (:scale) ou la suite harmonique (:hseq)
+  # @note: sera aussi ajouté la gamme (:tone) ou la suite harmonique (:hseq)
   # si elles sont définies dans les paramètres.
   # 
   begin
@@ -29,17 +29,17 @@ def exercice_save_duree_travail rm, dataex, datauser
     iex     = Exercice.new(dataex[:id], {:roadmap => rm})
     seance  = Seance.new rm
     options = {}
-    [:scale, :config].each do |key|
+    [:tone, :config].each do |key|
       unless param(key).nil?
         val = case key
-          when :scale then 
+          when :tone then 
             param(key).to_i
           else param(key)
           end
         options = options.merge key => val
       end
     end
-    working_data = {:time => dataex[:duree].to_i, :tempo => dataex[:tempo], :scale => param(:scale).to_i}
+    working_data = {:time => dataex[:duree].to_i, :tempo => dataex[:tempo], :tone => param(:tone).to_i}
     seance.add_working_time iex, working_data, options
     return nil
   rescue Exception => e

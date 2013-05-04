@@ -30,7 +30,7 @@ window.ERROR = {
     required              :"Une feuille de route est requise !",
     too_many              :"Désolé, mais vous ne pouvez pas créer plus de dix feuilles de route…",
     cant_create           :"Impossible de créer la feuille de route avec les données fournies…",
-    unknown               :"Feuille de route introuvable… Impossible de la charger.",
+    unknown               :"Feuille de route introuvable…",
     existe_deja           :"Cette feuille de route existe déjà.",
     not_destroyed         :"# Impossible de détruire cette feuille de route…",
     bad_owner             :"Vous devez être le possesseur de cette feuille de route pour procéder à cette opération !",
@@ -78,6 +78,7 @@ window.ERROR = {
   },
   Seance:{
     no_working_time       :"Il faut indiquer un temps de travail !",
+    no_exercice_found     :"Aucun exercice de votre feuille de route ne répond aux critères sélectionnés.",
     no_exercices          :"Il n'y a aucun exercice à jouer !"
   }
 }

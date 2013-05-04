@@ -8643,7 +8643,7 @@ var fxNow, timerId,
 				parts = rfxnum.exec( value ),
 				target = tween.cur(),
 				start = +target || 0,
-				scale = 1,
+				tone = 1,
 				maxIterations = 20;
 
 			if ( parts ) {
@@ -8659,16 +8659,16 @@ var fxNow, timerId,
 
 					do {
 						// If previous iteration zeroed out, double until we get *something*
-						// Use a string for doubling factor so we don't accidentally see scale as unchanged below
-						scale = scale || ".5";
+						// Use a string for doubling factor so we don't accidentally see tone as unchanged below
+						tone = tone || ".5";
 
 						// Adjust and apply
-						start = start / scale;
+						start = start / tone;
 						jQuery.style( tween.elem, prop, start + unit );
 
-					// Update scale, tolerating zero or NaN from tween.cur()
-					// And breaking the loop if scale is unchanged or perfect, or if we've just had enough
-					} while ( scale !== (scale = tween.cur() / target) && scale !== 1 && --maxIterations );
+					// Update tone, tolerating zero or NaN from tween.cur()
+					// And breaking the loop if tone is unchanged or perfect, or if we've just had enough
+					} while ( tone !== (tone = tween.cur() / target) && tone !== 1 && --maxIterations );
 				}
 
 				tween.unit = unit;
