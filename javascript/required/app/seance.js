@@ -11,9 +11,9 @@ window.Seance = {
   cur_exercice    :null,    // Current exercice (instance of Exercice)
   ordre_stack     :null,    // Stack of the exercices to play
 
-  // Start working session
+  // Start working session (either prepared session or normal session)
   start:function(){
-    if(this.section_opened)UI.open_volet('running_seance');
+    UI.open_volet('running_seance');
     if(false == this.set_exercices_stack())return this.show();
     Exercices.deselect_all();
     this.play_first_in_stack();
@@ -59,16 +59,14 @@ window.Seance = {
   // (call by button 'Next exercice')
   next_exercice:function(){
     this.stop_cur_exercice();
-    if ( this.ordre_stack.length > 0 ){
-      // Still exercices
+    if ( this.ordre_stack.length > 0 ){// Still exercices
       if ( this.ordre_stack.length == 1 ){
         // Last exercice
         UI.set_invisible('a#btn_seance_end');
         $('a#btn_seance_play').html(LOCALE_UI.Seance.end_exercices);
       }
       this.play_first_in_stack();
-    } else {
-      // No more exercices
+    } else {// No more exercices
       this.stop() ;
     }
     return false;// for a-link
@@ -86,9 +84,11 @@ window.Seance = {
       // suivra l'enregistrement (ou non) de la durée de travail sur
       // l'exercice. Cette méthode ouvrira le rapport de travail.
       if('undefined'==typeof fin) fin = this.no_more_exercice();
-      if(fin) this.cur_exercice.fx_after_save = $.proxy(this.stop_suite,this);
-      Exercices.deselect(this.cur_exercice.id) ; // stop aussi l'exercice et le métronome
-      this.cur_exercice = null ;
+      if(this.cur_exercice != null){
+        if(fin) this.cur_exercice.fx_after_save = $.proxy(this.stop_suite,this);
+        Exercices.deselect(this.cur_exercice.id) ; // stop aussi l'exercice et le métronome
+        this.cur_exercice = null ;
+      }
     }
   },
   // Play the first exercice in the stack
@@ -115,11 +115,11 @@ window.Seance = {
     this.stopping = true;
     if( forcer_arret === true ) this.stop_cur_exercice(true);
     Metronome.stop();
+    this.ordre_stack  = null;
     return false;//for a-link
   },
   // After stop, we display the report
   stop_suite:function(){
-    this.ordre_stack  = null;
     this.stopping     = false;
     Rapport.show();
   },

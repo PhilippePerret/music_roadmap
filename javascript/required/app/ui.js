@@ -25,7 +25,7 @@ $.extend(UI,{
   SHOWS_ON_RAPPORT      :new DArray([]),
   HIDDENS_ON_SEANCE     :new DArray([]),
   SHOWS_ON_SEANCE       :new DArray(['a#btn_seance_play']),
-  SHOWS_ON_EXERCICES    :new DArray(['a#btn_seance_play', 'a#btn_exercices_move', 'a#btn_exercice_create']),
+  SHOWS_ON_EXERCICES    :new DArray(['a#btn_seance_play', 'a#btn_exercices_move', 'a#btn_exercice_create', 'div#open_roadmap_specs']),
   HIDDENS_WHILE_WORKING :new DArray(['a#btn_exercice_create','a#btn_exercices_move', 'div#open_roadmap_specs']),
   SHOWED_WHILE_WORKING  :new DArray(['a#btn_seance_play','a#btn_seance_end','a#btn_seance_pause']),
   current_volet:'exercices',
