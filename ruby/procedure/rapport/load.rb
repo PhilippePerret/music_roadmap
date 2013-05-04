@@ -35,6 +35,6 @@ def rapport_load rm, duser, options
   rescue Exception => e
     return e.message
   end
-  # OK, build rapport according to options
+  # OK, seek data report according to options
   Rapport.new(rm, options).data_for_js_build
 end

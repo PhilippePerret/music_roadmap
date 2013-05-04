@@ -38,10 +38,12 @@ window.Time = {
   //                    number of hours, minutes, etc. Default: FALSE
   // @param   del_hour    Delimitor between hours and minutes (default: ":")
   // @param   del_mns     Delimitor between minutes and seconds (default: ":")
-  seconds_to_horloge:function(secs, complet, del_hour, del_mns){
+  seconds_to_horloge:function(secs, complet, del_hour, del_mns, del_scs){
     if('undefined'==typeof complet)   complet   = false;
     if('undefined'==typeof del_hour)  del_hour  = ":";
     if('undefined'==typeof del_mns)   del_mns   = ":";
+    if('undefined'==typeof del_scs)   del_scs   = "";
+    secs = parseInt(secs,10);
     var hrs = parseInt(secs / 3600, 10);
     var res = secs - (hrs * 3600);
     var mns = parseInt(res / 60, 10);
@@ -52,7 +54,7 @@ window.Time = {
     if (complet || hrs > 0) if (mns < 10){mns = "0"+mns}; 
     hrl += mns + del_mns ;
     if (scs < 10) scs = "0" + scs ;
-    hrl += scs;
+    hrl += scs + del_scs;
     return hrl ;
   }
 }

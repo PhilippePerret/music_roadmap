@@ -120,7 +120,7 @@ section#rapport div#rapport_cal_legends span.legend_type {
 }
 div#rapport_cal_by_type_content > div {
   display       :inline-block;
-  width         :215px;
+  width         :300px;
 }
 span.legend_type {
   margin-right  :10px;

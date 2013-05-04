@@ -81,6 +81,7 @@ window.Rapport = {
    *
    */
   CALC_day            :null,    // Current day calculated (String YYMMDD)
+  number_of_days      :null,    // Number of days of the seance (set by ruby)
   total_working_time  :null,
   seances             :null,
   exercices           :null,
@@ -95,6 +96,7 @@ window.Rapport = {
    *  can calculate all period values.
    */
   CALC:function(){
+    this.number_of_days = parseInt(this.data.number_of_days, 10);
     this.CALC_init_all();
     this.CALC_load_all_exercices();
   },
@@ -274,6 +276,15 @@ window.Rapport = {
     for(var i in ids) list.push(exercice(ids[i]).titre_complet());
     return '<div class="mini">'+list.join(', ')+'.</div>';
   },
+  // Return average time of +time+ according to period days
+  // @param   time    Total time
+  // @param   as_f    If true (default:false) return a float number. Otherwise
+  //                  return a clocktime
+  average_for_time:function(time, as_f){
+    var av = time / this.number_of_days;
+    if(as_f == true) return av;
+    return Time.seconds_to_horloge(av, false, ':', "'", '"');
+  },
   /* -------------------------------------------------------------------
    *  Report methods for an exercice
    -------------------------------------------------------------------*/
@@ -332,16 +343,19 @@ window.Rapport = {
   ByTone:{
     seance:null,                // current seance for building (in Rapport.seances)
     with_exercices_list:false,  // If true, return exercices list
+    with_moyenne:false,         // If true, print the average time per day
     /*  Build display for current month
      *
      */
     build_divs_of_month:function(){
-      this.with_exercices_list = false;
+      this.with_exercices_list  =false;
+      this.with_moyenne         =true;
       return Rapport.building_loop(Rapport.tones_sorted, $.proxy(this.div_tone_month,this));
     },
     build_divs_of_seance:function(seance){
       this.seance = Rapport.seances[seance.day];
-      this.with_exercices_list = true;
+      this.with_exercices_list  =true;
+      this.with_moyenne         =false;
       return Rapport.building_loop(
           Rapport.seances[seance.day].tones_sorted,
           $.proxy(this.div_tone_seance,this)
@@ -362,10 +376,17 @@ window.Rapport = {
       var div = '<div>' +
         '<span class="legend_tone">' +
           '<span class="tone">' + IDSCALE_TO_HSCALE[LANG][idtone] + '</span>' +
-          '<span class="time">' + Time.seconds_to_horloge(hex.time,true) + '</span>';
+          '<span class="time">' + 
+            Time.seconds_to_horloge(hex.time,true) + this.moyenne_for(hex) + 
+          '</span>';
       if(this.with_exercices_list) div += Rapport.exercices_as_human_list(hex.exercices);
       div += '</span>' + '</div>';
       return div;
+    },
+    // Return a string " (<time>/day)" for the tone +hex+
+    moyenne_for:function(hex){
+      if( ! this.with_moyenne) return "";
+      return " ("+Rapport.average_for_time(hex.time)+"/"+LOCALE_UI.Label.day+")";
     }
   },
   
@@ -375,16 +396,19 @@ window.Rapport = {
   ByType:{
     seance:null,                // current seance for building (in Rapport.seances)
     with_exercices_list:false,  // If true, return exercices list
+    with_moyenne:false,         // If true, print the average time per day
     /*  Build display for current month
      *
      */
     build_divs_of_month:function(){
-      this.with_exercices_list = false;
+      this.with_exercices_list  =false;
+      this.with_moyenne         =true;
       return Rapport.building_loop(Rapport.types_sorted, $.proxy(this.div_type_month,this));
     },
     build_divs_of_seance:function(seance){
       this.seance = Rapport.seances[seance.day];
-      this.with_exercices_list = true;
+      this.with_exercices_list  =true;
+      this.with_moyenne         =false;
       return Rapport.building_loop(
           Rapport.seances[seance.day].types_sorted,
           $.proxy(this.div_type_seance,this)
@@ -406,10 +430,17 @@ window.Rapport = {
         '<span class="legend_type">' +
           '<span class="legend_type_color" style="background-color:#'+Exercices.COLORS_FOR_TYPE[idtype]+'"></span>' +
           '<span class="type">' + Exercices.TYPES_EXERCICE[idtype] + '</span>'+
-          '<span class="time">' + Time.seconds_to_horloge(hex.time,true) + '</span>';
+          '<span class="time">' + 
+            Time.seconds_to_horloge(hex.time,true) + this.moyenne_for(hex) +
+          '</span>';
       if(this.with_exercices_list) div += Rapport.exercices_as_human_list(hex.exercices);
       div += '</span>' + '</div>';
       return div;
+    },
+    // Return a string " (<time>/day)" for the type +hex+
+    moyenne_for:function(hex){
+      if( ! this.with_moyenne) return "";
+      return " ("+Rapport.average_for_time(hex.time)+"/"+LOCALE_UI.Label.day+")";
     }
   },
   

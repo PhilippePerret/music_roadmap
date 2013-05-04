@@ -61,13 +61,14 @@ class Rapport
   def data_for_js_build
     defaultize_options
     @data_seances = Seance.get_from_to roadmap, options[:from], options[:to]
-    # On calcule ici le temps de travail des exercices ?
-    # @TODO ?
-    # Pour faciliter le travail de javascript, on lui envoie le premier numéro
-    # du mois et le dernier. Ce numéro est le numéro du jour dans la semaine
+    # Pour faciliter le travail de javascript, on lui fournit quelques valeurs
+    # supplémentaires
+    datefrom  = Date.strptime(options[:from], '%y%m%d')
+    dateto    = Date.strptime(options[:to], '%y%m%d')
     @data_seances = @data_seances.merge(
       :year             => options[:year],
       :month            => options[:month] - 1,
+      :number_of_days   => (dateto - datefrom).numerator.to_i,
       :first_month_day  => week_day(Date.new(options[:year], options[:month], 1)),
       :last_month_day   => week_day(Date.new(options[:year], options[:month], -1))
     )

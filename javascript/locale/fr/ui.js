@@ -42,6 +42,7 @@ window.LOCALE_UI = {
     Update      :"Actualiser"
   },
   Label:{
+    day             :"jour",
     de_by           :"de",
     de_of           :"de",
     details         :"détails",
