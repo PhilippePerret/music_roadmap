@@ -144,7 +144,12 @@ Exercice.prototype.build = function(after){
   else
     $('li#li_ex-'+after).after( li ) ;
   // Réglage du tempo
-  $('select#tempo_ex-'+this.id).val( this.tempo ) ;
+  $('select#tempo_ex-'+this.id).val( this.tempo );
+  // Réglage de la tonalité
+  this.set_tone();
+}
+Exercice.prototype.set_tone = function(){
+  $('select#tone_ex-'+this.id).val(this.tone || Roadmap.Data.tone);
 }
 // Sauvegarde de l'exercice
 Exercice.prototype.save = function(fx_suite){
@@ -193,7 +198,7 @@ Exercice.prototype.code_html = function(){
   li += this.code_btns_edition() ;
   li += this.code_vignette() ;
   li += this.code_div_titre() ;
-  li += this.code_tempo() ;
+  li += this.code_tempo_et_tones();
   li += this.code_suite() ;
   li += this.code_note() ;
   li += '</li>'
@@ -260,7 +265,7 @@ Exercice.prototype.code_div_titre = function(){
   titre = recueil + auteur + titre ;
   return '<div id="titre_ex-'+this.id+'" class="ex_titre">' + titre + '</div>' ;
 }
-Exercice.prototype.code_tempo = function(){
+Exercice.prototype.code_tempo_et_tones = function(){
   var h = ""
   h += '<div id="tempi_ex-'+this.id+'" class="ex_tempo">' ;
   h += '<a class="ex_id" onclick="$.proxy(Exercices.show_path,Exercices,\''+this.id+'\')()">[ID '+this.id + "]</a>" ;      // ID
@@ -272,9 +277,19 @@ Exercice.prototype.code_tempo = function(){
   h += ' <select id="tempo_ex-'+this.id+'" class="ex_tempo" onchange="'+meth+'">' +
         Exercices.Edition.options_list(this.tempo_min, this.tempo_max) + '</select>' ;
   h += this.span_tempo_de_a() ;
+  h += this.code_tones();
   h += '<div class="div_up_tempo">' + LOCALE_UI.Label.in_next_session + ', ' + this.menu_up_tempo()+ '</div>' ;
   h += "</div>" ;
   return h ;
+}
+// Return select for current tone of ex
+// @note: ce menu ne doit avoir aucune action. Il est simplement lu par 
+// l'instance au moment où on doit enregistrer son temps de travail, pour savoir
+// dans quelle tonalité l'exercice/morceau a été joué
+Exercice.prototype.code_tones = function(){
+  return '<select id="tone_ex-'+this.id+'" class="tones" aide-value="exercice/prop/tone">' +
+          Exercices.Edition.options_of_select_tones() + 
+          '</select>';
 }
 Exercice.prototype.span_tempo_de_a = function(){
   return ' <span id="tempo_de_a_ex-'+this.id+'">(' +
@@ -320,10 +335,8 @@ Exercice.prototype.rise_tempo = function(){
 Exercice.prototype.code_suite = function(){
   var h = '<div class="ex_suite petit">' ;
   if (this.suite == 'harmonic'){
-    var suite = Roadmap.Data.maj_to_rel ?
-          "C->Am F->Dm Bb->Gm Eb->Cm Ab->Fm Db->Bbm Gb->Ebm B->G#m E->C#m A->F#m D->Bm G->Em C"
-        : "Am->C Em->G Bm->D F#m->A C#m->E G#m->B D#m->F# Bbm->Db Fm->Ab Cm->Eb Gm->Bb Dm->F Am"        
-    h += "Aujourd'hui : " + suite ;
+    // @TODO: Remplacer par une image
+    h += Roadmap.Data.maj_to_rel ? "MAJ -> Rel" : "Rel -> MAJ"
   }
   h += '</div>';
   return h ;

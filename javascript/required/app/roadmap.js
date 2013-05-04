@@ -550,6 +550,7 @@ window.Roadmap = {
       // On change de gamme
       ++ this.tone ;
       if (this.tone >= 24) this.tone = 0;
+      Exercices.set_tones();
       this.show();
       // Save it ?
       if ( this.config_generale_must_be_saved()){

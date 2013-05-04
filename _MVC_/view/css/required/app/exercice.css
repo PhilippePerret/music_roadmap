@@ -130,9 +130,13 @@ li.ex div.ex_titre {
   font-weight           :bold;
   font-size             :1.4em;
 }
-li.ex select.ex_tempo/*, li.ex select.ex_tempo option*/ {
+li.ex select.ex_tempo {
   font-family           :Verdana ;
   font-size             :1.4em ;
+}
+li.ex div.ex_tempo select.tones {
+  margin-left           :30px;
+  font-size             :1.3em;
 }
 li.ex div.ex_suite {
   width                 :31em;

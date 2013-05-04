@@ -1,16 +1,29 @@
 window.IDSCALE_TO_HSCALE = {
   fr:{
-    0:"Do", 1:"Réb (DO#)", 2:"Ré", 3:"Mib (Ré#)", 4:"Mi", 5:"Fa", 6:"Fa#/Solb",
-    7:"Sol", 8:"Lab (Sol#)", 9:"La", 10:"Sib (La#)", 11:"Si",
-    12:"Dom", 13:"Do#m (Rébm)", 14:"Rém", 15:"Ré#m/Mibm", 16:"Mim", 17:"Fam",
-    18:"Fa#m (Solbm)", 19:"Solm", 20:"Sol#m (Labm)", 21:"Lam", 22:"Sibm (La#m)", 
+    0:"Do", 1:"Réb/Do#", 2:"Ré", 3:"Mib/Ré#", 4:"Mi", 5:"Fa", 6:"Fa#/Solb",
+    7:"Sol", 8:"Lab/Sol#", 9:"La", 10:"Sib/La#", 11:"Si",
+    12:"Dom", 13:"Do#m/Rébm", 14:"Rém", 15:"Ré#m/Mibm", 16:"Mim", 17:"Fam",
+    18:"Fa#m/Solbm", 19:"Solm", 20:"Sol#m/Labm", 21:"Lam", 22:"Sibm/La#m", 
     23:"Sim"
   },
   en:{
-    0:"C", 1:"Db (C#)", 2:"D", 3:"Eb (D#)", 4:"E", 5:"F", 6:"F#/Gb",
-    7:"G", 8:"Ab (G#)", 9:"A", 10:"Bb (A#)", 11:"B",
-    12:"Cm", 13:"C#m (Dbm)", 14:"Dm", 15:"D#m/Ebm", 16:"Em", 17:"Fm",
-    18:"F#m (Gbm)", 19:"Gm", 20:"G#m (Abm)", 21:"Am", 22:"Bbm (A#m)", 23:"Bm"
+    0:"C", 1:"Db/C#", 2:"D", 3:"Eb/D#", 4:"E", 5:"F", 6:"F#/Gb",
+    7:"G", 8:"Ab/G#", 9:"A", 10:"Bb/A#", 11:"B",
+    12:"Cm", 13:"C#m/Dbm", 14:"Dm", 15:"D#m/Ebm", 16:"Em", 17:"Fm",
+    18:"F#m/Gbm", 19:"Gm", 20:"G#m/Abm", 21:"Am", 22:"Bbm/A#m", 23:"Bm"
+  },
+  fr_uniq:{
+    0:"Do", 1:"Réb", 2:"Ré", 3:"Mib", 4:"Mi", 5:"Fa", 6:"Fa#",
+    7:"Sol", 8:"Lab", 9:"La", 10:"Sib", 11:"Si",
+    12:"Dom", 13:"Do#m", 14:"Rém", 15:"Ré#m", 16:"Mim", 17:"Fam",
+    18:"Fa#m", 19:"Solm", 20:"Sol#m", 21:"Lam", 22:"Sibm", 
+    23:"Sim"
+  },
+  en_uniq:{
+    0:"C", 1:"Db", 2:"D", 3:"Eb", 4:"E", 5:"F", 6:"F#",
+    7:"G", 8:"Ab", 9:"A", 10:"Bb", 11:"B",
+    12:"Cm", 13:"C#m", 14:"Dm", 15:"D#m", 16:"Em", 17:"Fm",
+    18:"F#m", 19:"Gm", 20:"G#m", 21:"Am", 22:"Bbm", 23:"Bm"
   }
   
 }
@@ -84,7 +97,7 @@ $.extend(window.Exercices,{
     return false;
   },
   
-  // Return Scale of the day (if not defined, "C")
+  // Return Tone of the day (if not defined, 0 for "C")
   _tone:function(){
     if (this.tone === null) this.tone = Roadmap.Data.tone;
     return this.tone;
@@ -475,8 +488,13 @@ $.extend(window.Exercices,{
     F.show(mes, {timer:false}) ;
     return false ; //pour le a-lien
   },
-  
-  
+  /*  Set tone of every displayed exercice when tone is changed in general
+   *  config.
+   */
+  set_tones:function(){
+    var ordre = this.ordre();
+    for(var i in ordre) exercice(ordre[i]).set_tone();
+  },
   // -------------------------------------------------------------------
   //  Sous objet Exercices.Edition
   // -------------------------------------------------------------------
@@ -701,5 +719,18 @@ $.extend(window.Exercices,{
       }
       return options ;
     },
+    // Return options Dom element for a select tons (i.e. without select tag)
+    options_for_tones:null, // to build it only once
+    options_of_select_tones:function(){
+      if(this.options_tones == null){
+        this.options_for_tones = "";
+        for(var idtone in IDSCALE_TO_HSCALE[LANG+'_uniq']){
+          this.options_for_tones += '<option value="'+ idtone + '">' + 
+                                      IDSCALE_TO_HSCALE[LANG+'_uniq'][idtone] +
+                                    '</option>';
+        }
+      }
+      return this.options_for_tones;
+    }
   },
 })
