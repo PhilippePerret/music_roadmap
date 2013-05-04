@@ -29,6 +29,7 @@ window.MESSAGE = {
   Exercice: {
     saved                     : "Exercice enregistré avec succès.",
     work_on_exercice_saved    : "Temps de travail de l'exercice enregistré",
+    working_time_insuffisant  :"Temps de travail insuffisant sur l'exercice. Je ne l'enregistre pas.",
     really_save_duree_travail : "Une heure de travail sur cet exercice, vraiment ? Si c'est le cas, d'abord bravo ;-), et confirmez en cliquant sur le lien ci-dessous, pour que j'enregistre ce temps."
   },
   DBExercice:{

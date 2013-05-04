@@ -6,6 +6,7 @@ def ajax_exercice_save_duree_travail
   rm = Roadmap.new param(:roadmap_nom), param(:user_mail)
   dataex = {:id => param(:ex_id), :duree => param(:ex_w_duree).to_i, :tempo => param(:ex_tempo).to_i}
   RETOUR_AJAX[:error] = exercice_save_duree_travail rm, dataex, {:mail => param(:user_mail), :md5 => param(:user_md5)}
+  RETOUR_AJAX[:duree] = param(:ex_w_duree).to_i # pour l'affichage
 end
 
 def exercice_save_duree_travail rm, dataex, datauser

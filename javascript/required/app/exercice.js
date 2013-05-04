@@ -403,6 +403,7 @@ Exercice.prototype.calc_duree_travail = function(){
     this.save_duree_travail();
   } else {
     // Temps insuffisant pour mémoriser l'exercice
+    F.show(MESSAGE.Exercice.working_time_insuffisant + " ("+this.w_duree+")");
     F.show("L'exercice n'a été travaillé que "+this.w_duree+" secondes, je ne l'enregistre pas.");
     this.playing = false ;
     // Si une méthode après sauvegarde (de la durée, ici) a été définie, il
@@ -433,7 +434,8 @@ Exercice.prototype.save_duree_travail = function(rajax){
     return false; // pour le a-lien si c'est appelé depuis un message
   } else {
     if (false == traite_rajax(rajax)){
-      F.show(MESSAGE.Exercice.work_on_exercice_saved);
+      F.show(MESSAGE.Exercice.work_on_exercice_saved + " ("+
+              Time.seconds_to_horloge(parseInt(rajax.duree,10))+")");
     }
     // Est-ce qu'une méthode est à appeler après la sauvegarde ?
     this.call_method_after_save();

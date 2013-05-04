@@ -27,9 +27,10 @@ window.MESSAGE = {
   },
   // EXERCICE
   Exercice: {
-    saved                     : "Exercice successfully saved!",
-    work_on_exercice_saved    : "Working time on this exercice has been recorded",
-    really_save_duree_travail : "You've worked a hour on this exercice, really? If it's true, please confirm by clicking the link below."
+    saved                     :"Exercice successfully saved!",
+    work_on_exercice_saved    :"Working time on this exercice has been recorded",
+    working_time_insuffisant  :"Too short working time on exercice. I don't save it.",
+    really_save_duree_travail :"You've worked a hour on this exercice, really? If it's true, please confirm by clicking the link below."
   },
   DBExercice:{
     added                     :"BDE Exercices successfully added!",
