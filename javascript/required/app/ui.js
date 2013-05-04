@@ -30,8 +30,7 @@ $.extend(UI,{
   SHOWED_WHILE_WORKING  :new DArray(['a#btn_seance_play','a#btn_seance_end','a#btn_seance_pause']),
   current_volet:'exercices',
   open_volet:function(volet){
-    if(this.current_volet != null){
-      if (this.current_volet == volet) return false;
+    if(this.current_volet != null && this.current_volet != volet){
       this.close_volet(this.current_volet);
     }
     // console.log("open volet "+volet);
@@ -46,6 +45,7 @@ $.extend(UI,{
         UI.set_visible('ul#exercices');
         Exercices.set_boutons() ;
         this.SHOWS_ON_EXERCICES.show();
+        Exercices.set_boutons();
         break;
       case 'seance':
         this.HIDDENS_ON_SEANCE.hide();

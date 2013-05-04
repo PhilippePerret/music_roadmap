@@ -14,7 +14,7 @@ def calendar_buttons
 <div id="calendar_month_buttons" class="buttons">
   <div id="rapport_cal_div_total_wk" class="fleft">
     <span id="rapport_cal_total_wk_libelle"></span>
-    <span id="rapport_cal_total_working_time"></span>
+    <span id="rapport_cal_total_working_time" class="time"></span>
   </div>
   <a  href="#"
       class="btn"
@@ -95,6 +95,11 @@ sr += <<-EOC
         class=""
         onclick="return $.proxy(Rapport.Cal.open, Rapport.Cal, 'by_type')()"
         ></a>
+    <a  href="#"
+        id="btn_cal_open_by_tone"
+        class=""
+        onclick="return $.proxy(Rapport.Cal.open, Rapport.Cal, 'by_tone')()"
+        ></a>
   </div>
   <div id="rapport_cal_legend" style="display:none;">
     <div id="rapport_cal_legends_titre" class="italic"></div>
@@ -113,6 +118,13 @@ sr += <<-EOC
       &nbsp;(<span class="per_month"></span>)
     </div>
     <div id="rapport_cal_by_type_content"></div>
+  </div>
+  <div id="rapport_cal_by_tone" style="display:none;">
+    <div class="soustitre">
+      <span id="rapport_cal_by_tone_titre"></span>
+      &nbsp;(<span class="per_month"></span>)
+    </div>
+    <div id="rapport_cal_by_tone_content"></div>
   </div>
 </section>
 EOC
@@ -135,6 +147,11 @@ sr += <<-EOC
       &nbsp;(<span class="per_day"></span>)
     </div>
     <div id="rapport_day_by_type_content"></div>
+    <div class="soustitre">
+      <span id="rapport_day_by_tone_titre"></span>
+      &nbsp;(<span class="per_day"></span>)
+    </div>
+    <div id="rapport_day_by_tone_content"></div>
   </div>
 </section>
 EOC

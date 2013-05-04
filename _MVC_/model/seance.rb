@@ -66,11 +66,11 @@ class Seance
   #                           { :day    => seance day ("YYMMDD"), 
   #                             :time   => Working time (Fixnum, seconds), 
   #                             :tempo  => Tempo used (Fixnum), 
-  #                             :scale  => Scale used (Fixnum, 0-11 = C->B, 12-23 = Cm->Bm),
+  #                             :tone  => Scale used (Fixnum, 0-11 = C->B, 12-23 = Cm->Bm),
   #                             :id     => Exercice ID
   #                           }
   #       :tempos           => Array of tempi used for the exercice
-  #       :scales           => Array of scales used for the exercice
+  #       :tones           => Array of tones used for the exercice
   #       :seances          => Array of seance String days (["YYMMJJ", ...])
   #     }
   # 
@@ -83,7 +83,7 @@ class Seance
       :durations        => [],
       :data             => [],
       :tempos           => [],
-      :scales           => [],
+      :tones           => [],
       :seances          => []
     }
     lasts(iex.roadmap,x)[:seances].each do |jour, dseance|
@@ -94,7 +94,7 @@ class Seance
         data_exercice[:number_of_times] += 1
         data_exercice[:data]      << dex.merge(:day => jour)
         data_exercice[:tempos]    << dex[:tempo]
-        data_exercice[:scales]    << dex[:scale]
+        data_exercice[:tones]    << dex[:tone]
         data_exercice[:durations] << dex[:time]
       end
     end
@@ -437,16 +437,16 @@ class Seance
     #   :iex::      Instance Exercice of the exercice
     #   :dwork::    {:time => Working time on the exercice, :tempo => tempo}
     #   :options::  Some options:
-    #               :scale::      (optional) Scale used to work now
+    #               :tone::      (optional) Scale used to work now
     #               :config::     (optional) General configuration of the day
     # 
     def add_working_time iex, dwork, options = nil
       data[:id_exercices] << iex.id unless data[:id_exercices].include? iex.id
       dwork = dwork.merge :id => iex.id
       unless options.nil?
-        @data[:scale] ||= []
-        @data[:scale] << options[:scale] if options.has_key?(:scale)
-        @data[:scale].uniq!
+        @data[:tone] ||= []
+        @data[:tone] << options[:tone] if options.has_key?(:tone)
+        @data[:tone].uniq!
         [:config].each do |key|
           @data = @data.merge key => options[key] if options.has_key?(key)
         end
@@ -505,7 +505,7 @@ class Seance
         :exercices          => [],  # Exercices list (Array of simple Hashes)
                                     # Simple hash contains: {:id => , :tempo => , :time => working time}
         :id_exercices       => [],  # Just a Array of exercices Ids of the seance
-        :scale              => nil, # Scale of the day (NIL or a Array of Fixnum-s from 0 — C — to 23 — Bm —)
+        :tone              => nil, # Scale of the day (NIL or a Array of Fixnum-s from 0 — C — to 23 — Bm —)
         :harmonic_seq       => nil, # String (e.g. "WK" or "harmonic" (1))
         :config             => nil  # General configuration of exercices (NIL or Hash containing
                                     # :maj_to_rel, :down_to_up, :first_to_last)

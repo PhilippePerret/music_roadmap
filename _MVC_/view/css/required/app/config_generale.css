@@ -1,4 +1,4 @@
-div#div_cur_scale {
+div#div_cur_tone {
   margin-left       :2.4em;
   text-align        :center;
   background-color  :#eee;
@@ -7,11 +7,11 @@ div#div_cur_scale {
   border-radius     :18.8px;
   opacity           :0.59;
 }
-div#div_cur_scale div#gconfig_nom_cur_scale {
+div#div_cur_tone div#gconfig_nom_cur_tone {
   font-weight       :bold;
   margin-bottom     :12px;
 }
-div#div_cur_scale img#gconfig_img_cur_scale {
+div#div_cur_tone img#gconfig_img_cur_tone {
 /*  opacity           :0.67;*/
   width             :100%;
 }

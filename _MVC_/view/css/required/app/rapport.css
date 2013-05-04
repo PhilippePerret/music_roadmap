@@ -2,9 +2,22 @@ section#rapport {
   background-color    :white;
   padding             :1em;
 }
+/*
+    Généralités
+*/
+/* Les spans de class "time" */
+section#rapport span.time {
+  font-weight   :bold;
+}
+
 /* Boutons pour le rapport par mois */
 section#rapport div#calendar_month_buttons {
   
+}
+/* Libellé pour le temps total de travail */
+section#rapport span#rapport_cal_total_wk_libelle {
+  width       :160px;
+  text-align  :left;
 }
 section#section_calendar div#rapport_cal_buttons_open a {
   margin-left     :2em;
@@ -102,6 +115,9 @@ section#rapport div#rapport_cal_legends_titre {
   margin-top    :1em;
   margin-bottom :4px;
 }
+section#rapport div#rapport_cal_legends span.legend_type {
+  white-space   :nowrap;
+}
 div#rapport_cal_by_type_content > div {
   display       :inline-block;
   width         :215px;
@@ -116,9 +132,6 @@ span.legend_type span.type {
 }
 div#rapport_day_by_type_content span.legend_type span.type {
   font-size     :14px;
-}
-span.legend_type span.time {
-  font-weight   :bold;
 }
 span.legend_type span.legend_type_color {
   display       :inline-block;
@@ -163,4 +176,19 @@ div.rapport_div_ex div.types {
 div.rapport_div_ex img.ex_vignette {
   width           :140px;
   margin-right    :1em;
+}
+
+/*
+  by tone
+*/
+section#rapport span.legend_tone{
+  display       :block;
+}
+section#rapport span.legend_tone span.tone{
+  display       :inline-block;
+  width         :130px;
+}
+section#rapport div#rapport_day_by_tone_content span.legend_tone {
+  font-size     :1.1em;
+  margin-bottom :1em;
 }

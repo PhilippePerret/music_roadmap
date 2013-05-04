@@ -54,11 +54,14 @@ window.Rapport = {
     'span#rapport_cal_by_ex_titre'      :'titre_by_ex',
     'span#rapport_day_by_ex_titre'      :'titre_by_ex',
     'span#rapport_cal_by_type_titre'    :'titre_by_type',
+    'span#rapport_cal_by_tone_titre'    :'titre_by_tone',
     'span#rapport_cal_total_wk_libelle' :'total_working_time',
     'span#rapport_day_by_type_titre'    :'titre_by_type',
+    'span#rapport_day_by_tone_titre'    :'titre_by_tone',
     'a#btn_cal_open_legend'             :'btn_open_legend',
     'a#btn_cal_open_by_ex'              :'btn_open_by_ex',
     'a#btn_cal_open_by_type'            :'btn_open_by_type',
+    'a#btn_cal_open_by_tone'            :'btn_open_by_tone',
     'span.per_month'                    :'per_month',
     'span#section_rapport_byday_titre'  :'rapport_du'
     
@@ -72,213 +75,341 @@ window.Rapport = {
     this.ready = true;
   },
   
-  /* -------------------------------------------------------------------
-   *  Report methods for tunes
-   -------------------------------------------------------------------*/
-  ByTune:{
-    tunes         :null,
-    tunes_sorted  :null,
-    
-    // Get tunes of seance
-    tunes_of_seance:function(dseance){
-      var hex, htune;
-      if(this.tunes==null)this.tunes={};
-      for(var i in dseance.exercices){
-        hex = dseance.exercices[i];
+  /*  Main method to calculte all values and dispatch them
+   *
+   *  Used for month calculation. For a seance, use calculate_seance
+   *
+   */
+  CALC_day            :null,    // Current day calculated (String YYMMDD)
+  total_working_time  :null,
+  seances             :null,
+  exercices           :null,
+  exercices_sorted    :null,
+  types               :null,
+  types_sorted        :null,
+  tones               :null,
+  tones_sorted        :null,
+  /*  
+   *  Starting Calculated method
+   *  We must be sure that all exercices of the period are loaded. Then we
+   *  can calculate all period values.
+   */
+  CALC:function(){
+    this.CALC_init_all();
+    this.CALC_load_all_exercices();
+  },
+  CALC_load_all_exercices:function(){
+    var day, iex, idex, unloaded = [];
+    for(day in this.data.seances){
+      for(iex in this.data.seances[day].exercices){
+        idex = this.data.seances[day].exercices[iex].id;
+        if(false == exercice(idex).loaded) unloaded.push(idex);
       }
-    },
-    // Sort tunes by working times
-    sort_tunes:function(){
-      this.tunes_sorted = [];
-      for(var idtune in this.tunes)this.tunes_sorted.push([idtune, this.tunes[idtune].time]);
-      this.tunes_sorted.sort(function(a,b){return a[1] < b[1]});
     }
+    if( unloaded.length == 0 ) this.CALC_proceed();
+    else Exercices.load(unloaded, $.proxy(this.CALC_proceed,this));
+  },
+  // When all exercices are loaded, we can proceed
+  CALC_proceed:function(){
+    for(var day in this.data.seances) this.CALC_seance(this.data.seances[day]);
+    this.CALC_sort_values();
+    if(console){
+      console.log("\n*** Résultat de Rapport.CALC ***");
+      console.log("Rapport.total_working_time : " + this.total_working_time);
+      console.log("Rapport.seances:");
+      console.dir(this.seances);
+      console.log("Rapport.exercices:");
+      console.dir(this.exercices);
+      console.log("Rapport.types:");
+      console.dir(this.types);
+      console.log("Rapport.types_sorted");
+      console.dir(this.types_sorted);
+      console.log("Rapport.tones:");
+      console.dir(this.tones);
+      console.log("Rapport.tones_sorted");
+      console.dir(this.tones_sorted);
+      console.log("\n *** FIN résultat de Rapport.CALC ***");
+    }
+  },
+  /*  Initialize all values to calculate
+   *
+   */
+  CALC_init_all:function(){
+    this.total_working_time = 0;
+    [this.seances, this.exercices, this.types, this.tones] = [{}, {}, {}, {}];
+    [this.exercices_sorted, this.types_sorted, this.tones_sorted] = [[],[],[]];
+  },
+  /*  Sort all values collected to define the <foo>_sorted properties
+   *  of the report.
+   */
+  CALC_sort_values:function(){
+    var idlist;
+    var ids_list  = ['types', 'tones', 'exercices'];
+    for(var ilist in ids_list){
+      idlist  = ids_list[ilist];
+      this[idlist+'_sorted'] = this.CALC_sort_list(this[idlist]);
+    }
+    for(var day in this.seances){for(var ilist in ids_list){
+      idlist  = ids_list[ilist];
+      this.seances[day][idlist+'_sorted'] = this.CALC_sort_list(this.seances[day][idlist]);
+    }}
+  },
+  CALC_sort_list:function(list){
+    list_to_sort = [];
+    for(var id in list) list_to_sort.push([id, list[id].time]);
+    list_to_sort.sort(function(a,b){return a[1] < b[1]});
+    return list_to_sort;
+  },
+  /*  Calculate values for a seance (in fact a day)
+   *
+   *  @products Defines (incremente)
+   *    day       :Day of the seance
+   *    time      :Total working time of the seance (calculated on the exercices)
+   *    tones     :Hash of data tones (cf. below)
+   *    types     :Hash of data types (cf. below)
+   *    exercices :Hash of data exercices (cf. below)
+   *
+   */
+  CALC_seance:function(dseance){
+    var idex;
+    var day = dseance.day.toString();
+    this.CALC_day = day;
+    this.seances[day] = {
+      day         :day,
+      time        :0,
+      exercices   :{},        // key=<ex id> value=<ex working time in seance>
+      exercices_sorted:[],
+      types       :{},        // key=<type id> valeur=<type working time in seance>
+      types_sorted:[],
+      tones       :{}, 
+      tones_sorted:[]
+    }
+    for(var iex in dseance.exercices){
+      idex = dseance.exercices[iex].id;
+      this.CALC_exercice(dseance.exercices[iex]);
+    }
+  },
+  /*  Calculates values of exercice from +hex+
+   *
+   *  @param    hex   An Hash containing :id, :time, :tone and :tone as Hash
+   *                  recorded in the seance file.
+   *
+   *  @products
+   *    - Initialize exercices[<id ex>] if needed
+   *    - Add the working time of the ex in the total working time
+   *    - Add the working time of the ex in the working time of current session calculated
+   *    - Add the working time of the ex to the ex
+   *    - Add exercices to seance
+   *    - Add the tone of ex to tones + working time
+   *    - Add the types of ex to types + working time
+   */
+  CALC_exercice:function(hex){
+    var wtime   = hex.time;
+    var idex    = hex.id;
+    var wtone   = hex.tone;
+    var seance  = this.seances[this.CALC_day];
+    if('undefined'==typeof this.exercices[idex]) this.CALC_initialize_exercice(idex);
+    var dex = this.exercices[idex];
+    // Working time
+    this.total_working_time += wtime;
+    dex.time                += wtime;
+    seance.time             += wtime;
+    // Tempo
+    if('undefined' == typeof dex.tempi[hex.tempo]) dex.tempi[hex.tempo] = 0;
+    dex.tempi[hex.tempo] += wtime;
+    if('undefined'==typeof seance.exercices[idex]) seance.exercices[idex] = {id:idex, time:0};
+    seance.exercices[idex].time += wtime;
+    // Types
+    // -----
+    for(var itype in dex.instance.types){
+      var idtype = dex.instance.types[itype];
+      if('undefined'==typeof seance.types[idtype])  seance.types[idtype]={id:idtype, time:0,exercices:[]};
+      if('undefined'==typeof this.types[idtype])    this.types[idtype]  ={id:idtype, time:0,exercices:[]};
+      seance.types[idtype].time += wtime;
+      seance.types[idtype].exercices.push(idex);
+      this.types[idtype].time += wtime
+      this.types[idtype].exercices.push(idex);
+    }
+    // Tones
+    // -----
+    // @rappel: peu importe que l'exercice soit "à tonalité fixe", c'est toujours
+    // la tonalité enregistrée dans le hex de l'exercice dans la séance qui définit
+    // la tonalité à laquelle a été travaillé l'exercice.
+    if('undefined'==typeof this.tones[wtone])   this.tones[wtone]   = {id:wtone, time:0,exercices:[]};
+    if('undefined'==typeof seance.tones[wtone]) seance.tones[wtone] = {id:wtone, time:0,exercices:[]};
+    if('undefined'==typeof dex.tones[wtone])    dex.tones[wtone]    = 0;
+    this.tones[wtone].time += wtime;
+    this.tones[wtone].exercices.push(idex);
+    seance.tones[wtone].time += wtime;
+    seance.tones[wtone].exercices.push(idex);
+    dex.tones[wtone] += wtime;
+  },
+  /*  Initialize a new exercice calculated
+   *
+   */
+  CALC_initialize_exercice:function(idex){
+    this.exercices[idex] = {
+      id: idex, instance:exercice(idex), time:0, tones:{}, tempi:{}
+    }
+  },
+  /*
+   * Main method which build divs for a sorted thing
+   *
+   * * PARAMS
+   *    :sorted::     Sorted list containing paires with [id, time]
+   *    :fx::         Building method. It must return the code HTML of the
+   *                  div for the thing <id>.
+   */
+  building_loop:function(sorted, fx){
+    var divs = "";
+    for(var i in sorted){
+      var id = sorted[i][0];
+      divs += fx(id);
+    }
+    return divs;
+  },
+  // Return exercice list +ids+ as human list (whole title of exercices)
+  exercices_as_human_list:function(ids){
+    var list  = [];
+    for(var i in ids) list.push(exercice(ids[i]).titre_complet());
+    return '<div class="mini">'+list.join(', ')+'.</div>';
   },
   /* -------------------------------------------------------------------
    *  Report methods for an exercice
    -------------------------------------------------------------------*/
   ByEx:{
-    /* Hash of exercices
-     * An hash where key is the exercice ID and value is a hash with:
-     *  id:<ex ID>, time:<total working time>, tempi:<sorted tempos>,
-     *  instance:<Exercice instance>
+    cur_day: null,
+    
+    /*  Build all divs for exercices of the current period (generaly the month)
      *
      */
-    exercices:null,
-    
-    /*  Exercices sorted by working time
-     *  An Array of arrays containing [<ex id>, <working time>]
-     */
-    exercices_sorted:null,
-    
-    /*  Total working time (used for build month)
-     */
-    total_working_time:null,
-    
-    /*
-     * main to build the exercice list of the whole month
-     */
-    build_month:function(){
-      this.exercices = {};
-      this.total_working_time = 0;
-      for(var day in Rapport.data.seances)this.build_exercices_of_seance(Rapport.data.seances[day], true);
-      return this.build_divs();
+    build_divs_of_month:function(){
+      return Rapport.building_loop(Rapport.exercices_sorted, $.proxy(this.div_exercice_month,this));
     },
     /* Main -- Build divs for all exercices of session dseance
      *
      */
-    build_exercices_of_seance:function(dseance, onlydata){
-      var onlydata = 'undefined'!=typeof(onlydata) && onlydata == true;
-      if(!onlydata){this.exercices = {};this.total_working_time=0}
-      this.ary_exercices_to_hash(dseance); // => this.exercices
-      if(!onlydata) return this.build_divs();
+    build_divs_of_seance:function(dseance){
+      this.cur_day = dseance.day;
+      return Rapport.building_loop(
+                Rapport.seances[dseance.day].exercices_sorted,
+                $.proxy(this.div_exercice_seance, this)
+                );
     },
-    
-    /*
-     * Build all divs of exercices
-     *
-     * @products    Also calculates the total working time
-     */
-    build_divs:function(){
-      var i, divs = "";
-      this.sort_exercices();
-      for(i in this.exercices_sorted){
-        this.total_working_time += this.exercices_sorted[i][1];
-        divs += this.div_exercice(this.exercices[this.exercices_sorted[i][0]]);
-      }
-      return divs;
+    div_exercice_month:function(idex){
+      return this.div_exercice(Rapport.exercices[idex]);
     },
-    /* Build the div-line for the exercice +hex+
+    div_exercice_seance:function(idex){
+      return this.div_exercice(Rapport.seances[this.cur_day].exercices[idex]);
+    },
+    /* Build the div-line for the exercice defined by +hex+
      *
+     * @note:   +hex+ only contains specific information. To get all information
+     *          about ex, we need Rapport.exercices[<id ex>]
      */
     div_exercice:function(hex){
+      var gex;
+      if('undefined' == typeof hex.instance) gex = Rapport.exercices[hex.id];
+      else gex = hex;
       return  '<div class="rapport_div_ex">' +
-                '<div class="fleft">' + hex.instance.vignette_listing() + '</div>' +
-                '<div class="titre">' + hex.instance.titre_complet() + '</div>' +
+                '<div class="fleft">' + gex.instance.vignette_listing() + '</div>' +
+                '<div class="titre">' + gex.instance.titre_complet() + '</div>' +
                 '<div class="time">' + 
                   LOCALE_UI.Label.Working_time + LOCALE_UI.colon +
                   '<span class="bold">'+Time.seconds_to_horloge(hex.time,true)+'</span>'+
                 '</div>' +
                 '<div class="types">' +
                   LOCALE_UI.Exercices.Edition.types_of_exercice + LOCALE_UI.colon +
-                  hex.instance.types_as_human() +
+                  gex.instance.types_as_human() +
                 '</div>' +
                 '<div style="clear:both;"></div>' +
               '</div>';
-    },
-    /* Defines the `exercices' property (@see property definition above)
-     *
-     */
-    ary_exercices_to_hash:function(dseance){
-      var i, hex;
-      for(i in dseance.exercices){
-        hex = dseance.exercices[i];
-        dex = this.exercices[hex.id];
-        if('undefined' == typeof dex){
-          this.exercices[hex.id] = {
-            id:hex.id, time:0, tempi:[], instance:exercice(hex.id)
-          }
-          dex = this.exercices[hex.id];
-        }
-        dex.time += hex.time;
-        if(dex.tempi.indexOf(hex.tempo) < 0) dex.tempi.push(hex.tempo);
-      }
-      // Sort tempi
-      for(var idex in this.exercices)this.exercices[idex].tempi.sort();
-    },
-    sort_exercices:function(){
-      this.exercices_sorted = [];
-      for(var idex in this.exercices)this.exercices_sorted.push([idex, this.exercices[idex].time]);
-      this.exercices_sorted.sort(function(a,b){return a[1] < b[1]});
     }
   },
+  /* -------------------------------------------------------------------
+   *  Report methods for tones
+   -------------------------------------------------------------------*/
+  ByTone:{
+    seance:null,                // current seance for building (in Rapport.seances)
+    with_exercices_list:false,  // If true, return exercices list
+    /*  Build display for current month
+     *
+     */
+    build_divs_of_month:function(){
+      this.with_exercices_list = false;
+      return Rapport.building_loop(Rapport.tones_sorted, $.proxy(this.div_tone_month,this));
+    },
+    build_divs_of_seance:function(seance){
+      this.seance = Rapport.seances[seance.day];
+      this.with_exercices_list = true;
+      return Rapport.building_loop(
+          Rapport.seances[seance.day].tones_sorted,
+          $.proxy(this.div_tone_seance,this)
+        )
+    },
+    // Build the div for tone +idtone+ for the month
+    div_tone_month:function(idtone){
+      return this.div_tone(Rapport.tones[idtone]);
+    },
+    // Build div for tone +idtone+ for current seance
+    div_tone_seance:function(idtone){
+      return this.div_tone(this.seance.tones[idtone]);
+    },
+    
+    // Return the div for tone +idtone+
+    div_tone:function(hex){
+      var idtone = hex.id;
+      var div = '<div>' +
+        '<span class="legend_tone">' +
+          '<span class="tone">' + IDSCALE_TO_HSCALE[LANG][idtone] + '</span>' +
+          '<span class="time">' + Time.seconds_to_horloge(hex.time,true) + '</span>';
+      if(this.with_exercices_list) div += Rapport.exercices_as_human_list(hex.exercices);
+      div += '</span>' + '</div>';
+      return div;
+    }
+  },
+  
   /* -------------------------------------------------------------------
    *  Report methods for an difficulty type
    -------------------------------------------------------------------*/
   ByType:{
-    types:null,
-    types_sorted:null,
-    options:{
-      with_exercices_list :true,
-      init_all            :false,
-      build_divs_type     :false
-      },
-    
+    seance:null,                // current seance for building (in Rapport.seances)
+    with_exercices_list:false,  // If true, return exercices list
     /*  Build display for current month
      *
      */
-    build_month:function(){
-      this.options.with_exercices_list  = false;
-      this.options.init_all             = false;
-      this.options.build_divs_type      = false;
-      this.types = {};
-      for(var day in Rapport.data.seances)this.build_seance(Rapport.data.seances[day]);
-      return this.build_all_divs_type();
+    build_divs_of_month:function(){
+      this.with_exercices_list = false;
+      return Rapport.building_loop(Rapport.types_sorted, $.proxy(this.div_type_month,this));
+    },
+    build_divs_of_seance:function(seance){
+      this.seance = Rapport.seances[seance.day];
+      this.with_exercices_list = true;
+      return Rapport.building_loop(
+          Rapport.seances[seance.day].types_sorted,
+          $.proxy(this.div_type_seance,this)
+        )
+    },
+    // Build the div for type idtype for the month
+    div_type_month:function(idtype){
+      return this.div_type(Rapport.types[idtype]);
+    },
+    // Build div for type idtype for current seance
+    div_type_seance:function(idtype){
+      return this.div_type(this.seance.types[idtype]);
     },
     
-    /*  Build display for seance +dseance+
-     *  Either for day-display or month-display
-     */
-    build_seance:function(dseance, options){
-      if('undefined' != typeof options){for(var k in options)this.options[k] = options[k];}
-      if(this.options.init_all){this.types={};this.types_sorted=[];}
-      this.ary_exercices_to_types_hash(dseance);//=>types et types_sorted
-      if(this.options.build_divs_type) return this.build_all_divs_type();
-    },
-    build_all_divs_type:function(){
-      this.sort_by_type();
-      if(this.types_sorted == null || this.types_sorted.length == 0)return "";
-      var divs = ""
-      for(var i in this.types_sorted){
-        divs += this.build_div_type(this.types_sorted[i][0]);
-      }
-      return divs;
-    },
     // Return the div for type +idtype+
-    build_div_type:function(idtype){
-      return '<div>' +
-              '<span class="legend_type">' +
-                '<span class="legend_type_color" style="background-color:#'+Exercices.COLORS_FOR_TYPE[idtype]+'"></span>' +
-                '<span class="type">' + 
-                  Exercices.TYPES_EXERCICE[idtype] +
-                '</span>'+
-                '<span class="time">' +
-                  Time.seconds_to_horloge(this.types[idtype].time,true) + 
-                '</span>' +
-                this.exercices_as_human_list(idtype) +
-              '</span>' +
-              '</div>';
-    },
-    exercices_as_human_list:function(idtype){
-      if(this.options.with_exercices_list == false) return "";
-      var list  = [];
-      var exs   = this.types[idtype].exercices;
-      for(var i in exs) list.push(exercice(exs[i]).titre_complet());
-      return '<div class="mini">'+list.join(', ')+'.</div>';
-    },
-    ary_exercices_to_types_hash:function(dseance){
-      var i, hex, itype, idtype, htype;
-      for(i in dseance.exercices){
-        hex = dseance.exercices[i];
-        iex = exercice(hex.id);
-        if(iex.types == null) continue;
-        for(itype in iex.types){
-          idtype = iex.types[itype];
-          if('undefined' == typeof this.types[idtype]){
-            this.types[idtype] = {id:idtype, time:0, exercices:[]}
-          }
-          htype = this.types[idtype];
-          htype.time += hex.time;
-          if(htype.exercices.indexOf(hex.id) < 0) htype.exercices.push(hex.id);
-        }
-      }
-    },
-    // Sort by working time
-    sort_by_type:function(){
-      // prepare types_sorted
-      this.types_sorted = [];
-      for(var idtype in this.types)this.types_sorted.push([idtype, this.types[idtype].time]);
-      this.types_sorted.sort(function(a,b){return a[1] < b[1]});
+    div_type:function(hex){
+      var idtype = hex.id;
+      var div = '<div>' +
+        '<span class="legend_type">' +
+          '<span class="legend_type_color" style="background-color:#'+Exercices.COLORS_FOR_TYPE[idtype]+'"></span>' +
+          '<span class="type">' + Exercices.TYPES_EXERCICE[idtype] + '</span>'+
+          '<span class="time">' + Time.seconds_to_horloge(hex.time,true) + '</span>';
+      if(this.with_exercices_list) div += Rapport.exercices_as_human_list(hex.exercices);
+      div += '</span>' + '</div>';
+      return div;
     }
   },
   
@@ -316,10 +447,11 @@ window.Rapport = {
       var data = this.data_seance;
       if('undefined'==typeof data || data == null) return ERROR.Rapport.no_data_for_day;
       $('div#rapport_day_by_ex_content').html(
-        Rapport.ByEx.build_exercices_of_seance(this.data_seance));
-      var opts = {with_exercices_list:true, init_all:true,build_divs_type:true};
+        Rapport.ByEx.build_divs_of_seance(this.data_seance));
       $('div#rapport_day_by_type_content').html(
-        Rapport.ByType.build_seance(this.data_seance,opts));
+        Rapport.ByType.build_divs_of_seance(this.data_seance));
+      $('div#rapport_day_by_tone_content').html(
+        Rapport.ByTone.build_divs_of_seance(this.data_seance));
     },    
     // Set current day to all span.per_day
     set_current_day:function(yymmdd){
@@ -356,6 +488,10 @@ window.Rapport = {
      *          the "by-exercice" report.
      */
     build:function(){
+      
+      // The new calc method
+      Rapport.CALC();
+      
       var iweek, iday, seance_name, td, today_number, day_number = 0;
       this.numerote_days();
       this.set_month(Rapport.data.month);
@@ -375,9 +511,11 @@ window.Rapport = {
         }
       }
       this.legende_types();
-      $('div#rapport_cal_by_type_content').html(Rapport.ByType.build_month());
-      $('div#rapport_cal_by_ex_content').html(Rapport.ByEx.build_month());
-      $('span#rapport_cal_total_working_time').html(Time.seconds_to_horloge(Rapport.ByEx.total_working_time,true));
+      
+      $('div#rapport_cal_by_ex_content').html(Rapport.ByEx.build_divs_of_month());
+      $('div#rapport_cal_by_type_content').html(Rapport.ByType.build_divs_of_month());
+      $('div#rapport_cal_by_tone_content').html(Rapport.ByTone.build_divs_of_month());
+      $('span#rapport_cal_total_working_time').html(Time.seconds_to_horloge(Rapport.total_working_time,true));
       Rapport.ByDay.build();
     },
 

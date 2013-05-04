@@ -153,7 +153,7 @@ class DBExercice
         :note       => nil
       }
       # Duplicated values (from dbexercices to roadmap exercice)
-      [:tempo_min, :tempo_max, :suite, :tune, :types].each do |prop|
+      [:tempo_min, :tempo_max, :suite, :tone, :types].each do |prop|
         dex = dex.merge prop => data[prop.to_s]
       end
       # Create in Roadmap folder

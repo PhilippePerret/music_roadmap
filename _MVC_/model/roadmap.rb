@@ -109,7 +109,7 @@ class Roadmap
           :created_at   => Time.now.to_i,
           :down_to_up   => true,
           :last_changed => 'first_to_last',
-          :scale        => 0
+          :tone        => 0
         }
       end
     end
@@ -127,7 +127,7 @@ class Roadmap
     param_to_change     = LOOP_CONFIG_ATTRIBUTES[d[:last_changed].to_sym].to_sym
     d[param_to_change]  = !d[param_to_change]
     d[:last_changed]    = param_to_change
-    d[:scale] = (d[:scale] == 23) ? 0 : (d[:scale].to_i + 1)
+    d[:tone] = (d[:tone] == 23) ? 0 : (d[:tone].to_i + 1)
     @config_generale = d
     save_config_generale unless dont_save
     @config_generale

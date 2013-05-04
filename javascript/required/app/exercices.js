@@ -21,7 +21,7 @@ $.extend(window.Exercices,{
   },
   modified: false,
   
-  scale         :null,    // Scale of the day (Integer 0 (C) <-> 23 (Bm))
+  tone         :null,    // Scale of the day (Integer 0 (C) <-> 23 (Bm))
   
   // Les couleurs à utiliser en fonction du type de l'exercice
   // Cf. dans les fichiers localisés pour avoir tous les types
@@ -85,9 +85,9 @@ $.extend(window.Exercices,{
   },
   
   // Return Scale of the day (if not defined, "C")
-  _scale:function(){
-    if (this.scale === null) this.scale = 0;
-    return this.scale;
+  _tone:function(){
+    if (this.tone === null) this.tone = Roadmap.Data.tone;
+    return this.tone;
   },
   // Return Harmonic sequence of the day
   // @note: Shortcut for:
@@ -255,6 +255,42 @@ $.extend(window.Exercices,{
     for(i in this.selections) exercice(this.selections[i]).deselect() ;
     this.selections = [] ;
   },
+  /*
+   *  Load all exercices of +list_ids+
+   *
+   *  This method is used by the Rapport object to load all exercices of
+   *  sessions, when they've been deleted by user
+   *
+   *  If +fx_suite+ is defined, call this method after loading
+   *
+   */
+  loading:false,
+  load:function(list_ids, fx_suite){
+    this.loading = true;
+    Ajax.query({
+      data:{
+        proc      :'exercice/load',
+        rm_nom    :Roadmap.nom,
+        rm_mail   :User.mail,
+        md5       :User.md5,
+        ids       :list_ids.join(',')
+      },
+      success:$.proxy(this.load_suite, this, fx_suite)
+    });
+  },
+  load_suite:function(fx_suite, rajax){
+    if(false == traite_rajax(rajax)){
+      // rajax.load_errors contient les erreurs au chargement (exercices non trouvés,
+      // problèmes en chargeant et interprétant le fichier JSON)
+      if(rajax.load_errors.length > 0){
+        F.error(  "Des erreurs ont été rencontrées au cours du chargement des exercices:<br>"+
+                  rajax.load_errors.join('<br>'));
+      }
+      for(var iex in rajax.exercices) new Exercice(rajax.exercices[iex]);
+    }
+    this.loading = false;
+    if('function'== typeof fx_suite) fx_suite();
+  },
   // Importation d'un exercice
   import: function(fct_success){
     var path = $('input#path_to_exercice').val() ;
@@ -271,10 +307,11 @@ $.extend(window.Exercices,{
       fct_success = $.proxy(this.end_import, this) ;
     Ajax.query({
       data:{
-        proc              : 'exercice/import',
-        roadmap_nom       : Roadmap.nom,
-        user_mail         : User.mail,
-        data              : path
+        proc      :'exercice/import',
+        rm_nom    :Roadmap.nom,
+        rm_mail   :User.mail,
+        md5       :User.md5,
+        data      :path
       },
       success : fct_success
     });
@@ -282,9 +319,8 @@ $.extend(window.Exercices,{
   },
   end_import:function (rajax){
     if (rajax['error'] != null ) F.error( rajax['error']) ; // mais on poursuit
-    else this.Edition.close() ;
-    var i ;
-    for (i in rajax['exercices']) new Exercice(rajax['exercices'][i]).build();
+    else this.Edition.close();
+    for (var i in rajax['exercices']) new Exercice(rajax['exercices'][i]).build();
     this.save_ordre(); // relevé dans le DOM
   },
   // Mise en édition d'un exercice
@@ -380,7 +416,6 @@ $.extend(window.Exercices,{
   set_boutons:function(){
     BT.add('-> Exercices.set_boutons (EXERCICES.length='+EXERCICES.length+')') ;
     var locked = Roadmap.is_locked(0) ;
-    // Boutons généraux
     UI.set_visible('a#btn_seance_play', EXERCICES.length > 0);
     this.set_btn_move(locked) ;
     this.set_btn_create(locked);
@@ -615,11 +650,11 @@ $.extend(window.Exercices,{
     },
     // Peuple le menu des tonalités
     peuple_menu_tonalites:function(){
-      var itune, option, dtune = IDSCALE_TO_HSCALE[LANG];
-      $('select#exercice_tune').append('<option value="">--</option>');
-      for(itune in dtune){
-        option = '<option value="'+itune+'">'+dtune[itune]+'</option>';
-        $('select#exercice_tune').append(option);
+      var itone, option, dtone = IDSCALE_TO_HSCALE[LANG];
+      $('select#exercice_tone').append('<option value="">--</option>');
+      for(itone in dtone){
+        option = '<option value="'+itone+'">'+dtone[itone]+'</option>';
+        $('select#exercice_tone').append(option);
       }
     },
     // Peuplement du menu suites harmoniques

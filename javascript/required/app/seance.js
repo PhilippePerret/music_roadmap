@@ -14,8 +14,8 @@ window.Seance = {
   // Start working session
   start:function(){
     if(this.section_opened)UI.open_volet('running_seance');
-    if(false == this.set_exercices_stack()) return;
-    Exercices.deselect_all() ;
+    if(false == this.set_exercices_stack())return this.show();
+    Exercices.deselect_all();
     this.play_first_in_stack();
     this.initialize_seance_file();
     return false;//for a-link
@@ -27,13 +27,21 @@ window.Seance = {
   // building seance functionnality. So we don't use the exercice suite defined in the
   // listing but this +ordre+ (where exercices can be repeated)
   set_exercices_stack:function(cur_order){
-    if(this.ordre_stack != null) return true; // déjà défini
-    if('undefined' == typeof cur_order){
-      cur_order = Exercices.ordre();
-      if ( cur_order.length == 0 ) return F.error(ERROR.Seance.no_exercices);
-      if (!Roadmap.Data.first_to_last) cur_order.reverse();
+    try {
+      if(this.ordre_stack != null){ // déjà défini
+        if(this.ordre_stack.length == 0) throw 'no_exercice_found';
+        else return true;
+      }
+      if('undefined' == typeof cur_order){
+        cur_order = Exercices.ordre();
+        if ( cur_order.length == 0 ) throw 'no_exercices';
+        if (!Roadmap.Data.first_to_last) cur_order.reverse();
+      }
+      this.ordre_stack = $(cur_order).toArray();//clone
+      if (this.ordre_stack.length == 0) throw 'no_exercice_found';
+    } catch(iderr){
+      return F.error(ERROR.Seance[iderr]);
     }
-    this.ordre_stack = $(cur_order).toArray();//clone
     return true;
   },
   // Initialize the seance file at starting (Ajax call)
@@ -161,7 +169,8 @@ window.Seance = {
   // Build the working seance
   building:false,
   build:function(){
-    this.building = true;
+    this.building     = true;
+    this.ordre_stack  = null;
     var params_seance = this.get_values();
     if( params_seance == null ) return this.building = false;
     // console.dir(params_seance);
@@ -185,11 +194,12 @@ window.Seance = {
       //   console.log("Data remontées pour la séance:");
       //   console.dir(this.data_seance);
       // }
-      this.show_data_seance();
-      Roadmap.Data.set_config_generale(this.data_seance);
-      Roadmap.Data.show();
-      this.hide_form(false);
-      this.show_start();
+      if (this.show_data_seance()){
+        Roadmap.Data.set_config_generale(this.data_seance);
+        Roadmap.Data.show();
+        this.hide_form(false);
+        this.show_start();
+      }
     }
     this.building = false;
   },
@@ -203,7 +213,7 @@ window.Seance = {
   // Affiche les données de la séance construite
   show_data_seance:function(){
     var liste_ex = [];
-    this.set_exercices_stack( this.data_seance.suite_ids);
+    if (!this.set_exercices_stack(this.data_seance.suite_ids)) return false;
     // Prepare display of exercice (human list)
     for( var i in this.data_seance.suite_ids){
       var iex = exercice(this.data_seance.suite_ids[i]);
@@ -216,13 +226,14 @@ window.Seance = {
     var dir     = this.data_seance.down_to_up?'down_to_up':'up_to_down';
     var imgdir  = UI.path_image('config/direction/'+dir+'.png');
     $('span#seance_data_working_time').html(Time.seconds_to_horloge(this.data_seance.working_time));
-    $('span#seance_data_scale').html(IDSCALE_TO_HSCALE[LANG][this.data_seance.scale]);
-    $('img#seance_data_img_scale').attr('src',UI.path_image('note/gamme/'+this.data_seance.scale+'.jpg'));
+    $('span#seance_data_tone').html(IDSCALE_TO_HSCALE[LANG][this.data_seance.tone]);
+    $('img#seance_data_img_tone').attr('src',UI.path_image('note/gamme/'+this.data_seance.tone+'.jpg'));
     $('span#seance_data_suite_harmonique').html(LOCALE_UI.Exercices.Config[sens]);
     $('img#seance_data_img_suite_harmonique').attr('src', imgsens);
     $('div#seance_data_suite_exercices').html(liste_ex);
     $('span#seance_data_downtoup').html(LOCALE_UI.Exercices.Config[dir]);
     $('img#seance_data_img_downtoup').attr('src', imgdir);
+    return true;//ok for the seance
   },
   // 
   cancel_seance:function(){
@@ -243,7 +254,7 @@ window.Seance = {
     // Difficulties
     var difficulties = Exercices.Edition.pickup_types('sw');
     var options      = {};
-    $(['obligatory', 'new_scale', 'same_ex', 'next_config']).map(function(itm,key){
+    $(['obligatory', 'new_tone', 'same_ex', 'next_config']).map(function(itm,key){
         options[key] = $('input#seance_option_'+key).is(':checked');
     });
     return {
@@ -276,14 +287,14 @@ window.Seance = {
     'label#seance_lab_opt_aleatoire'  :'Seance.label_aleatoire',
     'label#seance_lab_opt_same_ex'    :'Seance.option_same_ex',
     'label#seance_lab_opt_obligatory' :'Seance.option_obligatory',
-    'label#seance_lab_opt_new_scale'  :'Seance.option_new_scale',
+    'label#seance_lab_opt_new_tone'  :'Seance.option_new_tone',
     'label#seance_lab_opt_next_config':'Seance.option_next_config',
     'a#btn_seance_prepare'            :'Seance.btn_prepare',
     'a#btn_seance_start'              :'Seance.start',
     'a#btn_seance_replay'             :'Seance.replay',
     'span#seance_lib_working_time'    :'Label.working_time',
     'span#seance_lib_downtoup'        :'Seance.direction',
-    'span#seance_lib_scale'           :'Label.scale',
+    'span#seance_lib_tone'           :'Label.tone',
     'span#seance_lib_suite_harmonique':'Exercices.Config.Label.libelle_harmonic_seq',
     'span#seance_lib_suite_exercices' :'Label.suite_exercices'
   },

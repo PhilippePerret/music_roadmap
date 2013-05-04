@@ -118,8 +118,8 @@ class Seance
       # We change for next config if required
       @config_generale = get_config_generale
       
-      # Replace scale with an unused scale
-      @config_generale[:scale] = choose_a_scale
+      # Replace tone with an unused tone
+      @config_generale[:tone] = choose_a_tone
       
       # So we can choose the exercices
       # -> @ids_exercices
@@ -145,7 +145,7 @@ Paramètres envoyés : #{params.inspect}
 Temps de travail demandé : #{time}
 Types : #{types.inspect}
 Options : #{options.inspect}
-Gammes inutilisées: #{@unused_scales.join(', ')}
+Gammes inutilisées: #{@unused_tones.join(', ')}
 Exercices ne correspondant pas au type: #{@others_idex.inspect}
 Temps moyen de travail dans les séances : #{@average_working_time.inspect}
 Temps moyen calculé : #{@time_per_exercice.inspect}
@@ -154,7 +154,7 @@ Nombre de fois par exercice : #{@nb_fois_per_exercice.inspect}
 Temps de travail obtenu  : #{@total_working_time}
 Exercices retenus : #{@ids_exercices.join(', ')}
 Configuration générale: #{@config_generale.inspect}
-GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:scale]]}
+GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
 ***
 DEBUG
 <pre>
@@ -279,17 +279,17 @@ DEBUG
       @ids_exercices = new_ids_exercices
     end
     
-    # Choose a scale
+    # Choose a tone
     # 
-    # If :scale of config_generale is not in the scales used in the 23 past
+    # If :tone of config_generale is not in the tones used in the 23 past
     # sessions, we choose it.
-    def choose_a_scale
-      if @unused_scales.empty?
+    def choose_a_tone
+      if @unused_tones.empty?
         rand(24)
-      elsif @unused_scales.include?( config_generale[:scale] )
-        config_generale[:scale]
+      elsif @unused_tones.include?( config_generale[:tone] )
+        config_generale[:tone]
       else
-        @unused_scales.shuffle.first.to_i
+        @unused_tones.shuffle.first.to_i
       end
     end
     
@@ -322,36 +322,36 @@ DEBUG
       end
       hseances = Seance::lasts(roadmap)
       @seances = hseances[:sorted_days].collect{|jour|hseances[:seances][jour]}
-      @last_scales    = get_last_scales 23
-      @unused_scales  = get_unused_scales
+      @last_tones    = get_last_tones 23
+      @unused_tones  = get_unused_tones
       average_working_times
     end
     
-    # Return scales unused during the last sessions
+    # Return tones unused during the last sessions
     # 
-    # @note: needs to know @last_scales
+    # @note: needs to know @last_tones
     # 
-    def get_unused_scales
+    def get_unused_tones
       (0..23).collect do |sca|
-        next if @last_scales.include?(sca)
+        next if @last_tones.include?(sca)
         sca
       end.reject{|e|e.nil?}
     end
-    # Get up to +upto+ last scales (default: 23)
+    # Get up to +upto+ last tones (default: 23)
     # 
-    # @return an Array of scales (as Fixnum with 0-start = "C")
+    # @return an Array of tones (as Fixnum with 0-start = "C")
     # 
     # @note: @seances should have been defined and contain up to 50 last seances, from
     # youngest to oldest
     # 
-    def get_last_scales upto = 23
+    def get_last_tones upto = 23
       upto = [upto, @seances.count].max - 1
-      scales = []
+      tones = []
       @seances[0..upto].each do |hseance|
-        next if hseance[:scale] === nil
-        scales += hseance[:scale]
+        next if hseance[:tone] === nil
+        tones += hseance[:tone]
       end
-      scales
+      tones
     end
 
     # Analyze params provided by musician
@@ -371,7 +371,7 @@ DEBUG
       # #   params[:options]:
       # #     :same_ex::        Enable to repeat a same ex (if difficulties)
       # #     :next_config::    Set next general config
-      # #     :new_scale::      New scale (take last or 0 for "C")
+      # #     :new_tone::      New tone (take last or 0 for "C")
       # #     :obligatory::     Include obligatory exercices
       @options = params[:options].values_str_to_real
     end
