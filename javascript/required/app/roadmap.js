@@ -316,7 +316,8 @@ window.Roadmap = {
       Exercices.reset_liste() ;
       Roadmap.Data.dispatch(roadmap);
       Roadmap.Data.show();
-      Flash.show(MESSAGE.Roadmap.loaded) ;
+      Flash.show(MESSAGE.Roadmap.loaded);
+      RMEvent.enable(KEY_EVENTS, $.proxy(Seance.onkeypress, Seance));
     }
     // $.proxy(Roadmap.set_div_specs, Roadmap, ouvert = !this.loaded)() ;
     UI.open_volet('exercices');

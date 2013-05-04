@@ -10,6 +10,7 @@ $.extend(UI,{
     this.set_flag_lang();
     this.set_noms_boutons();
     this.set_labels();
+    RMEvent.observers_on_textfields();
     Locale.update();
     UI.humanize();
   },

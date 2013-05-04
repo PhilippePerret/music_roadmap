@@ -11,18 +11,24 @@
       • L'objet JS Flash (flash.js - librairie générale)
       • L'objet JS Ajax (ajax.js - librairie générale)
       • L'objet JS UI (ui.js - librairie générale)
+      • L'objet JS RMEvent (event.js - required/app/)
       • Le fichier ajax.rb en racine (le prendre dans les exercices musicaux)
       • La feuille de style "aide.css" chargée
       • Un dossier "./data/aide/" contenant les textes d'aide (HTML ou ruby)
       • Le dossier './ruby/procedure/aide/ contenant tous les scripts utiles
         et principalement : load.rb
       • Definition of JS constant LANG (current language, in two letters)
+      
     
     UTILISATION
     -----------
     
     Dans l'interface ou le texte de l'aide, on peut utiliser :
     
+      <tag aide-value="<path/to/aid/file>"...>...
+        Dans ce cas, un point d'interrogation apparaitra à côté de l'élément
+        lorsqu'on glissera la souris dessus.
+        
       <aide value="<path/to/aide/file>"></aide>
         Met une image "?" qui ouvre le texte d'aide <path/to/aide/file>
         
@@ -365,6 +371,7 @@ window.Aide = {
     var div = this.div_aide(id) ;
     this.content()[keep ? 'append' : 'html'](div);
     UI.humanize(this.content());
+    RMEvent.observers_on_textfields(this.content());
     BT.add("<- Aide.put_in_section");
   },
   // Retourne le div d'aide préparé pour l'aide d'ID +id+

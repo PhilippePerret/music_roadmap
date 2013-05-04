@@ -11,6 +11,23 @@ window.Seance = {
   cur_exercice    :null,    // Current exercice (instance of Exercice)
   ordre_stack     :null,    // Stack of the exercices to play
 
+  // Key press handler (on seance)
+  onkeypress:function(evt){
+    switch(evt.charCode){
+      case KESPACE:
+        this.running ? this.next_exercice() : this.start();
+        evt.stopPropagation();
+        return false;
+        break;
+      case Key_s:
+        evt.stopPropagation();
+        if(this.running) this.stop(true);
+        return false;
+        break;
+      default:
+        console.log("charCode:"+evt.charCode);
+    }
+  },
   // Start working session (either prepared session or normal session)
   start:function(){
     UI.open_volet('running_seance');
@@ -95,7 +112,8 @@ window.Seance = {
   play_first_in_stack:function(){
     this.cur_exercice = exercice(this.ordre_stack.shift());
     this.cur_exercice.play();
-    this.pause_on = false;
+    this.pause_on =false;
+    this.running  =true;
   },
   // Pause the seance
   pause_on:false,
@@ -115,7 +133,8 @@ window.Seance = {
     this.stopping = true;
     if( forcer_arret === true ) this.stop_cur_exercice(true);
     Metronome.stop();
-    this.ordre_stack  = null;
+    this.ordre_stack  =null;
+    this.running      =false;
     return false;//for a-link
   },
   // After stop, we display the report
