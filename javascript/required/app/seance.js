@@ -31,8 +31,6 @@ window.Seance = {
         if(this.running) this.stop(true);
         return false;
         break;
-      default:
-        console.log("charCode:"+evt.charCode);
     }
   },
   // Start working session (either prepared session or normal session)
