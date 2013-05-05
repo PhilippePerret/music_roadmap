@@ -10,12 +10,14 @@
         <img id="config_generale_volant" src="" />
         </a>
   </div>
-  <!-- Case à cocher pour enregistrer la configuration générale -->
+  <!-- Bouton pour enregistrer la configuration générale -->
   <div id="config_generale_boutons">
-    <div id="div_cb_save_config">
-      <input id="config_generale_cb_save" type="checkbox" checked=CHECKED />
-      <label id="config_generale_label_cbsave" class="lab_and_save" for="config_generale_cb_save" style="color:white;"></label>
-    </div>
+    <a  href="#"
+        id="btn_gconfig_save"
+        class="btn normal"
+        onclick="return $.proxy(Roadmap.save_general_config, Roadmap)()"
+        aide-value="config-generale/presentation"
+    ></a>
   </div>
   <!-- Résumé configuration générale -->
   <div id="config_generale_resume"></div>

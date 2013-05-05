@@ -19,6 +19,9 @@ window.LOCALE_UI = {
     lab_with_next     :"Linked to next"
   },
   Id:{
+    a:{
+      btn_gconfig_save        :"Save configuration"
+    },
     span:{
       section_aide_titre      :"HELP",
       section_aide_move_txt   :"(move this box by <br>clicking-dragging this bar)",

@@ -490,6 +490,12 @@ window.Roadmap = {
     }
     UI.set_visible('select#roadmaps');
   },
+  // Save general config
+  save_general_config:function(){
+    Roadmap.set_modified();
+    Roadmap.save();
+    return false;//for a-link;
+  },
   // /*
   //     Sous-objet Roadmap.Data
   //     -------------------------
@@ -553,16 +559,7 @@ window.Roadmap = {
       if (this.tone >= 24) this.tone = 0;
       Exercices.set_tones();
       this.show();
-      // Save it ?
-      if ( this.config_generale_must_be_saved()){
-        Roadmap.set_modified();
-        Roadmap.save();
-      }
       return false;//for a-link
-    },
-    // Return TRUE si la case pour enregistrer la configuration générale et cochée
-    config_generale_must_be_saved:function(){
-      return $('input#config_generale_cb_save').is(':checked');
     },
     // Inverse une donnée générale
     // @param   key   La clé, par exemple 'down_to_up'
