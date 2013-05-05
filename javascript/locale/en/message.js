@@ -4,8 +4,9 @@ window.MESSAGE = {
   thank_to_wait: "Wait a moment, please…",
   // USER
   User:{
-    created     : "You're signup! Enjoy Music Roadmap!",
-    welcome     : "Welcome at Music Roadmap!"
+    created     :"You're signup! Enjoy Music Roadmap!",
+    welcome     :"Welcome at Music Roadmap!",
+    goodbye     :"See you later at Music Roadmap!"
   },
   // ROADMAP
   Roadmap: {

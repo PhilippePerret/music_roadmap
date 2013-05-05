@@ -74,12 +74,11 @@ window.Roadmap = {
   // Tout initialiser pour un nouveau document
   initing_new: false,
   init_new: function(){
-    BT.add('-> Roadmap.init_new') ;
-    this.initing_new = true ;
-    this.reset_all() ;
-    F.show(MESSAGE.Roadmap.ready);
-    BT.add('<- Roadmap.init_new') ;
-    this.initing_new = false ;
+    BT.add('-> Roadmap.init_new');
+    this.initing_new = true;
+    this.reset_all();
+    BT.add('<- Roadmap.init_new');
+    this.initing_new = false;
   },
   
   // Reset tout
@@ -184,17 +183,18 @@ window.Roadmap = {
       case false  : css = 'off' ; nom = LOCALE_UI.Roadmap.btn_saved  ; break ;
       case true   : css = 'on'  ; nom = LOCALE_UI.Roadmap.btn_save   ; break ; 
     }
-    UI.set_visible('a#btn_save_roadmap', this.loaded ) ;
-    $('a#btn_save_roadmap').attr('class', 'btn ' + css).html(nom) ;
+    $('a#btn_roadmap_save').attr('class', 'btn ' + css).html(nom) ;
+    UI[this.loaded ? 'set_visible' : 'set_invisible']('a#btn_roadmap_save');
     BT.add('<- Roadmap.set_etat_btn_save') ;
   },
 
-  // Définit l'état du div contenant les specs et le lien pour les ouvrir
+  // Définit l'état du div contenant les specs, le lien pour les ouvrir,
+  // ainsi que les boutons pour confection une séance, lire un rapport, etc.
   set_div_specs: function( ouvert ){
     BT.add('-> Roadmap.set_div_specs') ;
     if ( 'undefined' == typeof ouvert ) meth_spec = meth_lien = 'toggle' ;
     else {
-      meth_spec = ouvert ? 'show' : 'hide' ;
+      meth_spec = (ouvert && User.is_identified()) ? 'show' : 'hide' ;
       meth_lien = ouvert ? 'hide' : 'show' ;
     }
     $('div#open_roadmap_specs')[meth_lien]() ;
@@ -316,7 +316,7 @@ window.Roadmap = {
       Exercices.reset_liste() ;
       Roadmap.Data.dispatch(roadmap);
       Roadmap.Data.show();
-      Flash.show(MESSAGE.Roadmap.loaded);
+      F.show(MESSAGE.Roadmap.loaded);
       RMEvent.enable(KEY_EVENTS, $.proxy(Seance.onkeypress, Seance));
     }
     // $.proxy(Roadmap.set_div_specs, Roadmap, ouvert = !this.loaded)() ;
@@ -464,8 +464,9 @@ window.Roadmap = {
     })
   },
   end_destroy:function(rajax){
-    traite_rajax( rajax ) ;
-    this.destroying = false ;
+    traite_rajax( rajax );
+    UI.set_no_roadmap();
+    this.destroying = false;
   },
   
   /*  Peuple le select#roadmaps avec les roadmaps envoyées
@@ -480,15 +481,18 @@ window.Roadmap = {
     var i, nom, umail;
     var menu = $('select#roadmaps');
     menu.html("");
-    if('undefined' == typeof(roadmaps) || roadmaps == null) return ;
-    menu.append('<option value="">' + LOCALE_UI.Roadmap.open_your_rm + '</option>');
-    for(i in roadmaps){
-      idrm = roadmaps[i];
-      drm = idrm.split('-') ;
-      nom = drm[0]; umail = drm[1];
-      menu.append('<option value="'+idrm+'">' + nom + '</option>');
+    if('undefined' != typeof(roadmaps) || roadmaps != null){
+      menu.append('<option value="">' + LOCALE_UI.Roadmap.open_your_rm + '</option>');
+      for(i in roadmaps){
+        idrm = roadmaps[i];
+        drm = idrm.split('-') ;
+        nom = drm[0]; umail = drm[1];
+        menu.append('<option value="'+idrm+'">' + nom + '</option>');
+      }
+      UI.set_visible('select#roadmaps');
+    } else {
+      UI.set_invisible('select#roadmaps');
     }
-    UI.set_visible('select#roadmaps');
   },
   // Save general config
   save_general_config:function(){
@@ -701,7 +705,7 @@ window.Roadmap = {
   // => Retourne true si la rm est protégée
   // cf. N0007
   is_locked:function(with_message){
-    var locked = User.md5 != this.md5 ;
+    var locked = (User.md5 != this.md5) || User.md5 == null;
     if ( locked == false ) return false ;
     if ('undefined' == typeof with_message) with_message = true ;
     if ( with_message ) F.error(ERROR.Roadmap.bad_owner) ;

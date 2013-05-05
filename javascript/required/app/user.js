@@ -16,18 +16,29 @@ window.User = {
   
   // Réinitialisation de l'user
   reset:function(){
-    this.nom = null ;
-    this.md5 = null ;
-    this.identified = false ;
+    [this.nom, this.md5, this.mail, this.instrument,this.roadmaps] = [null,null,null,null,null];
+    this.identified = false;
   },
   // When logout button is clicked
   logout:function(){
     this.reset();
-    with($('btn#btn_want_signin')){
-      html(LOCALE_UI.User.Signin.main_button);
-      attr('onclick', "return $.proxy(User.signin, User)()");
+    UI.open_volet('exercices');
+    this.set_button_login();
+    Roadmap.peuple_menu_roadmaps();
+    UI.set_no_roadmap();
+    F.show(MESSAGE.User.goodbye);
+    // On remet la page d'accueil (en fait, il suffit d'insérer ce code
+    // et de demander l'update des locales)
+    $('ul#exercices').html('<div data-locale="app/accueil" style="display:inline;"></div>');
+    Locale.update();
+    return false; // pour le a-lien
+  },
+  
+  set_button_login:function(){
+    with($('a#btn_want_signin')){
+      html(LOCALE_UI.User[this.identified?'logout':'signin']);
+      attr('onclick', "return $.proxy(User."+(this.identified?'logout':'signin')+", User)()");
     }
-    return false ; // pour le a-lien
   },
   
   // Dispatch des données dans User
@@ -115,16 +126,13 @@ window.User = {
       this.mail       = duser.mail ;
       this.instrument = duser.instrument;
       this.roadmaps   = rajax.roadmaps ;
+      this.identified = true;
       $('div#user_signin_form').remove();
       Aide.close() ;
       F.show(MESSAGE.User.welcome);
       this.pour_suivre_identification();
-    } else {
-      // Identification failed
-      this.md5        = null;
-      this.nom        = null;
-      this.mail       = null;
-      this.instrument = null;
+    } else {// Identification failed
+      this.reset();
     }
     this.checking = false ;
   },
@@ -133,10 +141,8 @@ window.User = {
   // d'une roadmap).
   pour_suivre_identification:function(){
     // Set the signin/logount main button
-    with( $('a#btn_want_signin') ){
-      html(LOCALE_UI.User.logout);
-      attr('onclick', "return $.proxy(User.logout, User)()");
-    }
+    this.set_button_login();
+    Roadmap.set_div_specs(true);
     // Set the roadmaps menu (with user's roadmaps if any)
     Roadmap.peuple_menu_roadmaps( this.roadmaps );
     // On poursuit avec les méthodes demandée au départ

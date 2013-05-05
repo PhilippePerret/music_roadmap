@@ -75,8 +75,8 @@ window.LOCALE_UI = {
   },                    
   User:{                
     logout              :"Log out",
+    signin              :"Signin (or Signup)",
     Signin:{             
-      main_button       :"Signin (or Signup)",
       TITRE             :"Sign In on Music Roadmap",
       MAIL              :"Your email",
       PASSWORD          :"Your password",

@@ -4,8 +4,9 @@ window.MESSAGE = {
   thank_to_wait: "Merci de patienter un instant…",
   // USER
   User:{
-    created     : "Vous êtes maintenant inscrit à Feuille de Route Musicale !",
-    welcome     : "Bienvenue sur Feuille de Route Musicale !"
+    created     :"Vous êtes maintenant inscrit à Feuille de Route Musicale !",
+    welcome     :"Bienvenue sur Feuille de Route Musicale !",
+    goodbye     :"À très bientôt sur Feuille de Route Musicale !"
   },
   // ROADMAP
   Roadmap:{

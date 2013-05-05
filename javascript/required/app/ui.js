@@ -15,6 +15,15 @@ $.extend(UI,{
     UI.humanize();
   },
   
+  // Set User Interface when there is no roadmap
+  // (e.g. on logout, on Roadmap.init or on destroy current roadmap)
+  set_no_roadmap:function(){
+    Roadmap.init_new();
+    Roadmap.set_div_specs(true);
+    Roadmap.set_etat_btn_save(null);
+    Exercices.set_boutons();
+  },
+  
   /*
    *  Open a "volet" (rapport, exercices, session preparation, etc.)
    *  ---------------------------------------------------------------
