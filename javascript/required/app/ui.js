@@ -183,14 +183,29 @@ $.extend(UI,{
   // à l'écran"
   // @TODO: Prendre vraiment toute la dimension de la page
   fullscreening: false, // true quand on est en fullscreen
+  mode_zen:false,
   fullscreen: function(){
+    this.mode_zen = !this.mode_zen;
+    var data;
+    if(this.mode_zen){
+      // data = {'position':'absolute', 'top':'0', 'left':'0',
+      //   'width': '100%', 'height': '100%'}
+      data = {'position':'absolute'};
+      $('section#section_exercices').css(data);
+      data_anim = {'width': '100%', 'height': '40em', 'top':'0', 'left':'0', 'font-size':'0.8em'};
+      // $('section#section_exercices').animate({'top':'0', 'left':'0'});
+      // $('section#section_exercices').animate({'width': '100%', 'height': '40em'});
+      $('section#section_exercices').animate(data_anim, 400);
+      $('ul#exercices').animate({'height':"90%"})
+    }else{
+      data = {'position':''};
+      data_anim = {'top':'97px', 'left':'177px', 'width':"718px", 'height':"493px", 'font-size':'1em'};
+      $('ul#exercices').animate({'height':"25em"});
+      $('section#section_exercices').animate(data_anim, {
+        duree:400, always:function(){$('section#section_exercices').css(data)}
+      });
+    }
     // Ajuster à l'écran
-    var logo_height = $('section#bande_logo').height();
-    var spec_height = $('div#roadmap_specs').height() ;
-    var wind_height = $(window).height() ;
-    var btns_height = parseInt($('div#btns_exercices').height());
-    var new_height = (wind_height - btns_height - 200).toString() + "px" ;
-    $('ul#exercices').css({'height': new_height, 'min-height': new_height});
     return false ; //pour le a-lien
   },
   // Certaines images peuvent avoir été définies par :

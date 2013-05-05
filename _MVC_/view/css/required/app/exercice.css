@@ -65,7 +65,6 @@ ul#exercices {
   padding               :1em  ;
   margin                :0    ;
   height                :25em ;
-  max-height            :25em ;
   overflow-y            :scroll ;
   border-bottom         :18px solid #C07051;
 }
