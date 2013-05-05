@@ -1,0 +1,11 @@
+titre_fr:     Étude n°47
+titre_en:     Study n°47
+suite:        null
+types:        ['RH', 'LH', 'DL', 'SY', 'AR']
+tempo_min:    110
+tempo_max:    144
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         9
+nb_mesures:   70

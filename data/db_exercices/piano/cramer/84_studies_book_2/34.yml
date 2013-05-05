@@ -1,0 +1,11 @@
+titre_fr:     Étude n°34
+titre_en:     Study n°34
+suite:        null
+types:        ['LH', 'RH', 'RY', 'SY']
+tempo_min:    90
+tempo_max:    116
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         17
+nb_mesures:   63

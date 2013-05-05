@@ -1,7 +1,7 @@
 titre_fr:     Étude n°9
 titre_en:     Study n°9
 suite:        null
-types:        ['LH', 'DL', 'C0']
+types:        ['LH', 'DL', 'AC']
 tempo_min:    100
 tempo_max:    132
 nb_temps:     4

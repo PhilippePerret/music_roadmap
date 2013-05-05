@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°60
 titre_en:     Exercice n°60
 suite:        HA
-types:        ['LH', 'RH', 'PG', 'C0', 'TM']
+types:        ['LH', 'RH', 'PG', 'AC', 'TM']
 tempo_min:    48
 tempo_max:    72
 nb_mesures:   64

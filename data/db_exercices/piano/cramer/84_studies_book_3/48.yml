@@ -1,0 +1,11 @@
+titre_fr:     Étude n°48
+titre_en:     Study n°48
+suite:        null
+types:        ['RH', 'LH', 'SY', 'AR']
+tempo_min:    40
+tempo_max:    63
+nb_temps:     2
+duree_temps:  3
+metrique:     "6/4"
+tone:         5
+nb_mesures:   34

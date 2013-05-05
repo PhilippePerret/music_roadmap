@@ -1,0 +1,11 @@
+titre_fr:     Étude n°39
+titre_en:     Study n°39
+suite:        null
+types:        ['RH', 'LH', 'AR', 'EX', 'AC']
+tempo_min:    70
+tempo_max:    96
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         3
+nb_mesures:   44

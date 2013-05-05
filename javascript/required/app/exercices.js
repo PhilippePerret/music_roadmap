@@ -43,7 +43,7 @@ $.extend(window.Exercices,{
     
     'GA':'F00', 
     'AR':'00F',
-    'C0':'0F0',  
+    'AC':'0F0',  
     'LH':'FF0', 
     'RH':'0FF', 
     'RY':'F0F',

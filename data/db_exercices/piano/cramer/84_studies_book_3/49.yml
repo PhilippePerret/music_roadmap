@@ -1,0 +1,11 @@
+titre_fr:     Étude n°49
+titre_en:     Study n°49
+suite:        null
+types:        ['RH', 'LH', 'DL', 'AR', 'JP']
+tempo_min:    40
+tempo_max:    108
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         14
+nb_mesures:   30

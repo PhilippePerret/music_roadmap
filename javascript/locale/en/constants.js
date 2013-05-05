@@ -8,7 +8,7 @@ $.extend(window.Exercices,{
     
     'GA':"Scales",
     'AR':"Arpeggios",
-    'C0':"Chords",
+    'AC':"Chords",
     'LH':"Left hand",
     'RH':"Right hand",
     'RY':"Rythm",
@@ -27,6 +27,7 @@ $.extend(window.Exercices,{
     'EX':"Extention",
     'NR':"Repeated notes",
     'NT':"Sustained notes",
+    'JP':"Jump"
   },
   TYPES_SUITE_HARMONIQUE:{
     'NO'  :"Défined by the exercice",

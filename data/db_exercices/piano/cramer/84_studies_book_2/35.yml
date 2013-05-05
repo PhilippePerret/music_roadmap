@@ -1,0 +1,11 @@
+titre_fr:     Étude n°35
+titre_en:     Study n°35
+suite:        null
+types:        ['LH', 'RH', 'TI']
+tempo_min:    80
+tempo_max:    108
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         5
+nb_mesures:   24

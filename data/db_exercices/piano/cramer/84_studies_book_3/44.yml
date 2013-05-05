@@ -1,0 +1,11 @@
+titre_fr:     Étude n°44
+titre_en:     Study n°44
+suite:        null
+types:        ['RH', 'LH', 'DL', 'AR', 'SY']
+tempo_min:    60
+tempo_max:    88
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         12
+nb_mesures:   40

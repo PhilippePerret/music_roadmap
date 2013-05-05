@@ -1,0 +1,11 @@
+titre_fr:     Étude n°31
+titre_en:     Study n°31
+suite:        null
+types:        ['RH', 'SX', 'TI']
+tempo_min:    70
+tempo_max:    92
+nb_temps:     4
+duree_temps:  4
+metrique:     "24/16"
+tone:         10
+nb_mesures:   32

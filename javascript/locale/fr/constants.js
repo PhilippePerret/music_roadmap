@@ -12,7 +12,7 @@ $.extend(window.Exercices,{
     
     'GA':"Gammes",
     'AR':"Arpèges",
-    'C0':"Accords",
+    'AC':"Accords",
     
     'LH':"Main gauche",
     'RH':"Main droite",
@@ -34,7 +34,9 @@ $.extend(window.Exercices,{
     'CH':"Chromatismes",
     'PG':"Poignet",
     'DL':"Déliateur",
-    'EX':"Extensions"
+    'EX':"Extensions",
+    
+    'JP':"Sauts"
   },
   TYPES_SUITE_HARMONIQUE:{
     'NO'  :"Définie par l'exercice",

@@ -1,0 +1,11 @@
+titre_fr:     Étude n°38
+titre_en:     Study n°38
+suite:        null
+types:        ['RH', 'LH', 'AR']
+tempo_min:    60
+tempo_max:    88
+nb_temps:     3
+duree_temps:  6
+metrique:     "9/8"
+tone:         15
+nb_mesures:   38

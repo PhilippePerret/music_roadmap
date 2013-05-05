@@ -1,0 +1,11 @@
+titre_fr:     Étude n°37
+titre_en:     Study n°37
+suite:        null
+types:        ['RH', 'TI', 'SX', 'RY']
+tempo_min:    50
+tempo_max:    76
+nb_temps:     1
+duree_temps:  2
+metrique:     "2/4"
+tone:         10
+nb_mesures:   63
