@@ -150,7 +150,7 @@ section#sec_metronome img#metronome_anim {
   width             :111px;
 }
 
-a#btn_save_roadmap {
+a#btn_roadmap_save {
   width               : 70px  ;
   float               : right ;
   display             : block ;
