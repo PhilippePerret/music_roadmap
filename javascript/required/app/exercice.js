@@ -106,6 +106,7 @@ Exercice.prototype.select = function(){
 // Scroll jusqu'à l'exercice
 Exercice.prototype.scroll_to = function(){
   oex = document.getElementById('li_ex-'+this.id);
+  window.scrollTo(0,0);
   $('ul#exercices').scrollTo(oex.offsetTop - 10);
 }
 Exercice.prototype.deselect = function(){
