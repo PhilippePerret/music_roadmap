@@ -31,6 +31,14 @@ window.Seance = {
         if(this.running) this.stop(true);
         return false;
         break;
+      case Key_m:
+      case Key_M:
+        evt.stopPropagation();
+        Metronome.toggleMute();
+        return false;
+        break;
+      default:
+        // console.log("touche:"+evt.charCode);
     }
   },
   // Start working session (either prepared session or normal session)

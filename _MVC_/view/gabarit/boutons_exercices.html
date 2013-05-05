@@ -1,4 +1,10 @@
 <div id="btns_exercices" class="right semicadreh">
+  <!-- Speakers -->
+  <a  id="btn_mute"
+      href="#"
+      onclick="return $.proxy(Metronome.toggleMute, Metronome)()"
+      ><img id="speakers" data-src="speakers/on.png" /></a>
+      
   <!-- Flottant à gauche -->
   <a  id="btn_exercices_move" 
       onclick="return $.proxy(Exercices.move, Exercices)()"

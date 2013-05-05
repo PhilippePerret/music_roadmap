@@ -5,6 +5,7 @@
 
 window.Metronome = {
   class                 : "Metronome",
+  sound_on              :true,
   playing               :false,   // Mis à true quand le métronome joue
   clics_interval        : null,   // L'interval exact entre les clics suivant
                                   // le tempo.
@@ -14,6 +15,12 @@ window.Metronome = {
   son                   : null,   // Le son du métronome (objet audio HTML5)
   odd_son               : false,  // Pour alterner d'un son à l'autre
   
+  // Mute the sound
+  toggleMute:function(){
+    this.sound_on = !this.sound_on;
+    $('img#speakers').attr('src', UI.path_image('speakers/'+(this.sound_on?'on':'off')+'.png'));
+    return false;//for a-link
+  },
   // Appelée quand on lance le métronome (bouton Play)
   start: function(tempo){
     BT.add("-> Metronome.start (this = "+this.class+")") ;
@@ -90,11 +97,20 @@ window.Metronome = {
     son         : null,   // Référence à Metronome.son
     son2        : null,   // Référence à Metronome.son2
     odd_son     : false,  // Pour alterner
+    
     // Joue le son
     clic : function(){
-      this.son.pause();
-      this.son.currentTime = 0 ;
-      this.son.play();
+      if (Metronome.sound_on){
+        this.son.pause();
+        this.son.currentTime = 0 ;
+        this.son.play();
+      } else {
+        $('img#speakers').css({'opacity':"1"});
+        $('img#speakers').animate({
+          'opacity':"0.5"
+        }, {duration:160, always:function(){$('img#speakers').css({'opacity':"1"})}});
+        ;
+      }
     },
     // Change le volume (de 0 à 1 — 0.1, 0.2 etc.)
     change_volume: function( amount ){

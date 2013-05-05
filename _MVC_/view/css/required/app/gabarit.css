@@ -190,3 +190,13 @@ div.titre_section {
   font-family   :Verdana;
   font-size     :16pt;
 }
+
+/*
+  SPEAKERS
+*/
+a#btn_mute {
+  float       :left;
+}
+img#speakers {
+  width     :27.9px;
+}
