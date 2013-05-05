@@ -1,20 +1,47 @@
 <!-- 
   Texte pour l'accueil de l'application
 -->
-<li class="ex" style="position:relative;padding:2em;font-size:1.2em;width:48%;opacity:0.77;">
+<style type="text/css">
+  div#col_droite{
+    position:absolute; 
+    right:12px;
+    top:12px;
+    width:36%;
+  }
+  div#col_droite > div.box_col_droite {
+    background-color:white;
+    opacity:0.8;
+    padding:0.9em;
+    border-radius:12px;
+    margin-bottom:1em;
+  }
+  div.box_col_droite > div {
+    margin:8px;
+  }
+  div#col_droite a.roux {
+    color: #BF5E00;
+    font-size:0.9em;
+  }
+  div#col_droite a.btn {color:white !important;background-color:#136900 !important;}
+</style>
+<div id="col_droite">
+  <div class="box_col_droite">
+    <img data-src="note/noire.png" style="width:auto;float:left;opacity:0.64;" />
+    <div><aide class="btn" value="application/premiers-pas.html">PRISE EN MAIN</aide></div>
+    <div><aide class="roux" value="application/overview.html">APERÇU RAPIDE</aide></div>
+  </div>
+  <div class="box_col_droite bold italic center" style="font-size:1.39em;">
+    “Feuille de Route Musicale”, vos efforts laissent une trace.
+  </div>
+  <div class="box_col_droite red">
+    Attention&nbsp;! <strong>VERSION BETA</strong>.
+  </div>
+</div>
+<li class="ex" style="position:relative;padding:2em;font-size:1.2em;width:42%;opacity:0.77;border-radius:3em;">
   <img data-src="metronome/note.gif" style="width:70px;float:left;" />
-  <div class="center">BIENVENUE SUR<br />“FEUILLE DE ROUTE MUSICALE”&nbsp;!</div>
-  <div style="margin-top:1em;font-style:italic;font-size:0.85em;">
-    Ça n'est pas un jeu, bien contraire, c'est une application de travail destinée aux musiciens.
+  <div class="center bold">BIENVENUE SUR<br />“FEUILLE DE ROUTE MUSICALE”&nbsp;!</div>
+  <div style="margin-top:1em;font-style:italic;font-size:0.85em;text-align:justify;">
+    “Feuille de Route Musicale” est un <strong>assistant pour musicien</strong>, qui répertorie vos exercices et vos morceaux courants, <strong>confec&shy;tion&shy;ne des séances de travail sur mesure</strong>  (en fonction des exercices déjà travaillés ou des difficultés à aborder) et affiche des rapports de sessions pour <strong>un suivi efficace des progrès</strong>.
   </div>
-</li>
-<li class="ex" id="premiers_pas" style="margin-top:2em;padding:1em;float:right;clear:none;width:50%;">
-  <img data-src="note/noire.png" style="width:auto;float:left;" />
-  <div>
-Si c'est votre première visite, vous pouvez trouver votre bonheur dans la <aide id="btn_premiers_pas" value="application/premiers-pas">Prise en main de l’application “Feuille de route musicale”</aide>.
-  </div>
-</li>
-<li class="ex red" style="margin-top:2em;padding:1em;width:30%;clear:none;">
-  Attention&nbsp;! Il s'agit encore d'une <strong>VERSION BETA</strong>. Vous pouvez l'essayer, mais elle n'est pas encore pleinement opérationnelle.
 </li>
 <div style="clear:both;"></div>
