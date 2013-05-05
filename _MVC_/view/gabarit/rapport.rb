@@ -159,5 +159,6 @@ sr += bouton_close(12,12)
 
 sr += '<div style="clear:both;"></div>'
 sr += '</section>'
+sr += '<div style="clear:both;"></div>'
 
 sr

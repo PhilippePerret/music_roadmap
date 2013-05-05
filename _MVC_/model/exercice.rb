@@ -44,24 +44,12 @@ class Exercice
   # rapports et les confections de séance de travail
   # 
   attr_reader :exercices
-  
-  # # Index de l'exercice dans la première ligne du fichier de données de jeu.
-  # # Rappel: cette première ligne contient simplement l'index de l'exercice associé à la
-  # # longueur de sa ligne de données dans le fichier, et elle est transformée en array de
-  # # "<id exercice>:<longueur ligne data>"
-  # # OBSOLETE
-  # attr_accessor :index_in_first_line
-  
-  # # Durée actuelle de la donnée de l'exercice dans le fichier de données de jeux
-  # # OBSOLETE
-  # attr_accessor :len_init_in_duree_jeu
-  
-  # # Offset du début de la ligne de code de l'exercice dans le fichier de données de jeux
-  # # 
-  # # NIL si l'exercice ne s'y trouve pas encore
-  # # 
-  # # OBSOLÈTE
-  # attr_accessor :offset_in_duree_jeu
+
+  # Index of the exercice in order of its roadmap (R/W)
+  # 
+  # This attribute is used for building working session (@see roadmap/building.rb)
+  # 
+  attr_accessor :index
     
   # Data dans le fichier .js de l'exercice
   # 
@@ -97,6 +85,11 @@ class Exercice
   # Return min tempo of the exercice (Fixnum)
   def tempo_min
     @tempo_min ||= data['tempo_min'].to_i
+  end
+  
+  # Return true if it's a mandatory exercice
+  def obligatory?
+    data['obligatory'] === true
   end
   
   # Return Hash Data of the exercices (keys are String-s, NOT Symbol-s)
@@ -180,14 +173,14 @@ class Exercice
   
   # Return the number of times that the exercice has been played
   def number_of_times
-    @number_times_played ||=  data_in_seances[:number_of_times]
+    @number_times_played ||= data_in_seances[:number_of_times]
   end
   
   # Return exercice data in the +x+ last seances
   # 
   def data_in_seances x = 50
     if @data_in_seances == nil || @data_in_seances[:x_last] != x
-      @data_in_seances = Seance.exercice self, x
+      @data_in_seances = Seance.exercice( self, x )
     end
     @data_in_seances
   end

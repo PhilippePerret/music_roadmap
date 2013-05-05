@@ -213,11 +213,11 @@ window.Seance = {
   // Retour ajax de la précédente
   build_suite:function(rajax){
     if(false==traite_rajax(rajax)){
+      if ('undefined' != typeof rajax.debug_building_seance){
+        if($('pre#pre_debug').length) $('pre#pre_debug').remove();
+        $('body').append(rajax.debug_building_seance);
+      }
       this.data_seance = rajax.data_seance ; // les données remontées pour la séance
-      // if(console){
-      //   console.log("Data remontées pour la séance:");
-      //   console.dir(this.data_seance);
-      // }
       if (this.show_data_seance()){
         Roadmap.Data.set_config_generale(this.data_seance);
         Roadmap.Data.show();
@@ -266,6 +266,7 @@ window.Seance = {
     return false;//for a-link
   },
   // Relève les data du formulaire
+  OPTIONS_LIST:['aleatoire', 'obligatory', 'new_tone', 'same_ex', 'next_config'],
   get_values:function(){
     // Working time
     var hrs = parseInt($('select#seance_duree_heures').val());
@@ -278,7 +279,7 @@ window.Seance = {
     // Difficulties
     var difficulties = Exercices.Edition.pickup_types('sw');
     var options      = {};
-    $(['obligatory', 'new_tone', 'same_ex', 'next_config']).map(function(itm,key){
+    $(this.OPTIONS_LIST).map(function(itm,key){
         options[key] = $('input#seance_option_'+key).is(':checked');
     });
     return {

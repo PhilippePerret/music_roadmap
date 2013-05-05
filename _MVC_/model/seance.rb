@@ -41,6 +41,13 @@ class Seance
     attr_reader :seances_data
   end
   
+  def self.debug str = nil
+    return if Params::online?
+    nf = 'seance_rb_debug.txt'
+    File.unlink(nf) if File.exists?(nf) && File.stat(nf).mtime.to_i < (Time.now.to_i - 60)
+    File.open(nf, 'a'){|f| f.puts str} unless str.nil?
+  end
+  
   # Return data of exercice +iex+ in the +x+ last seances
   # 
   # * USAGE
@@ -75,6 +82,11 @@ class Seance
   #     }
   # 
   def self.exercice iex, x = 50
+    @data_exercices ||= {}
+    if defined?(@data_exercices[iex.id]) && @data_exercices[iex.id] != nil
+      dex = @data_exercices[iex.id]
+      return dex[:data] if dex[:roadmap] == iex.roadmap && dex[:x] == x
+    end
     data_exercice = {
       :id               => iex.id,
       :number_of_times  => 0,
@@ -83,7 +95,7 @@ class Seance
       :durations        => [],
       :data             => [],
       :tempos           => [],
-      :tones           => [],
+      :tones            => [],
       :seances          => []
     }
     lasts(iex.roadmap,x)[:seances].each do |jour, dseance|
@@ -94,7 +106,7 @@ class Seance
         data_exercice[:number_of_times] += 1
         data_exercice[:data]      << dex.merge(:day => jour)
         data_exercice[:tempos]    << dex[:tempo]
-        data_exercice[:tones]    << dex[:tone]
+        data_exercice[:tones]     << dex[:tone]
         data_exercice[:durations] << dex[:time]
       end
     end
@@ -103,6 +115,9 @@ class Seance
       data_exercice[:average_duration] = 
          data_exercice[:total_duration] / data_exercice[:number_of_times]
     end
+    @data_exercices = @data_exercices.merge( iex.id => {
+        :x => x, :roadmap => iex.roadmap, :data => data_exercice
+      })
     data_exercice
   end
   
@@ -124,6 +139,7 @@ class Seance
   # 
   def self.lasts roadmap, x = 50
     return @seances_data if @seances_data != nil && @seances_data[:x] == x
+    # debug # pour détruire le fichier debug
     @roadmap = roadmap
     hseances = {
       :x            => x,
@@ -190,8 +206,9 @@ class Seance
     # Only the lasts x
     lejour, choosed_files, fold = Date.today, [], @roadmap.folder_seances
     while choosed_files.count < x && lejour >= oldest_date
-      nfile = lejour.strftime("%y%m%d") + '.msh'
-      choosed_files << File.join(fold, nfile) if all_days.include?( nfile )
+      day   = lejour.strftime("%y%m%d") 
+      nfile = "#{day}.msh"
+      choosed_files << File.join(fold, nfile) if all_days.include?( day )
       lejour -= 1
     end
     
