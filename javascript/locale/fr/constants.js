@@ -10,7 +10,7 @@ $.extend(window.Exercices,{
     */
     'WT':"Temps total de travail", // pour simplifier codes JS
     
-    'G0':"Gammes",
+    'GA':"Gammes",
     'AR':"Arpèges",
     'C0':"Accords",
     
@@ -18,23 +18,23 @@ $.extend(window.Exercices,{
     'RH':"Main droite",
     'RY':"Rythme",
     
-    'T1':"Tierces",
-    'S0':"Sixtes",
-    'O0':"Octaves",
+    'TI':"Tierces",
+    'SX':"Sixtes",
+    'OC':"Octaves",
 
     'G1':"Pouce",
-    'L0':"Legato",
-    'T0':"Trilles",
-    'TR':"Trémolo",
+    'LG':"Legato",
+    'TR':"Trilles",
+    'TM':"Trémolo",
     'NR':"Notes répétées",
     'NT':"Notes tenues",
     
     'PO':"Polyphonie",
     'SY':"Synchronisation",
-    'C1':"Chromatismes",
-    'P0':"Poignet",
+    'CH':"Chromatismes",
+    'PG':"Poignet",
     'DL':"Déliateur",
-    'E0':"Extensions"
+    'EX':"Extensions"
   },
   TYPES_SUITE_HARMONIQUE:{
     'NO'  :"Définie par l'exercice",

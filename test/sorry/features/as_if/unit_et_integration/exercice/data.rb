@@ -8,5 +8,5 @@ when "les données du formulaire exercice sont valides" then
     :exercice_tempo     => 100,
     :exercice_tempo_min => 80,
     :exercice_tempo_max => 131,
-    :types              => ["A0", "G1"]
+    :types              => ["AR", "G1"]
   }

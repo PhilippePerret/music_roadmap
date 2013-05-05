@@ -1,7 +1,7 @@
 titre_fr:     Étude n°28
 titre_en:     Study n°28
 suite:        null
-types:        ['RH', 'T0', 'NT']
+types:        ['RH', 'TR', 'NT']
 tempo_min:    40
 tempo_max:    63
 nb_temps:     2

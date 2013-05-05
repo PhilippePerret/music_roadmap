@@ -1,7 +1,7 @@
 titre_fr:     Étude n°17
 titre_en:     Study n°17
 suite:        null
-types:        ['T1', 'C0']
+types:        ['TI', 'C0']
 tempo_min:    100
 tempo_max:    126
 nb_temps:     3

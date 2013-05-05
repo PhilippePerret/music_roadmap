@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°30
 titre_en:     Exercice n°30
 suite:        WK
-types:        ['DL', 'P0', 'LH', 'RH', 'T0']
+types:        ['DL', 'PG', 'LH', 'RH', 'TR']
 tempo_min:    60
 tempo_max:    108
 nb_mesures:   57

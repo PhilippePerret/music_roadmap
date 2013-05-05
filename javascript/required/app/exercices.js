@@ -41,29 +41,29 @@ $.extend(window.Exercices,{
   COLORS_FOR_TYPE:{
     'WT':'404060', // pour simplifier code (fond de colonne working time in report)
     
-    'G0':'F00', 
+    'GA':'F00', 
     'AR':'00F',
     'C0':'0F0',  
     'LH':'FF0', 
     'RH':'0FF', 
     'RY':'F0F',
     
-    'T1':"500",
-    'S0':"005",
-    'O0':"050",
+    'TI':"500",
+    'SX':"005",
+    'OC':"050",
 
     'G1':"550",
-    'L0':"055",
-    'T0':"A55555",
+    'LG':"055",
+    'TR':"A55555",
     
-    'TR':"F88",
+    'TM':"F88",
     'NR':"8F8",
     'NT':"88F",
     
-    'C1':"FF8",
-    'P0':"F8F",
+    'CH':"FF8",
+    'PG':"F8F",
     'DL':"8FF",
-    'E0':"888"
+    'EX':"888"
     
     },
   

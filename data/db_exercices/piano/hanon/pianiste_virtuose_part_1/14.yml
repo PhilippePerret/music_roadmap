@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°14
 titre_en:     Exercice n°14
 suite:        WK
-types:        ['DL', 'P0', 'T0', 'LH', 'RH']
+types:        ['DL', 'PG', 'TR', 'LH', 'RH']
 tempo_min:    60
 tempo_max:    108
 nb_mesures:   57

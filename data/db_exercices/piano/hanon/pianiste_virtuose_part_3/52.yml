@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°52
 titre_en:     Exercice n°52
 suite:        WK
-types:        ['LH', 'RH', 'T1', 'P0']
+types:        ['LH', 'RH', 'TI', 'PG']
 tempo_min:    40
 tempo_max:    84
 nb_mesures:   225

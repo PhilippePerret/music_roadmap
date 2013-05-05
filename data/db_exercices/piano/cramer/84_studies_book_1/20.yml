@@ -1,7 +1,7 @@
 titre_fr:     Étude n°20
 titre_en:     Study n°20
 suite:        null
-types:        ['LH', 'RH', 'NT', 'E0']
+types:        ['LH', 'RH', 'NT', 'EX']
 tempo_min:    60
 tempo_max:    88
 nb_temps:     2

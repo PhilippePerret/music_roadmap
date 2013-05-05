@@ -1,7 +1,7 @@
 titre_fr:     Étude n°23
 titre_en:     Study n°23
 suite:        null
-types:        ['RH', 'AR', 'S0']
+types:        ['RH', 'AR', 'SX']
 tempo_min:    132
 tempo_max:    152
 nb_temps:     4

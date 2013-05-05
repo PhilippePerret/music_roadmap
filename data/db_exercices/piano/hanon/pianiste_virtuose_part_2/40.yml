@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°40
 titre_en:     Exercice n°40
 suite:        WK
-types:        ['LH', 'RH', 'G0', 'C1']
+types:        ['LH', 'RH', 'GA', 'CH']
 tempo_min:    60
 tempo_max:    120
 nb_mesures:   104

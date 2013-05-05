@@ -1,7 +1,7 @@
 titre_fr:     Étude n°5
 titre_en:     Study n°5
 suite:        null
-types:        ['AR', 'E0']
+types:        ['AR', 'EX']
 tempo_min:    100
 tempo_max:    132
 nb_temps:     3

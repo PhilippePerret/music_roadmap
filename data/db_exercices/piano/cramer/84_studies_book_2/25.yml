@@ -1,7 +1,7 @@
 titre_fr:     Étude n°25
 titre_en:     Study n°25
 suite:        null
-types:        ['LH', 'T0', 'NT']
+types:        ['LH', 'TR', 'NT']
 tempo_min:    40
 tempo_max:    56
 nb_temps:     4

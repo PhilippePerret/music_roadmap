@@ -1,7 +1,7 @@
 titre_fr:     Étude n°19
 titre_en:     Study n°19
 suite:        null
-types:        ['T1', 'SY']
+types:        ['TI', 'SY']
 tempo_min:    60
 tempo_max:    88
 nb_temps:     2

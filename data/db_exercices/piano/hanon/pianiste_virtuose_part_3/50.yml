@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°50
 titre_en:     Exercice n°50
 suite:        WK
-types:        ['LH', 'RH', 'T1', 'C1']
+types:        ['LH', 'RH', 'TI', 'CH']
 tempo_min:    40
 tempo_max:    84
 nb_mesures:   49

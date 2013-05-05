@@ -1,7 +1,7 @@
 titre_fr:     Étude n°8
 titre_en:     Study n°8
 suite:        null
-types:        ['TR', 'T1']
+types:        ['TM', 'TI']
 tempo_min:    64
 tempo_max:    84
 nb_temps:     2

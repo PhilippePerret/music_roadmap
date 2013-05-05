@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°53
 titre_en:     Exercice n°53
 suite:        WK
-types:        ['LH', 'RH', 'O0', 'P0', 'G0']
+types:        ['LH', 'RH', 'OC', 'PG', 'GA']
 tempo_min:    40
 tempo_max:    84
 nb_mesures:   49

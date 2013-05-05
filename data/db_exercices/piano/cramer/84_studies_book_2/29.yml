@@ -1,7 +1,7 @@
 titre_fr:     Étude n°29
 titre_en:     Study n°29
 suite:        null
-types:        ['RH', 'T0', 'AR', 'NT', 'SY', 'PO']
+types:        ['RH', 'TR', 'AR', 'NT', 'SY', 'PO']
 tempo_min:    100
 tempo_max:    132
 nb_temps:     2

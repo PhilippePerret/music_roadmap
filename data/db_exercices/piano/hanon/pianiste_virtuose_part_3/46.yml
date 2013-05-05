@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°46
 titre_en:     Exercice n°46
 suite:        WK
-types:        ['LH', 'RH', 'T0']
+types:        ['LH', 'RH', 'TR']
 tempo_min:    60
 tempo_max:    108
 nb_mesures:   122

@@ -1,7 +1,7 @@
 titre_fr:     Étude n°13
 titre_en:     Study n°13
 suite:        null
-types:        ['LH', 'RH', 'DL', 'G0', 'AR']
+types:        ['LH', 'RH', 'DL', 'GA', 'AR']
 tempo_min:    100
 tempo_max:    132
 nb_temps:     4

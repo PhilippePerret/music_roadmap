@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°54
 titre_en:     Exercice n°54
 suite:        WK
-types:        ['LH', 'RH', 'O0', 'T1', 'G0']
+types:        ['LH', 'RH', 'OC', 'TI', 'GA']
 tempo_min:    40
 tempo_max:    92
 nb_mesures:   50

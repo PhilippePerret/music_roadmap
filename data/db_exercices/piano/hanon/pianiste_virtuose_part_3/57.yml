@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°57
 titre_en:     Exercice n°57
 suite:        HA
-types:        ['LH', 'RH', 'O0', 'P0', 'G0']
+types:        ['LH', 'RH', 'OC', 'PG', 'GA']
 tempo_min:    40
 tempo_max:    72
 nb_mesures:   73

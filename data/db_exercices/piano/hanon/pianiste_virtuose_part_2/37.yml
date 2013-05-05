@@ -1,7 +1,7 @@
 titre_fr:     Exercice n°37
 titre_en:     Exercice n°37
 suite:        WK
-types:        ['DL', 'P0', 'LH', 'RH', 'G1']
+types:        ['DL', 'PG', 'LH', 'RH', 'G1']
 tempo_min:    60
 tempo_max:    108
 nb_mesures:   23
