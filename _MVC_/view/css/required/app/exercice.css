@@ -105,8 +105,8 @@ ul#exercices li.ex.selected div.ex_titre {
 li.ex.selected div.ex_titre > span {font-size:14px !important;}
 li.ex.selected span.ex_titre{display:inline;margin-left:1em;}
 li.ex span.ex_titre{display:block;}
+
 li.ex.selected div.div_up_tempo {
-  display     :inline;
   margin-left :1em;
   font-weight :bold !important;
 }
