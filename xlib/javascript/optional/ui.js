@@ -78,7 +78,23 @@
 */
 window.UI = {
   
-  
+  /*  Scroll to a DOM element
+   *
+   *  @param    domel       DOM Element to scroll to. Either a jQuery element or
+   *                        a JID (tag#id). MIND: the Dom element must have a Dom ID.
+   *  @param    container   DOM Element or JID of the elemen to scroll. So the element
+   *                        with a scrollbar.
+   *  @param    top_offset  (optional) (Integer) The offset from the top of the final
+   *                        position. Default: 40.
+   */
+  scroll_to:function(domel, container, top_offset){
+    if('undefined'==typeof top_offset) top_offset = 40 ;
+    var domel_id   = $(domel).attr('id');
+    oex = document.getElementById(domel_id);
+    // var domel_init_offset = 0 + oex.offsetTop;
+    // var wnd_scroll = $(window).scrollTop();
+    $(container).scrollTo(oex.offsetTop - top_offset);
+  },
   // Définit la visibilité de l'élément et retourne son état
   // 
   // @note: Le changement se fait par une classe 'invisible' et une class 'visible',
@@ -646,11 +662,12 @@ function Button( params ) {
     return 'style="' + styles + '"' ;
   };
   
-  // --- Définir un identifiant unique ---
+  // --- Définir un identifiant unique pour le DOM ---
+  last_uniq_id:null,
   this.uniq_id = function(){
-    var ibtn = 0 ;
-    while( $("btn"+(++ibtn)).length > 0 ){}
-    return "btn" + ibtn ;
+    if(this.last_uniq_id == null) this.last_uniq_id = 0;
+    while( $("eldom"+(++this.last_uniq_id)).length > 0 ){}
+    return "eldom" + this.last_uniq_id;
   };
   // --- Définition des paramètres par défaut ---
   this.default_params = function( button ){

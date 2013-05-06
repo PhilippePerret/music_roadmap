@@ -105,9 +105,13 @@ Exercice.prototype.select = function(){
 }
 // Scroll jusqu'à l'exercice
 Exercice.prototype.scroll_to = function(){
-  oex = document.getElementById('li_ex-'+this.id);
-  window.scrollTo(0,0);
-  $('ul#exercices').scrollTo(oex.offsetTop - 10);
+  UI.scroll_to('li#li_ex-'+this.id, 'ul#exercices', 10);
+  window.timer = setTimeout("wait_and_scroll_to()", 1000);
+}
+function wait_and_scroll_to(){
+  $('html').scrollTo(0);
+  clearTimeout(window.timer);
+  window.timer = null;
 }
 Exercice.prototype.deselect = function(){
   this.li().removeClass('selected') ;

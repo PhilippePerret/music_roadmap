@@ -343,9 +343,10 @@ window.Aide = {
   
   // Scroll jusqu'au texte d'ID +id+
   scroll_to: function(id){
-    try {
-      this.content().scrollTo( this.jqtext(id), { offsetTop:"60" });
-    } catch(erreur) { F.warning( "[Aide.scroll_to] " + erreur )}
+    UI.scroll_to(this.jqtext(id), this.content());
+    // try {
+    //   this.content().scrollTo( this.jqtext(id), { offsetTop:"60" });
+    // } catch(erreur) { F.warning( "[Aide.scroll_to] " + erreur )}
   },
   
   // --- Protected methods ---
