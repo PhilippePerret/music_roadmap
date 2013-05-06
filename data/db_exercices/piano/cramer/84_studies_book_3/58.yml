@@ -1,0 +1,11 @@
+titre_fr:     Étude n°58
+titre_en:     Study n°58
+suite:        null
+types:        ['RH', 'TI', 'EX']
+tempo_min:    100
+tempo_max:    138
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         7
+nb_mesures:   60

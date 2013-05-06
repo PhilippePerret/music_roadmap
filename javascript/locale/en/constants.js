@@ -14,7 +14,7 @@ $.extend(window.Exercices,{
     'RY':"Rythm",
     'TI':"Thirds",
     'SX':"Sixths",
-    'G1':"Thumb",
+    'PC':"Thumb",
     'LG':"Legato",
     'OC':"Octaves",
     'TR':"Trills",
@@ -27,6 +27,7 @@ $.extend(window.Exercices,{
     'EX':"Extention",
     'NR':"Repeated notes",
     'NT':"Sustained notes",
+    'CX':"Cross",
     'JP':"Jump"
   },
   TYPES_SUITE_HARMONIQUE:{

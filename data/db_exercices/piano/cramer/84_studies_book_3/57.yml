@@ -1,0 +1,11 @@
+titre_fr:     Étude n°57
+titre_en:     Study n°57
+suite:        null
+types:        ['RH', 'NT', 'EX']
+tempo_min:    100
+tempo_max:    126
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         19
+nb_mesures:   40

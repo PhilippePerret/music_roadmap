@@ -22,7 +22,7 @@ $.extend(window.Exercices,{
     'SX':"Sixtes",
     'OC':"Octaves",
 
-    'G1':"Pouce",
+    'PC':"Pouce",
     'LG':"Legato",
     'TR':"Trilles",
     'TM':"Trémolo",
@@ -36,6 +36,7 @@ $.extend(window.Exercices,{
     'DL':"Déliateur",
     'EX':"Extensions",
     
+    'CX':"Croisements",
     'JP':"Sauts"
   },
   TYPES_SUITE_HARMONIQUE:{

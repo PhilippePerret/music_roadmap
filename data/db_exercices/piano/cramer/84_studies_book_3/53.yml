@@ -1,0 +1,11 @@
+titre_fr:     Étude n°53
+titre_en:     Study n°53
+suite:        null
+types:        ['RH', 'LH', 'NT', 'EX', 'SY']
+tempo_min:    50
+tempo_max:    72
+nb_temps:     1
+duree_temps:  6
+metrique:     "3/8"
+tone:         21
+nb_mesures:   76
