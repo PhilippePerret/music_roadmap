@@ -81,7 +81,13 @@ window.Rapport = {
    *
    */
   CALC_day            :null,    // Current day calculated (String YYMMDD)
-  number_of_days      :null,    // Number of days of the seance (set by ruby)
+  number_of_days      :null,    // Number of days of the period of report (set by ruby)
+  days_until_today    :null,    // Number of days from first day of period of report
+                                // until today. NULL if today is outside the period.
+  days_for_average    :null,    // (calculated here) Number of day to considere to calc
+                                // the average of time. Either the total number of days of
+                                // the period or the number of days until today.
+                                // @see set_number_days_for_average
   total_working_time  :null,
   seances             :null,
   exercices           :null,
@@ -96,9 +102,19 @@ window.Rapport = {
    *  can calculate all period values.
    */
   CALC:function(){
-    this.number_of_days = parseInt(this.data.number_of_days, 10);
+    this.set_number_days_for_average();
     this.CALC_init_all();
     this.CALC_load_all_exercices();
+  },
+  // Define the number of days to considere for the calc of average times
+  set_number_days_for_average:function(){
+    this.number_of_days = parseInt(this.data.number_of_days, 10);
+    this.days_until_today = this.data.days_until_today;
+    if(this.days_until_today != null){
+      this.days_until_today = parseInt(this.days_until_today,10);
+      this.days_for_average = this.days_until_today;
+    }
+    else this.days_for_average = parseInt(this.number_of_days,10);
   },
   CALC_load_all_exercices:function(){
     var day, iex, idex, unloaded = [];
@@ -281,7 +297,7 @@ window.Rapport = {
   // @param   as_f    If true (default:false) return a float number. Otherwise
   //                  return a clocktime
   average_for_time:function(time, as_f){
-    var av = time / this.number_of_days;
+    var av = time / this.days_for_average;
     if(as_f == true) return av;
     return Time.seconds_to_horloge(av, false, ':', "'", '"');
   },

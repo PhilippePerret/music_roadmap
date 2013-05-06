@@ -68,10 +68,31 @@ class Rapport
     @data_seances = @data_seances.merge(
       :year             => options[:year],
       :month            => options[:month] - 1,
-      :number_of_days   => (dateto - datefrom).numerator.to_i,
+      :number_of_days   => number_of_days(datefrom, dateto),
+      :days_until_today => days_until_today(datefrom, dateto),
       :first_month_day  => week_day(Date.new(options[:year], options[:month], 1)),
       :last_month_day   => week_day(Date.new(options[:year], options[:month], -1))
     )
+  end
+  
+  # Return number of days for the report.
+  # 
+  # * CASES
+  #   - today is "out" the period => to - from
+  #   - today is the last day of the period => today - from
+  #   - today is within the period => today - from
+  # 
+  def number_of_days datefrom, dateto
+    (dateto - datefrom).numerator.to_i
+  end
+  
+  # Return number of days from +datefrom+ to today. Return NIL if
+  # today is outsite the period datefrom-dateto
+  # 
+  def days_until_today datefrom, dateto
+    today = Date.today
+    return nil if today > dateto || today < datefrom
+    (today - datefrom).numerator.to_i
   end
   
   def week_day date
