@@ -44,7 +44,9 @@ def exercice_save_duree_travail rm, dataex, datauser
     seance.add_working_time iex, working_data, options
     return nil
   rescue Exception => e
-    return e.message
+    mess = e.message
+    mess += '<br>' + e.backtrace.join('<br>') if Params::offline?
+    return mess
   end
   
 end

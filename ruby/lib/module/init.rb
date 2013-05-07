@@ -1,4 +1,8 @@
 require File.join(APP_FOLDER, 'ruby', 'lib', 'app', 'required', 'constants.rb')
+
+# For some tests 
+DO_UPDATES = true unless defined?(DO_UPDATES)
+
 # Classes extentions
 Dir["#{APP_FOLDER}/ruby/lib/required/**/*.rb"].each { |m| require m }
 # App required-s
@@ -15,7 +19,7 @@ require 'params'
 Params.set_params
 
 # Updates to do ?
-if File.exists? File.join(APP_FOLDER, '_force_update.rb')
+if DO_UPDATES && File.exists?( File.join(APP_FOLDER, '_force_update.rb') )
   require '_force_update.rb'
   # Update Database Exercice?
   if FORCE_UPDATE[:db_exercices]
