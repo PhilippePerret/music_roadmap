@@ -391,7 +391,7 @@ window.Rapport = {
       var idtone = hex.id;
       var div = '<div>' +
         '<span class="legend_tone">' +
-          '<span class="tone">' + IDSCALE_TO_HSCALE[LANG][idtone] + '</span>' +
+          '<span class="tone">' + IDSCALE_TO_HSCALE[idtone]['double'] + '</span>' +
           '<span class="time">' + 
             Time.seconds_to_horloge(hex.time,true) + this.moyenne_for(hex) + 
           '</span>';

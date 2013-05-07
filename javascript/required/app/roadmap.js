@@ -683,13 +683,18 @@ window.Roadmap = {
         $('span#'+id).html( texte ) ;
       },
       // Affiche la gamme courante
+      // Si des exercices sont affichés, qui sont de type à changer de tonalité,
+      // on règle cette tonalité.
+      // 
+      // @note: la méthode est appelée par Roadmap.Data.show
       tone:function(){
         var tone = Roadmap.Data.tone;
         $('img#gconfig_img_cur_tone').attr('src', UI.path_image("note/gamme/"+tone+".jpg"));
         var nom_tone = LOCALE_UI.Label.today + ", ";
         nom_tone += LOCALE_UI.Label.tone + " " + LOCALE_UI.Label.de_of + " ";
-        nom_tone += IDSCALE_TO_HSCALE[LANG][tone];
+        nom_tone += IDSCALE_TO_HSCALE[tone]['double'];
         $('div#gconfig_nom_cur_tone').html(nom_tone);
+        Exercices.set_tones_of_exercices();
       }
     },
   //   // -------------------------------------------------------------------

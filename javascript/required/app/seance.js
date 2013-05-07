@@ -258,7 +258,7 @@ window.Seance = {
     var dir     = this.data_seance.down_to_up?'down_to_up':'up_to_down';
     var imgdir  = UI.path_image('config/direction/'+dir+'.png');
     $('span#seance_data_working_time').html(Time.seconds_to_horloge(this.data_seance.working_time));
-    $('span#seance_data_tone').html(IDSCALE_TO_HSCALE[LANG][this.data_seance.tone]);
+    $('span#seance_data_tone').html(IDSCALE_TO_HSCALE[this.data_seance.tone]['double']);
     $('img#seance_data_img_tone').attr('src',UI.path_image('note/gamme/'+this.data_seance.tone+'.jpg'));
     $('span#seance_data_suite_harmonique').html(LOCALE_UI.Exercices.Config[sens]);
     $('img#seance_data_img_suite_harmonique').attr('src', imgsens);
