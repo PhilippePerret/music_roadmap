@@ -89,7 +89,8 @@ class Seance
     end
     data_exercice = {
       :id               => iex.id,
-      :number_of_times  => 0,
+      :number_of_times  => 0,     # number of times, whatever working time
+      :real_nb_fois     => 0.0,   # calculted number of times, according to time of exercice
       :total_duration   => nil,
       :average_duration => 120, # default
       :durations        => [],
@@ -104,12 +105,15 @@ class Seance
       dseance[:exercices].each do |dex|
         next unless dex[:id] == iex.id
         data_exercice[:number_of_times] += 1
+        nbfois = dex.has_key?(:nbfois) ? dex[:nbfois].to_f : 1.0 # compatibilité anciennes versions
+        data_exercice[:real_nb_fois]    += nbfois
         data_exercice[:data]      << dex.merge(:day => jour)
         data_exercice[:tempos]    << dex[:tempo]
         data_exercice[:tones]     << dex[:tone]
         data_exercice[:durations] << dex[:time]
       end
     end
+    data_exercice[:real_nb_fois] = data_exercice[:real_nb_fois].to_i
     if data_exercice[:number_of_times] > 0
       data_exercice[:total_duration] = data_exercice[:durations].inject(:+)
       data_exercice[:average_duration] = 
@@ -448,18 +452,24 @@ class Seance
     # 
     # * PRODUCT
     #   - Had data for exercice
+    #   - Calculated the virtual number of fois, according to the duration of the work
+    #     on the exercice and the calculted duration. This property is usefull to know
+    #     how many times the exercices has been played.
     #   - Update de :end attribute of the seance
     #   
     # * PARAMS
     #   :iex::      Instance Exercice of the exercice
     #   :dwork::    {:time => Working time on the exercice, :tempo => tempo}
     #   :options::  Some options:
-    #               :tone::      (optional) Scale used to work now
+    #               :tone::       (optional) Scale used to work now
     #               :config::     (optional) General configuration of the day
     # 
     def add_working_time iex, dwork, options = nil
       data[:id_exercices] << iex.id unless data[:id_exercices].include? iex.id
-      dwork = dwork.merge :id => iex.id
+      dwork = dwork.merge(
+        :nbfois => iex.real_nbfois_with_time_and_tempo(dwork[:time],dwork[:tempo]),
+        :id     => iex.id
+        )
       unless options.nil?
         @data[:tone] ||= []
         @data[:tone] << options[:tone] if options.has_key?(:tone)

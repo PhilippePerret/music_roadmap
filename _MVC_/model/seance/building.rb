@@ -224,10 +224,18 @@ DEBUG
       # On classe les exercices par le nombre de fois qu'ils ont été joués au cours
       # des dernières séances. Les premiers exercices sont les moins travaillés, en 
       # nombre de fois
-      # @note: cependant, un exercice peut avoir été travaillé peu de fois, mais 
-      # longtemps. Que faire ? Car je pourrais aussi classer par durée de travail, puisqu'elle
-      # est définie.
-      less_worked = @ids_exercices.sort_by{|idex| @nb_fois_per_exercice[idex]}
+      # 
+      # * NOTES
+      # 
+      #   Un exercice peut avoir été travaillé peu de fois, mais longtemps. Il 
+      #   faut donc calculer le nombre de fois réelle en fonction de la durée 
+      #   de l'exercice et le temps où il a été joué.
+      #   real_nb_fois = working_time / duration_exercice.
+      # 
+      #   Quand le musicien veut jouer les exercices dans un ordre aléatoire, il 
+      #   faut shuffle les exercices par nombre de fois (cf. Issue #80)
+      # 
+      less_worked = exercices_sorted_by_nb_fois
       debug "less_worked in select_exercices : #{less_worked.inspect}"
       # On récolte les exercices, jusqu'au temps voulu
       @ids_exercices  = []
@@ -259,6 +267,28 @@ DEBUG
       @duree_courante = duree_courante
     end
     
+    # Return the exercice list sorted by number of times (calculated).
+    # If :aleatoire option (random) is set to TRUE, we shuffle by nb of time, so
+    # the exercices will not be picked up in order.
+    def exercices_sorted_by_nb_fois
+      if options[:aleatoire]
+        hash_by_nbfois = {}
+        @ids_exercices.each do |idex| 
+          nbfois = @nb_fois_per_exercice[idex]
+          hash_by_nbfois = hash_by_nbfois.merge(nbfois=>[]) unless hash_by_nbfois.has_key?(nbfois)
+          hash_by_nbfois[nbfois] << idex
+        end
+        # Shuffle
+        ary_by_nbfois_shuffled = []
+        hash_by_nbfois.each do |nbfois, ids_list|
+          ary_by_nbfois_shuffled += ids_list.shuffle
+        end
+        return ary_by_nbfois_shuffled
+      else
+        return @ids_exercices.sort_by{|idex| @nb_fois_per_exercice[idex]}
+      end
+    end
+    
     # Get the working time of each exercice
     # 
     # * PRODUCTS
@@ -280,17 +310,24 @@ DEBUG
     
     # Define the average working time of exercice +idex+ in last seances
     # 
+    # * NOTES
+    # 
+    #   Since version 0.8.5, the number of times is calculated according to the
+    #   worked time on exercice and the real exercice duration. If an exercice of
+    #   1 minute has been playing during 3 minutes, we considere it has been played
+    #   3 times.
+    # 
     # * PRODUCTS
     #   - @average_working_time where key is the exercice ID and
     #   value is the average working time of the exercice
     #   - @nb_fois_per_exercice : the number of times per exercices (note all
-    #     exercices defined in @ids_exercices has a key, and maybe the 0 value if
+    #     exercices defined in @ids_exercices has a key, and maybe the 0.0 value if
     #     exercice has not been worked yet)
     # 
     def average_working_times
       nbf, awk = {}, {}
       exercices.each do |idex, iex|
-        nbf = nbf.merge idex => iex.number_of_times
+        nbf = nbf.merge idex => iex.real_nb_fois
         awk = awk.merge idex => iex.seances_working_time
       end
       @nb_fois_per_exercice = nbf

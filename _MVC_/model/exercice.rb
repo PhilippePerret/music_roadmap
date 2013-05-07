@@ -158,6 +158,24 @@ class Exercice
     @nombre_mesures ||= data['nb_mesures'].nil? ? calc_nombre_mesures : data['nb_mesures'].to_i
   end
   
+  # Calculte the (real) nb of times (fois) the exercices has been played
+  # 
+  # * NOTES
+  # 
+  #   This data is recorded in seance, each time the exercice has been played
+  #   
+  #   The result is a float with 2 decimals max.
+  # 
+  def real_nbfois_with_time_and_tempo totaltime, curtempo
+    nbfois = totaltime.to_f / duree_at(curtempo.to_i)
+    if RUBY_VERSION >= "2.0.0"
+      nbfois.round(2)
+    else
+      u,d = nbfois.to_s.split('.')
+      "#{u}.#{d[0..1]}"
+    end
+  end
+  
   # Calculate number of measures in exercice
   # 
   # @sea `nombre_mesures' above for details
@@ -172,8 +190,14 @@ class Exercice
   end
   
   # Return the number of times that the exercice has been played
+  # 
   def number_of_times
     @number_times_played ||= data_in_seances[:number_of_times]
+  end
+  
+  # Return real number times of exercice in sessions checked
+  def real_nb_fois
+    @real_nb_fois ||= data_in_seances[:real_nb_fois]
   end
   
   # Return exercice data in the +x+ last seances
