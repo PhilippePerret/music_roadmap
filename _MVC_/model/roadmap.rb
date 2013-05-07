@@ -122,7 +122,7 @@ class Roadmap
     :maj_to_rel   => :first_to_last, 
     :first_to_last => :down_to_up
     }
-  def next_config_generale dont_save = false
+  def next_general_config dont_save = false
     d = config_generale
     param_to_change     = LOOP_CONFIG_ATTRIBUTES[d[:last_changed].to_sym].to_sym
     d[param_to_change]  = !d[param_to_change]

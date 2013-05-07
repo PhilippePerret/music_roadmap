@@ -381,7 +381,7 @@ window.Roadmap = {
         mail            : User.mail,
         md5             : User.md5,
         creating        : this.creating,
-        config_generale : this.Data.get_config_generale(),
+        config_generale : this.Data.get_general_config(),
         data_exercices  : this.Data.EXERCICES //@TODO: vérifier comment l'ordre est sérialisé
                                               // et utiliser la méthode qui transforme en string
                                               // si nécessaire
@@ -519,7 +519,7 @@ window.Roadmap = {
       // Car quand on clique que le bouton pour passer à la configuration suivante, on
       // tourne sur ces trois premiers paramètres pour les passer alternativement de
       // true à false (ou inversement)
-      // @see `next_config_generale' ci-dessous
+      // @see `next_general_config' ci-dessous
       'down_to_up', 'maj_to_rel', 'first_to_last', 'tone', 'last_changed'
     ],
     down_to_up      :true,            // cf. N0001
@@ -548,9 +548,16 @@ window.Roadmap = {
         'ordre': []
       }
     },
+ 
+    // Inverse une donnée générale
+    // @param   key   La clé, par exemple 'down_to_up'
+    toggle: function( key ){
+      this[key] = ! this[key] ;
+      Roadmap.Data.show();// Update display
+    },
     
     // Passer à la configuration générale suivante
-    next_config_generale: function(){
+    next_general_config: function(){
       // Index de la nouvelle configuration
       var index_config = this.GENERAL_CONFIG_PROPERTIES.indexOf( this.last_changed ) ;
       index_config += 1 ; if ( index_config > 2 ) index_config = 0 ;
@@ -565,14 +572,8 @@ window.Roadmap = {
       this.show();
       return false;//for a-link
     },
-    // Inverse une donnée générale
-    // @param   key   La clé, par exemple 'down_to_up'
-    toggle: function( key ){
-      this[key] = ! this[key] ;
-      Roadmap.Data.show();// Update display
-    },
     // => Retourne les données de la configuration générale
-    get_config_generale:function(){
+    get_general_config:function(){
       var d = {}, prop;
       for(var i in this.GENERAL_CONFIG_PROPERTIES){
         prop    = this.GENERAL_CONFIG_PROPERTIES[i];
@@ -581,7 +582,7 @@ window.Roadmap = {
       return d;
     },
     // Define data of general config
-    set_config_generale:function(data){
+    set_general_config:function(data){
       if (data == null) return F.show(MESSAGE.Roadmap.no_config_generale);
       for(var i in this.GENERAL_CONFIG_PROPERTIES){
         var prop = this.GENERAL_CONFIG_PROPERTIES[i];
@@ -608,7 +609,7 @@ window.Roadmap = {
         if ('undefined' != typeof data.data_roadmap)
           this.dispatch_data(data.data_roadmap);
         if ( 'undefined' != typeof data.config_generale )
-          this.set_config_generale(data.config_generale) ;
+          this.set_general_config(data.config_generale) ;
         if ( 'undefined' != typeof data.data_exercices )
           this.dispatch_exercices(data.data_exercices, data.exercices);
       } catch( erreur ) { return F.error(erreur) }

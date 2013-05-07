@@ -104,7 +104,7 @@ $.extend(window.Exercices,{
   },
   // Return Harmonic sequence of the day
   // @note: Shortcut for:
-  _config:function(){return Roadmap.Data.get_config_generale()},
+  _config:function(){return Roadmap.Data.get_general_config()},
   
   // Demande de création d'un exercice
   id_new_exercice : null,    // Pour savoir si c'est un nouvel exercice
@@ -433,7 +433,7 @@ $.extend(window.Exercices,{
     this.set_btn_move(locked) ;
     this.set_btn_create(locked);
     this.set_btns_edition(locked);
-    this.set_btn_next_config_generale(locked);
+    this.set_btn_next_general_config(locked);
     BT.add('<- Exercices.set_boutons') ;
   },
   // Règle les boutons d'édition de chaque exercice en fonction de la 
@@ -444,7 +444,7 @@ $.extend(window.Exercices,{
     $('ul#exercices a.btn_edit').toggleClass('invisible', locked) ;
   },
   // Règle le bouton pour enregistrer la configuration suivante
-  set_btn_next_config_generale:function(locked){
+  set_btn_next_general_config:function(locked){
     $('div#div_cb_save_config').toggleClass('invisible', locked) ;
   },
   // Règle le bouton pour créer un nouvel exercice/morceau

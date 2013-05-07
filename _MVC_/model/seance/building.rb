@@ -133,7 +133,7 @@ class Seance
       # Get general config
       # ------------------
       # We change for next config if required
-      @config_generale = get_config_generale
+      @config_generale = get_general_config
       
       # Replace tone with an unused tone
       @config_generale[:tone] = choose_a_tone
@@ -345,9 +345,9 @@ DEBUG
     # If options[:next_config] is true, then we take the next configuration
     # saving it.
     # 
-    def get_config_generale
+    def get_general_config
       if options[:next_config]
-        roadmap.next_config_generale
+        roadmap.next_general_config
       else
         roadmap.config_generale
       end

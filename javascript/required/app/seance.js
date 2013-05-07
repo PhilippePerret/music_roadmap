@@ -160,7 +160,7 @@ window.Seance = {
   // -------------------------------------------------------------------
   
   // -------------------------------------------------------------------
-  // Début des méthodes pour la définition d'une séance de travail
+  // Début des méthodes pour la confection d'une séance de travail
   // 
   
   // Open section Seance (hidding exercices)
@@ -227,7 +227,7 @@ window.Seance = {
       }
       this.data_seance = rajax.data_seance ; // les données remontées pour la séance
       if (this.show_data_seance()){
-        Roadmap.Data.set_config_generale(this.data_seance);
+        Roadmap.Data.set_general_config(this.data_seance);
         Roadmap.Data.show();
         this.hide_form(false);
         this.show_start();
