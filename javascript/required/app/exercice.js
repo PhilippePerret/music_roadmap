@@ -153,6 +153,10 @@ Exercice.prototype.build = function(after){
   // Réglage de la tonalité
   this.set_tone();
 }
+// TRUE if we can change the tone of this exercice
+Exercice.prototype.has_variable_tone = function(){
+  return (this.suite == 'WK' || this.suite == 'TO');
+}
 Exercice.prototype.set_tone = function(){
   $('select#tone_ex-'+this.id).val(this.tone || Roadmap.Data.tone);
 }

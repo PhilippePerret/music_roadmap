@@ -1,32 +1,3 @@
-window.IDSCALE_TO_HSCALE = {
-  fr:{
-    0:"Do", 1:"Réb/Do#", 2:"Ré", 3:"Mib/Ré#", 4:"Mi", 5:"Fa", 6:"Fa#/Solb",
-    7:"Sol", 8:"Lab/Sol#", 9:"La", 10:"Sib/La#", 11:"Si",
-    12:"Dom", 13:"Do#m/Rébm", 14:"Rém", 15:"Ré#m/Mibm", 16:"Mim", 17:"Fam",
-    18:"Fa#m/Solbm", 19:"Solm", 20:"Sol#m/Labm", 21:"Lam", 22:"Sibm/La#m", 
-    23:"Sim"
-  },
-  en:{
-    0:"C", 1:"Db/C#", 2:"D", 3:"Eb/D#", 4:"E", 5:"F", 6:"F#/Gb",
-    7:"G", 8:"Ab/G#", 9:"A", 10:"Bb/A#", 11:"B",
-    12:"Cm", 13:"C#m/Dbm", 14:"Dm", 15:"D#m/Ebm", 16:"Em", 17:"Fm",
-    18:"F#m/Gbm", 19:"Gm", 20:"G#m/Abm", 21:"Am", 22:"Bbm/A#m", 23:"Bm"
-  },
-  fr_uniq:{
-    0:"Do", 1:"Réb", 2:"Ré", 3:"Mib", 4:"Mi", 5:"Fa", 6:"Fa#",
-    7:"Sol", 8:"Lab", 9:"La", 10:"Sib", 11:"Si",
-    12:"Dom", 13:"Do#m", 14:"Rém", 15:"Ré#m", 16:"Mim", 17:"Fam",
-    18:"Fa#m", 19:"Solm", 20:"Sol#m", 21:"Lam", 22:"Sibm", 
-    23:"Sim"
-  },
-  en_uniq:{
-    0:"C", 1:"Db", 2:"D", 3:"Eb", 4:"E", 5:"F", 6:"F#",
-    7:"G", 8:"Ab", 9:"A", 10:"Bb", 11:"B",
-    12:"Cm", 13:"C#m", 14:"Dm", 15:"D#m", 16:"Em", 17:"Fm",
-    18:"F#m", 19:"Gm", 20:"G#m", 21:"Am", 22:"Bbm", 23:"Bm"
-  }
-  
-}
 if('undefined' == typeof window.Exercices){ 
   window.Exercices = {};}
 $.extend(window.Exercices,{
@@ -239,6 +210,15 @@ $.extend(window.Exercices,{
   // @note: Raccourci pour Roadmap.Data.EXERCICES['ordre'] = <liste>
   set_ordre: function( liste ){
     Roadmap.Data.EXERCICES['ordre'] = liste ;
+  },
+  
+  // @note: Called by Roadmap.Data.tone() when configuration change
+  set_tones_of_exercices:function(){
+    var i, idex, ordre = this.ordre();
+    for(i in ordre){
+      idex = ordre[i];
+      if(EXERCICES[idex].has_variable_tone())EXERCICES[idex].set_tone();
+    }
   },
   /*
       Sélection
@@ -666,10 +646,10 @@ $.extend(window.Exercices,{
     },
     // Peuple le menu des tonalités
     peuple_menu_tonalites:function(){
-      var itone, option, dtone = IDSCALE_TO_HSCALE[LANG];
+      var itone, option, dtone = IDSCALE_TO_HSCALE;
       $('select#exercice_tone').append('<option value="">--</option>');
       for(itone in dtone){
-        option = '<option value="'+itone+'">'+dtone[itone]+'</option>';
+        option = '<option value="'+itone+'">'+dtone[itone]['double']+'</option>';
         $('select#exercice_tone').append(option);
       }
     },
@@ -717,14 +697,14 @@ $.extend(window.Exercices,{
       }
       return options ;
     },
-    // Return options Dom element for a select tons (i.e. without select tag)
+    // Return options (Dom element) for a select tons (i.e. without select tag)
     options_for_tones:null, // to build it only once
     options_of_select_tones:function(){
       if(this.options_tones == null){
         this.options_for_tones = "";
-        for(var idtone in IDSCALE_TO_HSCALE[LANG+'_uniq']){
+        for(var idtone in IDSCALE_TO_HSCALE){
           this.options_for_tones += '<option value="'+ idtone + '">' + 
-                                      IDSCALE_TO_HSCALE[LANG+'_uniq'][idtone] +
+                                      IDSCALE_TO_HSCALE[idtone].uniq +
                                     '</option>';
         }
       }
