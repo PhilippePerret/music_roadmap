@@ -36,12 +36,15 @@ def ajax_roadmap_save
         :salt     => owner.salt,
         :partage  => 0
       }
-      res = roadmap_create data
+      res = roadmap_create data, param(:lang)
       raise res if res != nil
     end
   rescue Exception => e
     errmess = e.message
-    errmess = "# [Procédure roadmap/save] FATAL ERROR: #{errmess}" unless errmess.start_with?('ERROR')
+    unless errmess.start_with?('ERROR')
+      errmess = "# [Procédure roadmap/save] FATAL ERROR: #{errmess}" 
+      errmess += '<br>'+e.backtrace.join('<br>') if Params::offline?
+    end
     RETOUR_AJAX[:error] = errmess
     return
   end

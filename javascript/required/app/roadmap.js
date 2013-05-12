@@ -376,13 +376,14 @@ window.Roadmap = {
     // -> Requête de sauvegarde ou création
     Ajax.query({
       data:{
-        proc            : 'roadmap/save',
-        roadmap_nom     : this.nom,
-        mail            : User.mail,
-        md5             : User.md5,
-        creating        : this.creating,
-        config_generale : this.Data.get_general_config(),
-        data_exercices  : this.Data.EXERCICES //@TODO: vérifier comment l'ordre est sérialisé
+        proc            :'roadmap/save',
+        lang            :LANG,
+        roadmap_nom     :this.nom,
+        mail            :User.mail,
+        md5             :User.md5,
+        creating        :this.creating,
+        config_generale :this.Data.get_general_config(),
+        data_exercices  :this.Data.EXERCICES //@TODO: vérifier comment l'ordre est sérialisé
                                               // et utiliser la méthode qui transforme en string
                                               // si nécessaire
       },

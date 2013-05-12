@@ -7,8 +7,9 @@
 =end
 require_model 'user'
 require_model 'roadmap'
+require_model 'mail'
 
-def roadmap_create data
+def roadmap_create data, lang = 'en'
   begin
     # puts "-> roadmap_create avec : #{data.inspect}"
     # Présence des données
@@ -43,9 +44,27 @@ def roadmap_create data
     File.open(rm.path_exercices,'wb') { |f| f.write data.to_json }
     # On ajoute cette roadmap à l'utilisateur
     owner.add_roadmap rm.nom
+    # On envoie un mail à l'user pour lui confirmer la création de la roadmap
+    # On peut envoyer un mail à l'utilisateur et à l'administrateur
+    Mail::lang( lang )
+    Mail.new(
+      :message  => 'user/new_roadmap.html',
+      :subject  => ( lang=='en' ? "New roadmap" : "Nouvelle feuille de route"),
+      :to       => owner.mail,
+      :data     => {:pseudo => owner.nom, :roadmap => rm.nom}
+    ).send
+    # Envoi à l'administration
+    Mail.new(
+      :message  => "Auteur : #{owner.mail}\nRoadmap : #{rm.nom}\nLangue : #{lang}",
+      :subject  => "Création d'une nouvelle feuille de route"
+    ).send
+
+
     # @note: les autres fichiers doivent être créés par la procédure save
     return nil # important
   rescue Exception => e
+    errmes = e.message
+    errmes += '<br>'+e.backtrace.join('<br>') if Params::offline?
     return "# [Procédure roadmap/create] FATAL ERROR: #{e.message}"
   end
 end

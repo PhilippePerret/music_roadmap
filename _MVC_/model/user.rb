@@ -55,7 +55,7 @@ class User
   # Ajoute une roadmap à l'utilisateur (et sauve ses nouvelles données)
   def add_roadmap nom
     return false if roadmaps.count > 10
-    roadmaps << nom
+    @roadmaps << nom
     save
     true
   end
