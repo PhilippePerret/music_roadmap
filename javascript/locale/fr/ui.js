@@ -93,7 +93,7 @@ window.LOCALE_UI = {
     },
   },
   Roadmap: {
-    open_your_rm      :"Afficher…",
+    open_your_rm      :"Ouvrir feuille de route…",
     btn_save          :"Sauver",
     btn_saved         :"Sauvé",
     btn_saving        :"En cours…",
