@@ -120,13 +120,8 @@ window.User = {
       // ------------------------
       //  Identification réussie
       // ------------------------
-      var duser       = rajax.user ;
-      this.md5        = duser.md5 ;
-      this.nom        = duser.nom ;
-      this.mail       = duser.mail ;
-      this.instrument = duser.instrument;
-      this.roadmaps   = rajax.roadmaps ;
-      this.identified = true;
+      this.set_identified(rajax.user);
+      this.roadmaps = rajax.roadmaps ;
       $('div#user_signin_form').remove();
       Aide.close() ;
       F.show(MESSAGE.User.welcome);
@@ -135,6 +130,14 @@ window.User = {
       this.reset();
     }
     this.checking = false ;
+  },
+  // Identifie vraiment l'utilisateur dans l'application
+  set_identified:function(duser){
+    this.md5        = duser.md5;
+    this.nom        = duser.nom;
+    this.mail       = duser.mail;
+    this.instrument = duser.instrument;
+    this.identified = true;
   },
   // Méthode appelée en fin d'identification réussie ou d'inscription, pour
   // poursuivre avec la méthode initialement invoquée (par exemple la création
@@ -210,7 +213,7 @@ window.User = {
       return val ;
     }
   },
-  // Check les data entrées
+  // Check les data entrées pour l'inscription
   // Return le Hash des données à enregistrer ou lève une erreur en cas
   // d'erreur et retourne false
   check_data:function(){
@@ -266,7 +269,8 @@ window.User = {
       //  Inscription réussie
       // ---------------------
       F.show( MESSAGE.User.created );
-      this.md5 = rajax.user.md5 ;
+      this.set_identified(rajax.user);
+      this.roadmaps = [];
       $('div#user_signup_form').remove();
       Aide.close();
       this.pour_suivre_identification();
