@@ -15,7 +15,8 @@ window.MESSAGE = {
     how_to_make_a_good_nom  :"Un nom valide possède au moins 4 lettres et n'utilise pas de caractères spéciaux. Si vous voulez ouvrir une de vos feuilles de route, utilisez plutôt le menu.",
     creating                :"Création de la feuille de route…",
     saving                  :"Sauvegarde en cours…",
-    created                 :"Feuille de route créée avec succès !",
+    created                 :"Feuille de route créée avec succès !"+
+                             "<br>Vous pouvez maintenant <a onclick=\"return $.proxy(H.show,H,'exercice/creation.html')()\" href=\"#\" class=\"to_help aide_lien\">ajouter des exercices</a>.",
     loaded                  :"Feuille de route ouverte avec succès !",
     saved                   :"Feuille de route sauvée avec succès !",
     ready                   :"La nouvelle feuille de route est prête",

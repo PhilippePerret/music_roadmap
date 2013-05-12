@@ -155,6 +155,13 @@ window.User = {
     }
   },
   
+  // Add roadmap to user roadmap list
+  // @note: only used when user creates a new roadmap
+  add_roadmap:function(rm_name){
+    if(this.roadmaps == null) this.roadmaps = [];
+    this.roadmaps.push(rm_name);
+    Roadmap.peuple_menu_roadmaps(this.roadmaps);
+  },
   // Return TRUE if user is identified and has roadmaps. FALSE otherwise
   has_roadmaps:function(){
     return this.roadmaps != null && this.roadmaps.length > 0;

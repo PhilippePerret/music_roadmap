@@ -462,8 +462,20 @@ window.Roadmap = {
   // indépendants, ce sont ces traitements qui gèrent l'affichage des erreurs
   // Donc ici, il suffit de savoir si la création a pu se faire ou non
   end_create:function(ok){
-    if (ok === true) F.show(MESSAGE.Roadmap.created);
-    this.creating = false ;
+    if (ok === true){ 
+      F.show(MESSAGE.Roadmap.created);
+      /*  Il faut :
+       *  - ajouter la roadmap à la liste de l'user et l'afficher dans le
+       *    menu
+       *  - régler la configuration générale des exercices
+       *  - cacher les boutons "créer" et "open"
+       */
+      User.add_roadmap(this.nom);
+      this.set_etat_btn_open(false);
+      this.set_etat_btn_create(false);
+      this.UI.Set.config_generale();
+    }
+    this.creating = false;
     return false ; // pour certaines méthodes
   },
   

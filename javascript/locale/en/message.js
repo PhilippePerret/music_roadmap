@@ -15,7 +15,8 @@ window.MESSAGE = {
     how_to_make_a_good_nom  :"A valid name is 4 letters long and doesn't use special chars. If you want to open a roadmap of yours, use the select menu instead.",
     creating                :"Creating roadmap…",
     saving                  :"Saving…",
-    created                 :"Roadmap successfully created",
+    created                 :"Roadmap successfully created"+
+                             "<br>Now you can <a onclick=\"return $.proxy(H.show,H,'exercice/creation.html')()\" href=\"#\" class=\"to_help aide_lien\">add exercices</a>.",
     loaded                  :"Roadmap successfully opened!",
     saved                   :"Roadmap successfully saved!",
     ready                   :"New roadmap ready!",

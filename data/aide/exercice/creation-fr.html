@@ -3,19 +3,19 @@
   Avant de pouvoir ajouter des exercices, vous devez impérativement avoir <aide value="roadmap/creation">créé une feuille de route</aide> ou avoir <aide value="roadmap/load">ouvert une de vos feuilles de route<aide>.
 </div>
 <div>
-  C'est seulement lorsqu'une de vos feuilles de route est ouverte que le bouton <focus value="a#btn_exercice_create">Créer exercice</focus> apparait.
+  C'est seulement lorsqu'une de vos feuilles de route est ouverte que le bouton <focus value="a#btn_exercice_create">Nouvel exercice</focus> apparait.
 </div>
 <div>
   Si ce bouton est visible, vous pouvez donc <strong>cliquer dessus pour initier un nouvel exercice</strong> . Un formulaire s'ouvre devant vos yeux ébahis. C'est le formulaire où vous allez définir les “paramètres” de votre nouvel exercice.
 </div>
 <div class="bold">
-  Notons pour commencer le premier bouton, tout en haut, qui va énormément vous simplifier la vie. Il vous permet d'avoir accès à une base de données d'exercices qu'il suffit de cliquer pour les ajouter à votre feuille de route.
+  Notons pour commencer le premier bouton, tout en haut, qui va énormément vous simplifier la vie. Il vous permet d'avoir accès à une base de données d'exercices qu'il suffit de choisir pour les ajouter à votre feuille de route.
 </div>
 <div class="italic">
-  Bien entendu, encore faut-il que cet exercice se trouve dans la Base de Donnée du site. Mais elle grossit de jour à jour, et n'hésitez pas à soumettre une demande par le biais du formulaire de contact par mail.
+  (Cette base de données grossit de jour en jour, n'hésitez pas à soumettre une demande pour un exercice qui n'existerait pas encore, par le biais du formulaire de <focus value="a#mail_to_phil">contact par mail</focus>. Cet exercice sera rentré en priorité.)
 </div>
 <div>
-  Si vous voulez tout de suite savoir comment ajouter des exercices depuis la base de données, alors rejoignez l'article <aide id="exercice/add_from_db.html">Ajouter un exercice de la base de données des exercices</aide>. Dans le cas contraire, si vous voulez apprendre à faire un exercice particulier, poursuivez cet article.
+  Si vous voulez tout de suite savoir comment ajouter des exercices depuis la base de données, rejoignez l'article <aide value="exercice/add_from_db.html">Ajouter un exercice de la base de données des exercices</aide>. Dans le cas contraire, si vous voulez apprendre à faire un exercice particulier, poursuivez cet article.
 </div>
 <!-- Description des champs du formulaire -->
 <div class="soustitre">Description des champs</div>
@@ -31,9 +31,14 @@
   </li>
   <li>
     Sous ces trois champs généraux se trouve deux cases à cocher dont vous n'aurez peut-être pas besoin tout de suite. Je les explique brièvement&nbsp;:<ul>
-      <li>La case “Obligatoire” permet de définir un exercice qu'il faudra impérativement ajouter à une session de travail, lorsque vous demandez à Feuille de Route de vous confectionner une séance de travail.</li>
-      <li>La case “Lié au suivant” permet de lier cet exercice au suivant, c'est-à-dire que vous les jouerez sans vous arrêter, et Feuille de Route répartira le temps total de travail entre ces deux exercices (car Feuille de Route mémorise votre temps de travail pour vous proposer une vision plus précise de votre travail sur le court et le long terme)</li>
+      <li>La <focus value="span#span_obligatory">case “Obligatoire”</focus> permet de définir un exercice qu'il faudra impérativement ajouter à une session de travail, lorsque vous demandez à Feuille de Route de vous confectionner une séance de travail.</li>
+      <li>La <focus value="span#span_with_next">case “Lié au suivant”</focus> permet de lier cet exercice au suivant, c'est-à-dire que vous les jouerez sans vous arrêter, et Feuille de Route répartira le temps total de travail entre ces deux exercices (car Feuille de Route mémorise votre temps de travail pour vous proposer une vision plus précise de vos efforts sur le court et le long terme)</li>
       </ul>
+  </li>
+  <li>
+    Sous ces cases à cocher se trouve la définition des types de difficultés abordées par l'exercice. Ouvrez la liste en cliquant sur <focus value="a#btn_toggle_types_exercices">le bouton “modifier…”</focus> puis cocher toutes les difficultés requises.
+    <br>
+    <i>Notez que cette définition est particulièrement importante si vous voulez obtenir des rapports de travail intéressants. En effet, “Feuille de Route Musicale”, grâce à ces difficultés, pourra vous indiquer votre temps de travail sur chaque difficulté, pour la séance courante ou une période définie (par défaut&nbsp;: le mois courant). Vous pourrez ainsi savoir sur quelle difficulté vous avez réellement porté vos efforts.</i> 
   </li>
   <li>
     La rangée “Tempi” contient trois menus permettant de régler, dans l'ordre&nbsp;:
@@ -43,17 +48,30 @@
       <li>Le tempo le plus rapide de l'exercice grâce au <focus value="select#exercice_tempo_max">menu Tempo maximal</focus> (p.e. dans le Hanon, le premier serait réglé à “108”).</li>
     </ul>
     <div class="petit italic">
-      Le saviez-vous&nbsp;?… Quand vous vous trouvez sur un menu tels que ceux-là, vous pouvez taper les chiffres sur votre pavé pour choisir le nombre voulu (sur MAC, en tout cas).
+      Le saviez-vous&nbsp;?… Quand vous vous trouvez sur un menu tels que ceux-là, vous pouvez taper les chiffres sur votre pavé numérique pour choisir le nombre voulu, puis taper la touche “Entrée” pour le choisir.
     </div>
   </li>
   <li>
-    Le <focus value="exercice_suite">menu “Suite”</focus> permet de définir la “Suite harmonique” qui est peut-être appliqué à l'exercice. Pour le moment, vous pouvez passer cette information. Vous pourrez cliquer sur le “?” à côté d'elle lorsque vous serez prêt à en savoir plus.
+    Le <focus value="select#exercice_tone">menu “Tonalité”</focus> vous permet de définir la tonalité de l'exercice, si elle est définie. Notez que si cette tonalité n'est pas définie, alors l'exercice sera considéré comme “harmonique”, c'est-à-dire qu'une tonalité différente pourra être proposée à chaque séance pour le jouer.
   </li>
   <li>
-    Vous pouvez ajouter une image (partition) de votre exercice grâce au <focus value="exercice_image">champ image</focus> suivant. Cette image est pour le moment désactivée, mais vous pouvez contacter Phil directement pour lui demander d'ajouter des images que vous lui transmettrez.
+    Le <focus value="exercice_suite">menu “Suite”</focus> permet de définir la “Suite harmonique” qui est peut-être appliqué à l'exercice. Pour le moment, vous pouvez passer cette information. Vous pourrez cliquer sur le “?” qui apparait à côté du menu lorsque vous glissez votre souris dessus (<i>vous l'avez peut-être déjà noté, un point d'interrogation apparait souvent à côté des éléments que vous survolez de la souris, vous apportant une aide précise sur l'élément en question. Elle est pas belle, la vie&nbsp;? ;-)</i> ).
   </li>
   <li>
-    Enfin, vous pouvez ajouter une note sur l'exercice grâce au <focus value="textarea#exercice_note" title="champ “Note”" />. Cette note peut être une recommandation pour bien exécuter l'exercice ou le morceau, par exemple. Ça peut être aussi les recommandations de votre professeur. Au cours de votre travail, vous pourrez actualiser ce champ à mesure de la progression et des conseils que vous pourrez recevoir.
+    Le <focus value="input#exercice_nb_mesures">champ “Nombre de mesures”</focus> vous laisse définir le nombre de mesures de l'exercice, permettant à “Feuille de Route Musicale” de vous confectionner des séances de travail dans un temps imparti. <strong>N'oubliez pas de compter TOUTES les mesures</strong>, c'est-à-dire en tenant compte de toutes les répétitions.
+  </li>
+  <li>
+    Puis renseignez le <focus value="input#exercice_nb_temps">champ “Nombre de temps par mesure”</focus>.
+    <br>
+    <i>Notez que ce sont trois informations précédentes qui permettent à “Feuille de Route Musicale” de déterminer la durée d'un exercice (votre tempo actuel, le nombre de temps par mesure et le nombre total de mesures dans l'exercice). Renseignez-les donc avec soin.
+    <br> 
+    Mais l'application est “intelligente”, elle prendra toujours en compte votre temps réel de travail sur l'exercice. Ce qui signifie que plus vous jouez, et plus est juste le calcul du temps de travail pour la confection sur mesure d'une séance de travail.</i> 
+  </li>
+  <li>
+    Vous pouvez ajouter une image (partition) de votre exercice grâce au <focus value="exercice_image">champ image</focus> suivant. Cette image peut être bien sûr un extrait de l'exercice en question, donc un extrait de la partition. <strong>Cette image est pour le moment désactivée</strong> , mais vous pouvez contacter Phil directement pour lui demander d'ajouter des images que vous lui transmettrez.
+  </li>
+  <li>
+    Enfin, vous pouvez ajouter une note sur l'exercice grâce au <focus value="textarea#exercice_note">champ “Note”</focus>. Cette note peut être une recommandation pour bien exécuter l'exercice ou le morceau, par exemple. Ça peut être aussi les recommandations de votre professeur. Au cours de votre travail, vous pourrez actualiser ce champ à mesure de la progression et des conseils que vous pourrez recevoir.
   </li>
   <li>
     Nous pouvez passer la rangée “Import”, que vous pourrez aborder lorsque vous aurez d'autres feuilles de route, ou que vous connaitrez mieux l'application.
@@ -63,9 +81,9 @@
   En définitive, les seuls champs qui sont obligatoirement à définir pour créer un exercice sont : <strong>le titre de l'exercice</strong>  et <strong>le tempo maximum</strong>  (l'application refuse que les deux tempi, minimum et maximum, soient équivalents —&nbsp;elle a de ses caprices, parfois…).
 </div>
 <div>
-  Il ne vous reste plus qu'à créer l'exercice en cliquant sur <focus value="btn_exercice_save">le bouton “Créer l'exercice”</focus>.
+  Il ne vous reste plus qu'à créer l'exercice en cliquant sur <focus value="btn_exercice_save">le bouton “Enregistrer ce nouvel exercice”</focus>.
 </div>
 <div>Bravo à vous&nbsp;!</div>
 <div>
-  Vous pouvez poursuivre en en créant d'autres (au moins deux ou trois si vous voulez poursuivre ce manuel), puis découvrir la <aide value="exercice/jouer_suite">mise en route des exercices</aide>
+  Vous pouvez poursuivre en en créant d'autres (au moins deux ou trois si vous voulez poursuivre ce manuel), puis découvrir la <aide value="exercice/jouer_suite">mise en route des exercices</aide> ou la <aide value="seance/confection.html">confection d'une séance de travail</aide> (bien que cette confection ne soit vraiment intéressante qu'avec un nombre suffisant d'exercices, c'est-à-dire un nombre d'exercices supérieur au temps imparti pour les travailler).
 </div>
