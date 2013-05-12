@@ -1,0 +1,11 @@
+titre_fr:     Étude n°62
+titre_en:     Study n°62
+suite:        null
+types:        ['RH', 'AR']
+tempo_min:    120
+tempo_max:    160
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+tone:         9
+nb_mesures:   34

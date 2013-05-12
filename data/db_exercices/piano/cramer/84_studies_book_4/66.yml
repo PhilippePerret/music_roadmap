@@ -1,0 +1,11 @@
+titre_fr:     Étude n°66
+titre_en:     Study n°66
+suite:        null
+types:        ['RH', 'LH', 'AR', 'DL']
+tempo_min:    110
+tempo_max:    138
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+tone:         4
+nb_mesures:   61

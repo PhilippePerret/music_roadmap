@@ -1,0 +1,11 @@
+titre_fr:     Étude n°81
+titre_en:     Study n°81
+suite:        null
+types:        ['RH', 'LH', 'DL', 'SY', 'PO']
+tempo_min:    90
+tempo_max:    104
+nb_temps:     2
+duree_temps:  12
+metrique:     "6/16"
+tone:         6
+nb_mesures:   49
