@@ -4,7 +4,8 @@ window.MESSAGE = {
   thank_to_wait: "Merci de patienter un instant…",
   // USER
   User:{
-    created     :"Vous êtes maintenant inscrit à Feuille de Route Musicale !",
+    created     :"Vous êtes inscrit à Feuille de Route Musicale !"+
+                  "<br>Vous pouvez maintenant <a onclick=\"return $.proxy(H.show,H,'roadmap/creation.html')()\" href=\"#\" class=\"to_help aide_lien\">créer une feuille de route</a>.",
     welcome     :"Bienvenue sur Feuille de Route Musicale !",
     goodbye     :"À très bientôt sur Feuille de Route Musicale !"
   },

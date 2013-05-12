@@ -9,9 +9,10 @@ def ajax_user_create
   begin
     duser = param(:user)
     raise 'ERROR.User.Signup.need_data' if duser.class != Hash
-    ok, md5 = user_create( param(:user).to_sym, param(:lang) )
+    duser = duser.to_sym
+    ok, md5 = user_create( duser, param(:lang) )
     raise md5 if ok == false
-    RETOUR_AJAX[:user]  = { :md5 => md5 }
+    RETOUR_AJAX[:user]  = duser.merge(:md5 => md5)
   rescue Exception => e
     RETOUR_AJAX[:user]  = nil
     RETOUR_AJAX[:error] = e.message
@@ -51,9 +52,9 @@ def user_create duser, lang = 'en'
     Mail::lang( lang )
     Mail.new(
       :message  => 'user/signup.html',
-      :subject  => "Signup / Inscription",
+      :subject  => (lang == 'en' ? "Signup" : "Inscription"),
       :to       => duser[:mail],
-      :data     => {:pseudo => duser[:nom], :mail => duser[:nom], :password => pwd}
+      :data     => {:pseudo => duser[:nom], :mail => duser[:mail], :password => pwd}
     ).send
     
     Mail.new(

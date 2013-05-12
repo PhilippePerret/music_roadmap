@@ -4,7 +4,8 @@ window.MESSAGE = {
   thank_to_wait: "Wait a moment, please…",
   // USER
   User:{
-    created     :"You're signup! Enjoy Music Roadmap!",
+    created     :"You're signup! Enjoy Music Roadmap!"+
+                  "<br>Now you can <a onclick=\"return $.proxy(H.show,H,'roadmap/creation.html')()\" href=\"#\" class=\"to_help aide_lien\">create a roadmap</a>.",
     welcome     :"Welcome at Music Roadmap!",
     goodbye     :"See you later at Music Roadmap!"
   },
