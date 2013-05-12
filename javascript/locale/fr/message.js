@@ -12,7 +12,7 @@ window.MESSAGE = {
   // ROADMAP
   Roadmap:{
     must_signin_to_create   :"Vous devez être identifié (ou inscrit) pour ouvrir ou créer une feuille de route.",
-    how_to_make_a_good_nom  :"Pour un nom valide, n'utilisez ni espace, ni caractères spéciaux. Si vous voulez ouvrir une de vos feuilles de route, utilisez le menu, plutôt.",
+    how_to_make_a_good_nom  :"Un nom valide possède au moins 4 lettres et n'utilise pas de caractères spéciaux. Si vous voulez ouvrir une de vos feuilles de route, utilisez plutôt le menu.",
     creating                :"Création de la feuille de route…",
     saving                  :"Sauvegarde en cours…",
     created                 :"Feuille de route créée avec succès !",

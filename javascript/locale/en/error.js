@@ -34,7 +34,7 @@ window.ERROR = {
       requises            :"Roadmap Name is required!",
       need_a_nom          :"A Roadmap's name is required!",
       invalid_nom         :"Roadmap Name is invalid…",
-      too_short_name      :"The name is too short (at least 6 characters please)"
+      too_short_name      :"The name is too short (at least 4 characters please)"
     },
     Data:{
       required                  : "Data to dispatch required!",

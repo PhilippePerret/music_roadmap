@@ -3,23 +3,27 @@
 -->
 <div id="roadmap_specs-specs" style="display:none;">
   <table width="100%">
+    <colgroup>
+      <col width="100">
+      <col width="260">
+      <col width="260">
+      <col width="20">
+    </colgroup>
     <tr>
-      <td id="td_label_roadmap" class="center" width="100">FEUILLE DE ROUTE</td>
-      <td width="330">
+      <td id="td_label_roadmap" class="center">FEUILLE DE ROUTE</td>
+      <td>
         <input 
             type="text"
             class="form"
             id="roadmap_nom" 
             value="" 
-            onchange="$.proxy(Roadmap.onchange_nom, Roadmap, this.value, null)()" 
+            onkeyup="$.proxy(Roadmap.onchange_nom, Roadmap, this.value)()"
+            onchange="$.proxy(Roadmap.on_end_change_nom, Roadmap, this.value)()"
             onfocus="$.proxy(Roadmap.on_focus_nom, Roadmap)()"
             />
       </td>
-      <td colspan="2">
-        <select id="roadmaps" onchange="$.proxy(Roadmap.open_by_menu, Roadmap, this.id)()"></select>
-      </td>
       <td>
-        
+        <select id="roadmaps" onchange="$.proxy(Roadmap.open_by_menu, Roadmap, this.id)()"></select>
       </td>
       <td class="right">
         <a class="btn_close" 
@@ -28,8 +32,7 @@
     </tr>
     <tr id="specs_roadmap">
       <td></td>
-      <td></td>
-      <td colspan="3">
+      <td class="right">
         <a  id="btn_roadmap_open" 
             class="btn" 
             onclick="$.proxy(Roadmap.open, Roadmap)();"
@@ -39,18 +42,19 @@
             onclick="return $.proxy(Roadmap.create, Roadmap)()"
             title="Créer cette feuille de route"
         >Créer</a>
+      </td>
+      <td>
         <a  id="btn_roadmap_save" 
             class="btn off" 
             onclick="$.proxy(Roadmap.save, Roadmap)();"
         >...</a>
-      </td>
-      <td class="right">
         <a  id="btn_init_roadmap" href="#"
             class="btn"
             onclick="return $.proxy(Roadmap.init_new, Roadmap)()"
             title="Créer un tout nouveau document vierge"
         >Init</a>
       </td>
+      <td></td>
     </tr>
   </table>
 </div>

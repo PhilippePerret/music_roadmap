@@ -12,7 +12,7 @@ window.MESSAGE = {
   // ROADMAP
   Roadmap: {
     must_signin_to_create   :"You must sign in (or sign up) to create or open a music roadmap.",
-    how_to_make_a_good_nom  :"For a valid name, don't use spaces and specials chars. If you want to open a roadmap of yours, use the select menu instead.",
+    how_to_make_a_good_nom  :"A valid name is 4 letters long and doesn't use special chars. If you want to open a roadmap of yours, use the select menu instead.",
     creating                :"Creating roadmap…",
     saving                  :"Saving…",
     created                 :"Roadmap successfully created",

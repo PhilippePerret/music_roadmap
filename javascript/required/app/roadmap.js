@@ -147,12 +147,12 @@ window.Roadmap = {
     // Ne doit être visible que si les specs sont valides, que la roadmap
     // n'est pas chargée (attention : une autre roadmap peut avoir été
     // chargée)
-    UI.set_visible('a#btn_roadmap_open', ok_to_open ) ;
+    this.set_etat_btn_open(ok_to_open);
 		
     // :create
     // Ne doit être visible que si les specs sont valides et ne correspondent
     // pas à la roadmap chargée (=> loaded = false)
-    UI.set_visible('a#btn_roadmap_create', ok_to_create );
+    this.set_etat_btn_create(ok_to_create);
     
     // :save
     // Ne doit être visible que si une roadmap est chargée (son état varie
@@ -173,7 +173,14 @@ window.Roadmap = {
 
     BT.add('<- Roadmap.set_btns_roadmap') ;
   },
-
+  // Règle l'état du bouton "Ouvrir" (la roadmap)
+  set_etat_btn_open:function(visible){
+    UI.set_visible('a#btn_roadmap_open', visible);
+  },
+  // Règle l'état du bouton "Créer" (la roadmap)
+  set_etat_btn_create:function(visible){
+    UI.set_visible('a#btn_roadmap_create', visible);
+  },
   // Règle l'état du bouton "Sauver"
   set_etat_btn_save: function( val ){
     BT.add('-> Roadmap.set_etat_btn_save') ;
@@ -202,23 +209,33 @@ window.Roadmap = {
     BT.add('<- Roadmap.set_div_specs') ;
     return false ; // pour le a-lien
   },
+  // Appelé quand on EST EN TRAIN de changer le nom de la roadmap
+  // Pour faire apparaitre les boutons "créer" et "ouvrir" dès que le nom est
+  // assez long.
+  onchange_nom:function(current_nom){
+    var ok = User.is_identified() && current_nom.length > 3 ;
+    this.set_etat_btn_open(ok);
+    this.set_etat_btn_create(ok);
+  },
   // Appelé quand on change la valeur du nom de la roadmap dans les specs
-  onchange_nom:function(nom){
+  // @note: contrairement à la méthode `onchange_nom', cette méthode est appelée à
+  // la fin, c'est-à-dire quand on sort du champ.
+  on_end_change_nom:function(nom){
     BT.add('-> Roadmap.onchange_nom (nom='+nom) ;
     if( nom != null ) {
       try{
         if ( nom == "" ) throw 'need_a_nom' ;
         else {
           if( this.get_a_correct_and_set( nom ) ) throw 'invalid_nom';
-          if( this.nom.length < 6 ) throw 'too_short_name';
+          if( this.nom.length < 4 ) throw 'too_short_name';
         }
       } catch (iderr){
         this.set(this.nom = null) ;
         F.error(ERROR.Roadmap.Specs[iderr]);
       }
     }
-    this.loaded = false ;
-    this.are_specs_valides(true, false) ;
+    this.loaded = false;
+    this.are_specs_valides(true, false);
     this.set_btns_roadmap();
     BT.add('<- Roadmap.onchange_nom') ;
   },

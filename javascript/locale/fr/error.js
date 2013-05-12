@@ -38,7 +38,7 @@ window.ERROR = {
       requises            :"Le nom de la feuille de route est requis !",
       need_a_nom          :"Il faut définir le nom de la feuille de route !",
       invalid_nom         :"Le nom contient des caractères invalides que j'ai supprimés ou remplacés…",
-      too_short_name      :"Ce nom est trop court (au moins 6 caractères, s'il vous plait)"
+      too_short_name      :"Ce nom est trop court (au moins 4 caractères, s'il vous plait)"
     },
     Data:{
       required                  : "Les données à dispatcher sont requises !",
