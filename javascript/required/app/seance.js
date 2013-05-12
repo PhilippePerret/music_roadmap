@@ -10,6 +10,8 @@ window.Seance = {
   running         :false,   // True when we work on the exercices suite
   cur_exercice    :null,    // Current exercice (instance of Exercice)
   ordre_stack     :null,    // Stack of the exercices to play
+  exercices_count :null,    // Number total of exercices to play
+  curex_indice    :null,    // Index of the current exercice
 
   // Key press handler (on seance)
   onkeypress:function(evt){
@@ -46,6 +48,8 @@ window.Seance = {
     UI.open_volet('running_seance');
     if(false == this.set_exercices_stack())return this.show();
     Exercices.deselect_all();
+    UI.set_visible('section#current_exercice');
+    this.curex_indice = 0;
     this.play_first_in_stack();
     this.initialize_seance_file();
     return false;//for a-link
@@ -72,7 +76,16 @@ window.Seance = {
     } catch(iderr){
       return F.error(ERROR.Seance[iderr]);
     }
+    this.set_number_total_of_exercices();
     return true;
+  },
+  set_number_total_of_exercices:function(){
+    this.exercices_count = this.ordre_stack.length;
+    $('div#curex_total span.value').html(this.exercices_count);
+  },
+  next_indice_current_exercice:function(){
+    this.curex_indice += 1;
+    $('div#curex_indice span.value').html(this.curex_indice);
   },
   // Initialize the seance file at starting (Ajax call)
   initialize_seance_file:function(){
@@ -122,8 +135,12 @@ window.Seance = {
     }
   },
   // Play the first exercice in the stack
+  // WARMING: THIS IS NOT THE FIRST EXERCICE. This method is always called to
+  // play the first in stack, and this first is removed from the stack to 
+  // play the next then.
   play_first_in_stack:function(){
     this.cur_exercice = exercice(this.ordre_stack.shift());
+    this.next_indice_current_exercice();
     this.cur_exercice.play();
     this.pause_on =false;
     this.running  =true;
@@ -146,6 +163,7 @@ window.Seance = {
     this.stopping = true;
     if( forcer_arret === true ) this.stop_cur_exercice(true);
     Metronome.stop();
+    UI.set_invisible('section#current_exercice');
     this.ordre_stack  =null;
     this.running      =false;
     return false;//for a-link

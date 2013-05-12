@@ -137,14 +137,14 @@ section#bande_logo a#btn_change_lang {
   METRONOME
 */
 section#sec_metronome {
-  background-color  :#005847;
-  border-radius     :3.8em 0 3.2em 0;
+  position          :absolute;
   top               :5.5em;
   left              :1.3em;
-  position          :absolute;
   opacity           :0.914;
+  background-color  :#005847;
+  border-radius     :3.8em 0 3.2em 0;
 }
-/*Le métrodonme*/
+/*Le métronome*/
 section#sec_metronome img#metronome_anim {
   padding           :0.8em;
   width             :111px;
@@ -162,6 +162,27 @@ img#flag_lang {
   width               :28px;
   margin-left         :12px;
   margin-top          :-5px;
+}
+/*
+  SECTION POUR LE SUIVI DE LA SÉANCE
+  (i.e. l'indice de l'exercice courant, le nombre total d'exercices, les
+  indications sur l'exercice courant, etc.)
+*/
+section#current_exercice{
+  position    :absolute;
+  top         :17em;
+  left        :0.5em;
+  width       :8.5em;
+  color       :white;
+  border      :2px solid;
+  padding     :0.5em;
+}
+section#current_exercice div#curex_indice, 
+section#current_exercice div#curex_total {
+  display     :inline-block;
+  font-size   :2em;
+  width       :1.4em;
+  text-align  :center;
 }
 /*
   SECTION DONATION
