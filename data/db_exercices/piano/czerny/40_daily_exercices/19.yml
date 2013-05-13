@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°19
+titre_en:     Exercice n°19
+suite:        null
+types:        ['RH', 'LH', 'TI', 'SX']
+tempo_min:    60
+tempo_max:    96
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         1
+nb_mesures:   121

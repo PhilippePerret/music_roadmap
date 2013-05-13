@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°9
+titre_en:     Exercice n°9
+suite:        null
+types:        ['RH', 'LH', 'TI', 'CH']
+tempo_min:    34
+tempo_max:    54
+nb_temps:     1
+duree_temps:  3
+metrique:     "3/4"
+tone:         10
+nb_mesures:   812

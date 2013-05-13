@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°4
+titre_en:     Exercice n°4
+suite:        null
+types:        ['RH', 'LH', 'AR']
+tempo_min:    90
+tempo_max:    112
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         7
+nb_mesures:   92

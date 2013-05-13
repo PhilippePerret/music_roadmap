@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°6
+titre_en:     Exercice n°6
+suite:        null
+types:        ['RH', 'LH', 'NT', 'TR', 'TM']
+tempo_min:    50
+tempo_max:    72
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         8
+nb_mesures:   242

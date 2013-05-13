@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°8
+titre_en:     Exercice n°8
+suite:        null
+types:        ['RH', 'LH', 'SY', 'AR', 'SX', 'GA']
+tempo_min:    40
+tempo_max:    50
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         10
+nb_mesures:   317

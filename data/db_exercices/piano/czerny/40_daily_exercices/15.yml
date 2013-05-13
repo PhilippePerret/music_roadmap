@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°15
+titre_en:     Exercice n°15
+suite:        null
+types:        ['RH', 'LH', 'AR', 'DL']
+tempo_min:    40
+tempo_max:    69
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         7
+nb_mesures:   231

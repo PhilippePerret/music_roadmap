@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°18
+titre_en:     Exercice n°18
+suite:        null
+types:        ['RH', 'LH', 'NR', 'CH', 'TM']
+tempo_min:    60
+tempo_max:    92
+nb_temps:     3
+duree_temps:  8
+metrique:     "3/8"
+tone:         21
+nb_mesures:   98

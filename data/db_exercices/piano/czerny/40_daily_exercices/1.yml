@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°1
+titre_en:     Exercice n°1
+suite:        WK
+types:        ['RH', 'LH', 'DL']
+tempo_min:    60
+tempo_max:    92
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         0
+nb_mesures:   222

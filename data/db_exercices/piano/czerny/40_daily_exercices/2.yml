@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°2
+titre_en:     Exercice n°2
+suite:        WK
+types:        ['RH', 'LH', 'CH']
+tempo_min:    40
+tempo_max:    60
+nb_temps:     1
+duree_temps:  3
+metrique:     "3/4"
+tone:         0
+nb_mesures:   480

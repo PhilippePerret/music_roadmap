@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°7
+titre_en:     Exercice n°7
+suite:        null
+types:        ['RH', 'LH', 'EX']
+tempo_min:    40
+tempo_max:    50
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         4
+nb_mesures:   81

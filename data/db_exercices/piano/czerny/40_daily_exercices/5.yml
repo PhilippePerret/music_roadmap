@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°5
+titre_en:     Exercice n°5
+suite:        WK
+types:        ['RH', 'LH', 'EX', 'TR', 'NT']
+tempo_min:    60
+tempo_max:    80
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         0
+nb_mesures:   181

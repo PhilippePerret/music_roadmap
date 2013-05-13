@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°17
+titre_en:     Exercice n°17
+suite:        null
+types:        ['RH', 'LH', 'EX', 'OC', 'TM']
+tempo_min:    40
+tempo_max:    66
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         8
+nb_mesures:   97

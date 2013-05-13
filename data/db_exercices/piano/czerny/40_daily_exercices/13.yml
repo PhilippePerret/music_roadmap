@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°13
+titre_en:     Exercice n°13
+suite:        null
+types:        ['RH', 'LH', 'DL', 'AR', 'CH']
+tempo_min:    80
+tempo_max:    116
+nb_temps:     4
+duree_temps:  4
+metrique:     "4/4"
+tone:         9
+nb_mesures:   218
