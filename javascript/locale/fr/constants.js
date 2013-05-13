@@ -64,6 +64,7 @@ $.extend(window.Exercices,{
     'PC':"Pouce",
     'LG':"Legato",
     'TR':"Trilles",
+    'OR':"Ornements",
     'TM':"Trémolo",
     'NR':"Notes répétées",
     'NT':"Notes tenues",

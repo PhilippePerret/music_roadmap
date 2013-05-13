@@ -66,6 +66,7 @@ $.extend(window.Exercices,{
     'NR':"Repeated notes",
     'NT':"Sustained notes",
     'CX':"Cross",
+    'OR':"Ornements",
     'JP':"Jump"
   },
   TYPES_SUITE_HARMONIQUE:{
