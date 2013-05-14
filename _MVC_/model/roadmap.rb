@@ -115,21 +115,33 @@ class Roadmap
     end
   end
   
-  # Define and save next config except if +dont_save+ is true (default: false)
-  # 
   LOOP_CONFIG_ATTRIBUTES = {
     :down_to_up   => :maj_to_rel, 
     :maj_to_rel   => :first_to_last, 
     :first_to_last => :down_to_up
     }
-  def next_general_config dont_save = false
+  # Define and save next config except if +dont_save+ is true (default: false)
+  # 
+  # * PARAMS
+  #   :options::    Hash of options :
+  #                 :save     If TRUE (default), save the next config
+  #                 :tone     if TRUE (default) use the next tone
+  # 
+  # * RETURN
+  # 
+  #   An hash of config
+  # 
+  def next_general_config options = nil
+    options ||= {}
+    options = options.merge(:save => true) unless options.has_key?(:save)
+    options = options.merge(:tone => true)  unless options.has_key?(:tone)
     d = config_generale
     param_to_change     = LOOP_CONFIG_ATTRIBUTES[d[:last_changed].to_sym].to_sym
     d[param_to_change]  = !d[param_to_change]
     d[:last_changed]    = param_to_change
-    d[:tone] = (d[:tone] == 23) ? 0 : (d[:tone].to_i + 1)
+    d[:tone] = (d[:tone] == 23) ? 0 : (d[:tone].to_i + 1) if options[:tone]
     @config_generale = d
-    save_config_generale unless dont_save
+    save_config_generale if options[:save]
     @config_generale
   end
   

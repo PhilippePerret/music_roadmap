@@ -384,7 +384,7 @@ DEBUG
     # 
     def get_general_config
       if options[:next_config]
-        roadmap.next_general_config
+        roadmap.next_general_config(:save => true, :tone => options[:new_tone])
       else
         roadmap.config_generale
       end
