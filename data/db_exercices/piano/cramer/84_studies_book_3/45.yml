@@ -1,6 +1,7 @@
 titre_fr:     Étude n°45
 titre_en:     Study n°45
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'EX', 'PO']
 tempo_min:    90
 tempo_max:    112

@@ -1,6 +1,7 @@
 titre_fr:     Étude n°8
 titre_en:     Study n°8
 suite:        WK
+symetric:     true
 types:        ['TM', 'TI']
 tempo_min:    64
 tempo_max:    84

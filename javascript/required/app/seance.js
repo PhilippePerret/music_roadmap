@@ -79,6 +79,16 @@ window.Seance = {
     this.set_number_total_of_exercices();
     return true;
   },
+  // Display information for current exercice
+  display_infos_current_exercice:function(){
+    var iex = this.cur_exercice(); // Exercice Instance
+    this.next_indice_current_exercice();
+    var infos = "";
+    if(iex.symetric){
+      infos += LOCALE_UI.Seance.Exinfos.[Roadmap.Data.down_to_up?'to_up':'to_down'];
+    }
+  },
+
   set_number_total_of_exercices:function(){
     this.exercices_count = this.ordre_stack.length;
     $('div#curex_total span.value').html(this.exercices_count);
@@ -140,7 +150,7 @@ window.Seance = {
   // play the next then.
   play_first_in_stack:function(){
     this.cur_exercice = exercice(this.ordre_stack.shift());
-    this.next_indice_current_exercice();
+    this.display_infos_current_exercice();
     this.cur_exercice.play();
     this.pause_on =false;
     this.running  =true;

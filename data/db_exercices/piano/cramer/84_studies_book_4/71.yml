@@ -1,6 +1,7 @@
 titre_fr:     Étude n°71
 titre_en:     Study n°71
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'NT', 'PO', 'SY', 'DL']
 tempo_min:    90
 tempo_max:    120

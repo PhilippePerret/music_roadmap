@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°49
 titre_en:     Exercice n°49
 suite:        WK
+symetric:     true
 types:        ['LH', 'RH', 'EX']
 tempo_min:    60
 tempo_max:    108

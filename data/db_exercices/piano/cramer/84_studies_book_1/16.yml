@@ -1,6 +1,7 @@
 titre_fr:     Étude n°16
 titre_en:     Study n°16
 suite:        WK
+symetric:     true
 types:        ['LH', 'GA', 'DL']
 tempo_min:    100
 tempo_max:    132

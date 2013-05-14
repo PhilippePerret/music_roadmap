@@ -1,6 +1,7 @@
 titre_fr:     Étude n°14
 titre_en:     Study n°14
 suite:        WK
+symetric:     true
 types:        ['LH', 'RH', 'SY', 'GA', 'AR', 'NT']
 tempo_min:    40
 tempo_max:    58

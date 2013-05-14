@@ -1,6 +1,7 @@
 titre_fr:     Étude n°1
 titre_en:     Study n°1
 suite:        WK
+symetric:     true
 types:        ['DL', 'PG']
 tempo_min:    100
 tempo_max:    132

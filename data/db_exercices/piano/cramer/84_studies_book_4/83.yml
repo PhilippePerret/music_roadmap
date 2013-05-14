@@ -1,6 +1,7 @@
 titre_fr:     Étude n°83
 titre_en:     Study n°83
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'JP', 'TI']
 tempo_min:    120
 tempo_max:    152

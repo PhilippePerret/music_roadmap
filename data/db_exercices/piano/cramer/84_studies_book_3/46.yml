@@ -1,6 +1,7 @@
 titre_fr:     Étude n°46
 titre_en:     Study n°46
 suite:        WK
+symetric:     true
 types:        ['RH', 'AR']
 tempo_min:    110
 tempo_max:    138

@@ -1,6 +1,7 @@
 titre_fr:     Étude n°27
 titre_en:     Study n°27
 suite:        WK
+symetric:     true
 types:        ['RH', 'AR']
 tempo_min:    120
 tempo_max:    152

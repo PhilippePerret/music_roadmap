@@ -1,6 +1,7 @@
 titre_fr:     Étude n°31
 titre_en:     Study n°31
 suite:        WK
+symetric:     true
 types:        ['RH', 'SX', 'TI']
 tempo_min:    70
 tempo_max:    92

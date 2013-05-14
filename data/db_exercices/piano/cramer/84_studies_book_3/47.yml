@@ -1,6 +1,7 @@
 titre_fr:     Étude n°47
 titre_en:     Study n°47
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'DL', 'SY', 'AR']
 tempo_min:    110
 tempo_max:    144

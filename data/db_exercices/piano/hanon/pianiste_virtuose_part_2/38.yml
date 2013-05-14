@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°38
 titre_en:     Exercice n°38
 suite:        WK
+symetric:     true
 types:        ['LH', 'RH', 'GA']
 tempo_min:    60
 tempo_max:    108

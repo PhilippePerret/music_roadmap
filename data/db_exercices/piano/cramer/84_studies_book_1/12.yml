@@ -1,6 +1,7 @@
 titre_fr:     Étude n°12
 titre_en:     Study n°12
 suite:        WK
+symetric:     true
 types:        ['TI', 'SX', 'TM']
 tempo_min:    100
 tempo_max:    138

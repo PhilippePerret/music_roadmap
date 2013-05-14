@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°40
 titre_en:     Exercice n°40
 suite:        WK
+symetric:     true
 types:        ['LH', 'RH', 'GA', 'CH']
 tempo_min:    60
 tempo_max:    120

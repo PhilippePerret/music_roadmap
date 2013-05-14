@@ -1,6 +1,7 @@
 titre_fr:     Étude n°4
 titre_en:     Study n°4
 suite:        WK
+symetric:     true
 types:        ['DL']
 tempo_min:    80
 tempo_max:    104

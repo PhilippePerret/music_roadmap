@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°8
 titre_en:     Exercice n°8
 suite:        WK
+symetric:     true
 types:        ['DL', 'PG', 'LH', 'RH']
 tempo_min:    60
 tempo_max:    108

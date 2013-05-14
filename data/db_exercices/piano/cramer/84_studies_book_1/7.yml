@@ -1,6 +1,7 @@
 titre_fr:     Étude n°7
 titre_en:     Study n°7
 suite:        WK
+symetric:     true
 types:        ['LH', 'OC', 'SX']
 tempo_min:    72
 tempo_max:    92

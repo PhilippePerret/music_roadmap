@@ -1,6 +1,7 @@
 titre_fr:     Étude n°59
 titre_en:     Study n°59
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'DL', 'EX']
 tempo_min:    100
 tempo_max:    138

@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°51
 titre_en:     Exercice n°51
 suite:        WK
+symetric:     true
 types:        ['LH', 'RH', 'OC', 'PG']
 tempo_min:    40
 tempo_max:    84

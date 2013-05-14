@@ -1,6 +1,7 @@
 titre_fr:     Étude n°2
 titre_en:     Study n°2
 suite:        WK
+symetric:     true
 types:        ['AR']
 tempo_min:    80
 tempo_max:    100

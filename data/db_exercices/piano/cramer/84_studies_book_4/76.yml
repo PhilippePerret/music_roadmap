@@ -1,6 +1,7 @@
 titre_fr:     Étude n°76
 titre_en:     Study n°76
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'AR', 'NT', 'DL']
 tempo_min:    90
 tempo_max:    126

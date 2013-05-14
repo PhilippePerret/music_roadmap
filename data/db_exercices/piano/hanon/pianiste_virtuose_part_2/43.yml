@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°43
 titre_en:     Exercice n°43
 suite:        WK
+symetric:     true
 types:        ['LH', 'RH', 'EX', 'AR']
 tempo_min:    60
 tempo_max:    120

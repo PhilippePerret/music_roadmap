@@ -1,6 +1,7 @@
 titre_fr:     Exercice n°35
 titre_en:     Exercice n°35
 suite:        WK
+symetric:     true
 types:        ['DL', 'PG', 'LH', 'RH', 'PC']
 tempo_min:    40
 tempo_max:    72

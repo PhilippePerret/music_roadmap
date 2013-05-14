@@ -1,6 +1,7 @@
 titre_fr:     Étude n°53
 titre_en:     Study n°53
 suite:        WK
+symetric:     true
 types:        ['RH', 'LH', 'NT', 'EX', 'SY']
 tempo_min:    50
 tempo_max:    72
