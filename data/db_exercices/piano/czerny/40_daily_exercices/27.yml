@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°27
+titre_en:     Exercice n°27
+suite:        null
+types:        ['RH', 'LH', 'JP']
+tempo_min:    80
+tempo_max:    104
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         1
+nb_mesures:   443

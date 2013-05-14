@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°25
+titre_en:     Exercice n°25
+suite:        null
+types:        ['RH', 'LH', 'EX', 'OR', 'DL']
+tempo_min:    50
+tempo_max:    69
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         2
+nb_mesures:   152

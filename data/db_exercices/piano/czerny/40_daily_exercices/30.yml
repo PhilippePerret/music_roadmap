@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°30
+titre_en:     Exercice n°30
+suite:        null
+types:        ['RH', 'LH', 'GA', 'CH']
+tempo_min:    90
+tempo_max:    112
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         9
+nb_mesures:   581

@@ -1,0 +1,11 @@
+titre_fr:     Exercice n°23
+titre_en:     Exercice n°23
+suite:        null
+types:        ['RH', 'LH', 'DL', 'GA', 'TI', 'CH']
+tempo_min:    40
+tempo_max:    60
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         0
+nb_mesures:   262

@@ -1,3 +1,3 @@
 FORCE_UPDATE = {
-  :db_exercices => false
+  :db_exercices => true
 }
