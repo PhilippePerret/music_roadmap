@@ -164,8 +164,10 @@ window.LOCALE_UI = {
     next_exercice           :"Next exercice",
     end_exercices           :"The end",
     Exinfos:{
-      to_up                 :"From the bottom to the top of the exercice",
-      to_down               :"From the top to the bottom of the exercice"
+      exercice_doit         :"This exercice must be ",
+      to_up                 :"played from the bottom to the top of the exercice",
+      to_down               :"played from the top to the bottom of the exercice",
+      must_be_played_in     :"played in "
     }
   },
   Rapport:{

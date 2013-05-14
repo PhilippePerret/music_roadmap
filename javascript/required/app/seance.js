@@ -12,6 +12,8 @@ window.Seance = {
   ordre_stack     :null,    // Stack of the exercices to play
   exercices_count :null,    // Number total of exercices to play
   curex_indice    :null,    // Index of the current exercice
+  start_time      :null,    // Number of seconds for starting session time
+  stop_time       :null,    // Number of seconds for stopping session time
 
   // Key press handler (on seance)
   onkeypress:function(evt){
@@ -50,6 +52,8 @@ window.Seance = {
     Exercices.deselect_all();
     UI.set_visible('section#current_exercice');
     this.curex_indice = 0;
+    this.start_time = Time.now();
+    UI.Chrono.start('span#curex_horloge_seance');
     this.play_first_in_stack();
     this.initialize_seance_file();
     return false;//for a-link
@@ -81,11 +85,18 @@ window.Seance = {
   },
   // Display information for current exercice
   display_infos_current_exercice:function(){
-    var iex = this.cur_exercice(); // Exercice Instance
+    var iex = this.cur_exercice; // Exercice Instance
     this.next_indice_current_exercice();
-    var infos = "";
+    var indics = [];
     if(iex.symetric){
-      infos += LOCALE_UI.Seance.Exinfos.[Roadmap.Data.down_to_up?'to_up':'to_down'];
+      indics.push(LOCALE_UI.Seance.Exinfos[Roadmap.Data.down_to_up?'to_up':'to_down']);
+    }
+    if(iex.tone == null)
+      indics.push(LOCALE_UI.Seance.Exinfos.must_be_played_in + IDSCALE_TO_HSCALE[Roadmap.Data.tone].entier);
+    if(iex.note) indics.push(iex.note);
+    if(indics != ""){
+      $('div#curex_indications span.value').html(
+        LOCALE_UI.Seance.Exinfos.exercice_doit + indics.join('<br>'));
     }
   },
 
@@ -138,6 +149,7 @@ window.Seance = {
       // l'exercice. Cette méthode ouvrira le rapport de travail.
       if('undefined'==typeof fin) fin = this.no_more_exercice();
       if(this.cur_exercice != null){
+        UI.Chrono.stop('span#curex_horloge_exercice');
         if(fin) this.cur_exercice.fx_after_save = $.proxy(this.stop_suite,this);
         Exercices.deselect(this.cur_exercice.id) ; // stop aussi l'exercice et le métronome
         this.cur_exercice = null ;
@@ -152,6 +164,7 @@ window.Seance = {
     this.cur_exercice = exercice(this.ordre_stack.shift());
     this.display_infos_current_exercice();
     this.cur_exercice.play();
+    UI.Chrono.start('span#curex_horloge_exercice');
     this.pause_on =false;
     this.running  =true;
   },
@@ -162,6 +175,8 @@ window.Seance = {
     this.cur_exercice.play(); //start or stop
     this.pause_on = !this.pause_on;
     o.html(LOCALE_UI.Seance[this.pause_on?'restart':'pause']);
+    UI.Chrono[this.pause_on?'pause':'unpause']('span#curex_horloge_seance');
+    UI.Chrono[this.pause_on?'pause':'unpause']('span#curex_horloge_exercice');
     return false;//for a-link
   },
   // To Stop the working session
@@ -172,6 +187,8 @@ window.Seance = {
   stop:function(forcer_arret){
     this.stopping = true;
     if( forcer_arret === true ) this.stop_cur_exercice(true);
+    this.stop_time = Time.now();
+    UI.Chrono.stop('span#curex_horloge_seance');
     Metronome.stop();
     UI.set_invisible('section#current_exercice');
     this.ordre_stack  =null;

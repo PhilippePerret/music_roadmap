@@ -97,3 +97,31 @@ section#seance img#seance_data_img_tone {
   width           :300px;
 }
 section#seance img#seance_data_img_downtoup{width:30px;vertical-align:middle;}
+
+/*
+  Infos sur l'exercice courant
+  ----------------------------
+*/
+section#current_exercice{
+  position    :absolute;
+  top         :17em;
+  left        :0.5em;
+  width       :8.5em;
+  color       :white;
+  border      :2px solid;
+  padding     :0.5em;
+}
+section#current_exercice span#curex_horloge_seance {
+  display     :inline-block;
+  width       :5em;
+}
+section#current_exercice div#curex_indice, 
+section#current_exercice div#curex_total {
+  display     :inline-block;
+  font-size   :2em;
+  width       :1.4em;
+  text-align  :center;
+}
+section#current_exercice div#curex_indications {
+  font-size   :0.8em;
+}

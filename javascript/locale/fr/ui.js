@@ -161,8 +161,10 @@ window.LOCALE_UI = {
     next_exercice           :"Suivant",
     end_exercices           :"Finir",
     Exinfos:{
-      to_up                 :"L'exercice doit être monté puis descendu",
-      to_down               :"L'exercice doit être descendu puis monté"
+      exercice_doit         :"L'exercice doit ",
+      to_up                 :"être monté puis descendu",
+      to_down               :"être descendu puis monté",
+      must_be_played_in     :"être joué en "
     }
   },
   Rapport:{
