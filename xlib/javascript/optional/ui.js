@@ -109,6 +109,7 @@ window.UI = {
       if ('undefined' == typeof visible )visible = true ;
       $(o).removeClass(visible ? 'invisible' : 'visible');
       $(o).addClass(visible ? 'visible' : 'invisible');
+      if(visible) $(o).removeClass('hidden');
     }
     return visible;
   },

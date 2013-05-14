@@ -27,11 +27,12 @@ $.extend(DArray.prototype,{
   hide:function(){this.set_display(false)},
   set_display:function(disp){
     // this.run_method_on_object(disp?'show':'hide');
-    this.run_method_on_object(disp?'removeClass':'addClass', 'hidden')},   
+    this.run_method_on_object(disp?'removeClass':'addClass', 'hidden')},
   visible:function(){this.set_visible(true)},
   invisible:function(){this.set_visible(false)},
   set_visible:function(visi){
-    this.run_method_on_object(visi?'removeClass':'addClass', 'invisible');    
+    this.run_method_on_object(visi?'removeClass':'addClass', 'invisible');
+    if(visi)this.set_display(true);
   },
   run_method_on_object:function(method, param1, param2){
     if('undefined' == typeof this.object.length){// Hash
