@@ -7,8 +7,8 @@ echo "Propriétaire et permission de tous les éléments de user/doc mis à $pro
 # cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/
 # cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/javascript/
 # cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user
-cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user/roadmap
-# cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user/data
+# cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user/roadmap
+cd /Users/philippeperret/Sites/cgi-bin/music_roadmap/user/data
 find . |
 while read line; do
   if [[ "$line" == *git* ]]; then
