@@ -277,4 +277,37 @@ $.extend(UI,{
       }
     },
   },
+  /*
+      UI.Chrono
+      ---------
+      
+  */
+  Chrono:{
+    CHRONOS:{},     // To keep all running chronos
+    // Start a chrono in Dom Element +jid+
+    start:function(jid){
+      this.CHRONOS[jid] = {timer: null, time: 0};
+      this.run(jid);
+    },
+    // Stop chrono in Dom Element +jid+ (definitively)
+    stop:function(jid){
+      this.unrun(jid);
+      delete this.CHRONOS[jid];
+    },
+    // Pause chrono
+    pause:function(jid){this.unrun(jid)},
+    unpause:function(jid){this.run(jid)},
+    
+    
+    // Protected (intern)
+    change:function(jid){
+      $(jid).html(Time.seconds_to_horloge(++ this.CHRONOS[jid].time, true));
+    },
+    run:function(jid){
+      this.CHRONOS[jid].timer = setInterval("UI.Chrono.change('"+jid+"')", 1000);
+    },
+    unrun:function(jid){
+      clearInterval(this.CHRONOS[jid].timer);
+    }
+  }
 });
