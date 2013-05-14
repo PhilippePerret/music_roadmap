@@ -1,5 +1,5 @@
-# proprio='www' # Pour l'utilisation normale
-proprio='philippeperret' # pour les tests
+proprio='www' # Pour l'utilisation normale
+# proprio='philippeperret' # pour les tests
 
 echo "Propriétaire et permission de tous les éléments de user/doc mis à $proprio et 0777"
 # On boucle sur tous les dossiers/fichiers du dossier user
