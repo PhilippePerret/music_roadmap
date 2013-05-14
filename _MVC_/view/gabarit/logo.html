@@ -1,27 +1,5 @@
-<!-- Logo métronome -->
-<section id="sec_metronome">
-  <img  id="metronome_anim" 
-          data-src-alt="metronome/metro.gif" 
-          data-src="metronome/metro_fixe.png" 
-          onclick="$.proxy(UI.onclick_metronome_anim, UI)();"
-          />
-</section>
-<!-- Information exercice courant -->
-<section id="current_exercice" class="invisible">
-  <div id="curex_indice">
-    <span class="value">X</span>
-  </div>
-  &nbsp;/&nbsp;
-  <div id="curex_total">
-    <span class="value">X</span>
-  </div>
-  <div id="curex_indications">
-    <span class="label"></span>
-    <span class="value"></span>
-  </div>
-</section>
-<!-- Partage -->
-<section id="partage">
+<!-- Main buttons -->
+<section id="main_buttons">
   <div class="fleft center" style="width:auto;">
     <a id="btn_want_signin" href="#" onclick="return $.proxy(User.signin, User)()">S'identifier/S'inscrire</a>
   </div>

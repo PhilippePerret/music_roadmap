@@ -88,7 +88,8 @@ class Html
     def body
       launch_watchers         +
       header                  +
-      bande_logo              +
+      top_margin              +
+      left_margin             +
       section_donation        +
       section_config_generale +
       section_roadmap         +
@@ -245,8 +246,13 @@ class Html
     # BANDE LOGO
     # ----------
     # Retourne le code HTML de la bande de logo du site
-    def bande_logo
-      load_view "gabarit/logo"
+    def top_margin
+      load_view("gabarit/logo")
+    end
+    
+    # Retourne le code HTML pour les éléments de la marge gauche
+    def left_margin
+      load_view('gabarit/left_margin')
     end
     
     def section_donation
