@@ -11,7 +11,7 @@ window.EXERCICES = {length: 0} ; // Instances Exercice déjà créées
 window.EXERCICE_PROPERTIES = [
   'id', 'abs_id', 'titre', 'recueil', 'auteur', 'suite', 
   'tempo', 'tempo_min', 'tempo_max', 'up_tempo',
-  'types', 'obligatory', 'with_next',
+  'types', 'obligatory', 'with_next', 'symetric',
   'note', 'started_at', 'ended_at', 'created_at', 'updated_at',
   'nb_mesures', 'nb_temps', 'tone'
   ];
@@ -45,6 +45,7 @@ function Exercice(data){
   this.note       =null;  // Note sur l'exercice
   this.obligatory =false; // Pour savoir s'il est obligatoire
   this.with_next  =false; // Pour savoir s'il est lié au suivant
+  this.symetric   =false; // Pour savoir si c'est un exercice de type symétrique
   this.started_at =null;  // Début du travail de l'exercice
   this.ended_at   =null;  // Fin du travail de l'exercice
   this.created_at =null;

@@ -16,7 +16,8 @@ window.LOCALE_UI = {
     lab_roadmap       :"Roadmap",
     lab_rapport       :"Work Report",
     lab_tone          :"Tune",
-    lab_with_next     :"Linked to next"
+    lab_with_next     :"Linked to next",
+    lab_symetric      :"Symetric"
   },
   Id:{
     a:{
@@ -161,7 +162,11 @@ window.LOCALE_UI = {
     restart                 :"Restart",
     replay                  :"Replay same working session",
     next_exercice           :"Next exercice",
-    end_exercices           :"The end"    
+    end_exercices           :"The end",
+    Exinfos:{
+      to_up                 :"From the bottom to the top of the exercice",
+      to_down               :"From the top to the bottom of the exercice"
+    }
   },
   Rapport:{
     per_month               :"for current month",

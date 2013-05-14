@@ -13,7 +13,8 @@ window.LOCALE_UI = {
     lab_roadmap       :"Feuille de route",
     lab_rapport       :"Rapport de travail",
     lab_tone          :"Tonalité",
-    lab_with_next     :"Lié au suivant"
+    lab_with_next     :"Lié au suivant",
+    lab_symetric      :"Symétrique"
   },
   Id:{
     a:{
@@ -158,7 +159,11 @@ window.LOCALE_UI = {
     restart                 :"Reprendre",
     replay                  :"Rejouer la même séance de travail",
     next_exercice           :"Suivant",
-    end_exercices           :"Finir"    
+    end_exercices           :"Finir",
+    Exinfos:{
+      to_up                 :"L'exercice doit être monté puis descendu",
+      to_down               :"L'exercice doit être descendu puis monté"
+    }
   },
   Rapport:{
     per_month               :"pour le mois courant",
