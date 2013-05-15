@@ -249,7 +249,7 @@ window.Seance = {
     ];
     UI.Shortcuts.build(
       'div#seance_start_shortcuts',
-      {shortcuts:data, options:{current:true, open:false}}
+      {shortcuts:data, options:{current:true, open:true}}
       );
   },
   hide_start:function(){
