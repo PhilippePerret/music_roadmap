@@ -140,7 +140,7 @@ window.LOCALE_UI = {
   },
   DBExercice:{
     titre                   :"DATABASE EXERCICES",
-    search_in_db            :"Choose exercices in Database Exercices",
+    search_in_db            :"Choose exercices in Database",
     add_selected            :"Add selected exercices to current roadmap"
   },
   Seance:{

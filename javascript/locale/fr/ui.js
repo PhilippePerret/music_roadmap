@@ -137,7 +137,7 @@ window.LOCALE_UI = {
   },
   DBExercice:{
     titre                   :"BASE DE DONNÉES D’EXERCICES",
-    search_in_db            :"Choisir des exercices dans la base de données des exercices",
+    search_in_db            :"Choisir des exercices dans la base de données",
     add_selected            :"Ajouter les exercices sélectionnés à la feuille de route"
   },
   Seance:{
