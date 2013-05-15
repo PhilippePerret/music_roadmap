@@ -67,6 +67,9 @@ $(document).ready(function(){
     }
   $.proxy(Locale.show, Locale, d)();
 
+  // La fenêtre extrait de partition
+  $('div#partition').draggable() ;
+  
   // On indique que ce fichier a terminé. Mais d'autres processus sont peut-être encore
   // en cours.
   $.proxy(UI.set_ready, UI, 'jquery')();
