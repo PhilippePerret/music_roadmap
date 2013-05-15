@@ -149,7 +149,6 @@ window.Seance = {
       // l'exercice. Cette méthode ouvrira le rapport de travail.
       if('undefined'==typeof fin) fin = this.no_more_exercice();
       if(this.cur_exercice != null){
-        UI.Chrono.stop('span#curex_horloge_exercice');
         if(fin) this.cur_exercice.fx_after_save = $.proxy(this.stop_suite,this);
         Exercices.deselect(this.cur_exercice.id) ; // stop aussi l'exercice et le métronome
         this.cur_exercice = null ;
@@ -164,7 +163,6 @@ window.Seance = {
     this.cur_exercice = exercice(this.ordre_stack.shift());
     this.display_infos_current_exercice();
     this.cur_exercice.play();
-    UI.Chrono.start('span#curex_horloge_exercice');
     this.pause_on =false;
     this.running  =true;
   },
@@ -176,7 +174,6 @@ window.Seance = {
     this.pause_on = !this.pause_on;
     o.html(LOCALE_UI.Seance[this.pause_on?'restart':'pause']);
     UI.Chrono[this.pause_on?'pause':'unpause']('span#curex_horloge_seance');
-    UI.Chrono[this.pause_on?'pause':'unpause']('span#curex_horloge_exercice');
     return false;//for a-link
   },
   // To Stop the working session

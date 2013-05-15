@@ -175,8 +175,11 @@ class Html
       # libcgi = File.expand_path "../lib/javascript/required"
       libcgi = "#{PATH_LIB_JS_GENE}/required"
       liste = JQUERIES + JS_LIBRARIES
+      if Params::offline?
+        liste += Dir["#{FOLDER_JAVASCRIPTS}/admin/**/*.js"]
+      end
       tags = liste.collect do |js|
-        STDOUT.write "- js: #{js}\n  path: #{real_path_to_html(js)}\n"
+        # STDOUT.write "- js: #{js}\n  path: #{real_path_to_html(js)}\n"
         js = File.expand_path js
         "<script type=\"text/javascript\" src=\"#{real_path_to_html(js)}\"></script>"
       end.to_s
@@ -201,6 +204,7 @@ class Html
     # Retourne le code pour toutes les feuilles de styles à utiliser
     def tags_css
       liste = Dir["#{FOLDER_CSS}/required/**/*.css"] + @@css
+      liste += Dir["#{FOLDER_CSS}/admin/**/*.css"] if Params::offline?
       liste.collect do |css|
         css = css.sub(/#{APP_FOLDER}\//,'')
         "<link rel=\"stylesheet\" type=\"text/css\" href=\"#{css}\" />"

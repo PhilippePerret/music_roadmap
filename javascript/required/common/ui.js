@@ -122,7 +122,14 @@ $.extend(UI,{
     if('undefined'==typeof params.duree) params.duree = 500;
     $(o).animate({opacity:0},params.duree,function(){$(o).hide()});
   },
-  
+  // Retourne une liste d'options nombre depuis +from+ jusqu'à +to+
+  options_from_to:function(from,to){
+    options = [] ;
+    for(var i = from ; i < to ; ++i ){
+      options.push('<option value="'+i+'">'+i+'</option>') ;
+    }
+    return options ;
+  },
   /*  App Status while loading
       -------------------------
   */

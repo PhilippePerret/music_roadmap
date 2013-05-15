@@ -589,7 +589,7 @@ $.extend(window.Exercices,{
       if('undefined'==typeof inner){
         inner   = $('div#exercice_cbs_types');
         prefix  = "";
-      }
+      } else {inner = $(inner);}
       this.types_populating = true ;
       inner.html('');
       for(var idtype in Exercices.TYPES_EXERCICE){
@@ -645,17 +645,24 @@ $.extend(window.Exercices,{
       return checked;
     },
     // Peuple le menu des tonalités
-    peuple_menu_tonalites:function(){
+    // Si +oselect+ n'est pas défini, on prend le menu du formulaire exercice
+    peuple_menu_tonalites:function(oselect){
       var itone, option, dtone = IDSCALE_TO_HSCALE;
-      $('select#exercice_tone').append('<option value="">--</option>');
+      if('undefined'==typeof oselect) oselect = $('select#exercice_tone');
+      else oselect = $(oselect);
+      oselect.append('<option value="">--</option>');
       for(itone in dtone){
+        if(itone.substr(-3)=="bis")continue;
         option = '<option value="'+itone+'">'+dtone[itone]['double']+'</option>';
-        $('select#exercice_tone').append(option);
+        oselect.append(option);
       }
     },
     // Peuplement du menu suites harmoniques
-    peuple_menu_suites_harmoniques:function(){
-      var k, val, oselect = $('select#exercice_suite');
+    // Si +oselect+ n'est pas fourni, on prend select#exercice_suite
+    peuple_menu_suites_harmoniques:function(oselect){
+      var k, val;
+      if('undefined' == typeof oselect)oselect = $('select#exercice_suite');
+      else oselect = $(oselect);
       oselect.html('');
       for(k in Exercices.TYPES_SUITE_HARMONIQUE){
         if (k.length == 2){
@@ -691,11 +698,7 @@ $.extend(window.Exercices,{
     },
     // Construit la liste des <options>
     build_options_list:function(from,to){
-      options = [] ;
-      for(var itempo = from ; itempo < to ; ++itempo ){
-        options.push('<option value="'+itempo+'">'+itempo+'</option>') ;
-      }
-      return options ;
+      return UI.options_from_to(from,to);
     },
     // Return options (Dom element) for a select tons (i.e. without select tag)
     options_for_tones:null, // to build it only once

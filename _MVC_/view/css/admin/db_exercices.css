@@ -1,0 +1,69 @@
+/*
+  Pour le formulaire de création des fiches exercices
+*/
+div#admindbe_form_ex {
+  position          :absolute;
+  z-index           :3000;
+  top               :1em;
+  left              :1em;
+  width             :700px;
+  height            :600px;
+  background-color  :white;
+  padding           :1em;
+}
+div#admindbe_form_ex > div,
+div#admindbe_form_ex > fieldset {
+  margin-bottom     :0.4em;
+  clear             :both;
+}
+div#admindbe_form_ex > fieldset {
+  padding           :0.3em;
+}
+div#admindbe_form_ex > fieldset legend {
+  font-size         :0.8em;
+}
+div#admindbe_form_ex span.libelle {
+  display           :inline-block;
+  width             :7em;
+  color             :#555;
+  font-size         :0.9em;
+  font-style        :italic;
+  padding-right     :1em;
+  text-align        :right;
+}
+
+/* Span pour le(s) champ(s) */
+div#admindbe_form_ex span.field {
+  margin-right      :1em;
+}
+div#admindbe_form_ex fieldset#dbe_fs_options label {
+  font-size         :14.7px;
+}
+/* Pour les types */
+div#admindbe_form_ex div#div_dbe_types {
+  font-size         :12px;
+}
+div#admindbe_form_ex div#div_dbe_types > span {
+  display           :inline-block;
+  width             :10em;
+}
+/*
+  Pour choisir le dossier
+*/
+div#admindbe_form_ex div#div_dbe_choose_folder {
+  background-color  :#EEEEEE;
+  padding           :1em;
+  width             :16em;
+}
+div#admindbe_form_ex div#div_dbe_choose_folder > div {
+  
+}
+div#admindbe_form_ex div#div_dbe_choose_folder a {
+  font-family       :Helvetica;
+  font-size         :15px;
+  cursor            :pointer;
+}
+div#admindbe_form_ex div#div_dbe_choose_folder a.choose {
+  font-family       :Arial;
+  font-size         :11px;
+}

@@ -1,0 +1,11 @@
+div#boite_admin {
+  color       :white;
+  left        :41em;
+  position    :absolute;
+  top         :1em;
+  border      :1px solid #aeaeae;
+  padding     :4px;
+}
+div#boite_admin a {
+  color       :inherit !important;
+}
