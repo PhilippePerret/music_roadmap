@@ -16,6 +16,7 @@ def ajax_db_exercices_exercice_save
     raise "Ce fichier existe déjà…" if File.exists?(path) && !update
     check_data_dbe data
     File.open(path, 'wb'){|f| f.write( fiche_yaml_dbexercice(data) )}
+    File.chmod(0777, path)
   rescue Exception => e
     RETOUR_AJAX[:error] = e.message
   end
@@ -28,7 +29,9 @@ def fiche_yaml_dbexercice data
     val = case key
     when "types" 
       '["' + val.split(',').join('", "') + '"]'
-    when "titre_fr", "titre_en", "metrique", "suite" 
+    when "suite"
+      val == "00" ? "null" : "\"#{val}\""
+    when "titre_fr", "titre_en", "metrique"
       "\"#{val}\""
     else val
     end
