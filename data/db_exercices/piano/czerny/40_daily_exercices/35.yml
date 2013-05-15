@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°35"
+titre_en:     "Exercice n°35"
+suite:        "NO"
+types:        ["AR", "LH", "RH"]
+tempo_min:    46
+tempo_max:    66
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         null
+nb_mesures:   386

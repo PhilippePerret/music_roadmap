@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°36"
+titre_en:     "Exercice n°36"
+suite:        "NO"
+types:        ["RH", "TI", "CH", "DL", "EX"]
+tempo_min:    52
+tempo_max:    72
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   301

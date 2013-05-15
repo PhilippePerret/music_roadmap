@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°31"
+titre_en:     "Exercice n°31"
+suite:        null
+types:        ["LH", "AR", "SX", "JP"]
+tempo_min:    80
+tempo_max:    100
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         6
+nb_mesures:   844

@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°40"
+titre_en:     "Exercice n°40"
+suite:        null
+types:        ["LH", "RH", "OC"]
+tempo_min:    100
+tempo_max:    120
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         21
+nb_mesures:   73

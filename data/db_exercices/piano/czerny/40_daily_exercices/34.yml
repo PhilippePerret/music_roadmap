@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°34"
+titre_en:     "Exercice n°34"
+suite:        null
+types:        ["LH", "RH", "NT", "PO", "DL"]
+tempo_min:    52
+tempo_max:    72
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         19
+nb_mesures:   121

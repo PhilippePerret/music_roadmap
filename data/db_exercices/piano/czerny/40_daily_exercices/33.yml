@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°33"
+titre_en:     "Exercice n°33"
+suite:        null
+types:        ["LH", "RH", "SX", "DL"]
+tempo_min:    46
+tempo_max:    66
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         3
+nb_mesures:   175

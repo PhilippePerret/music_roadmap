@@ -1,0 +1,11 @@
+titre_fr:     "Exercice n°37"
+titre_en:     "Exercice n°37"
+suite:        null
+types:        ["LH", "RH", "TR", "NT"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         0
+nb_mesures:   298
