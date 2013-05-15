@@ -16,3 +16,42 @@ span.suivi_by_aide a.to_help img {
 span.suivi_by_aide:hover a.to_help {
   visibility      :visible;
 }
+
+/*
+  Tables des raccourcis clavier
+  @see UI.Shortcuts (building)
+*/
+div.table_shortcuts {
+  font-size       :0.81em;
+  border          :1px solid #CCCCCC;
+  background-color:#F6F6F6;
+  padding         :0.5em;
+}
+div.table_shortcuts div.titre {
+  font-weight     :bold;
+}
+div.table_shortcuts div.titre a {
+  color           :#005;
+}
+/* Shortcut list */
+div.table_shortcuts div.shortcuts{
+  margin-top      :4px;
+}
+/*Un shortcut*/
+div.table_shortcuts div.shortcut {
+  display         :inline-block;
+  border          :1px solid #fcfcfc;
+  background-color:#E7E7E7;
+  padding         :4px 8px;
+  margin-right    :8px;
+}
+div.table_shortcuts span.key {
+  margin-right    :2px;
+}
+div.table_shortcuts span.key img {
+  vertical-align  :middle;
+  margin-right    :4px;
+}
+div.table_shortcuts span.effect {
+  margin-right    :0px;
+}
