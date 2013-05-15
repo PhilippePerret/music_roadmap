@@ -235,8 +235,22 @@ window.Seance = {
   },
   show_start:function(){
     this.hide_form(false);
+    this.table_shortcuts();
     UI.animin($('div#seance_start'));
     UI.set_visible('a#btn_seance_play');
+  },
+  // Construction de la table des raccourcis clavier
+  table_shortcuts:function(){
+    data = [
+      {key:'P',       effect:'seance_pause'},
+      {key:'FlecheG', effect:'seance_back'},
+      {key:'S',       effect:'seance_stop'},
+      {key:'Espace',  effect:'seance_start_or_next'}
+    ];
+    UI.Shortcuts.build(
+      'div#seance_start_shortcuts',
+      {shortcuts:data, options:{current:true, open:false}}
+      );
   },
   hide_start:function(){
     UI.animout($('div#seance_start'))},

@@ -181,5 +181,12 @@ window.LOCALE_UI = {
     btn_open_by_type        :"Détail par technique",
     btn_open_by_tone        :"Détail par tonalité",
     btn_open_by_ex          :"Détail par exercice"
+  },
+  Shortcut:{
+    titre                   :"Raccourcis clavier",
+    seance_stop             :"Interrompre la séance",
+    seance_start_or_next    :"Commencer / Exercice suivant",
+    seance_pause            :"Pause",
+    seance_back             :"Revenir au précédent"
   }
 }

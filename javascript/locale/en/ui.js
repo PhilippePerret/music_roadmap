@@ -184,5 +184,13 @@ window.LOCALE_UI = {
     btn_open_by_type        :"Details per technique",
     btn_open_by_tone        :"Details per tone",
     btn_open_by_ex          :"Details per exercice"
+  },
+  Shortcut:{
+    titre                   :"Shortcuts",
+    seance_stop             :"Interrupt session",
+    seance_start_or_next    :"Start / Next exercice",
+    seance_pause            :"Pause",
+    seance_back             :"Previous exercice"
   }
+  
 }
