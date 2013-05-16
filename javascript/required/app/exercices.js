@@ -652,7 +652,7 @@ $.extend(window.Exercices,{
       else oselect = $(oselect);
       oselect.append('<option value="">--</option>');
       for(itone in dtone){
-        if(itone.substr(-3)=="bis")continue;
+        if(itone.start_with("bis"))continue;
         option = '<option value="'+itone+'">'+dtone[itone]['double']+'</option>';
         oselect.append(option);
       }
