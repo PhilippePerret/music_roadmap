@@ -87,17 +87,28 @@ section#seance div#seance_start div#seance_start_description {
   padding       :2em;
 }
 
+section#seance table#seance_table_start {
+  
+}
+section#seance table#seance_table_start td {
+  vertical-align          :middle;
+}
 section#seance div#seance_start_description span.libelle {
-  display         :inline-block;
+/*  display         :inline-block;*/
   font-weight     :bold;
-  width           :150px;
+/*  width           :150px;*/
   color           :#55A555;
 }
 section#seance img#seance_data_img_tone {
-  width           :300px;
+/*  float           :right;*/
+  width           :290px;
+  float           :right;
 }
 section#seance img#seance_data_img_downtoup{width:30px;vertical-align:middle;}
-
+section#seance img#seance_data_img_suite_harmonique {
+  width           :315px;
+  float           :right;
+}
 /*
   Infos sur l'exercice courant
   ----------------------------
