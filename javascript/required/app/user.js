@@ -122,7 +122,7 @@ window.User = {
       // ------------------------
       this.set_identified(rajax.user);
       this.roadmaps = rajax.roadmaps ;
-      $('div#user_signin_form').remove();
+      Aide.remove('user/signin_form');
       Aide.close() ;
       F.show(MESSAGE.User.welcome);
       this.pour_suivre_identification();
