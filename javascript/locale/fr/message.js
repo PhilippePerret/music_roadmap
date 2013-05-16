@@ -35,8 +35,13 @@ window.MESSAGE = {
     working_time_insuffisant  :"Temps de travail insuffisant sur l'exercice. Je ne l'enregistre pas.",
     really_save_duree_travail : "Une heure de travail sur cet exercice, vraiment ? Si c'est le cas, d'abord bravo ;-), et confirmez en cliquant sur le lien ci-dessous, pour que j'enregistre ce temps."
   },
+  // DBExercice
   DBExercice:{
     added                     :"Exercices BDE ajoutés avec succès !",
     no_exercices_in_recueil   :"Ce recueil ne possède pas encore d'exercices (n'hésitez pas à écrire à Phil pour lui demander de les ajouter !)"
+  },
+  // SEANCE
+  Seance:{
+    no_previous_ex            :"C'est le premier exercice ! (pas de précédent…)"
   }
 }

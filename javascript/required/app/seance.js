@@ -10,6 +10,7 @@ window.Seance = {
   running         :false,   // True when we work on the exercices suite
   cur_exercice    :null,    // Current exercice (instance of Exercice)
   ordre_stack     :null,    // Stack of the exercices to play
+  init_ordre_stack:null,    // Initial stack of exercices (in order to run previous)
   exercices_count :null,    // Number total of exercices to play
   curex_indice    :null,    // Index of the current exercice
   start_time      :null,    // Number of seconds for starting session time
@@ -21,28 +22,30 @@ window.Seance = {
       case K_SPACE:
         this.running ? this.next_exercice() : this.start();
         evt.stopPropagation();
-        return false;
-        break;
+        return false;break;
       case Key_p:
       case Key_P:
         evt.stopPropagation();
         if(this.running) this.pause();
-        return false;
-        break;
+        return false;break;
       case Key_s:
       case Key_S:
         evt.stopPropagation();
         if(this.running) this.stop(true);
-        return false;
-        break;
+        return false;break;
       case Key_m:
       case Key_M:
         evt.stopPropagation();
         Metronome.toggleMute();
-        return false;
-        break;
+        return false;break;
       default:
         // console.log("touche:"+evt.charCode);
+    }
+    switch(evt.keyCode){
+      case K_LARROW:
+        evt.stopPropagation();
+        return this.previous_exercice();
+        break;
     }
   },
   // Start working session (either prepared session or normal session)
@@ -80,6 +83,7 @@ window.Seance = {
     } catch(iderr){
       return F.error(ERROR.Seance[iderr]);
     }
+    this.init_ordre_stack = this.ordre_stack.concat([]);// => clone
     this.set_number_total_of_exercices();
     return true;
   },
@@ -134,6 +138,18 @@ window.Seance = {
       this.stop() ;
     }
     return false;// for a-link
+  },
+  // Special method to get back to previous exercice
+  // (@note: when "<-" key is hit)
+  previous_exercice:function(){
+    var current_indice = this.init_ordre_stack.length - this.ordre_stack.length - 1;
+    if (current_indice <= 0){
+      F.show(MESSAGE.Seance.no_previous_ex);
+      return false;
+    }
+    var previous_ex = this.init_ordre_stack[current_indice - 1];
+    this.ordre_stack.unshift(previous_ex, this.cur_exercice.id);
+    return this.next_exercice();
   },
   // Return true if exercices stack is empty
   no_more_exercice:function(){

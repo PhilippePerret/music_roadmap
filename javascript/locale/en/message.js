@@ -35,8 +35,13 @@ window.MESSAGE = {
     working_time_insuffisant  :"Too short working time on exercice. I don't save it.",
     really_save_duree_travail :"You've worked a hour on this exercice, really? If it's true, please confirm by clicking the link below."
   },
+  // DBExercice
   DBExercice:{
     added                     :"BDE Exercices successfully added!",
     no_exercices_in_recueil   :"This collection has no exercice yet (Don't wait! Mail to Phil to beg him to add them!)"
+  },
+  // SEANCE
+  Seance:{
+    no_previous_ex            :"It's the first exercice!"
   }
 }
