@@ -32,6 +32,7 @@ class Html
     "#{PATH_LIB_JS_GENE}/optional/flash.js",
     "#{PATH_LIB_JS_GENE}/optional/utils.js",
     "#{PATH_LIB_JS_GENE}/optional/ui.js",
+    "#{PATH_LIB_JS_GENE}/optional/String-extensions.js",
     "#{PATH_LIB_JS_GENE}/optional/Time.js",
     "#{PATH_LIB_JS_GENE}/optional/DArray.js"
     ]

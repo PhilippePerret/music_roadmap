@@ -47,3 +47,11 @@ String.prototype.titleize   =function(){
   }
   return a.join(' ');
 }
+// Return true if String starts with +str+
+String.prototype.start_with = function(str){
+  return this.substring(0,str.length) == str;
+}
+// Return true if String ends with +str+
+String.prototype.end_with = function(str){
+  return this.substring(str.length) == str;
+}
