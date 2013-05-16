@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°5"
+titre_en:     "Etude 5"
+suite:        null
+types:        ["AC", "LH", "RH", "PO"]
+tempo_min:    52
+tempo_max:    72
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         16
+nb_mesures:   43

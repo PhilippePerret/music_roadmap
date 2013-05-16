@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°8"
+titre_en:     "Etude 8"
+suite:        null
+types:        ["RH", "DL"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         0
+nb_mesures:   64

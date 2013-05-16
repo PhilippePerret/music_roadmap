@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°7"
+titre_en:     "Etude 7"
+suite:        null
+types:        ["LH", "RH", "OR", "EX"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         5
+nb_mesures:   59

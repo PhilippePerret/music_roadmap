@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°3"
+titre_en:     "Etude 3"
+suite:        null
+types:        ["AR", "LH"]
+tempo_min:    106
+tempo_max:    126
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+tone:         7
+nb_mesures:   48

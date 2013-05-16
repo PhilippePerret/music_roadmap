@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°6"
+titre_en:     "Etude 6"
+suite:        null
+types:        ["RH", "NR"]
+tempo_min:    66
+tempo_max:    86
+nb_temps:     1
+duree_temps:  8
+metrique:     "3/8"
+tone:         0
+nb_mesures:   92

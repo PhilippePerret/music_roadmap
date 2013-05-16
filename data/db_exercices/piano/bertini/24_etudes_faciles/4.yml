@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°4"
+titre_en:     "Etude 4"
+suite:        null
+types:        ["RH", "OR", "DL", "EX"]
+tempo_min:    148
+tempo_max:    168
+nb_temps:     3
+duree_temps:  8
+metrique:     "3/8"
+tone:         7
+nb_mesures:   118
