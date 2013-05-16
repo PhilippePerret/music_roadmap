@@ -5,13 +5,16 @@
 window.ALL_EVENTS = 'ALL';
 window.KEY_EVENTS = 'key';
 
-const KESPACE = 32;
-const Key_s   = 115;
-const Key_S   = 83;
-const Key_p   = 112;
-const Key_P   = 80;
-const Key_m   = 109;
-const Key_M   = 77;
+const K_SPACE   =32;
+const K_RETOUR  =13; 
+const K_RETURN  =13;
+const K_TAB     =9;
+const Key_s     =115;
+const Key_S     =83;
+const Key_p     =112;
+const Key_P     =80;
+const Key_m     =109;
+const Key_M     =77;
 
 window.RMEvent = {
   current_fx_onkeypress: null,

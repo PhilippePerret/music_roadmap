@@ -159,7 +159,7 @@ const Key_RETURN			= 13 ;
 const Key_ENTREE			= 13 ;
 /*const KeyC_RETURN	= 13 ;	// Return (PN et clavier) */
 /* Retour (les deux) */
-const KRETOUR		= 13 ; const KRETURN	= 13 ;
+const K_RETOUR		= 13 ; const K_RETURN	= 13 ;
 
 const Key_PNPLUS			= 107 ;	// + du PN
 const Key_PNMOINS			= 109 ;	// - du PN
@@ -175,10 +175,10 @@ const KDOCUP				= 36; // flèche "de travers", pour remonter tout en haut
 const Key_UPSCREEN			= 36 ;
 
 /* Barre d'espacement (charCode) */
-const KESPACE				= 32 ;
+const K_SPACE				= 32 ;
 const Key_SPACE				= 32 ;
 /* Tabulation (keyCode) */
-const KTAB					= 9 ;
+const K_TAB					= 9 ;
 const Key_TAB				= 9 ;
 /* Effacement */
 const KERASE				= 8 ;

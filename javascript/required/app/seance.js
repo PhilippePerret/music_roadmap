@@ -18,7 +18,7 @@ window.Seance = {
   // Key press handler (on seance)
   onkeypress:function(evt){
     switch(evt.charCode){
-      case KESPACE:
+      case K_SPACE:
         this.running ? this.next_exercice() : this.start();
         evt.stopPropagation();
         return false;

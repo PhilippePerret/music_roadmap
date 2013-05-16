@@ -173,6 +173,17 @@ window.User = {
     return this.roadmaps.length >= 10 ;
   },
   
+  // Called with press tab or return on password field
+  check_key_press_on_password:function(evt){
+    var kcode = evt.keyCode;
+    if(kcode != K_RETURN && kcode != K_TAB) return;
+    if(kcode == K_RETURN) this.check();
+    else{
+      evt.stopPropagation(); // unnecessary, but...
+      $('input#user_mail').select();
+      return false;
+    }
+  },
   SIGNIN_LABELS:['TITRE','MAIL','PASSWORD'],
   SIGNIN_BUTTONS:['BTN_SIGNIN', 'BTN_WANT_SIGNUP'],
   prepare_signin_form: function(){
@@ -191,6 +202,10 @@ window.User = {
       btn_id    = label_id.toLowerCase();
       $('div#user_signin_form a#'+btn_id).text( LOCALE_UI.User.Signin[label_id] ) ;
     }
+    // Observer on passwork field (to check return)
+    $('input#user_password').bind('keypress',$.proxy(this.check_key_press_on_password,this));
+    // Focus in mail field
+    $('input#user_mail').select();
     this.preparing_form = false ;
   },
   /*
