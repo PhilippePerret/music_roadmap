@@ -26,9 +26,9 @@ def ajax_mail_send
       :data     => param(:data)
     )
   rescue Exception => e
-    RETOUR_AJAX[:error] = e.message
-  else
-    RETOUR_AJAX[:flash] = "Message envoyé !"
+    errmes = e.message
+    errmes += '<br>' + e.backtrace.join('<br>') if Params::offline?
+    RETOUR_AJAX[:error] = errmes
   end
 end
 

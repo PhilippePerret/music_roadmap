@@ -1,0 +1,47 @@
+<style type="text/css">
+div#div_mailto {
+  width:400px;
+}
+div#div_mailto input[type="text"]{width:60%;}
+div#div_mailto textarea{width:100%;}
+div#div_mailto > div {
+  margin-bottom:1em;
+}
+div#div_mailto span.libelle {
+  display:block;
+  float:left;
+  width:5em;
+  font-style:italic;
+  color:#555;
+}
+</style>
+<div class="titre">Contact</div>
+<div id="div_mailto" class="form">
+  <div id="div_mailto_from">
+    <span id="mailto_from_libelle" class="libelle"></span>
+    <span class="field">
+      <input type="text" name="mail[sender]" value="" id="mail_sender" class="form" />
+    </span>
+  </div>
+  <div id="div_mailto_subject">
+    <span id="mailto_subject_libelle" class="libelle"></span>
+    <span id="mailto_subject_fieldspan" class="field">
+      <select id="mail_general_subject"></select><br>
+      <input type="text" name="mail[subject]" value="" id="mail_subject" class="form" />
+    </span>
+  </div>
+  <div id="div_mailto_messsage">
+    <span id="mailto_message_libelle" class="libelle"></span>
+    <span id="mailto_message_fielspan" class="field">
+      <textarea id="mail_message" name="mail[message]" rows="8" class="form"></textarea>
+    </span>
+  </div>
+  <div id="div_mailto_captcha">CAPTCHA</div>
+  <div class="right">
+    <a  href="#"
+        id="btn_send_mail"
+        class="big btn"
+        onclick="return $.proxy(User.send_mail, User)();"
+        ></a>
+  </div>
+</div>

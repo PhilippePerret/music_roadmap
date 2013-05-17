@@ -76,9 +76,24 @@ window.ERROR = {
   DBExercice:{
     no_exercice_choosed   :"Il faut choisir les exercices à ajouter à votre feuille de route courante !"
   },
+  // SÉANCE
   Seance:{
     no_working_time       :"Il faut indiquer un temps de travail !",
     no_exercice_found     :"Aucun exercice de votre feuille de route ne répond aux critères sélectionnés.",
     no_exercices          :"Il n'y a aucun exercice à jouer !"
+  },
+  // MAIL
+  Mail:{
+    need_mail             :"Vous devez indiquer votre mail",
+    need_a_message        :"Vous devez écrire un message !",
+    need_captcha_reponse  :"Vous devez indiquer la réponse au test captcha !"
+  },
+  // CAPTCHA
+  Captcha:{
+    no_reponse            :"Vous devez donner la réponse du captcha",
+    no_time               :"Bizarre… aucun time fourni",
+    no_file               :"Bizarre… aucun fichier pour vous… Ne seriez-vous pas en train de tenter une intrusion ?…",
+    bad_answer            :"Votre réponse anti-bot est mauvaise…",
+    too_much_tentatives   :"Désolé, mais vous avez dépassé le nombre de tentatives autorisées."
   }
 }

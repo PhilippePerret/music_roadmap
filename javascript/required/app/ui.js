@@ -247,33 +247,24 @@ $.extend(UI,{
     
     // Check captcha
     // 
-    // @param   action    L'action qui sera possible si le captcha est bon
-    //                    P.e. "mail" pour envoyer un mail.
-    check: function(action){
+    check: function(fx_suite){
       this.set_message( "" );
       Ajax.query({
         data:{
           proc            : 'app/captcha/check',
-          captcha_action  : action,
           captcha_reponse : $('input#captcha_reponse').val(),
           captcha_time    : $('input#captcha_time').val()
         },
-        success : $.proxy(UI.Captcha.retour_check, UI.Captcha),
-        error   : $.proxy(UI.Captcha.retour_check, UI.Captcha)
+        success : $.proxy(UI.Captcha.retour_check, UI.Captcha, fx_suite)
       })
     },
     // Retour du check du captcha
-    retour_check: function(rajax){
+    retour_check: function(fx_suite, rajax){
       if (rajax['error']) return F.error(rajax['error']) ;
       if ( rajax['captcha_success'] ){
-        // On remplace le div du captcha par le texte renvoyé
-        $('div#captcha').replaceWith( rajax['captcha_message']);
-      } else if ( rajax['captcha_failed'] ) {
-        // Échec définitif
-        $('div#captcha').replaceWith( 
-          '<div class="warning">' + rajax['captcha_message'] + '</div>');
+        if('function'==typeof fx_suite)fx_suite();
       } else {
-        this.set_message( rajax['captcha_message'] ) ;
+        F.error(ERROR.Captcha[rajax['captcha_error']]);
       }
     },
   },

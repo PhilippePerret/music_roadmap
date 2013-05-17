@@ -43,5 +43,9 @@ window.MESSAGE = {
   // SEANCE
   Seance:{
     no_previous_ex            :"C'est le premier exercice ! (pas de précédent…)"
+  },
+  // MAIL
+  Mail:{
+    sent                      :"Votre message a bien été envoyé."
   }
 }

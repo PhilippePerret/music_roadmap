@@ -355,6 +355,8 @@ window.Aide = {
   // 
   // @note: la méthode peut être appelée sur un identifiant qui n'existe pas, donc
   // il faut vérifier avant que le texte d'aide demandé soit bien affiché.
+  // 
+  // @param   id    Identifiant du message d'aide (tel que fourni à la méthode `show')
   remove: function(id){
     if ('undefined' == typeof this.TEXTS[id]) return false ;
     this.jqtext(id).remove();

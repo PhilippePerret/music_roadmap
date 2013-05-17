@@ -29,9 +29,6 @@ begin
     style = "vertical-align:middle;width:40px;font-size:18px;"
     '<input type="text" id="captcha_reponse" onfocus="this.select()" value="" style="'+style+'" />'
   end
-  def bouton
-    '<a href="#" onclick="return $.proxy(UI.Captcha.check,UI.Captcha,\'mail\')()" class="btn">Vérifier</a>'
-  end
   def my_user_ip
     ['REMOTE_ADDR','HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR'].each do |key|
       ip = Params.get_env key
@@ -66,22 +63,21 @@ begin
                         # générale pour le moment
   File.open(path, 'wb'){|f| f.write data.to_json}
 
-  # Le texte retourné
-  <<-EOT
-  <div class="titre">Écrire à Phil</div>
+  captcha = <<-EOT
   <div>
     <div id="captcha">
-      <div style="margin-bottom:1em;">
-        Pour m'envoyer un message, merci de répondre à cette devinette “anti-bot” :-).
-      </div>
+      <span id="mailto_captcha_titre" class="libelle" style="width:170px;"></span>
       <div class="center">
-        #{suite_notes(nombre_croches)} = #{input_text} croches #{bouton}
+        #{suite_notes(nombre_croches)} = #{input_text} <span id="mailto_croches"></span>
         <div id="captcha_message" style="margin-left:2em;margin-top:1em;">&nbsp;</div>
       </div>
       <input type="hidden" id="captcha_time" value="#{now}" />
     </div>
   </div>
   EOT
+  # Formulaire renvoyé
+  form = File.read(File.join(APP_FOLDER,'data','aide','application',"mail_form.html"))
+  form.sub!(/CAPTCHA/,captcha)
 rescue Exception => e
   RETOUR_AJAX[:error] = e.message
   "Problème"

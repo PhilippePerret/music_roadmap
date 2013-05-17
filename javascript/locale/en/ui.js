@@ -191,6 +191,14 @@ window.LOCALE_UI = {
     seance_start_or_next    :"Start / Next exercice",
     seance_pause            :"Pause",
     seance_back             :"Previous exercice"
+  },
+  Mail:{
+    your_mail               :"Your email",
+    mail_subject            :"Message object",
+    croches                 :"quavers",
+    general_subjects        :["None","Fonctionnement", "Exercices Database", "Suggestion"],
+    captcha_thanks          :"Thanks to answer this “anti-bot” test :-).",
+    btn_send_mail           :"Send message"
   }
   
 }

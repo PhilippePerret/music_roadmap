@@ -90,7 +90,7 @@ table.form input[type="text"].petit {
   text-align  :center;
   width       :27px;
 }
-table.form .error {
+table.form .error, div.form .error {
   background-color      :#FFBDC3;
 }
 table.form select, table.form select option {

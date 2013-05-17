@@ -345,6 +345,114 @@ window.User = {
       '<option value="other" class="other">' + LOCALE_UI.Class.other + '</option>');
     // Et placer le texte explicatif en fonction de la langue
     
-  }
+  },
   
+  // Called when we click on contact button
+  mailto_phil:function(){
+    H.show('application/mail_to_phil.rb',$.proxy(User.prepare_form_mail,User));
+    return false;//pour le a-lien
+  },
+  // Called when we click on "Send mail!" button
+  // Send the mail
+  sending_mail:false,
+  send_mail:function(){
+    this.sending_mail = true;
+    var data = this.get_data_mail();
+    if(data == null){
+      this.sending_mail = false;
+      return false;
+    }
+    data.proc = 'app/mailto_phil';
+    Ajax.query({
+      data:data,
+      success:$.proxy(this.retour_send_mail,this)
+    });
+    return false;//pour le lien
+  },
+  retour_send_mail:function(rajax){
+    var remove = true;
+    if(traite_rajax(rajax)==false){ 
+      F.show(MESSAGE.Mail.sent);
+    } else {
+      if ('undefined'!=typeof rajax.captcha_error){
+        switch(rajax.captcha_error){
+          case 'too_much_tentatives': remove = true; break;
+          case 'bad_answer': $('input#captcha_reponse').select(); break;
+          default: remove = true;
+        }
+      }
+    }
+    if(remove){
+      H.remove('application/mail_to_phil.rb');
+      H.close();
+    }
+    this.sending_mail = false;
+  },
+  // Retourne les data du mail (en les checkant)
+  // Retourne NULL si les données sont mauvaises
+  get_data_mail:function(){
+    try{
+      var data = {subject:"Message"};
+      var mess = [];
+      data.from = 
+        this.get_mail_value('input#mail_sender', 'need_mail');
+      mess.push(["De", '<a href="mailto:'+data.from+'">' + data.from + '</a>']);
+      mess.push(["Sujet", $('select#mail_general_subject').val() + '<br>' +
+                      $('input#mail_subject').val()]);
+      mess.push(["Message", 
+        this.get_mail_value('textarea#mail_message', 'need_a_message')]);
+      data.captcha_reponse = 
+        this.get_mail_value('input#captcha_reponse', 'need_captcha_reponse');
+      data.captcha_time = $('input#captcha_time').val();
+      data.message = this.mettre_en_form_message_mail(mess);
+      return data;
+    }catch(iderror){
+      F.error(ERROR.Mail[iderror]);
+      return null;
+    }
+  },
+  // Met en forme le message (le construit dans une table)
+  mettre_en_form_message_mail:function(data){
+    var tbl = '<table border="0" cellpadding="4">';
+    var paire;
+    for(var i in data){
+      tbl += '<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td></tr>';
+    }
+    tbl += '</table>';
+    return tbl;
+  },
+  get_mail_value:function(jid, error_id){
+    var value = $(jid).val().trim();
+    if (value == ""){
+      $(jid).addClass('error');
+      $(jid).select();
+      throw error_id;
+    }
+    return value;
+  },
+  LOCALES_MAIL:{
+    'span#mailto_from_libelle':"your_mail",
+    'span#mailto_subject_libelle':"mail_subject",
+    'span#mailto_croches':"croches",
+    'span#mailto_captcha_titre':"captcha_thanks",
+    'a#btn_send_mail':"btn_send_mail"
+    },
+  prepare_form_mail:function(){
+    // Régler les textes locaux
+    for(var jid in this.LOCALES_MAIL){
+      $(jid).html(LOCALE_UI.Mail[this.LOCALES_MAIL[jid]]);
+    }
+    // Le menu des subjets généraux
+    var o = $('select#mail_general_subject');
+    o.html('');
+    for(var i in LOCALE_UI.Mail.general_subjects){
+      var sub = LOCALE_UI.Mail.general_subjects[i];
+      o.append('<option value="'+sub+'">'+sub+'</option>');
+    }
+    // Si l'utilisateur est identifié, on met son mail et on le cache
+    if (User.is_identified()){
+      $('input#mail_sender').val(this.mail);
+      $('div#div_mailto_from').hide();
+    }
+  }
 }

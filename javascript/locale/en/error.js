@@ -72,10 +72,24 @@ window.ERROR = {
   DBExercice:{
     no_exercice_choosed   :"You have to choose the exercices to add to your current roadmap!"
   },
+  // SEANCE
   Seance:{
     no_working_time       :"I need a working time!",
     no_exercice_found     :"No exercice in your roadmap matchs the criteria you have defined.",
     no_exercices          :"No exercice to play!"
-  }
-  
+  },
+  // MAIL
+  Mail:{
+    need_mail             :"I need your email address.",
+    need_a_message        :"You must write a message!",
+    need_captcha_reponse  :"You must respond to the captcha test!"
+  },
+  // CAPTCHA
+  Captcha:{
+    no_reponse            :"I need your captcha answer",
+    no_time               :"Bizarre… no time provided",
+    no_file               :"Bizarre… no file for you… Are you a hacker?…",
+    bad_answer            :"Your captcha answer is wrong…",
+    too_much_tentatives   :"Sorry, no more temptatives."
+  }  
 }

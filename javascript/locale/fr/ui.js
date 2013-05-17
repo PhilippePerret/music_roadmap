@@ -188,5 +188,13 @@ window.LOCALE_UI = {
     seance_start_or_next    :"Commencer / Exercice suivant",
     seance_pause            :"Pause",
     seance_back             :"Revenir au précédent"
+  },
+  Mail:{
+    your_mail               :"Votre mail",
+    mail_subject            :"Objet du message",
+    croches                 :"croches",
+    general_subjects        :["Aucun","Fonctionnement", "Base de donnée des exercices", "Suggestion"],
+    captcha_thanks          :"Merci de répondre à cette devinette “anti-bot” :-).",
+    btn_send_mail           :"Envoyer"
   }
 }

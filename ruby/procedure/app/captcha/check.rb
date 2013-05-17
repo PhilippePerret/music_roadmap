@@ -6,69 +6,58 @@
   
     :captcha_reponse  La réponse donnée
     :captcha_time     Le temps (qui est l'affixe du fichier js)
-    :captcha_action   L'action pour laquelle le captcha est checké
-                      Par exemple, si la valeur est "mail", le programme, en
-                      cas de succès, doit retourner un lien mailto.
-                    
+
+  * PRODUCTS
+    RETOUR_AJAX[:captcha_success] à TRUE si le captcha est bon, FALSE otherwise
+    RETOUR_AJAX[:captcha_error]   Identifiant du message d'erreur, if any
+        Peut contenir :
+          'too_much_tentatives'     Nombre de tentatives dépassé
+          'bad_answer'              Mauvaise réponse donnée
+          'no_reponse'              Aucun réponse donnée
+          'no_time'                 Pas de temps donné (erreur système ou intrusion)
+          'no_file'                 Fichier inexistant (erreur système ou intrusion)
+    
+    Return NIL si OK, ou l'identifiant d'erreur (pour utilisation en ruby)
+    
 =end
 
 def ajax_app_captcha_check
   begin
     reponse = param(:captcha_reponse).to_s
-    raise "Aucune réponse donnée…"  if reponse == ""
+    raise "no_reponse"  if reponse == ""
     time    = param(:captcha_time).to_s
-    raise "Aucun temps donné…"      if time == ""
-    action  = param(:captcha_action).to_s
-    raise "Aucune action donnée…"   if action == ""
+    raise "no_time"     if time == ""
 
     @path_data_captcha = File.join(APP_FOLDER, 'tmp', 'captcha', "#{time}.js")
-    raise "Vous tentez une intrusion, c'est pas bien…" unless File.exists? @path_data_captcha
+    raise "no_file" unless File.exists? @path_data_captcha
     
     # Données enregistrées
     data = JSON.parse(File.read(@path_data_captcha))
     
+    # Évaluation
     RETOUR_AJAX[:captcha_success] = reponse == data['reponse'].to_s
-    RETOUR_AJAX[:captcha_failed]  = !RETOUR_AJAX[:captcha_success] && data['nombre_tentatives'] >= 3
-
-    if RETOUR_AJAX[:captcha_success]
-      on_success
-    elsif RETOUR_AJAX[:captcha_failed]
-      on_failed
-    else
-      data['nombre_tentatives'] += 1
-      File.open(@path_data_captcha, 'wb'){|f| f.write data.to_json}
-      
-      RETOUR_AJAX[:captcha_message] = 
-      if data['nombre_tentatives'] == 3
-        "Attention, c'est votre dernière tentative…"
+    
+    unless RETOUR_AJAX[:captcha_success]
+      if data['nombre_tentatives'] >= 3
+        # Trop de tentatives
+        detruire_fichier_data
+        raise 'too_much_tentatives'
       else
-        "Cette réponse est incorrect. Pouvez-vous ré-essayer ?"
+        # On inscrit une tentative supplémentaire
+        data['nombre_tentatives'] += 1
+        File.open(@path_data_captcha, 'wb'){|f| f.write data.to_json}
+        raise 'bad_answer'
       end
     end
+    
+    detruire_fichier_data if RETOUR_AJAX[:captcha_success]
+    return nil # usage en ruby
   rescue Exception => e
-    RETOUR_AJAX[:captcha_message] = e.message
+    RETOUR_AJAX[:captcha_error] = e.message
+    return e.message # usage en ruby
   end
 end
 
 def detruire_fichier_data
   File.unlink( @path_data_captcha )
-end
-def on_failed
-  RETOUR_AJAX[:captcha_message] = "Désolé, mais je ne peux pas vous laisser continuer, vous avez dépassé le nombre maximum de tentatives."
-  detruire_fichier_data
-end
-def on_success
-  detruire_fichier_data
-  RETOUR_AJAX[:captcha_message] = joue_action_on_captcha param(:captcha_action)
-end
-
-def joue_action_on_captcha action
-  case action
-  when 'mail' then return lien_pour_mail
-  end
-  "#Erreur : l'action #{action} n'est pas définie, dans procedure/app/captcha/check…"
-end
-def lien_pour_mail
-  require File.join(APP_FOLDER, 'data', 'secret', 'data_mail.rb')
-  "<div class=center><a href=\"mailto:#{MAIL_PHIL}\">ENVOYER UN MESSAGE À PHIL</a></div>"
 end
