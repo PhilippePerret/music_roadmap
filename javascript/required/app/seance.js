@@ -293,10 +293,6 @@ window.Seance = {
   // Retour ajax de la précédente
   build_suite:function(rajax){
     if(false==traite_rajax(rajax)){
-      if ('undefined' != typeof rajax.debug_building_seance){
-        if($('pre#pre_debug').length) $('pre#pre_debug').remove();
-        $('body').append(rajax.debug_building_seance);
-      }
       this.data_seance = rajax.data_seance ; // les données remontées pour la séance
       if (this.show_data_seance()){
         Roadmap.Data.set_general_config(this.data_seance);
