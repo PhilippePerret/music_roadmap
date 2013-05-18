@@ -134,7 +134,7 @@ class Roadmap
   def next_general_config options = nil
     options ||= {}
     options = options.merge(:save => true) unless options.has_key?(:save)
-    options = options.merge(:tone => true)  unless options.has_key?(:tone)
+    options = options.merge(:tone => true) unless options.has_key?(:tone)
     d = config_generale
     param_to_change     = LOOP_CONFIG_ATTRIBUTES[d[:last_changed].to_sym].to_sym
     d[param_to_change]  = !d[param_to_change]
