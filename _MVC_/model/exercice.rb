@@ -125,7 +125,9 @@ class Exercice
   end
   
   # Return la durée du travail de l'exercice au tempo fourni en argument.
-  def duree_at this_tempo
+  # Si le tempo n'est pas fourni, on prend le tempo courant
+  def duree_at this_tempo = nil
+    this_tempo ||= tempo
     ((60.0 / this_tempo) * nombre_temps * nombre_mesures).to_i
   end
   

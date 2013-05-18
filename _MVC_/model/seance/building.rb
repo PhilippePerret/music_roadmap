@@ -63,16 +63,114 @@ class Seance
     def initialize seance, params
       @seance = seance
       @params = params
-      @debug  = []
+      debug "*** PRÉPARATION DE LA SÉANCE DU #{@seance.day} ***"
+      debug "Paramètres envoyés : #{params.inspect}"
       analyze_params
+      debug "Temps de travail demandé : #{time.to_i.as_horloge}"
+      debug "Types recherchés : #{types.inspect}"
+      debug "Options : #{options.inspect}"
     end
     
     # Pour suivre le programme
+    # On sort en offline un fichier assez conséquent contenant les informations 
+    # du traitement effectué
     def debug text
-      @debug << text
+      return if @no_debug ||= Params::online?
+      prepare_debug if @debug_ready.nil?
+      text = "<div>#{text}</div>" unless text.start_with?('<')
+      File.open(@path_debug, 'a'){|f| f.write "#{text}\n"}
+    end
+    def prepare_debug
+      folder_debug = File.join(APP_FOLDER,'tmp','debug')
+      Dir.mkdir(folder_debug, 0777) unless File.exists?(folder_debug)
+      @path_debug = File.join(folder_debug,"prepare_seance_#{@seance.day}.html")
+      File.unlink(@path_debug) if File.exists?(@path_debug)
+      @debug_ready = true
+    end
+    def entete_debug
+      <<-EOC
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Préparation séance #{@seance.day}</title>
+  <style type="text/css">
+div#div_operations{
+  height:300px;max-height:300px;overflow-y:scroll;
+}
+div#div_operations > div {margin-bottom:8px;}
+div#div_operations div.operation {
+  border:1px solid #999;
+  margin-bottom:1em;
+  border-radius:0.5em;
+  padding:1em;
+}
+div#div_operations div.operation > span {font-weight:bold;font-size:1.1em;}
+div#div_operations div.operation span.idval{
+  display:inline-block;width:80px;
+}
+  </style>
+</head>
+<body>
+      EOC
+    end
+    # À la fin du debug, on prend le contenu du document HTML, on le place dans un
+    # div avec scrollbar et on place au-dessus les informations sur les exercices pour
+    # une meilleure vision.
+    # Et on finalise le document
+    def end_debug
+      return if @no_debug
+      code =  '<div id="div_operations">'+
+              File.read(@path_debug) +
+              '</div>' + debug_infos_exercices
+      File.open(@path_debug, 'wb') do |f| 
+        f.write entete_debug + code + "</body></html>"
+      end
+    end
+    def debug_infos_exercices
+      require 'module/exos_seance_to_table.rb'
+      build_table_exos( roadmap, nil, {:sort => :by_numero} )
+    end
+    # Prend la liste d'identifiant d'exercices +liste+ et en fait une liste où on peut
+    # cliquer sur les exercices pour les afficher dans la table de données
+    # Retourne la liste à afficher
+    # @param  liste   Array des exercices. Par defaut : @ids_exercices
+    #                 OU Hash où la clé est l'identifiant et la valeur une valeur
+    #                 Si option[:method_value] est défini, on applique cette méthode
+    #                 à la valeur pour l'afficher (avec send)
+    # @param  options Options
+    #                 :sort_by_value    Si liste est un Hash et que cette option est
+    #                                   TRUE, on classe la liste.
+    # @return String de la liste des identifiants liés
+    def debug_ids_exercices_with_anchor liste = nil, options = nil
+      liste ||= @ids_exercices
+      options ||= {}
+      if liste.class == Array
+        ("(#{liste.count}) ") + liste.collect do |id|
+          "<a href=\"#exo-#{id}\">#{id}</a>"
+        end.join(' ')
+      else
+        method_value = options.has_key?(:method_value) ? options[:method_value] : 'to_s'
+        if options[:sort_by_value]
+          ("(#{liste.count})<br>") + liste.sort_by{|id,val| val}.collect do |id,value|
+            value = case value
+            when nil then "null"
+            else value.send(method_value) end
+            debug_id_et_value id, value
+          end.join(' ')
+        else
+          ("(#{liste.count})<br>") + liste.collect do |id, value|
+            debug_id_et_value(id, value.send(method_value))
+          end.join(' ')
+        end
+      end
+    end
+    # @param id   Obligatoirement un identifiant d'exercice
+    def debug_id_et_value id, value
+      '<span class="idval">'+"<a href=\"#exo-#{id}\">#{id}</a>: #{value}</span>"
     end
     
-    # Data returned for the seance returned
+    # Data returned for the seance returned (main function)
     # 
     def data
       # get some data required
@@ -89,23 +187,52 @@ class Seance
       #       put mandatory exercices at the right place at the end.
       # Set a @seances Array with Hashes of up to 50 last seance.
       # Set a @average_working_time Hash where key is exercice ID and value is
-      # average working time in last seance. Worth to note that the value can
+      # average working time in last seances. Worth to note that the value can
       # be nil.
       # Set a @nb_fois_per_exercice Hash where key is exercice ID and value if the
       # number of user works on the exercice
       etat_des_lieux
-      debug "ids_exercices après etat_des_lieux: #{@ids_exercices.inspect}"
+      unless @no_debug
+        debug "<div class=\"operation\"><span>ÉTAT DES LIEUX</span>"
+        debug "ids_exercices : #{debug_ids_exercices_with_anchor}"
+        debug "Le <b>temps moyen par exercice</b> (@average_working_time - classée ci-dessous par ordre croissant) :"
+        debug debug_ids_exercices_with_anchor(
+                @average_working_time,
+                {:method_value => 'as_short_horloge', :sort_by_value => true}
+                )
+        debug "Le <b>Nombre de fois par exercice</b> (@nb_fois_per_exercice - classée ci-dessous par ordre croissant) :"
+        debug debug_ids_exercices_with_anchor(@nb_fois_per_exercice, {:sort_by_value => true})
+        debug "</div>"
+      end
       
-      # Get exercices working time => @time_per_exercice
-      # Products @time_per_exercice where key is exercice ID and value
-      # the working time for the exercice, calcultated either with the working
-      # time recorded previously in previous seances (priority) or with tempo and
+      # Get exercices working time
+      # 
+      # @time_per_exercice
+      # ------------------
+      # The absolute duration of the exercice, calculated with tempo and
       # number of measures and number of beats per measure
-      # @time_per_exercice is the ultimate data used to build the working time
-      # of the current session.
+      # An Hash where key is exercice ID and value is the time as number of seconds.
+      # 
+      # @nb_fois_per_exercice
+      # ---------------------
+      # Le nombre de fois calculé où l'exercice a été joué. Ce nombre est calculé par
+      # rapport à la durée absolue de jeu de l'exercice, et le temps total de travail
+      # sur l'exercice. Par exemple, un exercice durant 2mn qui aura été joué pendant
+      # 4mn (même en une seule fois) sera considéré comme ayant été joué 2 fois.
+      # On prend toujours l'entier supérieur (1.01 fois => 2 fois)
       work_time_per_exercice
-      debug "ids_exercices après work_time_per_exercice: #{@ids_exercices.inspect}"
-      debug "@nb_fois_per_exercice après work_time_per_exercice : #{@nb_fois_per_exercice.inspect}"
+      unless @no_debug
+        debug "<div class=\"operation\"><span>WORK TIME PER EXERCICE</span>"
+        debug "Le <b>Time par exercice</b> (@time_per_exercice / temps absolu des exercices):"
+        debug debug_ids_exercices_with_anchor(
+                @time_per_exercice,
+                {:method_value => 'as_short_horloge', :sort_by_value => true}
+                )
+        debug "Le <b>Nombre de fois par exercice</b> (@nb_fois_per_exercice):"
+        debug debug_ids_exercices_with_anchor(
+                @nb_fois_per_exercice, {:sort_by_value => true})
+        debug "</div>"
+      end
 
       # Putting aside the mandatory exercices (if :obligatory option is true)
       # 
@@ -117,6 +244,14 @@ class Seance
       # @note: Do nothing if :obligatory option is false
       # 
       filter_mandatories
+      unless @no_debug
+        debug "<div class=\"operation\"><span>FILTER MANDATORIES</span>"
+        debug "La <b>Liste des exercices obligatoires</b>:"
+        debug debug_ids_exercices_with_anchor(@mandatories)
+        debug "Le <b>Temps consumé par ces exercices obligatoire</b>: #{@time_for_mandatories.as_horloge}"
+        debug "Nouvelle liste des ids exercices : #{debug_ids_exercices_with_anchor}"
+        debug "</div>"
+      end
       
       # Filter exercices per required difficulties (if any)
       # -> @ids_exercices   (with only exercices required)
@@ -127,8 +262,8 @@ class Seance
       # 
       # Retire les mauvais ids de @ids_exercices
       filter_exercices_per_difficulties
-      debug "ids_exercices après filter_exercices_per_difficulties: #{@ids_exercices.inspect}"
-      debug "@others_idex après filter_exercices_per_difficulties: #{@others_idex.inspect}"
+      debug "Exos correspondant aux difficultés choisis : #{@ids_exercices.join(' ')}"
+      debug "Exos ne correspondant pas aux difficultés choisis: #{@others_idex.join(' ')}"
 
       # Get general config
       # ------------------
@@ -143,7 +278,7 @@ class Seance
       # -> @duree_courante
       # --------------------------------------------------------
       select_exercices
-      debug "ids_exercices après select_exercices (non shuffled or sorted):\n#{@ids_exercices.inspect}"
+      debug "ids_exercices après select_exercices (non shuffled or sorted):\n#{@ids_exercices.join(' ')}"
 
       # Randomize order or put id at the right place
       # ---------------------------------------------
@@ -167,34 +302,22 @@ class Seance
       # This message is displayed for musician before to run working
       # session. It's a summary of this working session.
       message = ""
-      if DEBUG
-        message = <<-EOM
-<div style="clear:both;"></div>
-<pre id="pre_debug" style="padding:2em;font-size:11px;">
-<a href="#" onclick="$('pre#pre_debug').remove();return false;">REMOVE THIS DEBUG</a>
-Paramètres envoyés : #{params.inspect}
-Temps de travail demandé : #{time}
-Types : #{types.inspect}
-Options : #{options.inspect}
-Gammes inutilisées: #{@unused_tones.join(', ')}
-Exercices ne correspondant pas au type: #{@others_idex.inspect}
-Exercices obligatoires: #{@mandatories}
-Temps occupé par les exercices obligatoires: #{@time_for_mandatories}
-Temps moyen de travail dans les séances : #{@average_working_time.inspect}
-Temps moyen calculé : #{@time_per_exercice.inspect}
-Nombre de fois par exercice : #{@nb_fois_per_exercice.inspect}
+      if Params::offline?
+        debug "Gammes inutilisées: #{@unused_tones.join(', ')}"
+        debug "Exercices obligatoires: #{@mandatories.join(' ')}"
+        debug "Temps occupé par les exercices obligatoires: #{@time_for_mandatories}"
+        debug "Nombre de fois par exercice : #{@nb_fois_per_exercice.inspect}"
+        debug <<-EOM
 ***
-Temps de travail obtenu  : #{@duree_courante}
+Temps de travail obtenu  : #{@duree_courante.to_i.as_horloge}
 Exercices retenus : #{@ids_exercices.join(', ')}
 Configuration générale: #{@config_generale.inspect}
 GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
 ***
-DEBUG
-#{@debug.join("\n")}
-</pre>
       EOM
-        RETOUR_AJAX[:debug_building_seance] = message if defined?(RETOUR_AJAX)
+        
       end
+      end_debug
       seance_data = @config_generale.dup
       seance_data = seance_data.merge(
         :message          => message.to_html,
@@ -236,7 +359,10 @@ DEBUG
       #   faut shuffle les exercices par nombre de fois (cf. Issue #80)
       # 
       less_worked = exercices_sorted_by_nb_fois
-      debug "less_worked in select_exercices : #{less_worked.inspect}"
+      debug "<div>Classement du moins travaillé au plus travaillé<br>"+
+                 "-----------------------------------------------<br>"+
+            " (mais si ordre aléatoire, ils sont mélangés) : #{less_worked.join(' ')}</div>"
+      debug "-> On va prendre dans ces exercices jusqu'à la durée voulue"
       # On récolte les exercices, jusqu'au temps voulu
       @ids_exercices  = []
       duree_required  = time.to_i - @time_for_mandatories
@@ -262,7 +388,9 @@ DEBUG
       end
       
       # We finaly add the mandatory exercices (if any)
+      debug "Exos retenus, sans les obligatoires : #{@ids_exercices.join(' ')}"
       @ids_exercices += @mandatories
+      debug "Exos retenus, avec les obligatoires : #{@ids_exercices.join(' ')}"
       
       @duree_courante = duree_courante
     end
@@ -413,7 +541,6 @@ DEBUG
       doublons    = @ids_exercices
       until doublons.empty?
         ary, doublons = extract_doublons( doublons )
-        debug("ary:#{ary.inspect}\ndoublons:#{doublons.inspect}")
         final_order += ary
       end
       @ids_exercices = final_order
