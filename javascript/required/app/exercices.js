@@ -479,13 +479,24 @@ $.extend(window.Exercices,{
   
   Edition: {
     class: "Exercices.Edition",
+    
+    // Les propriétés de l'exercice de type checkbox
+    FORM_CBS:['obligatory', 'with_next', 'symetric'], 
+    
     // Fill exercice form with values in +data+
-    set_values:function(data){ // @testok
+    set_values:function(data){
+      this.clear_form();
       for(var k in data){
         switch( k ){
           case 'types': this.coche_types(data[k]); break;
           case 'image': break; // ne rien faire
-          default:$('table#exercice_form #exercice_'+k).val(data[k]);
+          default:
+            var o = $('table#exercice_form #exercice_'+k);
+            if (this.FORM_CBS.indexOf(k) >= 0){
+              o[0].checked = data[k];
+            } else {
+              o.val(data[k]);
+            }
         }
       };
     },
@@ -496,18 +507,22 @@ $.extend(window.Exercices,{
         k = EXERCICE_PROPERTIES[i];
         oid = 'table#exercice_form #exercice_' + k ;
         switch ( k ){
-          case 'types': data['types'] = this.pickup_types(); break;
-          case 'nb_mesures':
-          case 'nb_temps':
-          case 'tempo':
-          case 'tempo_min':
-          case 'tempo_max': data[k] = parseInt($(oid).val(),10); break;
-          case 'obligatory':
-          case 'with_next': data[k] = $(oid).is(':checked'); break;
+          case 'types'      : data['types'] = this.pickup_types(); break;
+          case 'nb_mesures' :
+          case 'nb_temps'   :
+          case 'tempo'      :
+          case 'tempo_min'  :
+          case 'tempo_max'  : data[k] = parseInt($(oid).val(),10); break;
+          // Par défaut
           default :
-            if ( $(oid).length ){
-              var val = $(oid).val() ;
-              data[k] = val ;
+            // Les checkbox du formulaire
+            if (this.FORM_CBS.indexOf(k) >= 0){
+              data[k] = $(oid).is(':checked');
+            } else {
+              if ( $(oid).length ){
+                var val = $(oid).val() ;
+                data[k] = val ;
+              }
             }
         }
       }
@@ -569,11 +584,20 @@ $.extend(window.Exercices,{
     // Nettoie le formulaire
     clear_form:function(){
       var i, k;
+      // On vide tous les champs propriété quand ils existent
       for(i in EXERCICE_PROPERTIES){
         k = EXERCICE_PROPERTIES[i];
         oid = 'table#exercice_form #exercice_' + k ;
         if ( $(oid).length ) $(oid).val("") ;
       }
+      // On décoche toutes les checkboxes
+      for(i in this.FORM_CBS){
+        $('input#exercice_'+this.FORM_CBS[i])[0].checked = false;
+      }
+      // On décoche tous les types
+      $('div#exercice_cbs_types input[type="checkbox"]').map(function(i,o){
+        o.checked = false;
+      });
     },
     // Définit le nom du bouton pour sauver l'exercice
     set_btn_save: function(nom){
@@ -618,16 +642,8 @@ $.extend(window.Exercices,{
     },
     // Coche les types de l'exercice
     coche_types:function(checked){ // @testok
-      // On décoche tout
-      $('div#exercice_cbs_types input[type="checkbox"]').removeAttr('checked',false);
-      // Et on coche les cochés
-      // @note: dans Firefox (?) après avoir mis checked à false (ci-dessus),
-      // on ne peut plus sélectionner par 'checked',true, donc j'utilise
-      // un clic sur le label pour cocher le type
       for(var i in checked){
-        $('div#exercice_cbs_types label[for=exercice_type_'+checked[i]+']').trigger('click');
-        // var o = $('div#exercice_cbs_types input#exercice_type_'+checked[i])
-        // o.attr('checked',true);
+        $('div#exercice_cbs_types input#exercice_type_'+checked[i])[0].checked = true;
       }
     },
     // Ramasse les types cochés
