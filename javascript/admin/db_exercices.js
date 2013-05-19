@@ -114,12 +114,18 @@ window.AdminDBE = {
           case 4: metrique = "C";break;
         }
         break;
-      case 8:
+      case 6:
         switch(nb_tps){
-          case 2: metrique = "6/8";break;
           case 1: metrique = "3/8";break;
+          case 2: metrique = "6/8";break;
           case 4: metrique = "12/8";break;
         }
+        break;
+      case 8:
+        switch(nb_tps){
+          case 3: metrique = "3/8";break;
+        }
+        break;
     }
     if(metrique==null)metrique = nb_tps+"/"+duree_tps;
     $('input#dbe_metrique').val(metrique);
@@ -190,8 +196,8 @@ window.AdminDBE = {
     form += this.tempi_fields();
     form += this.nb_mesures_fields();
     form += '</fieldset>';
-    form += this.types_fields();
     form += this.metrique_fields();
+    form += this.types_fields();
     form += this.buttons();
     form += '</div>';
     
