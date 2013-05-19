@@ -108,7 +108,7 @@
               <span id="seance_lib_tone" class="libelle capitalize"></span>
             </td>
             <td>
-              <span id="seance_data_tone" class="data capitalize" style="display:inline-block;"></span>              
+              <select id="seance_tone" class="big" onchange="$.proxy(Seance.change_tone,Seance)(this.value)"></select>
             </td>
             <td>
               <img  id="seance_data_img_tone" src="" />

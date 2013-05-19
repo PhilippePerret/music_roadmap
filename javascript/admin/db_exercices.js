@@ -201,7 +201,7 @@ window.AdminDBE = {
     with(Exercices.Edition){
       peuple_menu_suites_harmoniques('select#dbe_suite');
       types_populate('div#div_dbe_types', 'dbe_');
-      peuple_menu_tonalites('select#dbe_tone');
+      peuple_menu_tones('select#dbe_tone');
     }
     var options_tempo = UI.options_from_to(40, 220);;
     $('select#dbe_tempo_min').html(options_tempo);

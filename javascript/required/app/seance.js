@@ -286,12 +286,12 @@ window.Seance = {
         user_md5      :User.md5,
         params_seance :params_seance
       }, 
-      success:$.proxy(this.build_suite, this)
+      success:$.proxy(this.suite_build, this)
     });
     return false;//pour le a-lien
   },
   // Retour ajax de la précédente
-  build_suite:function(rajax){
+  suite_build:function(rajax){
     if(false==traite_rajax(rajax)){
       this.data_seance = rajax.data_seance ; // les données remontées pour la séance
       if (this.show_data_seance()){
@@ -326,7 +326,8 @@ window.Seance = {
     var dir     = this.data_seance.down_to_up?'down_to_up':'up_to_down';
     var imgdir  = UI.path_image('config/direction/'+dir+'.png');
     $('span#seance_data_working_time').html(Time.seconds_to_horloge(this.data_seance.working_time));
-    $('span#seance_data_tone').html(IDSCALE_TO_HSCALE[this.data_seance.tone]['double']);
+    Exercices.Edition.peuple_menu_tones('select#seance_tone');
+    $('select#seance_tone').val(this.data_seance.tone);
     $('img#seance_data_img_tone').attr('src',UI.path_image('note/gamme/'+this.data_seance.tone+'.jpg'));
     $('span#seance_data_suite_harmonique').html(LOCALE_UI.Exercices.Config[sens]);
     $('img#seance_data_img_suite_harmonique').attr('src', imgsens);
@@ -334,6 +335,15 @@ window.Seance = {
     $('span#seance_data_downtoup').html(LOCALE_UI.Exercices.Config[dir]);
     $('img#seance_data_img_downtoup').attr('src', imgdir);
     return true;//ok for the seance
+  },
+  // When user changes seance tone
+  change_tone:function(tone){
+    tone = parseInt(tone,10);
+    this.data_seance.tone = tone;
+    Roadmap.Data.tone     = tone;
+    $('img#seance_data_img_tone').attr('src',UI.path_image('note/gamme/'+tone+'.jpg'));
+    Exercices.set_tones_of_exercices(tone);
+    Roadmap.save_general_config();
   },
   // 
   cancel_seance:function(){
