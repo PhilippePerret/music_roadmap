@@ -44,6 +44,7 @@ $.extend(window.Exercices,{
   TYPES_EXERCICE:{
     'WT':"Total Working Time",
     
+    'ST':"Staccato",
     'GA':"Scales",
     'AR':"Arpeggios",
     'AC':"Chords",

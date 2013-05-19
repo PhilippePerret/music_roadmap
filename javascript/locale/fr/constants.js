@@ -49,12 +49,13 @@ $.extend(window.Exercices,{
     */
     'WT':"Temps total de travail", // pour simplifier codes JS
     
+    'RH':"Main droite",
+    'LH':"Main gauche",
+
     'GA':"Gammes",
     'AR':"Arpèges",
     'AC':"Accords",
     
-    'LH':"Main gauche",
-    'RH':"Main droite",
     'RY':"Rythme",
     
     'TI':"Tierces",
@@ -63,6 +64,7 @@ $.extend(window.Exercices,{
 
     'PC':"Pouce",
     'LG':"Legato",
+    'ST':"Staccato",
     'TR':"Trilles",
     'OR':"Ornements",
     'TM':"Trémolo",
