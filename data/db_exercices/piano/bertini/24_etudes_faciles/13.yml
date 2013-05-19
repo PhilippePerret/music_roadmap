@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°13"
+titre_en:     "Etude n°13"
+suite:        null
+types:        ["RH", "SX", "EX"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         0
+nb_mesures:   51

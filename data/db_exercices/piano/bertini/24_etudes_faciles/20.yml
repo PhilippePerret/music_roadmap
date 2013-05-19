@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°20"
+titre_en:     "Etude n°20"
+suite:        null
+types:        ["RH", "LH", "AC", "RY"]
+tempo_min:    76
+tempo_max:    96
+nb_temps:     3
+duree_temps:  8
+metrique:     "3/8"
+tone:         8
+nb_mesures:   30

@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°23"
+titre_en:     "Etude n°23"
+suite:        null
+types:        ["RH", "LH", "RY", "EX"]
+tempo_min:    76
+tempo_max:    96
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         0
+nb_mesures:   56

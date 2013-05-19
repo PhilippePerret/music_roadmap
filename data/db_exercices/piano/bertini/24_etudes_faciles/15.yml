@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°15"
+titre_en:     "Etude n°15"
+suite:        null
+types:        ["RH", "RY"]
+tempo_min:    64
+tempo_max:    84
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         19
+nb_mesures:   56

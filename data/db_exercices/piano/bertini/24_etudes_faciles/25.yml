@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°25"
+titre_en:     "Etude n°25"
+suite:        null
+types:        ["RH", "LH", "DL", "EX"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         9
+nb_mesures:   55

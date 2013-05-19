@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°14"
+titre_en:     "Etude n°14"
+suite:        null
+types:        ["RH", "LH", "TR", "NT"]
+tempo_min:    88
+tempo_max:    108
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         7
+nb_mesures:   64

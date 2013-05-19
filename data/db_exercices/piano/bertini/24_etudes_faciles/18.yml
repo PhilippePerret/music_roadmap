@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°18"
+titre_en:     "Etude n°18"
+suite:        null
+types:        ["LH", "AC", "OC", "SY"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         0
+nb_mesures:   45

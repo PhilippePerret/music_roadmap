@@ -1,0 +1,11 @@
+titre_fr:     "Étude n°19"
+titre_en:     "Etude n°19"
+suite:        null
+types:        ["RH", "LH", "NR", "NT"]
+tempo_min:    76
+tempo_max:    96
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         0
+nb_mesures:   30
