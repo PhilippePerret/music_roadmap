@@ -7,4 +7,4 @@ Visit the dev app online at [Music Roadmap](http://www.music-roadmap.net?lang=en
 
 Visitez la version en développement (en français) en cliquant sur [Feuille de Route Musicale](http://www.music-roadmap.net?lang=fr)
 
-Version 0.8.8
+Version 0.8.9
