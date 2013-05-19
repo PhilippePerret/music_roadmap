@@ -486,7 +486,7 @@ window.Rapport = {
       this.build_seance();
     },
     
-    /* Build report for seance of data +data+
+    /* Build report for seance of current day
      *
      * @produts  Defines content for exercice list and type list.
      */

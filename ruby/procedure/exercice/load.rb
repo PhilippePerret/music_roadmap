@@ -8,7 +8,7 @@
 require_model 'roadmap' unless defined?(Roadmap)
 
 def ajax_exercice_load
-  ids   = param(:ids).split(',')
+  ids   = param(:ids).split(',').uniq
   rm    = Roadmap.new param(:rm_nom), param(:rm_mail)
   duser = {:mail => param(:rm_mail), :md5 => param(:md5)}
   res = exercice_load rm, ids, duser
