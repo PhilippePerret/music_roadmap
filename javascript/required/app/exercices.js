@@ -213,6 +213,7 @@ $.extend(window.Exercices,{
   },
   
   // @note: Called by Roadmap.Data.tone() when configuration change
+  // or when user changes seance tone
   set_tones_of_exercices:function(){
     var i, idex, ordre = this.ordre();
     for(i in ordre){
@@ -549,7 +550,7 @@ $.extend(window.Exercices,{
       // Tempos
       this.menus_tempo_populate();
       // Tonalités
-      this.peuple_menu_tonalites();
+      this.peuple_menu_tones();
       // Suites harmoniques
       this.peuple_menu_suites_harmoniques();
       // Types
@@ -662,7 +663,7 @@ $.extend(window.Exercices,{
     },
     // Peuple le menu des tonalités
     // Si +oselect+ n'est pas défini, on prend le menu du formulaire exercice
-    peuple_menu_tonalites:function(oselect){
+    peuple_menu_tones:function(oselect){
       var itone, option, dtone = IDSCALE_TO_HSCALE;
       if('undefined'==typeof oselect) oselect = $('select#exercice_tone');
       else oselect = $(oselect);
