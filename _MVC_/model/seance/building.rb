@@ -66,9 +66,6 @@ class Seance
       debug "*** PRÉPARATION DE LA SÉANCE DU #{@seance.day} ***"
       debug "Paramètres envoyés : #{params.inspect}"
       analyze_params
-      debug "Temps de travail demandé : #{time.to_i.as_horloge}"
-      debug "Types recherchés : #{types.inspect}"
-      debug "Options : #{options.inspect}"
     end
     
     # Pour suivre le programme
@@ -140,7 +137,7 @@ div#div_operations div.operation span.idval{
       end.join("\n")
       <<-EOC
 ***
-Temps de travail obtenu  : #{@duree_courante.to_i.as_horloge}
+Temps de travail obtenu  : #{@seance_duration.to_i.as_horloge}
 Exercices retenus : #{debug_ids_exercices_with_anchor}
 Configuration générale: #{@config_generale.inspect}
 GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
@@ -316,7 +313,7 @@ DONNÉES TOTALES DES SÉANCES :
       
       # So we can choose the exercices
       # -> @ids_exercices
-      # -> @duree_courante
+      # -> @seance_duration
       # --------------------------------------------------------
       
       debug "<div class=\"operation\"><span>SÉLECTION DES EXERCICES</span>"
@@ -367,8 +364,7 @@ DONNÉES TOTALES DES SÉANCES :
       end_debug
       seance_data = @config_generale.dup
       seance_data = seance_data.merge(
-        # :message          => message.to_html,
-        :working_time     => @duree_courante,
+        :working_time     => @seance_duration,
         :suite_ids        => @ids_exercices
       )
     end
@@ -412,47 +408,68 @@ DONNÉES TOTALES DES SÉANCES :
       end
       # On récolte les exercices, jusqu'au temps voulu
       @ids_exercices  = []
-      duree_required  = time.to_i - @time_for_mandatories
-      duree_courante  = 0
+      duree_required  = time.to_i
+      seance_duration = @time_for_mandatories
+      unless @no_debug
+        debug "État des lieux des <b>temps avant recherche jusqu'au temps donné</b>"
+        debug "seance_duration : #{seance_duration.as_horloge}"
+        debug "Durée attendue  : #{time.as_horloge}"
+        debug "Durée des obligatoires : #{@time_for_mandatories.as_horloge}"
+        debug "Durée à trouver : #{duree_required.as_horloge}"
+      end
       less_worked.each do |idex|
         ex_working_time = @time_per_exercice[idex]
         # Si ça dépasse trop le temps, on ne prend pas cet exercice
-        if (duree_courante + ex_working_time) > (duree_required + 10 * 60)
+        if (seance_duration + ex_working_time) > (duree_required + (10 * 60))
           debug "-> l'exercice #{debug_id_linked(idex)} est passé car la durée exéderait de plus de 10 minutes le temps demandé"
           next
         end
         # Sinon, on prend cet exercice
         @ids_exercices << idex
-        duree_courante += ex_working_time
-        break if duree_courante >= duree_required
+        seance_duration += ex_working_time
+        break if seance_duration >= duree_required
+      end
+      
+      unless @no_debug
+        debug "Après un premier tour"
+        debug "seance_duration : #{seance_duration.as_horloge}"
+        debug "Durée attendue  : #{time.as_horloge}"
       end
       
       # Maybe the required duration (duree_required) is not reached (not enough exercice)
       # In that case, if :same_ex option is true, we add exercices already choosed, or
       # we add other exercices.
-      while duree_courante < duree_required
+      while seance_duration < duree_required
         pioches_ids = options[:same_ex] ? @ids_exercices : @others_idex
         pioches_ids = pioches_ids.sort_by{|idex| @nb_fois_per_exercice[idex]}
-        while duree_courante < duree_required && ! pioches_ids.empty?
+        while seance_duration < duree_required && ! pioches_ids.empty?
           id = pioches_ids.pop
           ex_working_time = @time_per_exercice[id]
           
           # On ne prend pas un exercice qui produirait une séance débordant de plus
           # de 10 minutes.
-          if (duree_courante + ex_working_time) > (duree_required + 10 * 60)
+          if (seance_duration + ex_working_time) > (duree_required + (10 * 60))
             debug "-> l'exercice #{debug_id_linked(idex)} est passé car la durée exéderait de plus de 5 minutes le temps demandé"
             next
           end
           
           @ids_exercices << id
-          duree_courante += ex_working_time
+          seance_duration += ex_working_time
         end
       end
       
       # We finaly add the mandatory exercices (if any)
       @ids_exercices += @mandatories
+ 
+      unless @no_debug
+        debug "À la fin de select_exercice"
+        debug "seance_duration : #{seance_duration.as_horloge}"
+        debug "Durée attendue  : #{time.as_horloge}"
+        debug "Durée des obligatoires : #{@time_for_mandatories.as_horloge}"
+        debug "Durée à trouver : #{duree_required.as_horloge}"
+      end
       
-      @duree_courante = duree_courante
+      @seance_duration = seance_duration
     end
     
     # Return the exercice list sorted by number of times (calculated).
@@ -679,10 +696,12 @@ DONNÉES TOTALES DES SÉANCES :
       # * WORKING TIME
       #   params[:working_time]     In seconds
       @time  = params[:working_time].to_i * 60
+      debug "Temps de travail demandé : #{@time.as_horloge}"
 
       # * DIFFICULTIES (= exercice types)
       #   params[:difficulties]
       @types = params[:difficulties].split(',')
+      debug "Types recherchés : #{@types.inspect}"
 
       # * OPTIONS
       #   params[:options]:
@@ -692,6 +711,7 @@ DONNÉES TOTALES DES SÉANCES :
       #     :obligatory::     Include obligatory exercices
       # 
       @options = params[:options].values_str_to_real
+      debug "Options : #{@options.inspect}"
     end
     
     # Return Roadmap session
