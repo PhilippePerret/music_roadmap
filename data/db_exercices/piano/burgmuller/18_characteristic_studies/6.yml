@@ -1,0 +1,11 @@
+titre_fr:     "L'Enjouée"
+titre_en:     "Light-hearted Maiden"
+suite:        null
+types:        ["RH", "ST"]
+tempo_min:    140
+tempo_max:    160
+nb_temps:     3
+duree_temps:  8
+metrique:     "3/8"
+tone:         0
+nb_mesures:   45

@@ -1,0 +1,11 @@
+titre_fr:     "Les Bohémiens"
+titre_en:     "The Gypsies"
+suite:        null
+types:        ["RH", "AC", "OR", "NR", "JP"]
+tempo_min:    132
+tempo_max:    152
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         12
+nb_mesures:   54

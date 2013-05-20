@@ -1,0 +1,11 @@
+titre_fr:     "Le Retour du Pâtre"
+titre_en:     "The Sheperd's Return"
+suite:        null
+types:        ["RH", "LH", "DL", "JP"]
+tempo_min:    124
+tempo_max:    144
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         7
+nb_mesures:   72

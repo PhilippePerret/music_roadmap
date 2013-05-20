@@ -1,0 +1,11 @@
+titre_fr:     "Berceuse"
+titre_en:     "Lullaby"
+suite:        null
+types:        ["RH", "LH", "AR", "SY"]
+tempo_min:    92
+tempo_max:    112
+nb_temps:     3
+duree_temps:  8
+metrique:     "3/8"
+tone:         5
+nb_mesures:   41

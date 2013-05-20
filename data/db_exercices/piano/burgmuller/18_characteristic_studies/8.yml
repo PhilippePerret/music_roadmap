@@ -1,0 +1,11 @@
+titre_fr:     "Agitato"
+titre_en:     "Agitato"
+suite:        null
+types:        ["RH", "LH", "RY", "SY"]
+tempo_min:    156
+tempo_max:    176
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         16
+nb_mesures:   54

@@ -1,0 +1,11 @@
+titre_fr:     "La Source"
+titre_en:     "The Spring"
+suite:        null
+types:        ["RH", "TM"]
+tempo_min:    100
+tempo_max:    120
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+tone:         7
+nb_mesures:   55

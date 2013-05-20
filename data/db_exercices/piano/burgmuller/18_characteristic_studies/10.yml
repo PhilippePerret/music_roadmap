@@ -1,0 +1,11 @@
+titre_fr:     "La Vélocité"
+titre_en:     "Velocity"
+suite:        null
+types:        ["RH", "CH", "DL"]
+tempo_min:    84
+tempo_max:    104
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         0
+nb_mesures:   47

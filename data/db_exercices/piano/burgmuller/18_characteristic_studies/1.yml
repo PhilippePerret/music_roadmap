@@ -1,0 +1,11 @@
+titre_fr:     "Confidence"
+titre_en:     "Confidence"
+suite:        null
+types:        ["RH", "AR", "NT"]
+tempo_min:    112
+tempo_max:    132
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         0
+nb_mesures:   52

@@ -1,0 +1,11 @@
+titre_fr:     "Les Perles"
+titre_en:     "The Pearls"
+suite:        null
+types:        ["RH", "GA"]
+tempo_min:    64
+tempo_max:    84
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         0
+nb_mesures:   38
