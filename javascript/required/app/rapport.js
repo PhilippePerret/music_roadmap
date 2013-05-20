@@ -318,6 +318,27 @@ window.Rapport = {
      */
     build_divs_of_seance:function(dseance){
       this.cur_day = dseance.day;
+      // BUG
+      if ('undefined' == typeof Rapport.seances[dseance.day]){
+        if (ONLINE){
+          F.error("Problème pour afficher le rapport du jour (ce bug est en cours de correction)");
+          return "";
+        }
+        F.error("Rapport.seances[dseance.day] n'est pas défini (cf. console)");
+        if(console){
+          console.log("*** Rapport.seances[dseance.day] indéfini ***");
+          console.log("this.cur_day = " + this.cur_day);
+          console.log("dseance.day = " + dseance.day);
+          console.log("dseance (Hash) =");
+          console.dir(dseance);
+          console.log("/dseance");
+          console.log("Rapport.seances (Hash)=");
+          console.dir(Rapport.seances);
+          console.log("/Rapport.seances");
+        }
+        return "";
+      }
+      
       return Rapport.building_loop(
                 Rapport.seances[dseance.day].exercices_sorted,
                 $.proxy(this.div_exercice_seance, this)
