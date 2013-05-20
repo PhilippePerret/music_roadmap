@@ -55,6 +55,7 @@ window.LOCALE_UI = {
     details             :"details",
     decreased           :"decreased",
     extrait             :"excerpt",
+    Help                :"Help",
     in_next_session     :"Next session",
     increased           :"increased", 
     link_to_next        :"Linked to next",

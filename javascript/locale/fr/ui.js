@@ -52,6 +52,7 @@ window.LOCALE_UI = {
     details         :"détails",
     decreased       :"diminué",
     extrait         :"extrait",
+    Help            :"Aide",
     in_next_session :"À la prochaine séance",
     increased       :"augmenté", 
     link_to_next    :"Lié au suivant",
