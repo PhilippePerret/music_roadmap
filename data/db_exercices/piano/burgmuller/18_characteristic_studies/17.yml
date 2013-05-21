@@ -1,0 +1,13 @@
+titre_fr:     "La Marche"
+titre_en:     "March"
+suite:        null
+types:        ["RH", "LH", "AR", "AC", "RY", "OC"]
+tempo_min:    124
+tempo_max:    144
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         5
+nb_mesures:   88
+note_fr:      null
+note_en:      null

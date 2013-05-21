@@ -1,0 +1,13 @@
+titre_fr:     "Le Réveil dans les bois"
+titre_en:     "Awakening in the Wood"
+suite:        null
+types:        ["RH", "LH", "AC", "OC", "ST"]
+tempo_min:    148
+tempo_max:    168
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         5
+nb_mesures:   46
+note_fr:      null
+note_en:      null

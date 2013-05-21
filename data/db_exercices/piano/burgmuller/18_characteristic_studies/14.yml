@@ -1,0 +1,13 @@
+titre_fr:     "Refrain du gondolier"
+titre_en:     "Lay of the Gondolier"
+suite:        null
+types:        ["LH", "AR", "EX"]
+tempo_min:    40
+tempo_max:    56
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         9
+nb_mesures:   62
+note_fr:      null
+note_en:      null

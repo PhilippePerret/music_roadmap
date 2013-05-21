@@ -1,0 +1,13 @@
+titre_fr:     "Les Sylphes"
+titre_en:     "Sylphs"
+suite:        null
+types:        ["RH", "LH", "AR", "NT", "PO", "SY"]
+tempo_min:    72
+tempo_max:    92
+nb_temps:     1
+duree_temps:  6
+metrique:     "3/8"
+tone:         19
+nb_mesures:   125
+note_fr:      null
+note_en:      null

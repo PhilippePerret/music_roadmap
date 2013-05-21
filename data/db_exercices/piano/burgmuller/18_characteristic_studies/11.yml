@@ -1,0 +1,13 @@
+titre_fr:     "La Sérénade"
+titre_en:     "Serenade"
+suite:        null
+types:        ["RH", "LH", "AR", "PG", "JP"]
+tempo_min:    156
+tempo_max:    176
+nb_temps:     6
+duree_temps:  8
+metrique:     "6/8"
+tone:         21
+nb_mesures:   38
+note_fr:      null
+note_en:      null
