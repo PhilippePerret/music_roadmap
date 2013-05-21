@@ -9,3 +9,5 @@ duree_temps:  DUREE_TEMPS
 metrique:     METRIQUE
 tone:         TONE
 nb_mesures:   NB_MESURES
+note_fr:      NOTE_FR
+note_en:      NOTE_EN

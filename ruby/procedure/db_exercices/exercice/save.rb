@@ -25,15 +25,20 @@ end
 def fiche_yaml_dbexercice data
   fiche = File.read(File.join(APP_FOLDER, 'data', 'db_exercices', '_fiche_type.yml'))
   data.each do |key, val|
-    val = "null" if val == ""
-    val = case key
-    when "types" 
-      '["' + val.split(',').join('", "') + '"]'
-    when "suite"
-      val == "00" ? "null" : "\"#{val}\""
-    when "titre_fr", "titre_en", "metrique"
-      "\"#{val}\""
-    else val
+    val = if val == ""
+      "null" 
+    else
+      case key
+      when "types" 
+        '["' + val.split(',').join('", "') + '"]'
+      when "suite"
+        val == "00" ? "null" : "\"#{val}\""
+      when "titre_fr", "titre_en", "metrique", 'note_fr', 'note_en'
+        val = val.gsub(/"/, '\"')
+        "\"#{val}\""
+      else 
+        val
+      end
     end
     fiche.sub!(/#{key.upcase}/,val)
   end

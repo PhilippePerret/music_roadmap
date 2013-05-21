@@ -40,20 +40,37 @@ window.AdminDBE = {
   },
   
   // Récupère les valeurs de l'exercice
-  DBE_KEYS_TEXTFIELDS: ['affixe', 'titre_fr', 'titre_en', 'suite', 
-    'tempo_min', 'tempo_max', 'nb_temps', 'duree_temps', 'metrique',
-    'nb_mesures', 'tone'],
-  DBE_KEYS_CHECKBOXES: ['symetric'],
+  DB_KEYS_FIELDS: {
+    'affixe': 'input_text', 
+    'titre_fr': 'input_text', 'titre_en':'input_text', 
+    'suite': 'select', 'tempo_min':'select', 'tempo_max':'select', 
+    'nb_temps':'select', 'duree_temps':'select', 
+    'metrique':'input_text',
+    'nb_mesures':'input_text', 
+    'tone':'select',
+    'note_fr':'textarea', 'note_en':'textarea',
+    'symetric':'checkbox'
+    },
+  DBE_KEYS_CHECKBOXES: ['symetric'], // WARNING: SI AJOUT, AJOUTER AUSSI DANS DB_KEYS_FIELDS
   get_values:function(){
-    var data = {}, val = null;
-    var liste  = this.DBE_KEYS_TEXTFIELDS.concat(this.DBE_KEYS_CHECKBOXES);
-    for(var i in liste){
-      var k = liste[i];
-      var jid = "input#dbe_"+k;
-      if($(jid).length == 0) jid = "select#dbe_"+k;
-      if ($(jid).attr('type')=="checkbox") val = $(jid).is(':checked');
-      else val = $(jid).val();
-      data[k] = val
+    var k, ktype, data = {}, val = null, tag, jid;
+    for(k in this.DB_KEYS_FIELDS){
+      ktype = this.DB_KEYS_FIELDS[k];
+      switch(ktype){
+        case 'input_text' : tag = "input";    break;
+        case 'textarea'   : tag = "textarea"; break;
+        case 'select'     : tag = "select";   break;
+        case 'checkbox'   : tag = "input[type=\"checkbox\"]"; break;
+      }
+      jid = tag + '#dbe_' + k ;
+      switch(ktype){
+        case 'checkbox':
+          val = $(jid).is(':checked');
+          break;
+        default:
+          val = $(jid).val();
+      }
+      data[k] = val;
     }
     data.types = Exercices.Edition.pickup_types('dbe_').join(',');
     return data;
@@ -198,6 +215,7 @@ window.AdminDBE = {
     form += '</fieldset>';
     form += this.metrique_fields();
     form += this.types_fields();
+    form += this.note_fields();
     form += this.buttons();
     form += '</div>';
     
@@ -218,6 +236,14 @@ window.AdminDBE = {
     $('div#admindbe_form_ex input[type="text"]').bind('focus',function(evt){ evt.target.select()});
     this.form_is_built = true;
     return true;
+  },
+  // Les champs note(anglais et français)
+  note_fields:function(){
+    return '<fieldset><legend>Notes</legend>' +
+            '<span class="libelle block">Français&nbsp;&nbsp;/&nbsp;&nbsp;Anglais</span>'+
+            '<textarea id="dbe_note_fr" class="form" style="width:45%;"></textarea>'+
+            '<textarea id="dbe_note_en" class="form" style="width:45%;"></textarea>'+
+            '</fieldset>';
   },
   // Les boutons
   buttons:function(){
