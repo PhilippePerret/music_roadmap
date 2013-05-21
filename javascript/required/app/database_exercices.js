@@ -158,6 +158,13 @@ window.DBE = {
     $('div#database_exercices a#btn_dbe_add_selected').html(LOCALE_UI.DBExercice.add_selected);
     $('div#database_exercices a.cancel').html(LOCALE_UI.Verb.Cancel);
     $('div#database_exercices a.close').html(LOCALE_UI.Verb.Close);
+    // Les nombres
+    $('span#dbe_libelle_nb_auteurs').html(LOCALE_UI.Label.auteur + "s");
+    $('span#dbe_nb_auteurs').html(DBE_DATA.nombre.auteurs);
+    $('span#dbe_libelle_nb_recueils').html(LOCALE_UI.Label.recueil + "s");
+    $('span#dbe_nb_recueils').html(DBE_DATA.nombre.recueils);
+    $('span#dbe_libelle_nb_exercices').html(LOCALE_UI.Label.exercice + "s");
+    $('span#dbe_nb_exercices').html(DBE_DATA.nombre.exercices);
     this.ready = true;
   },
   

@@ -2,8 +2,8 @@
 
   Data-Base Exercice
   
-  @note: To force the update of all files, remove file:
-    javascript/locale/fr/db_exercices/piano.js
+  @note: To force the update of all files, set FORCE_UPDATE[:db_exercices] to
+  true in _force_update.rb file.
   
   When called, update the db_exercices JS files per instrument in french and english locale
   folders.
@@ -21,6 +21,13 @@
           }
         }
       }
+    }
+  };
+  DBE_DATA = {
+    nombre:{
+      exercices: ...,
+      auteurs: ...,
+      recueils: ...
     }
   }
 =end
@@ -436,6 +443,28 @@ class DataBaseExercices
     File.open(path_en(instid), 'wb'){|f| f.write final_code(:en, instid)}
   end
   
+  # Update JS DBE_DATA (only number pour le moment)
+  # @note: c'est la méthode `final_code' ci-dessous qui appelle cette méthode
+  # @return la table @dbe_data au format JSON
+  def self.update_dbe_data instid = nil
+    instid ||= @current_instrument
+    dbe_data = {
+      :nombre => {:auteurs => 0, :recueils => 0, :exercices => 0}
+    }
+    folder_instrument = File.join(folder_data, instid)
+    folders_auteurs = Dir["#{folder_instrument}/*"]
+    dbe_data[:nombre][:auteurs] = folders_auteurs.count - 1 # le fichier _data.yml
+    folders_auteurs.each do |dauteur|
+      next unless File.directory?(dauteur)
+      Dir["#{dauteur}/*"].each do |drecueil|
+        next unless File.directory?(drecueil)
+        dbe_data[:nombre][:recueils]   += 1
+        dbe_data[:nombre][:exercices]  += (Dir["#{drecueil}/*.yml"].count - 1)
+      end
+    end
+    dbe_data.to_json
+  end
+  
   # Return final code according to instrument and lang
   # 
   # @param  lang      Lang, p.e. :en or :fr
@@ -448,6 +477,8 @@ class DataBaseExercices
 window.INSTRUMENT   = "#{instid}";
 window.INSTRUMENT_H = "#{instrument_h}";
 window.DB_EXERCICES = #{code};
+window.DBE_DATA     = #{update_dbe_data(instid)};
+
     EOC
   end
   

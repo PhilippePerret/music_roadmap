@@ -319,27 +319,31 @@ window.Rapport = {
     build_divs_of_seance:function(dseance){
       this.cur_day = dseance.day;
       // BUG
-      if ('undefined' == typeof Rapport.seances[dseance.day]){
-        if (ONLINE){
-          F.error("Problème pour afficher le rapport du jour (ce bug est en cours de correction)");
-          return "";
-        }
-        F.error("Rapport.seances[dseance.day] n'est pas défini (cf. console)");
-        if(console){
-          console.log("*** Rapport.seances[dseance.day] indéfini ***");
-          console.log("this.cur_day = " + this.cur_day);
-          console.log("dseance.day = " + dseance.day);
-          console.log("dseance (Hash) =");
-          console.dir(dseance);
-          console.log("/dseance");
-          console.log("Rapport.seances (Hash)=");
-          console.dir(Rapport.seances);
-          console.log("/Rapport.seances");
-        }
-        return "";
-      }
-      
+      /*
+        C'est Rapport.seances qui n'est pas défini.
+      */
+      // if ('undefined' == typeof Rapport.seances[dseance.day]){
+      //    if (ONLINE){
+      //      F.error("Problème pour afficher le rapport du jour (ce bug est en cours de correction)");
+      //      return "";
+      //    }
+      //    F.error("Rapport.seances[dseance.day] n'est pas défini (cf. console)");
+      //    if(console){
+      //      console.log("*** Rapport.seances[dseance.day] indéfini ***");
+      //      console.log("this.cur_day = " + this.cur_day);
+      //      console.log("dseance.day = " + dseance.day);
+      //      console.log("dseance (Hash) =");
+      //      console.dir(dseance);
+      //      console.log("/dseance");
+      //      console.log("Rapport.seances (Hash)=");
+      //      console.dir(Rapport.seances);
+      //      console.log("/Rapport.seances");
+      //    }
+      //    return "";
+      //  }
+       
       return Rapport.building_loop(
+                // dseance.id_exercices,
                 Rapport.seances[dseance.day].exercices_sorted,
                 $.proxy(this.div_exercice_seance, this)
                 );
@@ -707,7 +711,7 @@ window.Rapport = {
       return this.temps_travail_seance_par_exercices(dseance);
     },
     temps_travail_seance_par_exercices:function(dseance){
-      var i, hex, temps = 0;
+      var i, temps = 0;
       for(i in dseance.exercices) temps += dseance.exercices[i].time;
       return temps;
     },
@@ -798,6 +802,6 @@ window.Rapport = {
           }
         }
       }
-    },
+    }
   }
 }

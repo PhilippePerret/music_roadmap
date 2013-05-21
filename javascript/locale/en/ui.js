@@ -49,11 +49,13 @@ window.LOCALE_UI = {
     Update      :"Update"
   },
   Label:{
+    auteur              :"author",
     day                 :"day",
     de_by               :"by",
     de_of               :"of",
     details             :"details",
     decreased           :"decreased",
+    exercice            :"exercice",
     extrait             :"excerpt",
     Help                :"Help",
     in_next_session     :"Next session",
@@ -63,6 +65,7 @@ window.LOCALE_UI = {
     mail_to_phil        :"Mail to Phil",
     obligatory          :"Obligatory",
     pulse               :"pulse",
+    recueil             :"collection",
     resume              :"Summary",
     roadmap             :"Roadmap",
     tone                :"tone",
