@@ -42,6 +42,8 @@ window.Rapport = {
   load_suite:function(rajax){
     if(false == traite_rajax(rajax)){
       this.data = rajax.data_rapport ;
+      // J'essaie ça pour le bug #112
+      this.seances = this.data.seances;
       this.Cal.build();
     }
     this.loading = false;
