@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°6"
+titre_en:     "Etude n°6"
+suite:        null
+types:        ["LH", "AR"]
+tempo_min:    120
+tempo_max:    140
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         2
+nb_mesures:   32
+note_fr:      null
+note_en:      null

@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°8"
+titre_en:     "Etude n°8"
+suite:        null
+types:        ["LH", "GA", "AR", "ST"]
+tempo_min:    88
+tempo_max:    112
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         7
+nb_mesures:   32
+note_fr:      null
+note_en:      null

@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°10"
+titre_en:     "Etude n°10"
+suite:        null
+types:        ["LH", "OC", "PG", "DL", "EX"]
+tempo_min:    110
+tempo_max:    130
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         21
+nb_mesures:   48
+note_fr:      null
+note_en:      null
