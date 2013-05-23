@@ -42,8 +42,6 @@ window.Rapport = {
   load_suite:function(rajax){
     if(false == traite_rajax(rajax)){
       this.data = rajax.data_rapport ;
-      // J'essaie ça pour le bug #112
-      this.seances = this.data.seances;
       this.Cal.build();
     }
     this.loading = false;
@@ -118,12 +116,16 @@ window.Rapport = {
     }
     else this.days_for_average = parseInt(this.number_of_days,10);
   },
+  // Cherche et appelle le chargement de tous les exercices qui 
+  // ne sont pas chargé.
+  // Id Est les exercices de sessions précédentes, exercices qui
+  // ont été effacés.
   CALC_load_all_exercices:function(){
     var day, iex, idex, unloaded = [];
     for(day in this.data.seances){
       for(iex in this.data.seances[day].exercices){
         idex = this.data.seances[day].exercices[iex].id;
-        if(false == exercice(idex).loaded) unloaded.push(idex);
+        if( !exercice(idex).loaded && unloaded.indexOf(idex) < 0) unloaded.push(idex);
       }
     }
     if( unloaded.length == 0 ) this.CALC_proceed();
@@ -133,6 +135,9 @@ window.Rapport = {
   CALC_proceed:function(){
     for(var day in this.data.seances) this.CALC_seance(this.data.seances[day]);
     this.CALC_sort_values();
+    // Maintenant, on peut construire le détail de la séance du jour
+    Rapport.ByDay.build();
+    
     // if(console){
     //   console.log("\n*** Résultat de Rapport.CALC ***");
     //   console.log("Rapport.total_working_time : " + this.total_working_time);
@@ -317,35 +322,13 @@ window.Rapport = {
     },
     /* Main -- Build divs for all exercices of session dseance
      *
+     * C'est l'affichage du détail du jour sélectionné dans le calendrier, ou
+     * le jour courant en fin de séance.
+     *
      */
     build_divs_of_seance:function(dseance){
       this.cur_day = dseance.day;
-      // BUG
-      /*
-        C'est Rapport.seances qui n'est pas défini.
-      */
-      // if ('undefined' == typeof Rapport.seances[dseance.day]){
-      //    if (ONLINE){
-      //      F.error("Problème pour afficher le rapport du jour (ce bug est en cours de correction)");
-      //      return "";
-      //    }
-      //    F.error("Rapport.seances[dseance.day] n'est pas défini (cf. console)");
-      //    if(console){
-      //      console.log("*** Rapport.seances[dseance.day] indéfini ***");
-      //      console.log("this.cur_day = " + this.cur_day);
-      //      console.log("dseance.day = " + dseance.day);
-      //      console.log("dseance (Hash) =");
-      //      console.dir(dseance);
-      //      console.log("/dseance");
-      //      console.log("Rapport.seances (Hash)=");
-      //      console.dir(Rapport.seances);
-      //      console.log("/Rapport.seances");
-      //    }
-      //    return "";
-      //  }
-       
       return Rapport.building_loop(
-                // dseance.id_exercices,
                 Rapport.seances[dseance.day].exercices_sorted,
                 $.proxy(this.div_exercice_seance, this)
                 );
@@ -504,10 +487,7 @@ window.Rapport = {
      *                        the seance of current day.
      */
     build:function(seance_day){
-      if ('undefined' == typeof seance_day){
-        var today = new Date();
-        seance_day = Time.date_to_yymmdd(new Date);
-      }
+      if ('undefined' == typeof seance_day) seance_day = Time.date_to_yymmdd(new Date);
       this.data_seance = Rapport.data.seances[seance_day];
       this.set_current_day(seance_day);
       this.build_seance();
@@ -590,7 +570,6 @@ window.Rapport = {
       $('div#rapport_cal_by_type_content').html(Rapport.ByType.build_divs_of_month());
       $('div#rapport_cal_by_tone_content').html(Rapport.ByTone.build_divs_of_month());
       $('span#rapport_cal_total_working_time').html(Time.seconds_to_horloge(Rapport.total_working_time,true));
-      Rapport.ByDay.build();
     },
 
     /*  Open a division (legend, details per exercice, etc.) in cal section
