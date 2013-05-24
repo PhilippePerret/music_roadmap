@@ -1,17 +1,7 @@
 <!-- 
   Formulaire de création d'un exercice
   
-  + Table de recherche d'un exercice dans la database
-  
-  + Le div pour afficher la partition ou un extrait
-  
 -->
-<!-- BOITE EXTRAIT -->
-<div id="partition" style="opacity:0;display:none;">
-  <a  href="#" class="btn_close" onclick="return $.proxy(Exercices.hide_partition,Exercices)()"></a>
-  <img id="img_partition" src="" />
-</div>
-
 <!-- EXERCICE FORM -->
 <table id="exercice_form" class="form" style="opacity:0;display:none;">
   <colgroup>
@@ -153,19 +143,3 @@
     </td>
   </tr>
 </table>
-<!-- 
-  BASE DE DONNÉES DES EXERCICES
-  -->
-<div id="database_exercices" style="opacity:0;display:none;">
-  <div id="dbe_titre" class="titre"></div>
-  <div id="dbe_div_nombres">
-    <span id="dbe_nb_auteurs"></span> <span id="dbe_libelle_nb_auteurs"></span>, 
-    <span id="dbe_nb_recueils"></span> <span id="dbe_libelle_nb_recueils"></span>,
-    <span id="dbe_nb_exercices"></span> <span id="dbe_libelle_nb_exercices"></span>.
-  </div>
-  <div id="dbe_listing"></div>
-  <div id="dbe_boutons">
-    <a href="#" onclick="return $.proxy(DBE.close,DBE)()" class="close btn"></a>
-    <a href="#" id="btn_dbe_add_selected" onclick="return $.proxy(DBE.add_selected,DBE)()" class="btn"></a>
-  </div>
-</div>
