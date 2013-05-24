@@ -1,0 +1,64 @@
+
+div.buttons, div.boutons {
+  text-align      :right;
+  margin-top      :1.75em;
+  padding         :10px;
+}
+/* Les a-boutons */
+a.btn, input.btn, button.btn {
+  padding           : 4px 10px ;
+  border-width      : 1px ;
+  border-style      : solid ;
+  border-color      : #DDDDDD #006800 #006800 #DDDDDD ;
+  border-radius     : 4px ;
+  font-family       : Arial, Helvetica ;
+  font-size         : 12.8px ;
+  background-color  : #acda7d ;
+  color             : #006800 ;
+  text-align        : center ;
+  cursor            : pointer ;
+}
+/* Boutons de navigation */
+a.btn.nav {
+  background-color  :#EFEFDD !important;
+}
+a.btn:active, input.btn:active, button.btn:active {
+  color             : white !important ;
+  background-color  : #006800 !important ;
+}
+a.btn.petit {
+  font-size         : 11px !important;
+  padding           : 1px 7px ;
+}
+a.btn.moyen {
+  font-size         : 1.04em !important;
+}
+a.btn.gros {
+  font-size         : 1.24em !important;
+}
+
+a.btn.off {
+  opacity           : 0.35 ;
+  font-style        : italic;
+}
+a.btn.on {
+  opacity: 1;
+  font-style: normal;
+}
+a.btn.act { //*quand l'opération du bouton est en cours */
+  font-weight: bold;
+}
+
+/* Des petits boutons, discrets*/
+a.tiny_btn {
+  font-family   :Verdana;
+  font-size     :0.65em !important;
+  border        :1px solid;
+  padding       :0 4px;
+  color         :#008E46;
+  cursor        :pointer;
+  opacity       :0.58;
+}
+a.tiny_btn:hover {
+  opacity       :1;
+}

@@ -49,6 +49,7 @@ window.LOCALE_UI = {
     Update      :"Update"
   },
   Label:{
+    a_to                :" to ", // p.e. "x à y" / "x to y" — noter les espaces
     auteur              :"author",
     day                 :"day",
     de_by               :"by",
@@ -145,7 +146,8 @@ window.LOCALE_UI = {
   DBExercice:{
     titre                   :"DATABASE EXERCICES",
     search_in_db            :"Choose exercices in Database",
-    add_selected            :"Add selected exercices to current roadmap"
+    add_selected            :"Add selected exercices to current roadmap",
+    show_details            :"Show details"
   },
   Seance:{
     form_title              :"WORKING SESSION DEFINITION",

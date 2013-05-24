@@ -6,7 +6,13 @@ div#database_exercices div.titre {
 div#database_exercices div#dbe_div_nombres {
   font-size       :11pt;
   font-style      :italic;
-  margin-bottom   :1em;
+  margin-bottom   :0.4em;
+}
+/* Div des boutons utilitaires (haut de page)*/
+div#database_exercices div#dbe_div_utils {
+  font-size       :0.8em;
+  margin-bottom   :0.9em;
+  text-align      :right;
 }
 /* Div principaux des boutons */
 div#database_exercices div#dbe_boutons {
@@ -51,16 +57,24 @@ div.dbe_div_auteur div.dbe_div_recueils div.titre_recueil a.recueil_title {
 }
 
 /* Div d'un exercice dans le listing de la database */
-div.dbe_div_auteur div.dbe_div_recueils div.bde_div_exercices div.bde_div_ex {
+div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_exercices div.dbe_div_ex {
   margin-left     :1em;
   border-bottom   :1px solid #ddd;
 }
-/* Les checkbox pour chosiir les exercices à importer */
-div.dbe_div_auteur div.bde_div_ex input[type="checkbox"].dbe_cb_ex {
+/* Les checkbox pour choisir les exercices à importer */
+div.dbe_div_auteur div.dbe_div_ex input[type="checkbox"].dbe_cb_ex {
   margin-right    :1em;
 }
+/* 
+  Boite des infos
+*/
+div.dbe_div_ex div.dbe_infos_ex {
+  font-size       :13.75px;
+  margin-left     :2em;
+  padding-bottom  :8px;
+}
 /* Tous les liens d'un div exercice dans le listing de la database */
-div.dbe_div_auteur div.dbe_div_recueils div.bde_div_exercices div.bde_div_ex a {
+div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_exercices div.dbe_div_ex a {
   margin-left     :12px;
   font-size       :0.85em;
 }

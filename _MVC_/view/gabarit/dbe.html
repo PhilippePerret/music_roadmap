@@ -4,12 +4,20 @@
   -->
 <div id="database_exercices" style="opacity:0;display:none;">
   <div id="dbe_titre" class="titre"></div>
+  <!-- Nombres -->
   <div id="dbe_div_nombres">
     <span id="dbe_nb_auteurs"></span> <span id="dbe_libelle_nb_auteurs"></span>, 
     <span id="dbe_nb_recueils"></span> <span id="dbe_libelle_nb_recueils"></span>,
     <span id="dbe_nb_exercices"></span> <span id="dbe_libelle_nb_exercices"></span>.
   </div>
+  <!-- Boutons utilitaires (recherche, options) -->
+  <div id="dbe_div_utils">
+    <input type="checkbox" id="dbe_cb_details" onchange="$.proxy(DBE.toggle_show_details,DBE)()" />
+    <label for="dbe_cb_details" id="dbe_show_details"></label>
+  </div>
+  <!-- Listing -->
   <div id="dbe_listing"></div>
+  <!-- Boutons fonctionnels -->
   <div id="dbe_boutons">
     <a href="#" onclick="return $.proxy(DBE.close,DBE)()" class="close btn"></a>
     <a href="#" id="btn_dbe_add_selected" onclick="return $.proxy(DBE.add_selected,DBE)()" class="btn"></a>

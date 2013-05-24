@@ -69,7 +69,6 @@ img { border:0;}
 /* Liens */
 a, a:hover, a:link, a:visited {
   text-decoration:      none      ;
-  color:                #0000AF   ;
 }
 /* Positionnement d'un container */
 .clear  { clear: both; }

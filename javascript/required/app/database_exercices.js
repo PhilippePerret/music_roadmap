@@ -4,8 +4,10 @@
 */
 
 window.DBE = {
-  ready: false, // mis à true quand la base est prête (nom des auteurs et recueils)
-
+  ready         :false,   // mis à true quand la base est prête (nom des auteurs et recueils)
+  show_details  :false,   // Si true 1/les détails des exercices sont affichés et 2/les
+                          // boutons "détails" sont masqués
+                          
   // Ouverture de la base de données des exercices
   opening:true,
   open:function(){
@@ -46,6 +48,24 @@ window.DBE = {
     return false; // pour le a-lien
   },
   
+  // Affiche ou masque les infos (cb options)
+  // Méthode appelée quand on clique sur la case à cocher pour afficher ou non tous
+  // les détails des exercices
+  toggle_show_details:function(){
+    this.show_details = $('input[type="checkbox"]#dbe_cb_details').is(':checked');
+    this.set_etat_details();
+  },
+  
+  // Affiche ou masque les détails des exercices
+  // Appelé dans deux circonstances :
+  //  - quand l'utilisateur clique la checkbox générale pour afficher/masquer les détails
+  //  - lorsqu'on affiche une liste d'exercices
+  set_etat_details:function(conteneur){
+    if('undefined'==typeof conteneur){conteneur = ""}else conteneur += " ";
+    $('div#database_exercices '+conteneur+'a.dbe_btndetail')[this.show_details ? 'hide' : 'show']();
+    $('div#database_exercices '+conteneur+'div.dbe_infos_ex')[this.show_details ? 'show' : 'hide']();
+  },
+  
   // Affiche ou masque la liste des exercices du recueil d'id complet +idcomplet+ ("auteur-recueil")
   toggle_liste_exercices:function(idcomplet){
     $('div#div_exercices-'+idcomplet).slideToggle(400);
@@ -78,7 +98,6 @@ window.DBE = {
   },
   load_recueil_exercices_suite:function(rajax){
     if (false == traite_rajax(rajax)){
-      // @TODO: Il faut remplacer le lien sur le titre du recueil par un titre sans lien
       this.display_exercices( rajax.exercices, rajax.auteur_id + "-" + rajax.recueil_id);
       this.set_titre_recueil_to_show_hide_exercices(rajax.auteur_id, rajax.recueil_id);
       // console.dir(rajax.exercices);
@@ -94,19 +113,21 @@ window.DBE = {
   // @products    Ajoute des divs à la liste des exercices du recueil avec des cases à
   //              cocher pour les choisir.
   display_exercices:function(ary_exs, idcomplet){
+    var jid = 'div#div_exercices-'+idcomplet ;
     if (ary_exs != null){
-      $('div#div_exercices-'+idcomplet).html("");
+      $(jid).html("");
       [auteur_id, recueil_id] = idcomplet.split('-');
       for(var i in ary_exs){
         var hex = ary_exs[i];
         hex.a = auteur_id; hex.r = recueil_id;
-        $('div#div_exercices-'+idcomplet).append(new DBExercice(hex).bd_div(idcomplet));
+        $(jid).append(new DBExercice(hex).bd_div(idcomplet));
       }
     } else {
-      $('div#div_exercices-'+idcomplet).html(
+      $(jid).html(
         '<span class="red block" style="margin-left:1em;">' + MESSAGE.DBExercice.no_exercices_in_recueil +
         '</span>');
     }
+    this.set_etat_details(jid);
   },
   
   // return le DIV de l'exercice défini par le hash +hex+ à insérer dans les lites des
@@ -154,10 +175,16 @@ window.DBE = {
       o.append(this.prepare_div_auteur(auth_id,DB_EXERCICES[auth_id]));
     }
     // Remplacer le noms des éléments DOM
-    $('div#database_exercices div#dbe_titre').html(LOCALE_UI.DBExercice.titre + ' ' + INSTRUMENT_H.toUpperCase());
-    $('div#database_exercices a#btn_dbe_add_selected').html(LOCALE_UI.DBExercice.add_selected);
-    $('div#database_exercices a.cancel').html(LOCALE_UI.Verb.Cancel);
-    $('div#database_exercices a.close').html(LOCALE_UI.Verb.Close);
+    var elsdom = {
+      'div#dbe_titre'           :"DBExercice.titre + ' "+INSTRUMENT_H.toUpperCase()+"'",
+      'a#btn_dbe_add_selected'  :'DBExercice.add_selected',
+      'a.cancel'                :'Verb.Cancel',
+      'a.close'                 :'Verb.Close',
+      'label#dbe_show_details'  :'DBExercice.show_details'
+    };
+    for(var jid in elsdom){
+      $('div#database_exercices '+jid).html(eval("LOCALE_UI."+elsdom[jid]));
+    }    
     // Les nombres
     $('span#dbe_libelle_nb_auteurs').html(LOCALE_UI.Label.auteur + "s");
     $('span#dbe_nb_auteurs').html(DBE_DATA.nombre.auteurs);
@@ -199,7 +226,7 @@ window.DBE = {
               '<div class="titre_recueil">' + 
                 this.titre_recueil_with_lien(idcomplet,drec) + 
               '</div>' +
-              '<div id="div_exercices-'+idcomplet+'" class="bde_div_exercices"></div>' +
+              '<div id="div_exercices-'+idcomplet+'" class="dbe_div_exercices"></div>' +
             '</div>';
   },
   

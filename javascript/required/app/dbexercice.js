@@ -36,7 +36,7 @@ DBExercice.prototype.duree_travail_to_s = function(){
   if(this.duree_min == null) return "";
   var dmin = Time.seconds_to_horloge(this.duree_min,false,null,"'") + '"';
   var dmax = Time.seconds_to_horloge(this.duree_max,false,null,"'") + '"';
-  return dmin + " à " + dmax;
+  return dmin + LOCALE_UI.Label.a_to + dmax;
 }
 // Retourne l'identifiant DOM de l'exercice, constitué de "<auteur id>-<recueil id>-<id ex>"
 DBExercice.prototype.dom_id = function(){
@@ -46,7 +46,7 @@ DBExercice.prototype.dom_id = function(){
 DBExercice.prototype.bd_div = function(){
   var iddom = this.dom_id();
   var idcb  = "cb_dbex-" + iddom;
-  return '<div id="div_exercice-'+iddom+'" class="bde_div_ex">' +
+  return '<div id="div_exercice-'+iddom+'" class="dbe_div_ex">' +
             '<input class="dbe_cb_ex" id="'+idcb+'" type="checkbox" />' +
               this.btn_show_infos() +
               this.lien_to_show_extrait() +
@@ -56,17 +56,17 @@ DBExercice.prototype.bd_div = function(){
 }
 // Retourne le div caché des infos de l'exercice
 DBExercice.prototype.div_infos = function(){
-  return '<div id="dbe_infos_ex-'+this.dom_id()+'" class="petit" style="display:none;">' +
-    "(type : " + this.types_to_s() + " / "+LOCALE_UI.Label.working_time+" : " +
+  return '<div id="dbe_infos_ex-'+this.dom_id()+'" class="dbe_infos_ex" style="display:none;">' +
+    "(type : " + this.types_to_s() + " — " +
     this.duree_travail_to_s()+")" +
     '</div>';
 }
 // Retourne le bouton pour voir les infos de l'exercice
 DBExercice.prototype.btn_show_infos = function(){
-  return '<a href="#" class="fright petit btn" onclick="$(\'div#dbe_infos_ex-'+this.dom_id()+'\').slideToggle(300);return false;">'+LOCALE_UI.Label.details+'</a>'
+  return '<a href="#" class="fright tiny_btn dbe_btndetail" onclick="$(\'div#dbe_infos_ex-'+this.dom_id()+'\').slideToggle(300);return false;">'+LOCALE_UI.Label.details+'</a>'
 }
 // Retourne un lien pour voir un extrait de l'exercice
 DBExercice.prototype.lien_to_show_extrait = function(){
   if(this.has_extrait == false) return "" ;
-  return '<a href="#" class="fright petit btn" onclick="return $.proxy(DBE.show_extrait, DBE, \''+this.dom_id()+'\')()">' + LOCALE_UI.Label.extrait + '</a>' ;
+  return '<a href="#" class="fright tiny_btn" onclick="return $.proxy(DBE.show_extrait, DBE, \''+this.dom_id()+'\')()">' + LOCALE_UI.Label.extrait + '</a>' ;
 }
