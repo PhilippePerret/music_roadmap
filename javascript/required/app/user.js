@@ -148,7 +148,8 @@ window.User = {
     Roadmap.set_div_specs(true);
     // Set the roadmaps menu (with user's roadmaps if any)
     Roadmap.peuple_menu_roadmaps( this.roadmaps );
-    // On poursuit avec les méthodes demandée au départ
+    $('select#roadmaps').focus();
+    // On poursuit avec la méthode demandée au départ
     if ('function' == typeof this.fx_pour_suivre_signin){ 
       this.fx_pour_suivre_signin();
       this.fx_pour_suivre_signin = null ;
