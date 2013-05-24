@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°21"
+titre_en:     "Etude n°21"
+suite:        null
+types:        ["LH", "OC", "DL"]
+tempo_min:    90
+tempo_max:    110
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         10
+nb_mesures:   32
+note_fr:      null
+note_en:      null
