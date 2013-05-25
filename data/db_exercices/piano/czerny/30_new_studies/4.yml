@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°4"
+titre_en:     "Exercice n°4"
+suite:        null
+types:        ["RH", "AR", "TM", "NT"]
+tempo_min:    124
+tempo_max:    144
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         0
+nb_mesures:   48
+note_fr:      null
+note_en:      null

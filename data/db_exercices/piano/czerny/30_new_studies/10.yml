@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°10"
+titre_en:     "Exercice n°10"
+suite:        null
+types:        ["RH", "LH", "SY"]
+tempo_min:    106
+tempo_max:    126
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         5
+nb_mesures:   48
+note_fr:      null
+note_en:      null

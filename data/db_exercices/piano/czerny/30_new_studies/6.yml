@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°6"
+titre_en:     "Exercice n°6"
+suite:        null
+types:        ["RH", "GA", "OR", "DL"]
+tempo_min:    56
+tempo_max:    76
+nb_temps:     2
+duree_temps:  2
+metrique:     "C barré"
+tone:         0
+nb_mesures:   64
+note_fr:      null
+note_en:      null

@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°8"
+titre_en:     "Exercice n°8"
+suite:        null
+types:        ["RH", "GA", "DL"]
+tempo_min:    64
+tempo_max:    84
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         0
+nb_mesures:   52
+note_fr:      null
+note_en:      null

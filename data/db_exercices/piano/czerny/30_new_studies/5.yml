@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°5"
+titre_en:     "Exercice n°5"
+suite:        null
+types:        ["RH", "LH", "AR", "RY"]
+tempo_min:    56
+tempo_max:    76
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         0
+nb_mesures:   48
+note_fr:      null
+note_en:      null
