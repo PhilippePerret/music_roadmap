@@ -139,10 +139,20 @@ class Roadmap
     param_to_change     = LOOP_CONFIG_ATTRIBUTES[d[:last_changed].to_sym].to_sym
     d[param_to_change]  = !d[param_to_change]
     d[:last_changed]    = param_to_change
-    d[:tone] = (d[:tone] == 23) ? 0 : (d[:tone].to_i + 1) if options[:tone]
     @config_generale = d
+    next_tone if options[:tone]
     save_config_generale if options[:save]
     @config_generale
+  end
+  
+  # Next tone
+  # 
+  # On alterne entre ton majeur et ton mineur
+  # Si la tonalité courante est majeure (<12) on ajoute 12, sinon, on retranche
+  # 11 pour obtenir la tonalité majeur suivante
+  def next_tone
+    ton = @config_generale[:tone]
+    @config_generale[:tone] = (ton < 12 ? ton + 12 : (ton + 1) % 12)
   end
   
   # Save config générale

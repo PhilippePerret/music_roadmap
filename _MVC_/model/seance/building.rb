@@ -141,7 +141,6 @@ Temps de travail obtenu  : #{@seance_duration.to_i.as_horloge}
 Exercices retenus : #{debug_ids_exercices_with_anchor}
 Configuration générale: #{@config_generale.inspect}
 GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
-Gammes inutilisées: #{@unused_tones.join(', ')}
 ***
 DONNÉES DES EXERCICES (quelques données récupérées de l'instance Exercice) : 
 #{dataexos}
@@ -307,9 +306,6 @@ DONNÉES TOTALES DES SÉANCES :
       # ------------------
       # We change for next config if required
       @config_generale = get_general_config
-      
-      # Replace tone with an unused tone
-      @config_generale[:tone] = choose_a_tone
       
       # So we can choose the exercices
       # -> @ids_exercices
@@ -577,21 +573,7 @@ DONNÉES TOTALES DES SÉANCES :
       end
       @ids_exercices = new_ids_exercices
     end
-    
-    # Choose a tone
-    # 
-    # If :tone of config_generale is not in the tones used in the 23 past
-    # sessions, we choose it.
-    def choose_a_tone
-      if @unused_tones.empty?
-        rand(24)
-      elsif @unused_tones.include?( config_generale[:tone] )
-        config_generale[:tone]
-      else
-        @unused_tones.shuffle.first.to_i
-      end
-    end
-    
+
     # Return general configuration
     # 
     # If options[:next_config] is true, then we take the next configuration
@@ -656,38 +638,9 @@ DONNÉES TOTALES DES SÉANCES :
       end
       hseances = Seance::lasts(roadmap)
       @seances = hseances[:sorted_days].collect{|jour|hseances[:seances][jour]}
-      @last_tones    = get_last_tones 23
-      @unused_tones  = get_unused_tones
       average_working_times
     end
     
-    # Return tones unused during the last sessions
-    # 
-    # @note: needs to know @last_tones
-    # 
-    def get_unused_tones
-      (0..23).collect do |sca|
-        next if @last_tones.include?(sca)
-        sca
-      end.reject{|e|e.nil?}
-    end
-    # Get up to +upto+ last tones (default: 23)
-    # 
-    # @return an Array of tones (as Fixnum with 0-start = "C")
-    # 
-    # @note: @seances should have been defined and contain up to 50 last seances, from
-    # youngest to oldest
-    # 
-    def get_last_tones upto = 23
-      upto = [upto, @seances.count].max - 1
-      tones = []
-      @seances[0..upto].each do |hseance|
-        next if hseance[:tone] === nil
-        tones += hseance[:tone]
-      end
-      tones
-    end
-
     # Analyze params provided by musician
     # 
     def analyze_params
