@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°19"
+titre_en:     "Exercice n°19"
+suite:        null
+types:        ["RH", "AR", "TI", "TR"]
+tempo_min:    40
+tempo_max:    60
+nb_temps:     1
+duree_temps:  6
+metrique:     "3/8"
+tone:         10
+nb_mesures:   96
+note_fr:      null
+note_en:      null
