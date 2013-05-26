@@ -218,7 +218,7 @@ $.extend(window.Exercices,{
     var i, idex, ordre = this.ordre();
     for(i in ordre){
       idex = ordre[i];
-      if(EXERCICES[idex].has_variable_tone())EXERCICES[idex].set_tone();
+      EXERCICES[idex].set_tone();
     }
   },
   /*
@@ -721,7 +721,7 @@ $.extend(window.Exercices,{
     options_for_tones:null, // to build it only once
     options_of_select_tones:function(){
       if(this.options_tones == null){
-        this.options_for_tones = "";
+        this.options_for_tones = '<option value="">--</option>';
         for(var idtone in IDSCALE_TO_HSCALE){
           this.options_for_tones += '<option value="'+ idtone + '">' + 
                                       IDSCALE_TO_HSCALE[idtone].uniq +

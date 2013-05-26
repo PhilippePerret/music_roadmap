@@ -159,7 +159,13 @@ Exercice.prototype.has_variable_tone = function(){
   return (this.suite == 'WK' || this.suite == 'TO');
 }
 Exercice.prototype.set_tone = function(){
-  $('select#tone_ex-'+this.id).val(this.tone || Roadmap.Data.tone);
+  var valtone;
+  if (this.has_variable_tone()){
+    valtone = this.tone || Roadmap.Data.tone;
+  } else if (this.suite == 'HA' || this.suite == '00'){
+    valtone = "";
+  }
+  $('select#tone_ex-'+this.id).val(valtone);
 }
 // Sauvegarde de l'exercice
 Exercice.prototype.save = function(fx_suite){
