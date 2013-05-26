@@ -123,8 +123,8 @@ window.LOCALE_UI = {
       last_to_first           :"du dernier exercice au premier (sauf si séance)",
       down_to_up              :"Monter puis redescendre l'exercice",
       up_to_down              :"Descendre puis remonter l'exercice",
-      maj_to_rel              :"TON MAJEUR vers Relatif mineur",
-      rel_to_maj              :"Ton mineur vers RELATIF MAJEUR",
+      maj_to_rel              :"Du TON MAJEUR vers Relatif mineur",
+      rel_to_maj              :"Du Ton mineur vers RELATIF MAJEUR",
       Label:{
         next_config           :"Configuration suivante",
         libelle_harmonic_seq  :"Suite harmonique"
@@ -167,10 +167,11 @@ window.LOCALE_UI = {
     next_exercice           :"Suivant",
     end_exercices           :"Finir",
     Exinfos:{
-      exercice_doit         :"L'exercice doit ",
-      to_up                 :"être monté puis descendu",
-      to_down               :"être descendu puis monté",
-      must_be_played_in     :"être joué en "
+      exercice_doit           :"L'exercice doit :",
+      to_up                   :"Être monté puis descendu",
+      to_down                 :"Être descendu puis monté",
+      must_be_played_in       :"Être joué en ",
+      must_suivre_this_suite  :"Commencer dans la tonalité de TONE puis continuer MAJ_MIN (DEBUT)"
     }
   },
   Rapport:{

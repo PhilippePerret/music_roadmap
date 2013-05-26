@@ -89,18 +89,38 @@ window.Seance = {
   },
   // Display information for current exercice
   display_infos_current_exercice:function(){
+    var temp;//template
+    var tone = Roadmap.Data.tone; // tonalité courante
+    var human_tone = Tone.human(tone);
     var iex = this.cur_exercice; // Exercice Instance
     this.next_indice_current_exercice();
-    var indics = [];
+    var indics = [LOCALE_UI.Seance.Exinfos.exercice_doit];
     if(iex.symetric){
       indics.push(LOCALE_UI.Seance.Exinfos[Roadmap.Data.down_to_up?'to_up':'to_down']);
     }
-    if(iex.tone == null)
-      indics.push(LOCALE_UI.Seance.Exinfos.must_be_played_in + IDSCALE_TO_HSCALE[Roadmap.Data.tone].entier);
+    if(iex.tone == null){
+      // Suivant le type de la suite harmonique, un message différent
+      if(iex.suite == 'HA'){
+        temp = LOCALE_UI.Seance.Exinfos.must_suivre_this_suite;//un template
+        // Remplacer TONE, MAJ_MIN, EXEMPLE
+        var maj_min = LOCALE_UI.Exercices.Config[Roadmap.Data.maj_to_rel?'maj_to_rel':'rel_to_maj'].toLowerCase();
+        var next_tone = Tone.next_by_config_of(tone);
+        var debut = [ human_tone, 
+                      Tone.relative_of(tone,{human:true}),
+                      Tone.human(next_tone),
+                      Tone.relative_of(next_tone,{human:true})
+                      ] ;
+        temp = temp.replace(/TONE/,human_tone);
+        temp = temp.replace(/MAJ_MIN/,maj_min);
+        temp = temp.replace(/DEBUT/, debut.join(" -> "));
+        indics.push(temp);
+      } else if (iex.suite == 'WK'){
+        indics.push(LOCALE_UI.Seance.Exinfos.must_be_played_in + human_tone);
+      }
+    }
     if(iex.note) indics.push(iex.note);
     if(indics != ""){
-      $('div#curex_indications span.value').html(
-        LOCALE_UI.Seance.Exinfos.exercice_doit + indics.join('<br>'));
+      $('div#curex_indications span.value').html(indics.join('<br>- '));
     }
   },
 

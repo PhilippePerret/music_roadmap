@@ -126,8 +126,8 @@ window.LOCALE_UI = {
       last_to_first           :"from Last to first exercice (except if session)",
       down_to_up              :"Up and then down the exercice",
       up_to_down              :"Down and then up the exercice",
-      maj_to_rel              :"MAJOR to Relative",
-      rel_to_maj              :"Relative to MAJOR",
+      maj_to_rel              :"From MAJOR to Relative",
+      rel_to_maj              :"From Relative to MAJOR",
       Label:{
         next_config           :"Next settings",
         libelle_harmonic_seq  :"Harmonic sequence"
@@ -170,10 +170,11 @@ window.LOCALE_UI = {
     next_exercice           :"Next exercice",
     end_exercices           :"The end",
     Exinfos:{
-      exercice_doit         :"This exercice must be ",
-      to_up                 :"played from the bottom to the top of the exercice",
-      to_down               :"played from the top to the bottom of the exercice",
-      must_be_played_in     :"played in "
+      exercice_doit           :"This exercice must :",
+      to_up                   :"Be played from the bottom to the top of the exercice",
+      to_down                 :"Be played from the top to the bottom of the exercice",
+      must_be_played_in       :"Be played in ",
+      must_suivre_this_suite  :"Start in TONE then follow MAJ_MIN (DEBUT)"
     }
   },
   Rapport:{

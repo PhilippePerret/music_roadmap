@@ -37,7 +37,7 @@ function Exercice(data){
   this.tempo      =120;   // Tempo actuel
   this.tempo_min  =null;  // Tempo minimum requis
   this.tempo_max  =null;  // Tempo maximum requis
-  this.suite      =null;  // Le type de suite (harmonic, normale, etc.)
+  this.suite      =null;  // Le type de suite (harmonic, normale, etc.). Cf. Exercices.TYPES_SUITE_HARMONIQUE
   this.tone       =null;  // Tonalité (0-C à 23-Bm)
   this.extrait    =null;  // Null ou path relatif à l'image de l'extrait
   this.vignette   =null;  // Null ou path relatif à la vignette
