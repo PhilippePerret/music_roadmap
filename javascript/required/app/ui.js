@@ -316,9 +316,11 @@ $.extend(UI,{
         @param  conteneur     A JID (tag#id)
         @param  data          An Hash containing:
                               shortcuts:    List of shortcuts (see `build_table' below)
-                              current:      (bool) If true, current shortcuts for
-                                            display the "panic window of shorcuts"
-                              open:         (bool) If true, the table is opened
+                                            OR String Key in SHORTCUTS (cf. in 'locale')
+                              options:      Hash of options containing:
+                                  current:      (bool) If true, current shortcuts for
+                                                display the "panic window of shorcuts"
+                                  open:         (bool) If true, the table is opened
     */
     build:function(conteneur,data){
       if('undefined'==typeof data.options){
@@ -332,16 +334,18 @@ $.extend(UI,{
     /* Construction de la table à partir des données +data+
     
       @param  data    Un Array contenant des Hash contenant:
+                      (OU la clé dans SHORTCUTS avec en valeur les données)
                       key:        Le raccourci. Soit un string si c'est une touche seule
                                   soit un Array des touches. Ce sont les noms simples,
                                   par exemple "S" pour la touche "s" correspondant à 
                                   l'image du dossier img/clavier/ (K_S.png)
-                      effect:     L'effet. Identifiant de locale dans LOCALE_UI.Shortcut
+                      effect:     L'effet. String.
       @param  options   Hash of options
                         id:       ID of the conteneur (NOT jid, only ID)
                         open:     If false, the table is hidden
     */
     build_table:function(data, options){
+      if('string'==typeof data) data = SHORTCUTS[data];
       if('undefined'==typeof options.open) options.open = true;
       var tbl_id = "shortcuts_"+options.id;
       var tbl = '<div class="table_shortcuts" id="'+tbl_id+'">';
@@ -352,7 +356,7 @@ $.extend(UI,{
         var hdata = data[i];
         tbl += '<div class="shortcut">' +
                   '<span class="key">'+this.images_keys(hdata.key)+'</span>' +
-                  '<span class="effect">'+LOCALE_UI.Shortcut[hdata.effect]+'</span>'+
+                  '<span class="effect">'+hdata.effect+'</span>'+
                 '</div>';
       }
       tbl += '</div>'; // fin de la liste des shortcuts

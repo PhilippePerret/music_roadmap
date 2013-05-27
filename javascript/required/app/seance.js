@@ -274,15 +274,9 @@ window.Seance = {
   },
   // Construction de la table des raccourcis clavier
   table_shortcuts:function(){
-    data = [
-      {key:'P',       effect:'seance_pause'},
-      {key:'FlecheG', effect:'seance_back'},
-      {key:'S',       effect:'seance_stop'},
-      {key:'Espace',  effect:'seance_start_or_next'}
-    ];
     UI.Shortcuts.build(
       'div#seance_start_shortcuts',
-      {shortcuts:data, options:{current:true, open:true}}
+      {shortcuts:'Seance', options:{current:true, open:true}}
       );
   },
   hide_start:function(){

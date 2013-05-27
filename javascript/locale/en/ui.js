@@ -193,11 +193,7 @@ window.LOCALE_UI = {
     btn_open_by_ex          :"Details per exercice"
   },
   Shortcut:{
-    titre                   :"Shortcuts",
-    seance_stop             :"Interrupt session",
-    seance_start_or_next    :"Start / Next exercice",
-    seance_pause            :"Pause",
-    seance_back             :"Previous exercice"
+    titre                   :"Shortcuts"
   },
   Mail:{
     your_mail               :"Your email",
