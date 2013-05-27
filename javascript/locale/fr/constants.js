@@ -23,7 +23,7 @@ window.IDSCALE_TO_HSCALE = {
   bis10:{uniq:"La#", entier:"La# majeur"},
   11:{double:"Si",uniq:"Si",entier:"Si majeur"},
   12:{double:"Dom",uniq:"Dom",entier:"Do mineur"},
-  13:{double:"Dom#/Rébm",uniq:"Do#m",entier:"Do# mineur"},
+  13:{double:"Do#m/Rébm",uniq:"Do#m",entier:"Do# mineur"},
   bis13:{uniq:"Rébm", entier:"Réb mineur"},
   14:{double:"Rém",uniq:"Rém",entier:"Ré mineur"},
   15:{double:"Mibm/Ré#m",uniq:"Mibm",entier:"Mib mineur"},
