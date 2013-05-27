@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°27"
+titre_en:     "Exercice n°27"
+suite:        null
+types:        ["RH", "LH", "AR", "CX"]
+tempo_min:    100
+tempo_max:    120
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         8
+nb_mesures:   56
+note_fr:      null
+note_en:      null

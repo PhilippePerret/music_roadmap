@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°28"
+titre_en:     "Exercice n°28"
+suite:        null
+types:        ["RH", "LH", "AC", "NR"]
+tempo_min:    52
+tempo_max:    72
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         5
+nb_mesures:   48
+note_fr:      null
+note_en:      null

@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°21"
+titre_en:     "Exercice n°21"
+suite:        null
+types:        ["RH", "LH", "CH"]
+tempo_min:    132
+tempo_max:    152
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         10
+nb_mesures:   48
+note_fr:      null
+note_en:      null

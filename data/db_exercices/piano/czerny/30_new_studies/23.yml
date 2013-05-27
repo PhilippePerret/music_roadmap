@@ -1,0 +1,13 @@
+titre_fr:     "Exercice n°23"
+titre_en:     "Exercice n°23"
+suite:        null
+types:        ["RH", "LH", "GA", "SY", "DL"]
+tempo_min:    112
+tempo_max:    132
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         9
+nb_mesures:   52
+note_fr:      null
+note_en:      null
