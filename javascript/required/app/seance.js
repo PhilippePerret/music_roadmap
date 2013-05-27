@@ -8,6 +8,7 @@ window.Seance = {
   
   // During session
   running         :false,   // True when we work on the exercices suite
+  pause_on        :false,   // Set to TRUE when we pause
   cur_exercice    :null,    // Current exercice (instance of Exercice)
   ordre_stack     :null,    // Stack of the exercices to play
   init_ordre_stack:null,    // Initial stack of exercices (in order to run previous)
@@ -20,9 +21,17 @@ window.Seance = {
   onkeypress:function(evt){
     switch(evt.charCode){
       case K_SPACE:
-        this.running ? this.next_exercice() : this.start();
         evt.stopPropagation();
-        return false;break;
+        /*
+         * La touche espace remplit trois rôles :
+         *    - Démarre la séance si elle n'est pas lancée
+         *    - Passe à l'exercice suivant si on est en cours de séance
+         *    - Sort de la pause si la pause est activée
+         */ 
+        if(this.pause_on)     this.pause();
+        else if(this.running) this.next_exercice();
+        else                  this.start();
+        return false;
       case Key_p:
       case Key_P:
         evt.stopPropagation();
@@ -202,8 +211,7 @@ window.Seance = {
     this.pause_on =false;
     this.running  =true;
   },
-  // Pause the seance
-  pause_on:false,
+  // Pause the seance (ou reprend)
   pause:function(){
     var o = $('a#btn_seance_pause');
     this.cur_exercice.play(); //start or stop
