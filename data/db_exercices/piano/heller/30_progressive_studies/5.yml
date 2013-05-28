@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°5"
+titre_en:     "Study n°5"
+suite:        null
+types:        ["RH", "LH", "DL"]
+tempo_min:    86
+tempo_max:    106
+nb_temps:     4
+duree_temps:  8
+metrique:     "2/4"
+tone:         12
+nb_mesures:   43
+note_fr:      null
+note_en:      null

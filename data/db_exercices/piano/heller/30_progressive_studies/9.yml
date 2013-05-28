@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°9"
+titre_en:     "Study n°9"
+suite:        null
+types:        ["RH", "LH", "AR", "TI", "DL"]
+tempo_min:    143
+tempo_max:    163
+nb_temps:     3
+duree_temps:  8
+metrique:     "3/8"
+tone:         14
+nb_mesures:   128
+note_fr:      null
+note_en:      null

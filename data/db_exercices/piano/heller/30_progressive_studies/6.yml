@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°6"
+titre_en:     "Study n°6"
+suite:        null
+types:        ["RH", "AC", "OR", "NR"]
+tempo_min:    68
+tempo_max:    88
+nb_temps:     2
+duree_temps:  6
+metrique:     "6/8"
+tone:         7
+nb_mesures:   69
+note_fr:      null
+note_en:      null
