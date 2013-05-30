@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°18"
+titre_en:     "Study n°18"
+suite:        null
+types:        ["RH", "GA", "AR", "DL"]
+tempo_min:    80
+tempo_max:    100
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         12
+nb_mesures:   42
+note_fr:      null
+note_en:      null
