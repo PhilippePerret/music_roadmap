@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°30"
+titre_en:     "Study n°30"
+suite:        null
+types:        ["RH", "LH", "NT", "PO", "EX"]
+tempo_min:    130
+tempo_max:    150
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         4
+nb_mesures:   97
+note_fr:      null
+note_en:      null

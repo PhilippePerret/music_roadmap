@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°28"
+titre_en:     "Study n°28"
+suite:        null
+types:        ["RH", "LH", "AR", "AC", "PC"]
+tempo_min:    100
+tempo_max:    120
+nb_temps:     4
+duree_temps:  6
+metrique:     "12/8"
+tone:         17
+nb_mesures:   86
+note_fr:      null
+note_en:      null

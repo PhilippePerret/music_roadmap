@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°24"
+titre_en:     "Study n°24"
+suite:        null
+types:        ["RH", "LH", "AC", "DL"]
+tempo_min:    120
+tempo_max:    150
+nb_temps:     3
+duree_temps:  6
+metrique:     "9/8"
+tone:         0
+nb_mesures:   27
+note_fr:      null
+note_en:      null

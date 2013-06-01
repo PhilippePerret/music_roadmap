@@ -1,0 +1,13 @@
+titre_fr:     "Étude n°27"
+titre_en:     "Study n°27"
+suite:        null
+types:        ["RH", "LH", "OC", "NT", "JP"]
+tempo_min:    90
+tempo_max:    110
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         8
+nb_mesures:   51
+note_fr:      null
+note_en:      null
