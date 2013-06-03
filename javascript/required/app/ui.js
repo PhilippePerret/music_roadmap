@@ -98,9 +98,9 @@ $.extend(UI,{
   set_noms_boutons: function(){
     // Boutons User
     $([
-      ['a#btn_want_signin', 'main_button']
+      ['a#btn_want_signin', 'signin']
       ]).each(function(i,o){
-        $(o[0]).html(LOCALE_UI.User.Signin[o[1]])
+        $(o[0]).html(LOCALE_UI.User[o[1]])
       });
     // Boutons Roadmap
     $([
