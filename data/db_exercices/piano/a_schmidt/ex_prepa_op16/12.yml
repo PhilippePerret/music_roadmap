@@ -1,0 +1,13 @@
+titre_fr:     "Exercices 12"
+titre_en:     "Exercices 12"
+suite:        "WK"
+types:        ["RH", "LH", "DL"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   10
+note_fr:      null
+note_en:      null

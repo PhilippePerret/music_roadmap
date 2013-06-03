@@ -1,0 +1,13 @@
+titre_fr:     "Exercices préparatoires 1"
+titre_en:     "Preparatory Exercices 1"
+suite:        "WK"
+types:        ["RH", "LH", "DL"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         null
+nb_mesures:   82
+note_fr:      null
+note_en:      null
