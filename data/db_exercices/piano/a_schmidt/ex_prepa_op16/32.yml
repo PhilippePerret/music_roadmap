@@ -1,0 +1,13 @@
+titre_fr:     "Gammes à la tierce"
+titre_en:     "Scales “à la” third"
+suite:        null
+types:        ["RH", "LH", "GA", "TI"]
+tempo_min:    60
+tempo_max:    180
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   216
+note_fr:      null
+note_en:      null

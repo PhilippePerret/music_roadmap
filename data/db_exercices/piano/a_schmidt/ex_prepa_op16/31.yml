@@ -1,0 +1,13 @@
+titre_fr:     "Arpèges majeurs et mineurs"
+titre_en:     "Minor and Major Arpeggios"
+suite:        null
+types:        ["RH", "LH", "AR"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     3
+duree_temps:  4
+metrique:     "3/4"
+tone:         null
+nb_mesures:   312
+note_fr:      null
+note_en:      null

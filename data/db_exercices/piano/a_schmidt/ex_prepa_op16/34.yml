@@ -1,0 +1,13 @@
+titre_fr:     "Gammes mineures en tierces"
+titre_en:     "Minor scales in third"
+suite:        null
+types:        ["RH", "LH", "TI"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   99
+note_fr:      null
+note_en:      null

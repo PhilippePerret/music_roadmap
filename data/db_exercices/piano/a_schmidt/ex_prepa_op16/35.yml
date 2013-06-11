@@ -1,0 +1,13 @@
+titre_fr:     "Arpèges de 7e de dominante"
+titre_en:     "7e Dom Arpeggios"
+suite:        null
+types:        ["RH", "LH", "AR"]
+tempo_min:    60
+tempo_max:    180
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   480
+note_fr:      null
+note_en:      null

@@ -1,0 +1,13 @@
+titre_fr:     "Gammes majeures en tierces"
+titre_en:     "Major scales in third"
+suite:        null
+types:        ["RH", "LH", "TI"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   99
+note_fr:      null
+note_en:      null

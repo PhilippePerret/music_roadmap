@@ -1,0 +1,13 @@
+titre_fr:     "Gammes Mjeures et mineures harmoniques"
+titre_en:     "Major and harmonic minor scales"
+suite:        null
+types:        ["RH", "LH", "GA"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     4
+duree_temps:  4
+metrique:     "C"
+tone:         null
+nb_mesures:   258
+note_fr:      null
+note_en:      null

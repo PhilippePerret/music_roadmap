@@ -1,0 +1,13 @@
+titre_fr:     "Exercices 28"
+titre_en:     "Exercices 28"
+suite:        "WK"
+types:        ["RH", "LH", "AR", "PC", "NT"]
+tempo_min:    60
+tempo_max:    120
+nb_temps:     2
+duree_temps:  4
+metrique:     "2/4"
+tone:         null
+nb_mesures:   19
+note_fr:      null
+note_en:      null
