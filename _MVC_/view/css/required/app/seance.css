@@ -136,3 +136,26 @@ section#current_exercice div#curex_total {
 section#current_exercice div#curex_indications {
   font-size   :0.8em;
 }
+
+/*Résultats de l'exercice qui vient d'être joué */
+section#current_exercice div#curex_prev_ex_resultat {
+  margin-top:2em;
+  padding-top:1em;
+  border-top:1px solid white;
+  font-size:0.9em;
+}
+section#current_exercice div#curex_prev_ex_resultat div#curex_info_prev {
+  margin-bottom:0.5em;
+}
+
+section#current_exercice div#curex_prev_ex_resultat span.libelle {
+  display:inline-block;
+  width:70px;
+}
+section#current_exercice div#curex_prev_ex_resultat span.temps {
+  font-size: 1.2em;
+}
+section#current_exercice div#curex_prev_ex_resultat div.curex_difference_jeu {
+  margin-top:1em;
+  font-size:0.9em;
+}

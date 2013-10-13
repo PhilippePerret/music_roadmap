@@ -3,9 +3,51 @@
     Class Cookie
     
     Pour gérer les cookies
+    
+    Pour créer un cookie
+    --------------------
+    var coo = Cookie.new(<cookie name>);
+    coo.expire_in(<nombre de jours>);
+    coo.create();
+    
+    OU
+    
+    Cookies.create(<name>, <value>, <nombre de jours expiration>)
+    
+    Pour lire un cookie
+    -------------------
+    var coo = Cookie.new(<cookie name>);
+    var coo_value = coo.get().value;
+    coo.delete() // Sinon il sera écrit une deuxième fois
+    
+    OU
+    
+    Cookies.valueOf(<name>)
+    
 */
+
+
 window.Cookies = {
-  
+  // Créer un cookie
+  create:function(name,value,expire){
+    var coo = new Cookie(name, value);
+    coo.expire_in(expire);
+    coo.create();
+  },
+  // Récupérer la valeur d'un cookie +name+
+  valueOf:function(name){
+    var coo = new Cookie(name);
+    var val_cookie = coo.get().value;
+    return val_cookie;
+  },
+  // Retourne TRUE si le cookie de nom +name+ existe
+  exists:function(name){
+    return ("; "+document.cookie).indexOf("; "+name+"=") > -1;
+  },
+  // Détruire un cookie
+  delete:function(name){
+    (new Cookie(name)).delete();
+  }
 }
 function Cookie( coo_name, coo_value ) {
   
@@ -13,7 +55,7 @@ function Cookie( coo_name, coo_value ) {
   this.value    = ""        ;
   this.expire   = null      ; // nombre de jours
   this.expires  = null      ; // la date (pas encore utilisé)
-  if ( defined( coo_value ) ) this.set_value( coo_value ) ;
+  if ( undefined != coo_value ) this.set_value( coo_value ) ;
   
   // Toutes ces méthodes sont définies en prototype ci-dessous
   // set_value  = function( valeur )  ;        // Définit la valeur du cookie
@@ -82,10 +124,11 @@ Cookie.prototype.get = function(){
     coo = cookies[ _i ] ;
     while( coo.charAt( 0 ) == ' ' ){ coo = coo.substring( 1, coo.length ) ; }
     if ( coo.indexOf( name_eq) == 0 ){ 
-      this.value = coo.substring( name_eq.length, coo.length ) ;
+      this.value = unescape(coo.substring( name_eq.length, coo.length )) ;
       break ;
     }
   }
+  return this;
 }
 /*
   Détruit le cookie

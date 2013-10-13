@@ -360,8 +360,9 @@ DONNÉES TOTALES DES SÉANCES :
       end_debug
       seance_data = @config_generale.dup
       seance_data = seance_data.merge(
-        :working_time     => @seance_duration,
-        :suite_ids        => @ids_exercices
+        :working_time         => @seance_duration,
+        :suite_ids            => @ids_exercices,
+        :duree_moyenne_par_ex => @time_per_exercice
       )
     end
 
@@ -409,16 +410,17 @@ DONNÉES TOTALES DES SÉANCES :
       unless @no_debug
         debug "État des lieux des <b>temps avant recherche jusqu'au temps donné</b>"
         debug "seance_duration : #{seance_duration.as_horloge}"
-        debug "Durée attendue  : #{time.as_horloge}"
         debug "Durée des obligatoires : #{@time_for_mandatories.as_horloge}"
-        debug "Durée à trouver : #{duree_required.as_horloge}"
+        debug "Durée requise (totale) : #{duree_required.as_horloge}"
       end
       less_worked.each do |idex|
         ex_working_time = @time_per_exercice[idex]
         # Si ça dépasse trop le temps, on ne prend pas cet exercice
         if (seance_duration + ex_working_time) > (duree_required + (10 * 60))
-          debug "-> l'exercice #{debug_id_linked(idex)} est passé car la durée exéderait de plus de 10 minutes le temps demandé"
+          debug "-> l'exercice #{debug_id_linked(idex)} est passé car la durée excéderait de plus de 10 minutes le temps demandé"
           next
+        else
+          debug "- Exercice #{debug_id_linked(idex)} retenu. Temps ajouté : #{ex_working_time.as_horloge}."
         end
         # Sinon, on prend cet exercice
         @ids_exercices << idex
@@ -432,12 +434,10 @@ DONNÉES TOTALES DES SÉANCES :
         debug "Durée attendue  : #{time.as_horloge}"
       end
       
-      # Maybe the required duration (duree_required) is not reached (not enough exercice)
-      # In that case, if :same_ex option is true, we add exercices already choosed, or
-      # we add other exercices.
-      while seance_duration < duree_required
-        pioches_ids = options[:same_ex] ? @ids_exercices : @others_idex
-        pioches_ids = pioches_ids.sort_by{|idex| @nb_fois_per_exercice[idex]}
+      # Si la durée requise n'est pas atteinte et que l'utilisateur a autorisé la
+      # répétition des exercices, on en ajoute jusqu'à atteindre la durée requise.
+      while (seance_duration < duree_required) && options[:same_ex]
+        pioches_ids = @ids_exercices.sort_by{|idex| @nb_fois_per_exercice[idex]}
         while seance_duration < duree_required && ! pioches_ids.empty?
           id = pioches_ids.pop
           ex_working_time = @time_per_exercice[id]
@@ -515,7 +515,8 @@ DONNÉES TOTALES DES SÉANCES :
     # 
     def work_time_per_exercice
       tpe = {}
-      exercices.each { |idex, iex| tpe = tpe.merge idex => iex.working_time }
+      # exercices.each { |idex, iex| tpe = tpe.merge idex => iex.working_time }
+      exercices.each { |idex, iex| tpe = tpe.merge idex => iex.seances_working_time }
       @time_per_exercice = tpe
     end
     

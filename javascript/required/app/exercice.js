@@ -377,7 +377,9 @@ Exercice.prototype.play = function(dont_stop_metronome){
 // Méthode appelée par Exercices.deselect() si l'exercice était en train
 // de jouer.
 Exercice.prototype.stop = function(){
+  if(console)console.log("-> stop");
   this.play(true) ;
+  if(console)console.log("<- stop");
 }
 
 // Met en route le jeu de l'exercice
@@ -399,9 +401,23 @@ Exercice.prototype.start_exercice = function(){
 // tandis que l'exercice suivant est déjà en train d'être joué).
 // 
 Exercice.prototype.stop_exercice = function(dont_stop_metronome){
+  if(console)console.log("-> stop_exercice");
   if ( ! dont_stop_metronome ) $.proxy(Metronome.stop, Metronome)();
   this.w_end    = Time.now() ;
   this.calc_duree_travail() ;
+  if(Seance.data_seance.duree_moyenne_par_ex){
+    var jeu = this.w_duree;
+    var moy = Seance.data_seance.duree_moyenne_par_ex[this.id];
+    var dif = moy - jeu;
+    // Note : si négatif on a été moins vite, sinon plus vite
+    $('div#curex_info_prev').html(this.titre);
+    $('span#curex_duree_jeu_prev').html(Time.s2h(jeu));
+    $('span#curex_duree_moyenne_prev').html(Time.s2h(moy));
+    if(dif>0) mess = "+ vite de "+Time.s2h(dif);
+    else mess = "- vite de "+Time.s2h(-dif);
+    $('div#curex_difference_jeu').html(mess);
+  }
+  if(console)console.log("<- stop_exercice");
 }
 
 /* Calcul de la durée de travail de l'exercice

@@ -11,8 +11,13 @@ window.User = {
   instrument      :null,      // Instrument ID (used for DB Exercices)
   roadmaps        :null,      // liste (array) des roadmaps de l'utilisateur
   identified      :false,
+  remembered      :false,     // Mis à true si l'utilisateur a déjà ses cookies de reconnaissance
   
   preparing_form  :false, // mis à true pendant préparation formulaires
+  
+  PREFERENCES: {
+    after_roadmap_loading: Seance.show
+  },
   
   // Réinitialisation de l'user
   reset:function(){
@@ -84,11 +89,23 @@ window.User = {
   // Open the identification pseudo-form
   // @note: maybe the signup form is visible, so we have to remove it, because some
   // fields have same name.
+  // 
+  // @note: On regarde s'il y a des cookies contenant les mail et password
+  //        Si c'est le cas on passe directement au check
+  // 
   signin:function(){
+    if(Cookies.exists('mrdm_mail')){
+      this.remembered = true;
+      var mail = Cookies.valueOf('mrdm_mail');
+      var pass = Cookies.valueOf('mrdm_password');
+      // Et on lance tout de suit le check
+      this.check({mail:mail,password:pass});
+      return false;
+    }
     this.preparing_form = true ;
     Aide.options({bandeau_titre:false}) ; // réglage des options
     Aide.remove('user/signup_form');
-    Aide.show('user/signin_form', $.proxy(this.prepare_signin_form, this));
+    Aide.show('user/signin_form', $.proxy(this.prepare_signin_form, this));    
     return false; // pour le a-lien
   },
   // Méthode vérifiant les data envoyées pour l'identification
@@ -120,6 +137,7 @@ window.User = {
       // ------------------------
       //  Identification réussie
       // ------------------------
+      this.remember_me();
       this.set_identified(rajax.user);
       this.roadmaps = rajax.roadmaps ;
       Aide.remove('user/signin_form');
@@ -130,6 +148,16 @@ window.User = {
       this.reset();
     }
     this.checking = false ;
+  },
+  // Pour mémoriser l'utilisateur
+  // @todo: détruire le cookie si l'utilisateur ne veut plus être reconnu
+  remember_me:function(){
+    if(false == $('input#remember_me').is(':checked')) return ;
+    if(this.remembered) return ; // les cookies existent déjà
+    // On place un cookie contenant l'adresse mail et le md5 de l'utilisateur
+    Cookies.create('mrdm_mail',  $('input#user_mail').val(), 1000);
+    Cookies.create('mrdm_password',  $('input#user_password').val(), 1000);    
+    this.remembered = true;
   },
   // Identifie vraiment l'utilisateur dans l'application
   set_identified:function(duser){
@@ -185,7 +213,7 @@ window.User = {
       return false;
     }
   },
-  SIGNIN_LABELS:['TITRE','MAIL','PASSWORD'],
+  SIGNIN_LABELS:['TITRE','MAIL','PASSWORD','REMEMBER_ME'],
   SIGNIN_BUTTONS:['BTN_SIGNIN', 'BTN_WANT_SIGNUP'],
   prepare_signin_form: function(){
     var i, label_id, search, td_id, replace ;
@@ -194,7 +222,7 @@ window.User = {
       label_id  = this.SIGNIN_LABELS[i] ;
       search    = "SIGNIN_LABEL_" + label_id ;
       td_id     = search.toLowerCase();
-      $('div#user_signin_form td#'+td_id).html( LOCALE_UI.User.Signin[label_id] ) ;
+      $('div#user_signin_form #'+td_id).html( LOCALE_UI.User.Signin[label_id] ) ;
     }
     // Les boutons
     $('div#user_signin_form a#btn_cancel_signin').text(LOCALE_UI.Verb.Cancel);
@@ -207,7 +235,7 @@ window.User = {
     $('input#user_password').bind('keypress',$.proxy(this.check_key_press_on_password,this));
     // Focus in mail field
     $('input#user_mail').select();
-    this.preparing_form = false ;
+    this.preparing_form = false ;    
   },
   /*
       Méthodes d'inscription de l'utilisateur

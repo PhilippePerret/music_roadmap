@@ -340,6 +340,15 @@ window.Roadmap = {
     UI.open_volet('exercices');
     this.set_btns_roadmap() ;
     this.set_div_specs( ouvert = !this.loaded ) ;
+    
+    // [#TODO: TRAITER ÇA PAR DES PRÉFÉRENCES]
+    if ( this.loaded && User.mail == 'phil@atelier-icare.net') {
+      // S'il y a une méthode utilisateur post chargement de roadmap, on 
+      // l'exécute.
+      // @todo: pour le moment, c'est la préparation de séance pour moi seulement, mais il
+      // faudra pouvoir la définir.
+      User.PREFERENCES.after_roadmap_loading();
+    }
     BT.add('<- Roadmap.end_open (return: this.loaded='+this.loaded+')') ;
     Roadmap.opening = false ;
     return this.loaded ;

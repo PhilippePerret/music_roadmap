@@ -5,7 +5,7 @@ div#div_cur_tone {
   width             :230px;
   padding           :5px;
   border-radius     :18.8px;
-  opacity           :0.59;
+  opacity           :1;
 }
 div#div_cur_tone div#gconfig_nom_cur_tone {
   font-weight       :bold;
@@ -20,6 +20,7 @@ div#config_generale div#config_generale_resume {
   font-size         :10pt;
   margin            :12px 0 1em 3em;
   text-align        :justify;
+  color             :#FFFFFF;
 }
 div#config_generale div#config_generale_boutons {
   margin-left       :3.5em;

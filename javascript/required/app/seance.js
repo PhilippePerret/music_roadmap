@@ -128,6 +128,8 @@ window.Seance = {
       }
     }
     if(iex.note) indics.push(iex.note);
+    indics.push("Durée moyenne : <span style=\"font-size:1.2em;display:block;margin-left:1em;\">"+
+    Time.s2h(this.data_seance.duree_moyenne_par_ex[iex.id])+'</span>');
     if(indics != ""){
       $('div#curex_indications span.value').html(indics.join('<br>- '));
     }
@@ -322,6 +324,8 @@ window.Seance = {
         this.hide_form(false);
         this.show_start();
       }
+      // @debug Pour voir les données remontées
+      // if(console)console.dir(this.data_seance);
     }
     this.building = false;
   },

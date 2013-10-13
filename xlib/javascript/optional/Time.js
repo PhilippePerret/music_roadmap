@@ -56,5 +56,9 @@ window.Time = {
     if (scs < 10) scs = "0" + scs ;
     hrl += scs + del_scs;
     return hrl ;
+  },
+  // Raccourci
+  s2h:function(secs, complet, del_hour, del_mns, del_scs){
+    return this.seconds_to_horloge(secs, complet, del_hour, del_mns, del_scs);
   }
 }

@@ -87,7 +87,8 @@ window.LOCALE_UI = {
       MAIL              :"Your email",
       PASSWORD          :"Your password",
       BTN_SIGNIN        :"Sign In!",
-      BTN_WANT_SIGNUP   :"Sign up…"
+      BTN_WANT_SIGNUP   :"Sign up…",
+      REMEMBER_ME       :"Remember me"
     },                         
     Signup:{                   
       TITRE                   :"Sign Up",

@@ -3,7 +3,6 @@
   Construction d'une séance de travail
   
 =end
-# require_model 'roadmap' unless defined?(Roadmap)
 
 def ajax_seance_build
   res = seance_build(

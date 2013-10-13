@@ -12,7 +12,7 @@ body {
   position          :relative;
   max-width         :1200px;
   min-width         :400px;
-  background-color  :#607060;
+  background-color  :#24001F; /*#607060;*/
 }
 div#background {
   opacity:0.049;
@@ -64,11 +64,11 @@ section#roadmap {
 /* Section exercices */
 section#section_exercices {
     padding             :0;
-    background-color    :#C07051;
+    background-color    :#75001F; /*#BFBFBF #C07051;*/
 }
 /* Les fonds foncés */
 div#roadmap_specs {
-  background-color      :#C07051;
+  background-color      :#75001F; /*#BFBFBF;*/
 }
 /* Div général des specs de la roadmap */
 div#roadmap_specs-specs {
@@ -81,7 +81,7 @@ div#roadmap_specs select#roadmaps {
 }
 div#btns_exercices {
   height              :35px;
-  background-color    :#9E5600;
+  background-color    :#A67D7D; /* 878787 #9E5600;*/
   padding             :0.3em 0 0 0.7em;
 }
 section#roadmap div#roadmap_specs {
@@ -116,14 +116,14 @@ section#main_buttons a {
   ----------
 */
 section#bande_logo {
-  background-color    :#000000;
+  background-color    :#111111;
   height              :auto;
   width               :332px;
   border-radius       :0 0 1em 0;
-  padding             :0.5em 0 0.5em 1.1em;
+  padding             :0.5em 1em 0.5em 1.1em;
   margin-bottom       :0.5em;
   opacity             :0.85;
-  color               :#BFB96A;
+  color               :#C4C4C4; /*#BFB96A;*/
 }
 section#bande_logo div#nom_site {
   font-size           : 1.23em ;
@@ -141,7 +141,7 @@ section#sec_metronome {
   top               :5.5em;
   left              :1.3em;
   opacity           :0.914;
-  background-color  :#005847;
+  background-color  :#111111; /*#005847;*/
   border-radius     :3.8em 0 3.2em 0;
 }
 /*Le métronome*/
@@ -180,7 +180,7 @@ div#open_roadmap_specs a {
   font-family   :Verdana;
   font-variant  :small-caps;
   font-size     :0.8em;
-  color         :#FFE0A1 !important;
+  color         :#FFFFFF !important; /*#FFE0A1 !important;*/
   margin-right  :1em;
   padding       :1px 8px;
   text-align    :center;
@@ -200,4 +200,11 @@ a#btn_mute {
 }
 img#speakers {
   width     :27.9px;
+}
+
+/*
+  BOUTON POUR SE CONNECTER/DÉCONNECTER
+*/
+a#btn_want_signin:focus {
+  border      :1px solid green;
 }

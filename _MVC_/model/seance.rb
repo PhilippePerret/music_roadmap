@@ -92,7 +92,7 @@ class Seance
       :number_of_times  => 0,     # number of times, whatever working time
       :real_nb_fois     => 0.0,   # calculted number of times, according to time of exercice
       :total_duration   => nil,
-      :average_duration => 120, # default
+      :average_duration => 120,   # default
       :durations        => [],
       :data             => [],
       :tempos           => [],

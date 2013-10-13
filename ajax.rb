@@ -100,7 +100,39 @@ begin
   
   # Pour l'analyse des paramètres (et notamment la procédure à utiliser)
   require 'params'
-  Params::set_params
+=begin
+  Pour faire des tests en feignant d'envoyer des données
+=end
+  POUR_TESTER = false
+  if POUR_TESTER
+    # ========== DÉBUT DU CODE DE TEST =============
+    # @note: ce Hash est envoyé à Params, comme s'il était envoyé par la requête
+    data_test = {
+      :proc       => 'seance/build',
+      :rm_nom     => 'exercices',
+      :user_mail  => '', # À DÉFINIR
+      :user_md5   => '', # À DÉFINIR
+    
+      :params_seance  => {
+        :working_time   => 3*60,
+        :options        => {
+          :aleatoire    => "true",
+          :obligatory   => "true",
+          :same_ex      => "false",
+          :next_config  => "false",
+          :new_tone     => "false"
+        },
+        :difficulties => ""
+      }
+    }
+    Params::set_offline
+    Params::set_params data_test
+    # ========== FIN DE CODE DE TEST =============
+  else
+    # Mode normal (hors test ci-dessus)
+    Params::set_params
+  end
+  
   
   # Librairie pour les procédures ajax.
   # Contient notamment `get_document' qui retourne l'instance Document du
@@ -130,7 +162,8 @@ begin
   
 rescue Exception => e
   # RETOUR_AJAX[:error] = e.message
-  error_ajax e.message, e.backtrace.inspect
+  # error_ajax e.message, e.backtrace.inspect
+  error_ajax e.message, e.backtrace
 end
 
 puts "Content-type: application/json"

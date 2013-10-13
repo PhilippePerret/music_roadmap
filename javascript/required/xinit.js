@@ -73,4 +73,7 @@ $(document).ready(function(){
   // On indique que ce fichier a terminé. Mais d'autres processus sont peut-être encore
   // en cours.
   $.proxy(UI.set_ready, UI, 'jquery')();
+  
+  // On sélectionne toujours le lien pour se loguer en premier
+  $('a#btn_want_signin').focus();
 })

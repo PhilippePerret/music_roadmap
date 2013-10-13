@@ -22,6 +22,16 @@ class Params
     @@is_online ||= !offline?
   end
   
+  # Deux méthodes pour le débuggage (simulation de offline/online)
+  def self.set_offline
+    @@is_offline = true
+    @@is_online  = false
+  end
+  def self.set_online
+    @@is_offline = false
+    @@is_online  = true
+  end
+  
   # => Définit les paramètres à la volée ou les lit dans l'URL
   def self.set_params hash = nil
     unless hash.nil?
