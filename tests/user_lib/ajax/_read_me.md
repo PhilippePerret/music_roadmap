@@ -1,0 +1,1 @@
+Placer dans ce dossier les scripts ajax de test propre à l'application testée.
