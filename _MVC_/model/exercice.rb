@@ -187,6 +187,11 @@ class Exercice
   
   # Return the average working time of exercice in working sessions, in seconds.
   # Default: 120
+  # 
+  # NOTE
+  # ----
+  # Ce temps est correspond à une moyenne du temps de jeu des dernières séances, quel
+  # que soit leur nombre de mesures, leur temps, etc.
   def seances_working_time
     @seances_working_time ||= data_in_seances[:average_duration]
   end
