@@ -37,9 +37,16 @@ function _HumanSpeakingDefineLocales(){
 }
 
 String.prototype._eval = function(){
-	try{
-		return eval('APP.'+this.toString())
-	}catch(erreur){return undefined}
+  if(undefined == this._evaluate_)
+  {
+    // Il ne faut absolument évaluer le code qu'une seule fois
+    // cf. bug #30
+  	try{
+  		 var ev = eval('APP.'+this.toString())
+       this._evaluate_ = ev
+  	}catch(erreur){return undefined}
+  }
+  return this._evaluate_
 }
 Object.defineProperties(String.prototype, {
 	"level":{get:function(){return 1}},
