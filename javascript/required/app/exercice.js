@@ -251,11 +251,14 @@ Exercice.prototype.code_vignette = function(){
           '</div>';
 }
 // Return HTML code for vignette in listing but ul#exercices (e.g. in report)
-Exercice.prototype.vignette_listing = function(){
+Exercice.prototype.vignette_listing = function(style){
   if ( this.vignette == null ) return "" ;
+  if(undefined == style) style = ""
+  else style = " style=\"" + style + "\""
   return '<img class="ex_vignette"' +
             ' src="' + this.vignette + '"' + 
             this.onclick_pour_extrait() +
+            style +
             ' />';
 }
 Exercice.prototype.set_image_extrait = function(extrait){
@@ -267,12 +270,21 @@ Exercice.prototype.onclick_pour_extrait = function(){
   return ' onclick="return $.proxy(Exercices.show_partition,Exercices,\''+this.extrait+'\')()"';
   
 }
-// Return title for simple listing (e.g. in report)
-Exercice.prototype.titre_complet = function(){
-  titre = this.titre;
-  if(this.recueil)  titre += " - " + this.recueil;
-  if(this.auteur)   titre += " - " + this.auteur;
-  return titre;
+// Return title for simple listing (e.g. in report ou présentation session)
+// @param vignette    Si TRUE affiche le tout en regard de sa vignette
+Exercice.prototype.titre_complet = function(vignette){
+  if(undefined == vignette) vignette = false
+  titre = this.titre
+  if(this.recueil)  titre += " - " + this.recueil
+  if(this.auteur)   titre += " - " + this.auteur
+  if(vignette)
+  {
+    return '<div style="border:1px solid white;">' + 
+              '<div class="fright" style="width:300px;">' + titre + '</div>' +
+              '<div>' + this.vignette_listing('width:130px;') + '</div>'+
+            '</div>'
+  }
+  else return titre
 }
 Exercice.prototype.code_div_titre = function(){
   var recueil = this.recueil ? '<span class="ex_recueil">'+this.recueil+'</span>': "" ;

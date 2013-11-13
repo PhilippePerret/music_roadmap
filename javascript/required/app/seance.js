@@ -343,7 +343,7 @@ window.Seance = {
     // Prepare display of exercice (human list)
     for( var i in this.data_seance.suite_ids){
       var iex = exercice(this.data_seance.suite_ids[i]);
-      liste_ex.push(iex.titre_complet());
+      liste_ex.push(iex.titre_complet(vignette = true));
     }
     // Display data
     liste_ex    = liste_ex.join('<br>');
