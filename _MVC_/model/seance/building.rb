@@ -65,7 +65,6 @@ class Seance
       @params = params
       debug "*** PRÉPARATION DE LA SÉANCE DU #{@seance.day} ***"
       debug "Paramètres envoyés : #{params.inspect}"
-      analyze_params
     end
     
     # Pour suivre le programme
@@ -75,6 +74,7 @@ class Seance
       return if @no_debug ||= Params::online?
       prepare_debug if @debug_ready.nil?
       text = "<div>#{text}</div>" unless text.start_with?('<')
+      text.gsub!(/\n/,'<br>')
       File.open(@path_debug, 'a'){|f| f.write "#{text}\n"}
     end
     def prepare_debug
@@ -153,7 +153,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     def debug_ids_exercices_with_anchor liste = nil, options = nil
       liste ||= @ids_exercices
       options ||= {}
-      if liste.class == Array
+      '<br />' + if liste.class == Array
         ("(#{liste.count}) ") + liste.collect do |id|
           "<a href=\"#exo-#{id}\">#{id}</a>"
         end.join(' ')
@@ -182,35 +182,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       "<a href=\"#exo-#{id}\">#{id}</a>"
     end
     
-                
-    # Define the average working time of exercice +idex+ in last seances
-    # 
-    # TODO: VOIR SI CETTE MÉTHODES EST VRAIMENT ENCORE NÉCESSAIRE
-    # 
-    # * NOTES
-    # 
-    #   Since version 0.8.5, the number of times is calculated according to the
-    #   worked time on exercice and the real exercice duration. If an exercice of
-    #   1 minute has been playing during 3 minutes, we considere it has been played
-    #   3 times.
-    # 
-    # * PRODUCTS
-    #   - @average_working_time where key is the exercice ID and
-    #   value is the average working time of the exercice
-    #   - @nb_fois_per_exercice : the number of times per exercices (note all
-    #     exercices defined in @ids_exercices has a key, and maybe the 0.0 value if
-    #     exercice has not been worked yet)
-    # 
-    def average_working_times
-      nbf, awk = {}, {}
-      exercices.each do |idex, iex|
-        nbf = nbf.merge idex => ((iex.real_nb_fois + iex.number_of_times) / 2 ).to_i
-        awk = awk.merge idex => iex.seances_working_time
-      end
-      @nb_fois_per_exercice = nbf
-      @average_working_time = awk
-    end
-    
+                 
     # (main function)
     # 
     # 
@@ -219,15 +191,16 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     #   * On fait le total de temps d'une séance si on jouait TOUS les exercices
     #   * On remonte les séances, à commencer pas la dernière
     #   * En "remontant" les séances, on supprime de la liste des exercices potentiels ceux 
-    #      qui ont été joués JUSQU'À atteindre un temps restant correspondant au temps demandé.
-    #      ATTENTION : on ne retire pas le temps d'un exercice déjà traité.
+    #     qui ont été joués JUSQU'À atteindre un temps restant correspondant au temps demandé.
+    #     ATTENTION : on ne retire pas le temps d'un exercice déjà traité, dans ce process, on
+    #     n'étudie que des éléments uniques.  
     #   * On se retrouve alors avec forcément la liste des exercices joués les plus lointains.
     #   * Mais dans le cas où l'ORDRE ALÉATOIRE est choisi, pour brouiller un peu les cartes,
     #     on fait la chose suivante :
-    #     - On prend 20% des tous derniers exercices non joués, qu'on jouera de toute façon.
-    #     - On récupère 20% des exercices joués récemments (mais les plus lointains)
-    #     - On ajoute ces 20% à la liste des exercices à choisir
-    #     - On les mélange et on prend les premiers qui sortent jusqu'au temps restant à occuper
+    #     - Parmi les exercices lointains, on ne prend que la moitié du temps attendu
+    #     - Ensuite on relève dans la liste des récents, parmi les derniers (donc les plus
+    #       lointains), le nombre d'exercices pour couvrir la moitié du temps manquante.
+    #     - Enfin on les mélange deux fois.
     # 
     # Notes
     # -----
@@ -252,7 +225,6 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     # - @total_duree_roadmap
     #   Durée totale de la roadmap si tous les exercices étaient joués (d'après leurs dernières 
     #   durées de jeu).
-    #   Calculé par `etat_des_lieux`
     # - @seances
     #   Les x dernières séances, classées dans l'ordre (de la plus ancienne à la plus récente)
     #   Pour les données de la séance, cf. Seance::lasts.
@@ -273,162 +245,136 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     # 
     # OPTIONS UTILES
     # --------------
-    # options[:obligatory]    => Jouer les exercices obligatoires
-    # options[:aleatoire]     => Ordre aléatoire des exercices
-    # options[:difficulties]  => Liste des difficultés à prendre en compte.
-    
-    # NOTE
-    # ----
-    # J'essaie de faire que cette fonction soit la principale appelée.
+    #   exercices_obligatoires      => Jouer les exercices obligatoires
+    #   ordre_aleatoire             => Ordre aléatoire des exercices
+    #   options[:difficulties]      => Liste des difficultés à prendre en compte.
+    # 
     def data
       analyze_params
       etat_des_lieux
+      debug " --- État des lieux ---" +
+            "\nNombre d'exercices de la roadmap : #{@ids_exercices.count}" +
+            "\nDurée totale de la roadmap : #{@total_duree_roadmap.as_horloge}"
+      
       @config_generale = get_general_config
       
-      debug "\n\n\n =========================================================== \n\n\n"
-      debug "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-> méthode `remonte_seance_en_cherchant_non_played`"
- 
-      # Exercices obligatoires. Les mettre de côté, en gardant
-      # leur temps
-      @duree_mandatories = 0
-      @mandatories       = []
-      filter_mandatories
+      debug "\n===========================================================\n"
       
-      debug "Liste des exercices obligatoires (@mandatories) :"
-      debug debug_ids_exercices_with_anchor(@mandatories)
-      debug "Temps consumé par les obligatoires (@duree_mandatories) : #{@duree_mandatories.as_horloge}"
-      
-      # Le temps recherché
-      @duree_searched = @expected_time - @duree_mandatories
-      debug "Temps à combler par les autres exercices (@duree_searched) : #{@duree_searched.as_horloge}"
-      
-      # Liste des IDs d'exercices dans l'ordre de leur dernier jeu
-      # En premier les exercices joués le plus récemment, en dernier les plus lointains
-      @idexs_in_ordre_jeu = []
-      
-      # On récupère la liste de TOUS les exercices dans l'ordre où ils ont été dernièrement
-      # joués au cours des séances.
+      # Liste de TOUS les exercices dans l'ordre où ils ont été dernièrement
+      # joués au cours des dernières séances.
+      # On doit essayer d'avoir TOUS les exercices de la roadmap, uniques dans la
+      # liste.
       # Le premier est celui joué le plus récemment, le dernier le plus lointamment
-      # La méthode produit :
-      #   @idexs_in_ordre_jeu
-      get_exercices_in_ordre_in_last_seances
-      
-      # On va produire deux listes :
-      # - La liste des identifiants d'exercices les plus récents, jusqu'à ce qu'il ne
-      #   reste plus que le temps requis pour la séance (@expected_time)
-      #   -> @idexs_recents
-      # - La liste des identifiants restants.
-      #   -> @idexs_lointains
-      #  TODO:  ICI, IL RESTE À PASSER LES EXERCICES OBLIGATOIRES S'ILS SONT CHOISIS
-      #         ON LE FAIT SIMPLEMENT EN TESTANT instance_ex.obligatory?
+      # Produit :
       # 
-      separe_exercices_recents_et_lointains
-      debug "Liste des exercices “récents” (@idexs_recents - jusqu'à la durée demandée)"
-      debug debug_ids_exercices_with_anchor(@idexs_recents)
-      debug "Liste des exercices “lointain” (@idexs_lointains - représentant la durée demandée)"
-      debug debug_ids_exercices_with_anchor(@idexs_lointains)
-      
-      # On pourrait se contenter de prendre en compte @idexs_lointains, puisque la
-      # liste représente le temps recherché.
-      # Cependant, pour mélanger encore les choses, on va : 
-      #   * ne va garder que 20% des exercices les plus lointains (en les retirant de 
-      #     @idexs_lointains)
-      #       -> @idexs_les_plus_lointains
-      #     qui sont sûrs d'être joués
-      #   * reprendre 10 des exercices récents en les ajoutant à la liste
-      #     @idexs_lointains. On mélange la liste.
-      #     C'est dans cette liste qu'on prendre le temps qui manque pour atteindre
-      #     le temps demandé.
+      #   @idexs_in_ordre_jeu     Liste des IDs d'exercice, du plus récent au plus lointain
+      # 
+      get_exercices_in_ordre_in_last_seances
 
-      @idexs_lointains.reverse!
+      # Exercices obligatoires 
+      # ----------------------
+      # S'ils doivent être joués, les mettre de côté, en gardant leur temps.
+      # 
+      # Produit :
+      #   @duree_mandatories      Durée consumée par les exercices obligatoires
+      #   @mandatories            IDentifiants des exercices obligaoires.
+      # 
+      # Modifie :
+      #   @idexs_in_ordre_jeu     Retire de la liste les exercices obligatoires
+      #                           s'il faut les prendre
+      # 
+      filter_mandatories
+      debug "Liste des exercices obligatoires (@mandatories) : #{debug_ids_exercices_with_anchor(@mandatories)}"
+      debug "Exercices non obligatoires : #{debug_ids_exercices_with_anchor(@ids_exercices)}"
       
-      # Prendre le cinquième des exercices les plus lointains
-      @idexs_les_plus_lointains = @idexs_lointains.slice!(0, @idexs_lointains.count / 5)
-      debug "Liste des 20% les plus lointains, sûrs d'être joués"
-      debug debug_ids_exercices_with_anchor(@idexs_les_plus_lointains)
-      debug "Nouvelle liste des lointains, amputés des ids ci-dessus"
-      debug debug_ids_exercices_with_anchor(@idexs_lointains)
+      # Le temps d'exercice restant à combler.
+      # 
+      @duree_searched = @expected_time - @duree_mandatories
+      debug  "Temps consumé par les obligatoires (@duree_mandatories) : #{@duree_mandatories.as_horloge}"+
+             "\nTemps à combler par les autres (@duree_searched) : #{@duree_searched.as_horloge}"
       
-      # Ajouter à la liste des lointains les 10 exercices les plus lointains des
-      # exercices récents, et mélanger cette liste.
-      @idexs_lointains += @idexs_recents.reverse.slice(0, 10)
-      unless @no_debug
-        debug "Nouvelle liste des lointains, auxquels ont été ajoutés 10 récents (les - récents)"
-        debug debug_ids_exercices_with_anchor(@idexs_lointains)
+      # Séparation des exercices en listes :
+      # 
+      # - @idexs_retenus
+      #   Préparation de la liste des IDs d'exercices qui vont servir pour la 
+      #   séances. Ce sont les exercices parmi les plus anciens, à concurrence de
+      #   la moitié du temps de la séance requis.
+      #   NOTE : On ne prend que la moitié du temps pour mélanger encore plus les
+      #   exercices (quand option :aléatoire).
+      # 
+      # - @idexs_recents
+      #   Liste des IDex les plus récents, jusqu'à ce qu'il ne
+      #   reste plus que le temps requis pour la séance (@expected_time)
+      #   Cette liste ne servira pas. C'est juste pour le débug.
+      # 
+      # - @idexs_anciens
+      #   Liste des IDex restants dont la somme de temps représente la durée de séance
+      #   voulue.
+      # 
+      separe_recents_et_anciens
+      debug "Liste des exercices “retenus” (@idexs_retenus — durent la moitié de la durée recherchée) : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
+            "\nDurée : #{duree_of(@idexs_retenus).as_horloge}"
+      debug "Liste des exercices “anciens” (@idexs_anciens) : #{debug_ids_exercices_with_anchor(@idexs_anciens)}"+
+            "\nDurée : #{duree_of(@idexs_anciens).as_horloge}"
+      debug "Liste des exercices “récents” (@idexs_recents) : #{debug_ids_exercices_with_anchor(@idexs_recents)}"+
+            "\nDurée : #{duree_of(@idexs_recents).as_horloge}"
+      
+      # ICI, @idexs_retenus contient les exercices les plus anciens (du plus ancien
+      # au plus récent), à concurrence de la moitié du temps cherché.
+      # Il va donc falloir ajouter des exercices pour atteindre le temps voulu.
+      # On les prend dans les récents pour mieux mélanger les exercices
+      # 
+      # Rappel : @idexs_recents est dans l'ordre du plus récent au plus lointain
+      # 
+      ajouter_anciens_des_recents
+      debug "Liste des exercices “retenus” (@idexs_retenus) après ajout des plus anciens des récents jusqu'au temps voulu (ou fin de liste): #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
+            "\nDurée : #{(duree_of @idexs_retenus).as_horloge}"
+      
+      # ICI, la liste des exercices retenus est établie.
+      # SAUF QUE si la roadmap ne contient pas suffisamment d'exercices par
+      # rapport au temps cherché, on n'a pas atteint le temps voulu.
+      # Dans ce cas, deux solutions : si la répétition des exercices est possible,
+      # alors on en ajoute à concurrence du temps voulu. Sinon, on en reste là,
+      # avec une séance trop courte.
+      # 
+      # NOTE
+      # 
+      #   La méthode `duree_correcte' produit la valeur @duree_des_retenus qui contient
+      #   la durée actuelle des exercices retenus.
+      # 
+      unless duree_correcte || !repetition_exercices
+        ajouter_exercices_up_to_time_searched 
+        debug "Liste des exercices “retenus” (@idexs_retenus) après ajout pour atteindre le temps désiré : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
+              "\nDurée : #{(duree_of @idexs_retenus).as_horloge}"
       end
       
-      # On shuffle la liste des lointains
-      @idexs_lointains.shuffle!
-      unless @no_debug
-        debug "Liste des lointains, shufflée"
-        debug debug_ids_exercices_with_anchor(@idexs_lointains)
-      end
-      
-      # Pour compte la durée courante de la session de travail
-      current_duree = 0
-      @idexs_les_plus_lointains.each do |idex|
-        current_duree += @exercices[idex].seances_working_time
-        break if current_duree > @duree_searched # ça ne doit pas pouvoir arriver
-      end
-      unless @no_debug
-        debug "Temps consommé par les plus lointains : #{current_duree.as_horloge}"
-        debug "Temps restant à trouver : #{(@duree_searched - current_duree).as_horloge}"
-      end
-      
-      # On prend des exercices dans les lointains jusqu'au temps recherché
-      while current_duree < @duree_searched
-        idex = @idexs_lointains.shift
-        duree_exercice = @exercices[idex].seances_working_time
-        @idexs_les_plus_lointains << idex
-        # S'assurer qu'on ne dépasse pas trop (on ne doit pas dépasser de + de 10 minutes)
-        if (current_duree + duree_exercice) > @duree_searched + (10 * 60)
-          unless @no_debug
-            excedant = (current_duree + duree_exercice) - @duree_searched
-            debug "Je ne prends pas l'exercice #{idex}, ça exèderait de + de 10 minutes (excédant : #{excedant.as_horloge})"
-          end
-          break
-        else
-          current_duree += duree_exercice
-        end
-      end
-      
-      unless @no_debug
-        debug "Temps final obtenu (sera vérifié ci-dessous) : #{current_duree.as_horloge}"
-      end
-      
-      # Ici doit se trouver dans @idexs_les_plus_lointains tous les exercices
-      # à jouer à cette séance. On les met dans @ids_exercices
-      @ids_exercices = @idexs_les_plus_lointains
-      
-      # On lui ajoute les obligatoires (@todo: A REMETTRE)
-      @ids_exercices += @mandatories
-      
-      unless @no_debug
-        debug "Liste finale des @ids_exercices à travailler au cours de la séance :"
-        debug debug_ids_exercices_with_anchor(@ids_exercices)
-      end
+      # Ajout des obligatoires
+      # ----------------------
+      @idexs_retenus      += @mandatories
+      @duree_des_retenus  += @duree_mandatories
+      debug "LISTE FINALE (non mélangée ou triée) à travailler au cours de la séance : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"
+      debug "Temps obtenu (sera vérifié ci-dessous) : #{@duree_des_retenus.as_horloge}"
       
       # Mélanger les exercices si l'option :aleatoire a été choisie
-      if options[:aleatoire]
-        @ids_exercices.shuffle!
-        unless @no_debug
-          debug "Liste finale (@ids_exercices) mélangée :"
-          debug debug_ids_exercices_with_anchor(@ids_exercices)
-        end
+      # Ou les classer dans l'ordre dans le cas contraire
+      if ordre_aleatoire
+        @idexs_retenus.shuffle!
+      else
+        classe_liste_des_retenus
       end
+      debug "LISTE FINALE (#{ordre_aleatoire ? 'MÉLANGÉE' : 'CLASSÉE' }) à travailler au cours de la séance : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"
       
       # On produit @time_per_exercice qui doit renvoyer à l'application les
       # durée de jeu par exercice
       # 
       # + Ultime vérification pour voir si on a bien le temps voulu
-      duree_session       = 0
+      @duree_session      = 0
       @time_per_exercice  = {}
-      @ids_exercices.each do |idex|
-        iex = @exercices[idex]
-        duree_session += iex.seances_working_time
-        @time_per_exercice[idex] = iex.seances_working_time
+      @idexs_retenus.each do |idex|
+        @duree_session            += (duree_of idex)
+        @time_per_exercice[idex]  =  (duree_of idex)
       end
-      debug "Durée totale calculée à partir des exercices retenus : #{duree_session.as_horloge}"
+      debug "DURÉE TOTALE CALCULÉE à partir des exercices retenus : #{@duree_session.as_horloge}"
       debug "\n\n\n =========================================================== \n\n\n"
       
       # Fermer le rapport, si le débuggage était demandé
@@ -436,77 +382,65 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       
       seance_data = @config_generale.dup
       seance_data = seance_data.merge(
-        :working_time         => @seance_duration,
-        :suite_ids            => @ids_exercices,
+        :working_time         => @duree_session,
+        :suite_ids            => @idexs_retenus,
         :duree_moyenne_par_ex => @time_per_exercice
       )
     end
     
-    # Putting aside the mandatory exercices and calcultate consumed time
-    # (@note: only if :obligatory option is true)
-    # @produit :
-    #   @mandatories    
-    #       Liste des IDs des exercices obligatoires
-    #   @duree_mandatories
-    #       Temps consumé par les exercices obligatoires
+    # Analyse des paramètres envoyés à la construction de la séance.
     # 
-    def filter_mandatories
-      return unless options[:obligatory]
-      @exercices.each do |idex, iex|
-        next unless iex.obligatory?
-        @mandatories << @ids_exercices.delete(idex)
-        @duree_mandatories += iex.seances_working_time
-      end
+    # PRODUIT
+    # -------
+    #   @expected_time      Durée de la séance escompté
+    #   @types              Les types de difficulté (filtre)
+    #   @options            Les options exercices obligatoires, répétition, etc.
+    # 
+    def analyze_params
+      @params = @params.to_sym
+
+      # TEMPS DE SÉANCE VOULU
+      # ---------------------
+      #   params[:working_time]     In seconds
+      @expected_time  = params[:working_time].to_i * 60
+      debug "Temps de travail demandé : #{@expected_time.as_horloge}"
+
+      # * DIFFICULTIES (= exercice types)
+      #   params[:difficulties]
+      @types = params[:difficulties].split(',')
+      debug "Types recherchés : #{@types.inspect}"
+
+      # OPTIONS
+      # -------
+      #   params[:options]:
+      #     :same_ex::        Enable to repeat a same ex (if difficulties)
+      #     :next_config::    Set next general config
+      #     :new_tone::       New tone (take last or 0 for "C")
+      #     :obligatory::     Include obligatory exercices
+      # 
+      @options = params[:options].values_str_to_real
+      debug "Options : #{@options.inspect}"
     end
     
-    # La méthode va produire deux listes :
-    # - La liste des identifiants d'exercices les plus récents, jusqu'à ce qu'il ne
-    #   reste plus que le temps requis pour la séance (@expected_time)
-    #   -> @idexs_recents
-    # - La liste des identifiants restants.
-    #   -> @idexs_lointains
+     
+    # Produit
+    # -------
     # 
-    # @note Elle s'appuie pour ce faire sur :
-    #       * la liste :
-    #         @idexs_in_ordre_jeu 
-    #       produite par la méthode `get_exercices_in_ordre_in_last_seances`
-    #       * Le temps total de jeu (de tous les exercices) :
-    #         @total_duree_roadmap (calculé dans `etat_des_lieux`)
-    #       * Le temps recherché : 
-    #         @duree_searched
-    #       … qui tient compte des exercices obligatoires si demandé
-    #       par les options.
-    def separe_exercices_recents_et_lointains
-      current_duree     = 0
-      @idexs_recents    = []
-      @idexs_lointains  = @idexs_in_ordre_jeu
-      while idex = @idexs_lointains.shift
-        duree_exercice = @exercices[idex].seances_working_time
-        if @total_duree_roadmap - (current_duree + duree_exercice) < @duree_searched
-          # On remet ce dernier identifiant et on s'en retourne
-          @idexs_lointains.unshift( idex )
-          return
-        else
-          @idexs_recents << idex
-          current_duree += duree_exercice
-        end
-      end
-    end
-    
-    # Produit la liste de TOUS les exercices dans l'ordre où ils ont été dernièrement
-    # joués au cours des séances.
-    # Le premier est celui joué le plus récemment, le dernier le plus lointamment
-    # La méthode produit :
-    #   @idexs_in_ordre_jeu
+    #     @idexs_in_ordre_jeu
+    # 
+    #     Liste des IDs de TOUS les exercices dans l'ordre où ils ont été dernièrement
+    #     joués au cours des dernières séances, du plus RÉCENT au plus LOINTAIN
+    #   
     def get_exercices_in_ordre_in_last_seances
       
-      # LA LISTE PRODUITE
+      # La liste globales produite des IDexs
       @idexs_in_ordre_jeu = []
       
-      nombre_total_exercices = @ids_exercices.count
-      exs_passes_en_revue = {}
-      nombre_exs_passes_en_revue = 0
+      nombre_total_exercices      = @ids_exercices.count
+      exs_passes_en_revue         = {}
+      nombre_exs_passes_en_revue  = 0
   
+      # De la séance la plus récente à la séance la plus ancienne
       @seances.reverse.each do |dseance|
         if dseance[:id_exercices].nil?
           unless @no_debug
@@ -515,25 +449,221 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
           end
           next
         end
+        # De l'exercice le plus récent (de la séance) à l'exercice le plus ancien
         dseance[:id_exercices].reverse.each do |idex|
           if exs_passes_en_revue[idex].nil?
-            # debug "--> idex:#{idex}" unless @no_debug
-            exs_passes_en_revue[idex] = true
-            nombre_exs_passes_en_revue += 1
-            @idexs_in_ordre_jeu << idex
-            
+            exs_passes_en_revue[idex]   =  true
+            nombre_exs_passes_en_revue  += 1
+            @idexs_in_ordre_jeu         << idex
             # A-t-on passé tous les exercices en revue ?
             if nombre_exs_passes_en_revue == nombre_total_exercices
-              debug "-- Tous les exercices ont été passés en revue --" unless @no_debug
+              debug "-- Tous les exercices ont été passés en revue --"
               return
             end
-          else
-            # debug "(déjà traité : #{idex})" unless @no_debug
           end
         end
       end
     end
+
+    
+    # Putting aside the mandatory exercices and calcultate consumed time
+    # (@note: only if :obligatory option is true)
+    # 
+    # Produit
+    # -------
+    #   @mandatories              Liste des IDs des exercices obligatoires
+    #   @duree_mandatories        Temps consumé par les exercices obligatoires
+    # 
+    # Modifie
+    # -------
+    #   @idexs_in_ordre_jeu       IDs des exercices dans l'ordre de jeu restants (sans
+    #                             les obligatoires)
+    def filter_mandatories
+      @duree_mandatories = 0
+      @mandatories       = []
+      return unless exercices_obligatoires
+      new_idexs = []
+      @idexs_in_ordre_jeu.each do |idex|
+        if @exercices[idex].obligatory?
+          @mandatories        << @ids_exercices.delete(idex)
+          @duree_mandatories  += (duree_of idex)
+        else
+          new_idexs << idex
+        end
+      end
+      @idexs_in_ordre_jeu = new_idexs
+    end
+
+    # Produit
+    # -------
+    # 
+    #   @idexs_retenus
+    # 
+    #     Liste des IDs d'exercices les plus plus anciens, à concurrence de la
+    #     moitié du temps de la séance requis.
+    # 
+    #   @idexs_recents
+    # 
+    #     Liste des IDs d'exercices les plus récents (du plus récent au plus ancien).
+    #
+    #   @idexs_anciens
+    # 
+    #     Liste des IDs des exercices les plus anciens, jusqu'à la durée requise.
+    #     Note : du plus anciens au plus récent, celle-là.
+    # 
+    def separe_recents_et_anciens
+      cur_duree           = 0
+      @idexs_retenus      = []
+      @idexs_recents      = @idexs_in_ordre_jeu + []
+      @idexs_anciens      = []
+      moitie_duree_totale = @duree_searched / 2
+
+      # Rappel :  @idexs_recents (copie de @idexs_in_ordre_jeu) contient la liste des 
+      #           exercices dernièrement joués, du plus récent au plus lointain
+      while idex = @idexs_recents.pop
+        if cur_duree < moitie_duree_totale
+          # On retient cet exercice jusqu'à atteindre la moitié de la durée
+          # requise
+          @idexs_retenus << idex
+        else
+          @idexs_anciens << idex
+        end
+        if cur_duree + (duree_of idex) > @duree_searched
+          # On passe ici lorsque le temps des exercices lointains représente un temps
+          # supérieur au temps recherché. On peut donc s'arrêter
+          return
+        else
+          cur_duree += (duree_of idex)
+        end
+      end
       
+      # @note On peut passer ici lorsque le nombre d'exercices est insuffisant pour
+      # atteindre le temps demandé. Dans ce cas, @idexs_recents sera vide et @idexs_anciens
+      # contiendra tous les exercices.
+      
+    end
+    
+    # Ajoute à @idexs_retenus des exercices jusqu'à atteindre le temps cherché (ou
+    # la fin de la liste)
+    # Note: Si on n'atteint pas le temps voulu, on pioche dans les anciens mis de
+    #       côté.
+    def ajouter_anciens_des_recents
+      # On ajoute parmi les plus anciens des récents, à concurrence du temps cherché
+      # On ne doit pas dépasser le temps cherché de plus de 10 minutes, ni être 
+      # en dessous de moins de 10 minutes
+      return if add_to_retenus_from_up_to_duree_searched @idexs_recents
+      # Si on arrive ici, c'est que les récents n'ont pas suffit à 
+      # combler le temps. On procéde de la même manière avec les anciens
+      # mis de côté (@idexs_anciens)
+      add_to_retenus_from_up_to_duree_searched @idexs_anciens.reverse
+    end
+    
+    # Ajoute à la liste @idexs_retenus (exercices retenus) les exercices
+    # tirés du bout de la liste des IDs +from_list+
+    # 
+    # @param  from_list   Liste d'IDs d'exercices
+    # 
+    def add_to_retenus_from_up_to_duree_searched from_list
+      cur_duree = duree_of @idexs_retenus
+      while idex = from_list.pop
+        duree_tested = cur_duree + (duree_of idex)
+        if duree_tested > @duree_searched + dix_minutes
+          # On passe cet exercice trop long
+        else
+          # Sinon, on ajoute l'exercice et on regarde si on
+          # atteind le temps voulu
+          cur_duree = duree_tested
+          @idexs_retenus << idex
+          return true if (cur_duree + cinq_minutes) > @duree_searched 
+        end
+      end
+      return false
+    end
+    
+    # Si le temps voulu (@duree_searched) n'est pas atteint, et que la répétition
+    # d'exercices est autorisée il faut ajouter des exercices jusqu'au concurrence du
+    # temps voulu.
+    # 
+    # Note :  ici, @duree_des_retenus contient la durée des exercices retenus
+    #         (calculé par duree_correcte)
+    # Note :  On cherche ces exercices aussi bien dans les obligatoires que les
+    #         autres. Noter quand même que le filtre difficultés s'applique, les
+    #         "mauvais" exercices ont été retirés de @ids_exercices.
+    # 
+    def ajouter_exercices_up_to_time_searched
+      (@mandatories + @ids_exercices).each do |idex|
+        duree_tested = @duree_des_retenus + (duree_of idex)
+        if duree_tested > (@duree_searched + dix_minutes)
+          # on le passe car il est trop long
+        else
+          @idexs_retenus      << idex
+          @duree_des_retenus  = duree_tested
+          return if @duree_des_retenus > (@duree_searched - cinq_minutes)
+        end
+      end
+      
+      # Si on passe ici, c'est qu'on n'a pas encore atteint la durée voulue
+      # On rappelle cette méthode
+      ajouter_exercices_up_to_time_searched
+    end
+    
+    # Quand l'ordre aléatoire n'est pas demandé, on doit reclasser les
+    # exercices dans l'ordre de la roadmap.
+    # 
+    def classe_liste_des_retenus
+      ordre_roadmap = roadmap.ordre_exercices
+      @idexs_retenus.sort! do |idx, idy| 
+        ordre_roadmap.index(idx) <=> ordre_roadmap.index(idy) 
+      end
+    end
+    
+    # -------------------------------------------------------------------
+    #   Handy Methods
+    # -------------------------------------------------------------------
+    
+    # Return TRUE si la durée actuelle des exercices retenus (@idexs_retenus) est
+    # suffisante mais pas trop grande
+    def duree_correcte
+      @duree_des_retenus = (duree_of @idexs_retenus)
+      return @duree_des_retenus > (@duree_searched + cinq_minutes) && @duree_des_retenus < (@duree_searched + dix_minutes)
+    end
+    
+    def cinq_minutes
+      @cinq_minutes ||= 5 * 60
+    end
+    def dix_minutes
+      @dix_minutes ||= 10 * 60
+    end
+    
+    # Handy méthode pour obtenir la durée d'un exercice
+    # Ou d'une liste d'exercices
+    def duree_of idex
+      if idex.class == Array
+        idex.collect{|id| duree_of_exercice id}.inject(:+)
+      else
+        duree_of_exercice idex
+      end
+    end
+    def duree_of_exercice idex
+      @durees_des_exercices ||= {}
+      if @durees_des_exercices[idex].nil?
+        @durees_des_exercices[idex] = @exercices[idex].seances_working_time
+      end
+      @durees_des_exercices[idex]
+    end
+    # Méthodes pour retourner les options voulues
+    # 
+    def repetition_exercices
+      @repetition_allowed ||= @options[:same_ex]
+    end
+    def exercices_obligatoires
+      @exercices_obligatoires ||= @options[:obligatory]
+    end
+    def ordre_aleatoire
+      @ordre_aleatoire ||= @options[:aleatoire]
+    end
+    
+    
 
     # Filter @ids_exercices to keep only the exercices of required difficulties
     # 
@@ -599,40 +729,13 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       @exercices            = {}
       index = 0
       @ids_exercices.each do |idex|
-        iex = roadmap.exercice( idex )
-        @total_duree_roadmap += iex.seances_working_time
-        iex.index   = (index += 1)
-        @exercices  = @exercices.merge idex => iex
+        iex                   = roadmap.exercice( idex )
+        @exercices            = @exercices.merge idex => iex
+        @total_duree_roadmap  += duree_of idex
+        iex.index             = (index += 1)
       end
       hseances = Seance::lasts(roadmap)
       @seances = hseances[:sorted_days].collect{|jour|hseances[:seances][jour]}
-      average_working_times
-    end
-    
-    # Analyze params provided by musician
-    # 
-    def analyze_params
-      @params = @params.to_sym
-
-      # * WORKING TIME
-      #   params[:working_time]     In seconds
-      @expected_time  = params[:working_time].to_i * 60
-      debug "Temps de travail demandé : #{@expected_time.as_horloge}"
-
-      # * DIFFICULTIES (= exercice types)
-      #   params[:difficulties]
-      @types = params[:difficulties].split(',')
-      debug "Types recherchés : #{@types.inspect}"
-
-      # * OPTIONS
-      #   params[:options]:
-      #     :same_ex::        Enable to repeat a same ex (if difficulties)
-      #     :next_config::    Set next general config
-      #     :new_tone::      New tone (take last or 0 for "C")
-      #     :obligatory::     Include obligatory exercices
-      # 
-      @options = params[:options].values_str_to_real
-      debug "Options : #{@options.inspect}"
     end
     
     # Return Roadmap session
