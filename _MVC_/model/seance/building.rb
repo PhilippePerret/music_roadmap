@@ -10,7 +10,8 @@ require_model 'roadmap' unless defined?(Roadmap)
 class Seance
   class Building
   
-    DEBUG = Params::offline?
+    # DEBUG = Params::offline?
+    DEBUG = true
     
     # Seance mother
     # 
@@ -56,6 +57,9 @@ class Seance
     # 
     attr_reader :config_generale
     
+    # Pour débugger
+    # 
+    attr_accessor :no_debug
     
     # Initialize the building seance with +params+ set by the musician
     # for the current +seance+ (instance Seance)
@@ -71,7 +75,8 @@ class Seance
     # On sort en offline un fichier assez conséquent contenant les informations 
     # du traitement effectué
     def debug text
-      return if @no_debug ||= Params::online?
+      @no_debug = Params::online? if @no_debug === nil
+      return if @no_debug
       prepare_debug if @debug_ready.nil?
       text = "<div>#{text}</div>" unless text.start_with?('<')
       text.gsub!(/\n/,'<br>')
@@ -464,7 +469,9 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       nombre_exs_passes_en_revue  = 0
   
       # De la séance la plus récente à la séance la plus ancienne
-      @seances.reverse.each do |dseance|
+      @seances.each do |dseance|
+        seance_debug = "- Étude séance du #{dseance[:day]}"+
+              "\n  exercices joués pendant la séance : #{debug_ids_exercices_with_anchor(dseance[:id_exercices])}"
         if dseance[:id_exercices].nil?
           unless @no_debug
             debug "### PROBLEME SEANCE SANS id_exercices……"
@@ -473,27 +480,50 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
           next
         end
         # De l'exercice le plus récent (de la séance) à l'exercice le plus ancien
+        @list_for_debug  = []
         dseance[:id_exercices].reverse.each do |idex|
           if exs_passes_en_revue[idex].nil?
             exs_passes_en_revue[idex]   =  true
             nombre_exs_passes_en_revue  += 1
             @idexs_in_ordre_jeu         << idex
+            @list_for_debug             << idex
             # A-t-on passé tous les exercices en revue ?
             if nombre_exs_passes_en_revue == nombre_total_exercices
+              debug seance_debug+"\n  Retenus de cette séance : #{debug_ids_exercices_with_anchor(@list_for_debug )}"
               debug "-- Tous les exercices ont été passés en revue --"
+              debug "Ordre des exercices dans les séances précédentes : #{debug_ids_exercices_with_anchor(@idexs_in_ordre_jeu)}"
               return
             end
           end
         end
+        debug seance_debug+"\n  Retenus de cette séance : #{debug_ids_exercices_with_anchor(@list_for_debug )}"
+        
       end
       
-      # En cas d'absence totale de séance, on prend la liste de tous les
-      # exercices
+      
       if @idexs_in_ordre_jeu.count == 0
+
+        # En cas d'absence totale de séance, on prend la liste de tous les
+        # exercices
+
         @idexs_in_ordre_jeu = @ids_exercices
         debug "Aucune session de travail trouvée, j'utilise la liste des tous les exercices : #{debug_ids_exercices_with_anchor(@idexs_in_ordre_jeu)}"
+
       else
-        debug "Ordre des exercices dans les séances précédentes : #{debug_ids_exercices_with_anchor(@idexs_in_ordre_jeu)}"
+      
+        # On passe également ici quand un exercice n'a pas du tout été trouvé
+        # Par exemple un tout nouvel exercice. Il faut donc finaliser la liste
+        # en ajoutant ces exercices introuvables dans les sessions.
+        @list_for_debug  = []
+        @ids_exercices.each do |idex|
+          if exs_passes_en_revue[idex].nil?
+            exs_passes_en_revue[idex]   =  true
+            @idexs_in_ordre_jeu         << idex
+            @list_for_debug             << idex
+          end
+        end
+        debug "Exercices jamais joués, ajoutés à la liste : #{debug_ids_exercices_with_anchor(@list_for_debug)}"
+        
       end
       
     end
