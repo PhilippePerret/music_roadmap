@@ -176,11 +176,12 @@ window.Seance = {
     var current_indice = this.init_ordre_stack.length - this.ordre_stack.length - 1;
     if (current_indice <= 0){
       F.show(MESSAGE.Seance.no_previous_ex);
-      return false;
+      return false
     }
-    var previous_ex = this.init_ordre_stack[current_indice - 1];
-    this.ordre_stack.unshift(previous_ex, this.cur_exercice.id);
-    return this.next_exercice();
+    var previous_ex = this.init_ordre_stack[current_indice - 1]
+    this.ordre_stack.unshift(previous_ex, this.cur_exercice.id)
+    this.curex_indice -= 2
+    return this.next_exercice()
   },
   // Return true if exercices stack is empty
   no_more_exercice:function(){
