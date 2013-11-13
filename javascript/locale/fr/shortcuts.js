@@ -19,7 +19,7 @@
 window.SHORTCUTS = {
   Seance:[
     {key:'P',       effect:"Pause / Reprendre"},
-    {key:'FlecheG', effect:"Revenir au précédent"},
+    {key:'Alt FlecheG', effect:"Revenir au précédent"},
     {key:'S',       effect:"Finir la séance"},
     {key:'Espace',  effect:"Commencer / Reprendre (après pause) / Exercice suivant"}
   ]

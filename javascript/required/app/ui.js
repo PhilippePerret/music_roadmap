@@ -374,6 +374,7 @@ $.extend(UI,{
     // Retourne les images des touches
     images_keys:function(keys){
       var imgs = "";
+      if(keys.indexOf(' ') > -1) keys = keys.split(' ')
       if('string' == typeof keys) keys = [keys];
       for(var i in keys){
         var src = UI.path_image('clavier/K_'+keys[i]+'.png');
