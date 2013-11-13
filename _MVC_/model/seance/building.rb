@@ -262,6 +262,8 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       
       # Liste de TOUS les exercices dans l'ordre où ils ont été dernièrement
       # joués au cours des dernières séances.
+      # Note: Quand il n'y a pas eu encore de session, on prend toute la liste
+      #       des exercices de la roadmap
       # On doit essayer d'avoir TOUS les exercices de la roadmap, uniques dans la
       # liste.
       # Le premier est celui joué le plus récemment, le dernier le plus lointamment
@@ -270,7 +272,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       #   @idexs_in_ordre_jeu     Liste des IDs d'exercice, du plus récent au plus lointain
       # 
       get_exercices_in_ordre_in_last_seances
-
+              
       # Exercices obligatoires 
       # ----------------------
       # S'ils doivent être joués, les mettre de côté, en gardant leur temps.
@@ -287,11 +289,32 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       debug "Liste des exercices obligatoires (@mandatories) : #{debug_ids_exercices_with_anchor(@mandatories)}"
       debug "Exercices non obligatoires : #{debug_ids_exercices_with_anchor(@ids_exercices)}"
       
-      # Le temps d'exercice restant à combler.
-      # 
+      # Les temps à ce niveau de la relève
       @duree_searched = @expected_time - @duree_mandatories
       debug  "Temps consumé par les obligatoires (@duree_mandatories) : #{@duree_mandatories.as_horloge}"+
              "\nTemps à combler par les autres (@duree_searched) : #{@duree_searched.as_horloge}"
+      
+      
+      # Filtrer les exercices par difficultés
+      # 
+      # Modifie
+      # -------
+      #   @idexs_in_ordre_jeu       Retire de la liste les exercices ne correspondant pas
+      #                             aux difficultés choisies
+      # 
+      filter_exercices_per_difficulties
+      
+      
+      # À ce niveau, si aucun exercice ne correspond aux choix, on peut
+      # s'arrêter
+      if @mandatories.count == 0 && @idexs_in_ordre_jeu.count == 0
+        seance_data = @config_generale.dup
+        return seance_data.merge(
+          :working_time         => 0,
+          :suite_ids            => [],
+          :duree_moyenne_par_ex => nil
+        )
+      end
       
       # Séparation des exercices en listes :
       # 
@@ -381,7 +404,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       end_debug unless @no_debug
       
       seance_data = @config_generale.dup
-      seance_data = seance_data.merge(
+      seance_data.merge(
         :working_time         => @duree_session,
         :suite_ids            => @idexs_retenus,
         :duree_moyenne_par_ex => @time_per_exercice
@@ -463,6 +486,16 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
           end
         end
       end
+      
+      # En cas d'absence totale de séance, on prend la liste de tous les
+      # exercices
+      if @idexs_in_ordre_jeu.count == 0
+        @idexs_in_ordre_jeu = @ids_exercices
+        debug "Aucune session de travail trouvée, j'utilise la liste des tous les exercices : #{debug_ids_exercices_with_anchor(@idexs_in_ordre_jeu)}"
+      else
+        debug "Ordre des exercices dans les séances précédentes : #{debug_ids_exercices_with_anchor(@idexs_in_ordre_jeu)}"
+      end
+      
     end
 
     
@@ -639,7 +672,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     # Ou d'une liste d'exercices
     def duree_of idex
       if idex.class == Array
-        idex.collect{|id| duree_of_exercice id}.inject(:+)
+        idex.collect{|id| duree_of_exercice id}.inject(:+) || 0
       else
         duree_of_exercice idex
       end
@@ -667,31 +700,39 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
 
     # Filter @ids_exercices to keep only the exercices of required difficulties
     # 
-    # * PRODUCTS
-    #   @ids_exercices    Liste of exercices of difficulties
+    # PRODUIT
+    # -------
     #   @others_idex      Other ids (if option :same_ex is false, we'll need this
     #                     exercice to fit the time)
+    # MODIFIE
+    # -------
+    #   @idexs_in_ordre_jeu     Liste des IDs exercices en cours de traitement
+    #   @ids_exercices          Liste des IDs exercices (qui serviront à combler le temps)
+    # 
     def filter_exercices_per_difficulties
       @others_idex      = [] 
       return if types.empty?
       new_ids_exercices = []
-      ids_exercices.each do |idex|
-        typesex = exercices[idex].data['types']
-        if typesex.nil?
-          @others_idex << idex
-        else
-          type_found = false
+      @idexs_in_ordre_jeu.each do |idex|
+        typesex = @exercices[idex].data['types']
+        type_found = false
+        unless typesex.nil?
           types.each do |type|
             if typesex.include? type
-              new_ids_exercices << idex
               type_found = true
               break
             end
           end
-          @others_idex << idex unless type_found
+        end
+        if type_found
+          new_ids_exercices << idex
+        else
+          @others_idex << idex 
         end
       end
-      @ids_exercices = new_ids_exercices
+      @idexs_in_ordre_jeu = new_ids_exercices
+      @ids_exercices      = new_ids_exercices
+      debug "Exercices filtrés par catégories : #{debug_ids_exercices_with_anchor(@idexs_in_ordre_jeu)}"
     end
 
     # Return general configuration
