@@ -350,12 +350,14 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       # ICI, @idexs_retenus contient les exercices les plus anciens (du plus ancien
       # au plus récent), à concurrence de la moitié du temps cherché.
       # Il va donc falloir ajouter des exercices pour atteindre le temps voulu.
-      # On les prend dans les récents pour mieux mélanger les exercices
+      # 
+      # Pour mieux mélanger les exercices, on ajoute quelques anciens des récents aux
+      # anciens, on les mélange et on choisit jusqu'au temps recherché
       # 
       # Rappel : @idexs_recents est dans l'ordre du plus récent au plus lointain
       # 
       ajouter_anciens_des_recents
-      debug "Liste des exercices “retenus” (@idexs_retenus) après ajout des plus anciens des récents jusqu'au temps voulu (ou fin de liste): #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
+      debug "Liste des exercices “retenus” (@idexs_retenus) après ajout : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
             "\nDurée : #{(duree_of @idexs_retenus).as_horloge}"
       
       # ICI, la liste des exercices retenus est établie.
@@ -367,10 +369,10 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       # 
       # NOTE
       # 
-      #   La méthode `duree_correcte' produit la valeur @duree_des_retenus qui contient
+      #   La méthode `duree_correcte?' produit la valeur @duree_des_retenus qui contient
       #   la durée actuelle des exercices retenus.
       # 
-      unless duree_correcte || !repetition_exercices
+      if !duree_correcte? && repetition_exercices
         ajouter_exercices_up_to_time_searched 
         debug "Liste des exercices “retenus” (@idexs_retenus) après ajout pour atteindre le temps désiré : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
               "\nDurée : #{(duree_of @idexs_retenus).as_horloge}"
@@ -380,8 +382,6 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       # ----------------------
       @idexs_retenus      += @mandatories
       @duree_des_retenus  += @duree_mandatories
-      debug "LISTE FINALE (non mélangée ou triée) à travailler au cours de la séance : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"
-      debug "Temps obtenu (sera vérifié ci-dessous) : #{@duree_des_retenus.as_horloge}"
       
       # Mélanger les exercices si l'option :aleatoire a été choisie
       # Ou les classer dans l'ordre dans le cas contraire
@@ -390,7 +390,8 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       else
         classe_liste_des_retenus
       end
-      debug "LISTE FINALE (#{ordre_aleatoire ? 'MÉLANGÉE' : 'CLASSÉE' }) à travailler au cours de la séance : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"
+      debug "LISTE FINALE (#{ordre_aleatoire ? 'MÉLANGÉE' : 'CLASSÉE' }) à travailler au cours de la séance : #{debug_ids_exercices_with_anchor(@idexs_retenus)}"+
+            "\nTemps obtenu (sera vérifié ci-dessous) : #{@duree_des_retenus.as_horloge}"
       
       # On produit @time_per_exercice qui doit renvoyer à l'application les
       # durée de jeu par exercice
@@ -402,6 +403,20 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
         @duree_session            += (duree_of idex)
         @time_per_exercice[idex]  =  (duree_of idex)
       end
+      
+      # Non nécessaire mais sympa, pour indiquer les exercices rejoués
+      # de la session précédente (dans l'idéal, il ne devrait y en avoir aucun, si les exercices
+      # sont assez nombreux, mais le mélange fait dans `ajouter_anciens_des_recents` a permis
+      # d'en mettre quand même).
+      idexs_last_seance = @seances[0][:id_exercices]
+      idexs_des_rejoues = []
+      @idexs_retenus.each do |idex|
+        next if idexs_last_seance.index(idex) === nil
+        idexs_des_rejoues << idex
+      end
+      debug "Liste des exercices rejoués (de la dernière session) : #{debug_ids_exercices_with_anchor(idexs_des_rejoues)}"
+      
+      
       debug "DURÉE TOTALE CALCULÉE à partir des exercices retenus : #{@duree_session.as_horloge}"
       debug "\n\n\n =========================================================== \n\n\n"
       
@@ -412,6 +427,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       seance_data.merge(
         :working_time         => @duree_session,
         :suite_ids            => @idexs_retenus,
+        :idexs_rejoues        => idexs_des_rejoues,
         :duree_moyenne_par_ex => @time_per_exercice
       )
     end
@@ -608,17 +624,31 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     
     # Ajoute à @idexs_retenus des exercices jusqu'à atteindre le temps cherché (ou
     # la fin de la liste)
-    # Note: Si on n'atteint pas le temps voulu, on pioche dans les anciens mis de
-    #       côté.
     def ajouter_anciens_des_recents
-      # On ajoute parmi les plus anciens des récents, à concurrence du temps cherché
-      # On ne doit pas dépasser le temps cherché de plus de 10 minutes, ni être 
-      # en dessous de moins de 10 minutes
-      return if add_to_retenus_from_up_to_duree_searched @idexs_recents
-      # Si on arrive ici, c'est que les récents n'ont pas suffit à 
-      # combler le temps. On procéde de la même manière avec les anciens
-      # mis de côté (@idexs_anciens)
-      add_to_retenus_from_up_to_duree_searched @idexs_anciens.reverse
+      # Temps 1 : prendre parmi les récents un certain nombre d'IDs
+      #           et les ajouter aux anciens restants
+      #           Question : combien ? Sur quel critère ?
+      #           Réponse : pour un durée égale à un tiers du temps des
+      #           anciens.
+      duree_anciens = (duree_of @idexs_anciens)
+      debug "Durée des anciens : #{duree_anciens.as_horloge}"
+      duree_a_atteindre = duree_anciens + (duree_anciens/3)
+      debug "Durée à atteindre en ajoutant des récents (les plus anciens) : #{duree_a_atteindre.as_horloge}"
+      while duree_anciens < duree_a_atteindre
+        id_vieux_recent = @idexs_recents.pop
+        @idexs_anciens  << id_vieux_recent
+        duree_anciens   += (duree_of id_vieux_recent)
+      end
+      debug "Liste d'anciens auxquels ont été ajoutés des vieux récents : #{debug_ids_exercices_with_anchor @idexs_anciens}"
+      # Temps 2 : Mélanger la liste obtenue
+      @idexs_anciens.shuffle!
+      debug "La même mélangée : #{debug_ids_exercices_with_anchor @idexs_anciens}"
+      # Temps 3 : Prendre dans cette liste à concurrence du temps cherché
+      # Note : on est obligé d'arriver au temps recherché puisque normalement
+      # les anciens seuls (avec les retenus) durent le temps recherché (c'est comme ça
+      # qu'ils ont été choisis). Mais il se peut que la roadmap ne contienne pas assez
+      # d'exercice (ils seront ajoutés, si la répétition est possible, plus tard)
+      add_to_retenus_from_up_to_duree_searched @idexs_anciens
     end
     
     # Ajoute à la liste @idexs_retenus (exercices retenus) les exercices
@@ -648,20 +678,21 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     # temps voulu.
     # 
     # Note :  ici, @duree_des_retenus contient la durée des exercices retenus
-    #         (calculé par duree_correcte)
+    #         (calculé par duree_correcte?)
     # Note :  On cherche ces exercices aussi bien dans les obligatoires que les
     #         autres. Noter quand même que le filtre difficultés s'applique, les
     #         "mauvais" exercices ont été retirés de @ids_exercices.
     # 
     def ajouter_exercices_up_to_time_searched
-      (@mandatories + @ids_exercices).each do |idex|
+      peek_list = (@mandatories + @ids_exercices).shuffle
+      peek_list.each do |idex|
         duree_tested = @duree_des_retenus + (duree_of idex)
         if duree_tested > (@duree_searched + dix_minutes)
           # on le passe car il est trop long
         else
           @idexs_retenus      << idex
           @duree_des_retenus  = duree_tested
-          return if @duree_des_retenus > (@duree_searched - cinq_minutes)
+          return if @duree_des_retenus >= @duree_searched
         end
       end
       
@@ -686,9 +717,12 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     
     # Return TRUE si la durée actuelle des exercices retenus (@idexs_retenus) est
     # suffisante mais pas trop grande
-    def duree_correcte
+    def duree_correcte?
       @duree_des_retenus = (duree_of @idexs_retenus)
-      return @duree_des_retenus > (@duree_searched + cinq_minutes) && @duree_des_retenus < (@duree_searched + dix_minutes)
+      debug "Dans duree_correcte ? "+
+            "\n@duree_searched : #{@duree_searched.as_horloge}"+
+            "\n@duree_des_retenus : #{@duree_des_retenus.as_horloge}"
+      return @duree_des_retenus >= @duree_searched && @duree_des_retenus < (@duree_searched + dix_minutes)
     end
     
     def cinq_minutes
