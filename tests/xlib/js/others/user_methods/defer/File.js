@@ -50,7 +50,7 @@ Object.defineProperties(_TFile.prototype, {
   "error_call_before":{
     value:function(fct_before, fct_after)
     {
-      this.error(fct_after + LOCALES.errors['must be call before'] + fct_before)
+      this.error(fct_before + LOCALES.errors['must be call before'] + fct_after)
     }
   },
 
@@ -299,7 +299,11 @@ Object.defineProperties(_TFile.prototype, {
       }, $.proxy(this.suite_seek, this), $.proxy(this.wait_function, this))    
     }
   },
-  "seek":{get:function(){this.seek_and()}
+  "seek":{get:function()
+    {
+      console.log("-> File.seek")
+      this.seek_and()
+    }
   },
   "suite_seek":{
     value:function(rajax)

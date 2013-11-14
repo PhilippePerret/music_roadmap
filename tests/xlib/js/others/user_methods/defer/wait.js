@@ -280,6 +280,8 @@ Object.defineProperties(_ObjetWaitUntilFile,{
     {
       Wait.traite_options(options)
       this.tested_file  = file(this.path)
+      console.log("-> exists_and OK (tested_file:"+this.tested_file.path+")")
+      console.log("Wait.options :");console.dir(Wait.options);console.log("/Wait.options")
   		this.stop_time    = (new Date()).valueOf() + 20 * 1000
       // On check le fichier
       this.tested_file._script = {}
@@ -294,13 +296,16 @@ Object.defineProperties(_ObjetWaitUntilFile,{
       clearTimeout( this.timer )
       if( this.condition == this.tested_file.exists )
       { 
+        // OK
+        console.log("-> retour_exists OK (tested_file:"+this.tested_file.path+")")
         delete this.tested_file
-        Wait.stop_check(false)
+        Wait.stop_check(true)
       }
       else
       {
         if((new Date()).valueOf() >= this.stop_time )
         { 
+          // Échec
           delete this.tested_file
           failure(LOCALES.wait['wait for file ' + (this.condition?'existence':'non existence')] +"`"+ this.path+"`")
           Wait.stop_check(false)
@@ -313,6 +318,7 @@ Object.defineProperties(_ObjetWaitUntilFile,{
   "wait_and_seek":{
     get:function()
     {
+      console.log("[Wait]-> wait_and_seek")
       me = this
       this.timer = setTimeout(function(){
         me.tested_file.seek_poursuivre = $.proxy(me.retour_exists, me)

@@ -517,7 +517,9 @@ _PropertiesMainTestFunction = {
 	// Pour pouvoir utiliser `<fct>.wait` au lieu de `Wait`
 	"wait":{
 		get:function(){
-      // this.waiting = true // Maintenant, c'est Wait qui s'en charge
+      // Mais si Wait s'en charge aussi, il faut le faire tout de suite
+      // pour interrompre la fonction
+      this.waiting = true
 			window.Wait.attached_script = this.script
       return window.Wait
 		}
