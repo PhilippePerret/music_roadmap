@@ -7,6 +7,10 @@
       },
       <function pour suivre || options >
       )
+    Wait.until_file_exists(path, options)
+      Attend jusqu'à ce que le fichier path existe
+    Wait.while_file_exists(path, options)
+      Attend que le fichier +path+ n'existe plus
     Wait.while(function(){
         // Le code qui doit renvoyer false pour interrompre l'attente
       },
@@ -71,6 +75,7 @@ window.Wait = {
   //          traite_options
   // 
   for:function(nombre_secondes, options, message){
+    this.pause_script_if_any()
     this.reset()
     if(undefined != message) this.options = {message:message}
 		this.traite_options(options);
@@ -82,13 +87,35 @@ window.Wait = {
     this.timer = setTimeout("Wait.fin_ok()", nombre_secondes * 1000);
   },
   until:function(fct_test, options){
+    this.pause_script_if_any()
     this.run_wait(fct_test, options, 'true')
   },
   while:function(fct_test, options){
+    this.pause_script_if_any()
     this.run_wait(fct_test, options, 'false')
   },
+  // until_file_exists:function(path, options)
+  // {
+  //   this.run_wait_for_file(path, options, true)
+  // },
+  // while_file_exists:function(path, options)
+  // {
+  //   this.run_wait_for_file(path, options, false)
+  // },
 	// Fin des méthodes appelables
 	// --------------------------------------------------------
+  
+  // Met la Main Test Fonction en "pause" si un script
+  // est attaché à l'appel de Wait
+  // @note: Cela consiste à mettre fonction.waiting à true
+  //        fonction.waiting sera remis à false à la fin du 
+  //        check de Wait.
+  pause_script_if_any:function()
+  {
+    if(undefined == this.attached_script) return
+    this.attached_script.fonction.pause
+  },
+  
 
 	// Traite les options envoyées à la méthode
 	traite_options:function(opts){
@@ -115,6 +142,42 @@ window.Wait = {
     this.timer      = setTimeout("Wait.check("+this.condition+")", this.laps );
     if(undefined!=this.options.message) w(this.options.message+"…",SYSTEM);
   },
+  
+  // run_wait_for_file:function(path, options, condition)
+  // {
+  //   if(undefined == this.tested_file)
+  //   {
+  //     this.reset()
+  //     this.traite_options(options)
+  //     this.condition    = condition
+  //     this.tested_file  = file(path)
+  //     this.start_time   = (new Date()).valueOf()
+  //     this.test = LOCALES.wait['wait for file ' + (condition?'existence':'non existence')] +"`"+ path+"`";
+  //     this.calcul_stop_time()
+  //     // On check le fichier
+  //     this.tested_file._script = {}
+  //     this.tested_file.seek_poursuivre = $.proxy(this.run_wait_for_file, this)
+  //     this.tested_file.seek
+  //   }
+  //   else
+  //   {
+  //     clearTimeout(this.timer)
+  //     if( this.condition == this.tested_file.exists )
+  //     { 
+  //       delete this.tested_file
+  //       this.fin_ok()
+  //     }
+  //     else
+  //     {
+  //       if((new Date()).valueOf() >= this.stop_time )
+  //       { 
+  //         delete this.tested_file
+  //         return this.waiting_too_long()
+  //       }
+  //       else this.tested_file.seek
+  //     }
+  //   }
+  // },
 	// Calcul le temps de fin en fonction des options
 	calcul_stop_time:function(){
 		this.stop_time = this.start_time + this.max_waiting_time;
@@ -125,20 +188,22 @@ window.Wait = {
       if( this.test() === condition ) 
         return this.fin_ok();
       else{
-        if((new Date()).valueOf() >= this.stop_time ) {
-          var mess ;
-          if (undefined != this.options.failure_message) mess = this.options.failure_message
-          else mess = LOCALES['waiting too long on']+
-                      this.test.toString()+" (> "+(parseInt(this.max_waiting_time/1000,10)) +
-                      " secondes)"
-          return this.fin_not_ok(mess, WARNING+" SFP");
-        }
+        if((new Date()).valueOf() >= this.stop_time ) return this.waiting_too_long()
         else this.poursuit_wait();
       }
     }catch(erreur){
 			// if('object'==typeof erreur && erreur.type == 'regular_error')
       throw erreur
     }
+  },
+  waiting_too_long:function()
+  {
+    var mess ;
+    if (undefined != this.options.failure_message) mess = this.options.failure_message
+    else mess = LOCALES.errors['waiting too long on']+
+                this.test.toString()+" (> "+(parseInt(this.max_waiting_time/1000,10)) +
+                " secondes)"
+    return this.fin_not_ok(mess, WARNING+" SFP");
   },
   poursuit_wait:function(){
     clearTimeout(this.timer);
@@ -147,6 +212,7 @@ window.Wait = {
 	// Fin successful. Si une méthode `options.success` est définie, on la joue avant de
 	// poursuivre.
   fin_ok:function(){
+    // w("-> Wait.fin_ok")
 		if('function' == typeof this.options.success) this.options.success(true)
     else if (undefined != this.options.success_message) w(this.options.success_message, GREEN+" SFP")
 		this.stop_check( true )
@@ -171,9 +237,87 @@ window.Wait = {
   			if('undefined' != typeof this.options.next_stop_point){ 
           this.attached_script.arg = this.options.next_stop_point}
         else if('undefined' != typeof this.options.arg ) this.attached_script.arg = this.options.arg
+        this.attached_script.fonction.stop_pause
   			this.attached_script.run
       }
 		}
   }
   
 }
+
+
+/*  Méthodes permettant d'utiliser les tournures :
+ *
+ *    <fct>.wait.until.file(<path>).exists
+ *    <fct>.wait.while.file(<path>).exists
+ *    <fct>.wait.while.file(<path>).exists_and(<arg>)
+ *    <fct>.wait.until.file(<path>).exists_and(<arg>)
+ */
+Wait.until.file = function(path){return Wait.until_or_while_file(path, true)}
+Wait.while.file = function(path, options){return Wait.until_or_while_file(path, false)}
+Wait.until_or_while_file = function(path, condition)
+{
+  this.path = path
+  var obj       = _ObjetWaitUntilFile
+  obj.path      = path
+  obj.condition = condition
+  return obj
+}
+_ObjetWaitUntilFile = {}
+Object.defineProperties(_ObjetWaitUntilFile,{
+  // La première méthode atteinte par :
+  //  <fct>.wait.until.file(...).exist
+  "exists":{
+    get:function()
+    {
+      this.exists_and({})
+    }
+  },
+  // La même que la précédente mais permet de passer des options
+  // à Wait, par exemple pour passer au stop-point suivant
+  "exists_and":{
+    value:function(options)
+    {
+      Wait.traite_options(options)
+      this.tested_file  = file(this.path)
+  		this.stop_time    = (new Date()).valueOf() + 20 * 1000
+      // On check le fichier
+      this.tested_file._script = {}
+      this.wait_and_seek
+    }
+  },
+  // Méthode appelée par File.seek après avoir été voir si le fichier
+  // existait.
+  "retour_exists":{
+    value:function()
+    {
+      clearTimeout( this.timer )
+      if( this.condition == this.tested_file.exists )
+      { 
+        delete this.tested_file
+        Wait.stop_check(false)
+      }
+      else
+      {
+        if((new Date()).valueOf() >= this.stop_time )
+        { 
+          delete this.tested_file
+          failure(LOCALES.wait['wait for file ' + (this.condition?'existence':'non existence')] +"`"+ this.path+"`")
+          Wait.stop_check(false)
+        }
+        else this.wait_and_seek
+      }
+    }
+  },
+  // Pour attendre un peu avant de refaire le test
+  "wait_and_seek":{
+    get:function()
+    {
+      me = this
+      this.timer = setTimeout(function(){
+        me.tested_file.seek_poursuivre = $.proxy(me.retour_exists, me)
+        me.tested_file.seek
+      }, 1000)
+    }
+  }
+})

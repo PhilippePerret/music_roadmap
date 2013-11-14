@@ -128,6 +128,10 @@ window.LOCALES = {
     
 		
 	},
+  wait:{
+    'wait for file existence'         :"Attente sur l'existence du fichier ",
+    'wait for file inexistence'       :"Attente de la disparition du fichier "
+  },
 	errors:{
     'must be call before'             : " doit être appelé avant ",
     'data must be provided'           : " Des données doivent être fournies ",

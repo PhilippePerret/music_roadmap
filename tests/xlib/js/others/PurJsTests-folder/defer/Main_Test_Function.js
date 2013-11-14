@@ -28,10 +28,22 @@ _PropertiesMainTestFunction = {
 	  get:function(){
       // console.log("\n-\n[MainTestFunction]--> run ("+this.name+")")
       
+      if(this.waiting) return
+
       // Définition de l'étape à jouer (ou fin)
-      if( false == this.define_work ) return this.end
+      if( false == this.define_work )
+      { 
+        // w("Dans MainTestFunction.run, j'appelle this.end")
+        return this.end
+      }
       
+      // if(this.waiting) return
       // console.log("Indice après define_work : "+this.script.curstep_indice)
+      
+      // Si un before_each est défini, on le joue
+      this.before_each
+
+      if(this.waiting) return
       
       // On joue soit l'étape courante (si elles ont été définies), soit
       // on appelle simplement la Fonction Principale de Test.
@@ -45,6 +57,7 @@ _PropertiesMainTestFunction = {
         // console.log("curstep NON DÉFINI => fonction jouée")
         this.script.fonction()
       }
+      if(this.waiting) return
       
       // Après avoir joué l'étape ou la fonction, on finit l'étape
       // Dans la marche courante, cela provoquera un throw qui rappellera la méthode
@@ -58,7 +71,7 @@ _PropertiesMainTestFunction = {
   // rien et s'en retourne).
 	"define_work":{
 		get:function(){
-
+      // w('-> define_work')
 			// Interruption forcée du test
 			if(Test.stop){
 				this.script.stop_point 	= -1
@@ -123,7 +136,7 @@ _PropertiesMainTestFunction = {
   "after_all":{
     set:function(fct)
     {
-      if(this._after_all) return // rien à faire si on repasse par là
+      if(this._after_all) return
       this._after_all = fct
     },
     get:function()
@@ -132,6 +145,46 @@ _PropertiesMainTestFunction = {
     }
   },
   
+  // Définit et exécute le code avant et après chaque étape
+  "before_each":{
+    get:function()
+    {
+      // TODO: Ici, il faut ajouter le test pour savoir si c'est un
+      // stop-point qui doit être joué => pas de before each
+      if(this._before_each && !this.script.stop_point) this._before_each()
+    },
+    // Définition du before_each
+    // @note: On la joue aussi tout de suite, puisqu'on arrive dans le test
+    set:function(fct)
+    {
+      if(this._before_each) return // pour ne pas redéfinir chaque fois
+      this._before_each = fct
+      fct()
+    }
+  },
+  "after_each":{
+    get:function()
+    {
+      if(this._after_each && !this._after_each_ok)
+      {
+        this._after_each()
+        this._after_each_ok = true // Pour ne pas répéter (car deux appels)
+          // Note:  Ces deux appels sont nécessaires pour gérer le cas des waiting.
+          //        TODO: Mais je trouve tout ça lourd, c'est à repenser (en tenant
+          //              bien compte du fait que la difficulté vient de la gestion
+          //              des stop-points qui ne doivent pas générer de after_each)
+      } 
+    },
+    set:function(fct)
+    {
+      if(this._after_each)
+      {
+        this._after_each_ok = false // réinitialisation chaque fois
+        return // pour ne pas redéfinir chaque fois
+      }
+      this._after_each = fct
+    }
+  },
   // Écrit une marque de stop point dans le rapport
   // 
   // Cette méthode est appelée de façon automatique quand un argument (arg) nombre est
@@ -139,7 +192,7 @@ _PropertiesMainTestFunction = {
   "mark_stop_point":{
     value:function(indice_stop_point){
       if(undefined == indice_stop_point) indice_stop_point = this.script.stop_point
-      blue("•> "+indice_stop_point)
+      w("•"+indice_stop_point, BLUE)
     }
   },
   // Définit l'étape à jouer
@@ -150,6 +203,14 @@ _PropertiesMainTestFunction = {
       // Incrémentation de l'indice d'étape (0-start)
       ++ this.script.curstep_indice
       
+      if(this.script.curstep_indice > 0)
+      {
+        // Si un after_each est défini, on le joue
+        // Question: Ne devrait-on pas le mettre dans `end_step' ?
+        this.after_each
+      
+      }
+      
       if (this.script.curstep_indice >= this.script.number_of_steps)
       {
         // Si l'indice d'étape (0-start) est supérieur ou égale au nombre d'étapes,
@@ -157,6 +218,7 @@ _PropertiesMainTestFunction = {
         // On écrit la fin de la fonction est on arrête
         if (this.script.curstep_indice == this.script.number_of_steps)
         {
+          // TODO: Voir pourquoi ce cas n'est jamais appelé
   				step("FIN DU TEST `" + this.script.function_name + "`")
   			}
         return false //this.end
@@ -265,9 +327,12 @@ _PropertiesMainTestFunction = {
   },
   
   // Retourne LE NOM de l'étape courante
-  // Utile si on utilise une formule en switch/case
+  // Utile dans une formule en switch/case (`switch(my.step)`)
   "step":{
-    get:function(){return this.curstep.name}
+    get:function()
+    {
+      return this.curstep.name
+    }
   },
   
   // Écrit le STOP POINT dans le rapport et le retourne
@@ -276,8 +341,12 @@ _PropertiesMainTestFunction = {
   // pour connaitre le stop point courant.
   "stop_point":{
     get:function(){
-      this.mark_stop_point(this.script.stop_point || 1)
-      return this.script.stop_point || 1
+      if(!this.script.stop_point) this.script.stop_point = 1
+      this.mark_stop_point(this.script.stop_point)
+      return this.script.stop_point
+      // --- Remettre le code ci-dessous s'il ne faut pas redéfinir le stop point ---
+      // this.mark_stop_point(this.script.stop_point || 1)
+      // return this.script.stop_point || 1
     }
   },
   // Return TRUE si c'est la dernière étape
@@ -305,15 +374,15 @@ _PropertiesMainTestFunction = {
 			return is_this_point
 		}
 	},
-	// Permet de rappeler la fonction principale de test avec un argument.
-	// @note: 	Pour le moment, cet argument doit être unique
-	// 					Soit un nombre 		=> point d'arrêt (stop_point)
-	// 					Soit une méthode 	=> définition de la méthode pour suivre le test
-	// 					Soit un string		=> l'étape à prendre
-  // @todo: DOIT DEVENIR OBSOLÈTE
-	"as_proxy":{
-		value:function(arg){return $.proxy(this.script.fonction, this.script, arg)}
-	},
+  // // Permet de rappeler la fonction principale de test avec un argument.
+  // // @note:   Pour le moment, cet argument doit être unique
+  // //           Soit un nombre     => point d'arrêt (stop_point)
+  // //           Soit une méthode   => définition de la méthode pour suivre le test
+  // //           Soit un string    => l'étape à prendre
+  //   // @todo: DOIT DEVENIR OBSOLÈTE
+  // "as_proxy":{
+  //   value:function(arg){return $.proxy(this.script.fonction, this.script, arg)}
+  // },
   // Return true lorsque la liste des étapes n'est pas encore défini
   // 
   // @note:   Normalement, on n'a pas besoin de ce test puisque la méthodes `set_step_list_to'
@@ -329,12 +398,13 @@ _PropertiesMainTestFunction = {
   // Noter qu'elles ne s'écrivent pas si NO_TEST est à true. C'est utile pour les appels
   // de synopsis quand ils doivent rester invisibles.
   // 
-  // @usage       <fonction>.specs = "Les spécificités"
+  // @usage       <fonction>.specs = "Les spécificités du test"
   // 
 	"specs":{
 	  set:function(specs){
-      if(undefined != this.script._step_list || Test.NO_TEST) return
+      if(this._specs_ok || Test.NO_TEST) return
 	    window.specs(specs)
+      this._specs_ok = true
 	  }
 	},
   // La méthode est appelée de façon automatique. On doit vérifier
@@ -345,6 +415,21 @@ _PropertiesMainTestFunction = {
   // 
 	"end_step":{
 		value:function(arg){
+
+      // Je ne joue le AFTER_EACH (si défini) que si on ne se trouve pas dans
+      // un switch de stop-point.
+      // NOTE:  Mais la condition ci-dessous est assez lourde puisque l'on utilise
+      //        un test sur `Wait' pour le savoir. Mais quid si un jour j'utilise 
+      //        un autre objet d'attente ? Ou alors, imposer au programme d'utiliser
+      //        `Wait', systématiquement, comme objet d'attente (comme je le fais pour
+      //        les fichiers — Wait.until.file(path).exists)
+      // NOTE:  Un deuxième appel existe (chercher `this.after_each` dans ce document),
+      //        mais il est zappé par les `this.waiting`.
+      if(!(Wait.options && Wait.options.next_stop_point))
+      { 
+        this.after_each
+      }
+      
       if(this.waiting) return
       
       if(undefined == this.script._step_list){
@@ -353,11 +438,27 @@ _PropertiesMainTestFunction = {
         // return Test.end()
         return this.end
       }
-      if(undefined == arg) delete this.script.arg
-      else this.script.arg = arg
+      if(undefined == arg)
+      { 
+        // w("Dans undefined == arg")
+        delete this.script.arg
+      }
+      else
+      { 
+        // w("Dans this.script.arg = arg")
+        this.script.arg = arg
+      }
       
-      if(this.is_last_step) this.end
-			else this.throw
+      if(this.is_last_step)
+      {
+        // Fin du script
+        this.end
+      } 
+			else
+      { 
+        // w("Ici vraiment une fin d'étape ?")
+        this.throw
+      }
 		}
 	},
   // Retourne l'argument passé
@@ -407,18 +508,31 @@ _PropertiesMainTestFunction = {
 			else Test.end()
 		}
 	},
+	
+	/* -------------------------------------------------------------------
+   *
+	 *    Méthodes pour les tests
+   *
+	 ------------------------------------------------------------------- */
 	// Pour pouvoir utiliser `<fct>.wait` au lieu de `Wait`
 	"wait":{
 		get:function(){
-      this.waiting = true
+      // this.waiting = true // Maintenant, c'est Wait qui s'en charge
 			window.Wait.attached_script = this.script
-			return window.Wait
+      return window.Wait
 		}
 	},
-	
-	/* -------------------------------------------------------------------
-	 *
-	 */
+  
+  "suite":{
+    get:function(){ this.wait.for(0) }
+  },
+  "suite_with":{
+    value:function(arg)
+    { 
+      arg = [0, arg]
+      this.wait.for.apply(Wait, arg) 
+    }
+  },
 	// Pour lancer un synopsis en librairie
   // @param   synopsis          Path relatif depuis user_lib/js/synopsis (avec ou sans extension)
   // @param   own_argument      L'argument optionnel à conserver pour le retour. Par exemple
@@ -484,7 +598,16 @@ _PropertiesMainTestFunction = {
 		get:function(){
 			throw {type:'regular_error'}
 		}
-	}
+	},
+  "pause":{
+    get:function()
+    { 
+      this.waiting = true
+    }
+  },
+  "stop_pause":{
+    get:function(){this.waiting = false}
+  }
 
 	
 }

@@ -123,9 +123,13 @@ window.LOCALES = {
     'loading sandbox'     : "Loading your sandbox…",
 		'cant be stringify'		: " can't be stringified with JSON ",
     
-    'no error thrown'     : "no error thrown"
+    'no error thrown'     : "no error thrown",
 		
 	},
+  wait:{
+    'wait for file existence':"Waiting for file to exist ",
+    'wait for file inexistence':"Waiting for file not to exist "
+  },
 	errors:{
     'must be call before'             :" must be called before ",
     'data must be provided'           : " Some data must be provided ",

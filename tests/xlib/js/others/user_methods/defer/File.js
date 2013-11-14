@@ -82,7 +82,7 @@ Object.defineProperties(_TFile.prototype, {
   "poursuit":{
     get:function()
     { 
-      this._script.run
+      this.script.run
     }
   },
   
@@ -215,7 +215,7 @@ Object.defineProperties(_TFile.prototype, {
     {
       this.fonction.waiting = true
       this._script.arg      = arg
-      Test.write("Writing code in `"+this.path+"`… ")
+      // Test.write("Writing code in `"+this.path+"`… ")
       Ajax.send({
         script:'file/write', 
         path:this.path, 
@@ -226,7 +226,7 @@ Object.defineProperties(_TFile.prototype, {
   "suite_write":{
     value:function(rajax)
     {
-      Test.write(rajax.ok ? "OK" : "NOT OK")
+      // Test.write(rajax.ok ? "OK" : "NOT OK")
       this._written = rajax.ok
       if(!rajax.ok) this.error("Unabled to write file "+this.path+": "+rajax.message)
       this.poursuit
@@ -237,7 +237,7 @@ Object.defineProperties(_TFile.prototype, {
     {
       this.fonction.waiting = true
       this._script.arg      = arg
-      Test.write("Loading file `"+this.path+"`… ")
+      // Test.write("Loading file `"+this.path+"`… ")
       Ajax.send({script:'file/load', path:this.path}, $.proxy(this.suite_load,this));
     }
   },
@@ -246,7 +246,7 @@ Object.defineProperties(_TFile.prototype, {
   "suite_load":{
     value:function(rajax)
     {
-      Test.write(rajax.ok ? "OK" : "NOT OK")
+      // Test.write(rajax.ok ? "OK" : "NOT OK")
       this._loaded = rajax.ok
       if(rajax.ok) this._content = rajax.file_content.stripSlashes()
       if('function' == typeof this.load_poursuivre) this.load_poursuivre()
@@ -258,7 +258,7 @@ Object.defineProperties(_TFile.prototype, {
     {
       this.fonction.waiting = true
       this._script.arg      = arg
-      Test.write("Deleting file `"+this.path+"`… ")
+      // Test.write("Deleting file `"+this.path+"`… ")
       Ajax.send({script:'file/delete', path:this.path}, $.proxy(this.suite_delete,this));
     }
   },
@@ -267,7 +267,7 @@ Object.defineProperties(_TFile.prototype, {
   "suite_delete":{
     value:function(rajax)
     {
-      Test.write(rajax.ok ? "OK" : "NOT OK…")
+      // Test.write(rajax.ok ? "OK" : "NOT OK…")
       this._deleted = rajax.ok
       this.poursuit
     }
@@ -282,14 +282,17 @@ Object.defineProperties(_TFile.prototype, {
   // 
   // -------------------------------------------------------------------
   "wait_function":{
-    value:function(){this.fonction.waiting = true}
+    value:function()
+    {
+      if( this.fonction ) this.fonction.waiting = true
+    }
   },
   "seek_and":{
     value:function(arg)
     {
-      this.fonction.waiting = true
+      this.wait_function()
       this._script.arg = arg
-      Test.write("Seeking `"+this.path+"` file… ")
+      // Test.write("Seeking `"+this.path+"` file… ")
       Ajax.send({
         script:'file/seek', 
         path:this.path
@@ -301,7 +304,7 @@ Object.defineProperties(_TFile.prototype, {
   "suite_seek":{
     value:function(rajax)
     {
-      Test.write(rajax.ok ? "OK" : "NOT OK")
+      // Test.write(rajax.ok ? "OK" : "NOT OK")
       this._exists = rajax.file_exists
       if(this._exists)
       {

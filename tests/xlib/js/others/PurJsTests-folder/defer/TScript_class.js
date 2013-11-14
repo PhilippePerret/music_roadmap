@@ -87,8 +87,7 @@ Object.defineProperties(TScript.prototype, {
 			
 			// === FONCTION PRINCIPALE DE TEST JOUÉE ===
 			
-      // J'ajoute une protection pour empêcher la répétition de la même
-      // étape ou un trop grand appel du script
+      // -- Protection anti-répétion --
       ++ this.nombre_appels
       if(this.nombre_appels > this.NOMBRE_MAX_APPELS){
         throw "TROP GRAND NOMBRE D'APPELS DU SCRIPT. JE BREAKE"
@@ -98,27 +97,36 @@ Object.defineProperties(TScript.prototype, {
       
 			try{        
         
-        this.fonction.run
+        /* if(!this.fonction.waiting) */ this.fonction.run
         /*
-         * Normalement, ici, la liste des étapes devrait avoir été définie.
-         * Mais ça n'est pas toujours le cas lorsque le script ne contient qu'une seule
-         * étape. Dans ce cas, lorsque le script ne possède pas de boucle d'attente, ça
-         * ne pose pas de problème (vrai avec un synopsis ?) mais dans le cas contraire,
-         * le début du script est appelé en boucle. Donc cette propriété permet, dans next_step
-         * de savoir s'il y aura vraiment une étape suivante.
+         *  Normalement, ici, la liste des étapes devrait avoir été définie.
+         *  Mais ça n'est pas toujours le cas lorsque le script ne contient qu'une seule
+         *  étape. Dans ce cas, lorsque le script ne possède pas de boucle d'attente, ça
+         *  ne pose pas de problème (vrai avec un synopsis ?) mais dans le cas contraire,
+         *  le début du script est appelé en boucle. Donc cette propriété permet, dans next_step
+         *  de savoir s'il y aura vraiment une étape suivante.
          *
-         * Noter que cette propriété est aussi définie dans le throw, et c'est surtout
-         * là qu'elle est utile, puisque c'est par le throw qu'on passe lorsqu'il y a
-         * une formule d'attente.
+         *  Noter que cette propriété est aussi définie dans le throw, et c'est surtout
+         *  là qu'elle est utile, puisque c'est par le throw qu'on passe lorsqu'il y a
+         *  une formule d'attente.
          */
         this.step_list_must_have_been_defined_or_not = true
         
 			} catch( erreur ){
         
-				if('object' == typeof erreur && erreur.type == 'regular_error')
-        { 
-          this.step_list_must_have_been_defined_or_not = true
-          this.run
+        var is_object = 'object' == typeof erreur
+        if( is_object )
+        {
+          switch(erreur.type)
+          {
+          case 'regular_error':
+            this.step_list_must_have_been_defined_or_not = true
+            this.run
+            break
+          default:
+            force_db("### [TScript.run] Type d'erreur ingérée : " + inspect(erreur) +
+            "\n"+erreur)
+          }
         }
 				else return Test.fatal_error(erreur)
 			}
