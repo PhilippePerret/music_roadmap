@@ -159,7 +159,7 @@ window.LOCALE_UI = {
     label_aleatoire         :"Random order",
     option_same_ex          :"Unable same exercice",
     option_obligatory       :"Obligatories",
-    option_new_tone        :"New tone",
+    option_new_tone         :"New tone",
     option_next_config      :"Next general configuration",
     btn_prepare             :"Prepare the working session!",
     direction               :"Direction",
@@ -170,6 +170,8 @@ window.LOCALE_UI = {
     replay                  :"Replay same working session",
     next_exercice           :"Next exercice",
     end_exercices           :"The end",
+    color_mandatories       :"Obligatory exercices in red",
+    color_replayed          :"Exercices already worked in last session in orange",
     Exinfos:{
       exercice_doit           :"This exercice must :",
       to_up                   :"Be played from the bottom to the top of the exercice",

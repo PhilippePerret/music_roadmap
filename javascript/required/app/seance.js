@@ -300,16 +300,16 @@ window.Seance = {
   build:function(){
     this.building     = true;
     this.ordre_stack  = null;
-    var params_seance = this.get_values();
-    if( params_seance == null ) return this.building = false;
-    // console.dir(params_seance);
+    this.params_seance = this.get_values();
+    if( this.params_seance == null ) return this.building = false;
+    // console.dir(this.params_seance);
     Ajax.query({
       data:{
         proc          :'seance/build',
         rm_nom        :Roadmap.nom,
         user_mail     :User.mail,
         user_md5      :User.md5,
-        params_seance :params_seance
+        params_seance :this.params_seance
       }, 
       success:$.proxy(this.suite_build, this)
     });
@@ -358,10 +358,35 @@ window.Seance = {
     $('img#seance_data_img_tone').attr('src',UI.path_image('note/gamme/'+this.data_seance.tone+'.jpg'));
     $('span#seance_data_suite_harmonique').html(LOCALE_UI.Exercices.Config[sens]);
     $('img#seance_data_img_suite_harmonique').attr('src', imgsens);
-    $('div#seance_data_suite_exercices').html(liste_ex);
+    $('div#seance_data_suite_exercices').html(
+      this.explication_couleurs() + liste_ex
+    );
     $('span#seance_data_downtoup').html(LOCALE_UI.Exercices.Config[dir]);
     $('img#seance_data_img_downtoup').attr('src', imgdir);
+    // On indique les exercices rejoués de la dernière séance
+    for( i = 0, len = this.data_seance.idexs_rejoues.length; i<len; ++i)
+    {
+      var idex = this.data_seance.idexs_rejoues[i]
+      $('div#seance-ex-'+idex).css('border-color','orange')
+    }
+    for( i = 0, len = this.data_seance.mandatories.length; i<len; ++i)
+    {
+      var idex = this.data_seance.mandatories[i]
+      $('div#seance-ex-'+idex).css('border-color','red')
+    }
+    
+    
     return true;//ok for the seance
+  },
+  // Explication des couleurs autour de certains exercices :
+  // Orange : les exercices déjà joués à la session précédentes
+  // Red : les exercices obligatoires si la case est cochées
+  explication_couleurs:function()
+  {
+    return  '<div>'+
+            (this.params_seance.options.obligatory?'<div>'+LOCALE_UI.Seance.color_mandatories+'</div>':'')+
+            '<div>'+LOCALE_UI.Seance.color_replayed+'</div>'+
+            '</div>'
   },
   // When user changes seance tone
   change_tone:function(tone){

@@ -167,6 +167,8 @@ window.LOCALE_UI = {
     replay                  :"Rejouer la même séance de travail",
     next_exercice           :"Suivant",
     end_exercices           :"Finir",
+    color_mandatories       :"Exercices obligatoires entourés en rouge",
+    color_replayed          :"Exercices joués dans la session précédente en orange",
     Exinfos:{
       exercice_doit           :"L'exercice doit :",
       to_up                   :"Être monté puis descendu",

@@ -408,13 +408,8 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       # de la session précédente (dans l'idéal, il ne devrait y en avoir aucun, si les exercices
       # sont assez nombreux, mais le mélange fait dans `ajouter_anciens_des_recents` a permis
       # d'en mettre quand même).
-      idexs_last_seance = @seances[0][:id_exercices]
-      idexs_des_rejoues = []
-      @idexs_retenus.each do |idex|
-        next if idexs_last_seance.index(idex) === nil
-        idexs_des_rejoues << idex
-      end
-      debug "Liste des exercices rejoués (de la dernière session) : #{debug_ids_exercices_with_anchor(idexs_des_rejoues)}"
+      liste_exercices_rejoues_de_derniere_session      
+      debug "Liste des exercices rejoués (de la dernière session) : #{debug_ids_exercices_with_anchor(@idexs_des_rejoues)}"
       
       
       debug "DURÉE TOTALE CALCULÉE à partir des exercices retenus : #{@duree_session.as_horloge}"
@@ -427,7 +422,8 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       seance_data.merge(
         :working_time         => @duree_session,
         :suite_ids            => @idexs_retenus,
-        :idexs_rejoues        => idexs_des_rejoues,
+        :idexs_rejoues        => @idexs_des_rejoues,
+        :mandatories          => @mandatories,
         :duree_moyenne_par_ex => @time_per_exercice
       )
     end
@@ -709,6 +705,18 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       @idexs_retenus.sort! do |idx, idy| 
         ordre_roadmap.index(idx) <=> ordre_roadmap.index(idy) 
       end
+    end
+    
+    # On relève la liste des exercices de cette session qui ont déjà été
+    # joués à la session précédente. Juste pour les mettre en exergue dans
+    # la présentation de la session.
+    def liste_exercices_rejoues_de_derniere_session
+      idexs_last_seance = @seances[0][:id_exercices]
+      @idexs_des_rejoues = []
+      @idexs_retenus.each do |idex|
+        next if idexs_last_seance.index(idex) === nil
+        @idexs_des_rejoues << idex
+      end      
     end
     
     # -------------------------------------------------------------------

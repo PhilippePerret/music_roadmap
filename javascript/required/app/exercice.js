@@ -279,7 +279,7 @@ Exercice.prototype.titre_complet = function(vignette){
   if(this.auteur)   titre += " - " + this.auteur
   if(vignette)
   {
-    return '<div style="border:1px solid white;">' + 
+    return '<div id="seance-ex-'+this.id+'" style="border:1px solid white;">' + 
               '<div class="fright" style="width:300px;">' + titre + '</div>' +
               '<div>' + this.vignette_listing('width:130px;') + '</div>'+
             '</div>'
