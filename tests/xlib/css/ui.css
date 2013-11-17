@@ -24,6 +24,7 @@ div#rapport{
   color:white;
   padding:1em;
   width:45em;
+  word-wrap:break-word;
 }
 div#buttons_bottom {
 	font-size:1.2em;
@@ -35,6 +36,7 @@ div#rapport .SUCCESS, div#rapport .GREEN{color:#00BB00;}
 div#rapport .SYSTEM{color:grey;font-style:italic;}
 div#rapport .NOTICE, div#rapport .BLUE{color:#50A0FF;}
 div#rapport .ORANGE {color:orange;}
+div#rapport .WHITE {color:white;}
 /* Les spécificités attendues (utiliser la méthode `specs(message)`)*/
 div#rapport .specs {
 	margin-left:3em;

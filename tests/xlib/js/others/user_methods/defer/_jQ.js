@@ -43,7 +43,15 @@ window._jqOf = function(foo){
 	else return jq(foo)		// simple jId
 }
 
-// Liste des éléments déjà instanciés
+/* -------------------------------------------------------------------
+ *  Les trois éléments principaux:
+ *
+ *    - La fonction jq permettant d'instancier les éléments DOM
+ *    - La liste _JQS pour les mémoriser.
+ *    - Le passage de jq à l'application pour simplifier le code
+ *
+ */
+
 _JQS = {}
 
 function jq(jid){
@@ -52,9 +60,11 @@ function jq(jid){
   return _JQS[jid]
 }
 
-// Pour pouvoir utiliser des tests tels que :
-// 'jq("div#mondiv").exist'.should.be.true
 APP.jq = jq
+
+/* 
+ * ------------------------------------------------------------------- */
+
 
 window._jq = function(jid){
 	// console.log("-> instanciation de "+jid)
@@ -92,6 +102,7 @@ window._jq = function(jid){
 // 						jq('<tag>#<id ou autre>').val(<valeur>) //=> Rentre la valeur dans l'élément
 // 
 // @note    Si +value+ est définie, la méthode produit un évènement onchange sur l'élément.
+//          Mais seulement si l'élément est visible.
 _jq.prototype.val = function(value){
 	if(undefined == value)
   {
@@ -99,14 +110,25 @@ _jq.prototype.val = function(value){
   } 
   else
   {
-  	this.obj.val(value)
-    this.onchange
-    return this
+    if(this.exists)
+    {
+    	this.obj.val(value)
+      if(this.is.visible) this.onchange
+      return this
+    }
+    else
+    {
+      warning(LOCALES.errors.dom['DOM Element unfound'] + this.jid)
+      return null
+    }
   }
 }
-_jq.prototype.css = function(prop, value){
-	this.obj.css(prop, value)
-}
+
+// NON: Cette méthode est écrasée ci-dessous par le test should.have.css (mais elle
+//      gère quand même l'utilisation <jq>.css(...) pour affecter des propriétés)
+// _jq.prototype.css = function(prop, value){
+//   this.obj.css(prop, value)
+// }
 
 Object.defineProperties(_jq.prototype, {
   // Pour détruire l'élément DOM
@@ -114,7 +136,9 @@ Object.defineProperties(_jq.prototype, {
   "remove":{get:function(){this.obj.remove()}
   },
   // Pour simuler un "onchange" sur l'élément
-  "onchange":{get:function(){this.obj_dom.onchange()}
+  "onchange":{get:function(){
+    this.obj_dom.onchange()
+  }
   }
 })
 
@@ -213,7 +237,15 @@ window.data_estimation_jq = function(obj, data){
 Object.defineProperties(_jq.prototype,{
 	
 	// --- Méthodes utilitaires ---
-	
+  // Reset <jq>
+  // ----------
+  // Note: La méthode est appelée APRÈS chaque traitement, pas avant
+  "reset":{
+    get:function()
+    {
+      this.mode = null
+    }
+  },
 	// Retourne le tagname de l'élément
 	"tagName":{
 		get:function(){
@@ -230,20 +262,6 @@ Object.defineProperties(_jq.prototype,{
 			return true
 		}
 	},
-  
-  // Méthodes de manipulation pour cocher et décocher une checkbox
-  "set_checked":{
-    get:function(){this.set_check(true)}
-  },
-  "set_unchecked":{
-    get:function(){this.set_check(false)}
-  },
-  "set_check":{
-    value:function(cocher){
-      this.obj_dom.checked = cocher
-      this.obj_dom.onchange()
-    }
-  },
   // Définit le contenu de l'objet (et provoque un onchange)
 	"content":{
 		get:function(){return this._content},
@@ -279,7 +297,9 @@ Object.defineProperties(_jq.prototype,{
 		get:function(){this.positif=false;this.mode='test';return this},
 		set:function(value){return this.should_not.contain(value)}
 	},
-
+  "set":{
+    get:function(){this.mode='set';return this}
+  },
 	// --- Méthodes d'interrogation ---
 	"exists":{ get:function(){return this.obj.length > 0}},
 	"not_exists":{ get:function(){return false == this.exists}},
@@ -305,11 +325,15 @@ var HumanPropertiesJQIs = {
 	
 	// -- Propriétés complexe --
 	"checked":{
-		get:function(){return this.parent.obj_dom.checked}
+		get:function(){return this.parent.obj_dom.checked      
+    }
 	},
 	"visible"				:{
 		get:function(){
-			return this.parent._is_visible(true) == this.positif},
+      var res = this.parent._is_visible(true) == this.positif
+      this.parent.reset
+			return res
+    },
 		set:function(strict){	
 			return this.parent._is_visible(string) == this.positif},
 		enumerable:true
@@ -321,22 +345,31 @@ var HumanPropertiesJQIs = {
 			return !(this.visible = strict)}
 	},
   "empty":{
-    get:function(){return this.parent._content == ""}
+    get:function(){
+      this.parent.reset
+      return this.parent._content == ""
+    }
   },
 	// -- Méthodes --
 	"before"				:{
 		value:function(foo){
-			return this.positif == (this.parent.obj.next()[0] == _obJOf(foo)[0])
+			var res = this.positif == (this.parent.obj.next()[0] == _obJOf(foo)[0])
+      this.parent.reset
+      return res
 		}
 	},
 	"after"					:{
 		value:function(foo){
-			return this.positif == (this.parent.obj.prev()[0] == _obJOf(foo)[0])
+			var res = this.positif == (this.parent.obj.prev()[0] == _obJOf(foo)[0])
+      this.parent.reset
+      return res
 		}
 	},
 	"contained_by"	:{
 		value:function(foo){
-			return this.positif == (this.parent.obj.parent()[0] == _obJOf(foo)[0])
+			var res = this.positif == (this.parent.obj.parent()[0] == _obJOf(foo)[0])
+      this.parent.reset
+      return res
 		}
 	}
 	
@@ -350,11 +383,16 @@ var HumanPropertiesJQHas = {
   		var attr_val = this.parent.obj.attr(attr)
   		var result = attr_val != undefined
   		if( undefined != value ) result = result && (value == attr_val)
+      this.parent.reset
       return result
     }
   },
   "value":{
-    get:function(valeur){ return this.parent.obj_dom.value == valeur }
+    get:function(valeur){ 
+      var res = this.parent.obj_dom.value == valeur 
+      this.parent.reset
+      return res
+    }
   },
   // `has.position(x, y) / Substitut à `is.at`
   "position":{
@@ -489,7 +527,7 @@ const HumanProperties_JQ_Should_Be = {
         x_comp = "undefined"
         y_comp = "undefined"
         pos_expected = LOCALES.errors.jq['at_pos_but_unfound']
-        after_failure_pos = LOCALES.errors['jq_unfound_element']
+        after_failure_pos = LOCALES.errors.dom['DOM Element unfound']
       }
       return _estime(res, data_estimation_jq(this, {
         test:'be.at',
@@ -537,18 +575,54 @@ const HumanProperties_JQ_Should_Be = {
 			}))
     }
 	},
+  "check":{
+    value:function(val){
+      if(this.mode == 'set')
+      {
+        this.obj_dom.checked = val
+        this.onchange
+      }
+      else
+      {
+        warning("Use check only with `<jQ>.set.check(<value>)`")
+      }
+    }
+  },
 	"checked":{
 		get:function(){
-			return _estime(this.obj_dom.checked == true, data_estimation_jq(this, {
-				test:'be.checked',
-				result:{
-					positif:{success:"est", failure:"devrait être"},
-					negatif:{success:"n'est pas", failure:"ne devrait pas être"}
-				},
-				expected:LOCALES['checked']
-			})
-		)}
+      if(this.mode == 'set')
+      {
+        this.obj_dom.checked = true
+        this.onchange
+      }
+      else
+      {
+  			return _estime(this.obj_dom.checked == true, data_estimation_jq(this, {
+  				test:'be.checked',
+  				result:{
+  					positif:{success:"est", failure:"devrait être"},
+  					negatif:{success:"n'est pas", failure:"ne devrait pas être"}
+  				},
+  				expected:LOCALES['checked']
+  			  })
+        )
+      }
+    }
 	},
+  "unchecked":{
+    get:function(){
+      if(this.mode == 'set')
+      {
+        this.obj_dom.checked = false
+        this.onchange
+      }
+      else
+      {
+        this.positif = false
+        return this.checked
+      }
+    }
+  },
 	"after"   :{
 		value:function(before){
 			return _estime(this.is.after(before), data_estimation_jq(this, {
@@ -596,10 +670,23 @@ const HumanProperties_JQ_Should_Have = {
   // Vérifie la propriété css de l'élément
   // @param foo   Soit une propriété, soit un tableau associatif (comme pour jQuery)
   // @param val   La valeur attendue pour la propriété si foo est une propriété ou undefined
+  // 
+  // @warning   Cette propriété complexe peut être appelée dans 2 circonstances :
+  //            - Pour tester une propriété css : <jq>.should.have.css('prop', 'valeur')
+  //            - Pour affecter une valeur      : <jq>.css('prop', 'valeur')
+  //            On fait la distinction grâce à la propriété `mode` de <jq>, qui est à "test"
+  //            lorsque `should` est utilisé.
   "css":{
     value:function(foo, val){
       if('string' == typeof foo){ tbl = {}; tbl[foo] = val}
       else tbl = foo
+      console.log("Arrivée dans css (mode:"+this.mode+")")
+      if(this.mode == 'set') // lire le @warning ci-dessus
+      {
+        this.obj.css(tbl)
+        this.reset
+        return
+      }
       var result  = true, mess ;
       var props_good = []
       var props_bad  = []
@@ -630,6 +717,7 @@ const HumanProperties_JQ_Should_Have = {
         }
         mess_failure += " )"
       }
+      this.reset
       
 			_estime(result == this.positif, data_estimation_jq(this, {
 				test:'have.css',
@@ -641,7 +729,6 @@ const HumanProperties_JQ_Should_Have = {
 				no_expected_result:true,
 				after_if_failure:null
 			}))
-      
     }
   },
 	"attr"	:{

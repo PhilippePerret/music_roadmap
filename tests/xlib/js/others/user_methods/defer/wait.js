@@ -84,24 +84,19 @@ window.Wait = {
     {
       w((this.options.message || LOCALES.messages['wait for']+nombre_secondes+LOCALES['second']+s)+"…",SYSTEM);
     }
-    this.timer = setTimeout("Wait.fin_ok()", nombre_secondes * 1000);
+    this.timer = setTimeout("Wait.fin_ok()", nombre_secondes * 1000)
+    return this.suite
   },
   until:function(fct_test, options){
     this.pause_script_if_any()
     this.run_wait(fct_test, options, 'true')
+    return this.suite
   },
   while:function(fct_test, options){
     this.pause_script_if_any()
     this.run_wait(fct_test, options, 'false')
+    return this.suite
   },
-  // until_file_exists:function(path, options)
-  // {
-  //   this.run_wait_for_file(path, options, true)
-  // },
-  // while_file_exists:function(path, options)
-  // {
-  //   this.run_wait_for_file(path, options, false)
-  // },
 	// Fin des méthodes appelables
 	// --------------------------------------------------------
   
@@ -110,6 +105,10 @@ window.Wait = {
   // @note: Cela consiste à mettre fonction.waiting à true
   //        fonction.waiting sera remis à false à la fin du 
   //        check de Wait.
+  // Note:  Mais cet appel est un peu vain, puisqu'on est obligé de le régler aussi
+  //        dans la fonction elle-même, sinon j'ai l'impression que ça ne va pas
+  //        assez vite et que la fonction se poursuit quand même (ça doit être autre
+  //        chose, mais ça reste à éclaircir)
   pause_script_if_any:function()
   {
     if(undefined == this.attached_script) return
@@ -118,6 +117,7 @@ window.Wait = {
   
 
 	// Traite les options envoyées à la méthode
+  // TODO: DOIT DEVENIR OBSOLÈTE AVEC LES MÉTHODES MAGIQUES
 	traite_options:function(opts){
 		switch(_exact_type_of(opts)){
 			case 'function' :	opts = {suivre: opts}           ; break
@@ -213,45 +213,99 @@ window.Wait = {
 	// poursuivre.
   fin_ok:function(){
     // w("-> Wait.fin_ok")
-		if('function' == typeof this.options.success) this.options.success(true)
-    else if (undefined != this.options.success_message) w(this.options.success_message, GREEN+" SFP")
-		this.stop_check( true )
+    if(false == this.suite.onresultat(true))
+    {
+  		if('function' == typeof this.options.success) this.options.success(true)
+      else if (undefined != this.options.success_message) w(this.options.success_message, GREEN+" SFP")
+  		this.stop_check( true )
+    } 
+    else
+    {
+      this.poursuit_script
+    }
 	},
   fin_not_ok:function(mess, type){
-		if('function'==typeof this.options.failure){
-			this.options.failure(false);
-		} else {
-	    w(mess,type);
-		}
-    this.stop_check(false);
+    if(false == this.suite.onresultat(false))
+    {
+  		if('function'==typeof this.options.failure){
+  			this.options.failure(false);
+  		} else {
+  	    w(mess,type);
+  		}
+      this.stop_check(false);
+    }
+    else
+    {
+      this.poursuit_script
+    }
   },
 	// Méthode appelée en toute fin d'attente pour redonner la main au script de test
 	// Ou à la méthode pour suivre lorsqu'elle doit être différente du script portant la
 	// fonction appelante (this.attached_script)
+  // TODO: L'utilisation des `options` ci-dessous doit devenir OBSOLÈTE avec l'utilisation
+  // des fonctions magiques `_` et son alias `and`
   stop_check:function( bool_resultat ){
     clearTimeout(this.timer);
 		this.resultat = bool_resultat
-    if('function' == typeof this.options.suivre) this.options.suivre();
-		else{ 
-      if('object' == typeof this.attached_script){
-  			if('undefined' != typeof this.options.next_stop_point){ 
-          this.attached_script.arg = this.options.next_stop_point}
-        else if('undefined' != typeof this.options.arg ) this.attached_script.arg = this.options.arg
-        this.attached_script.fonction.stop_pause
-  			this.attached_script.run
-      }
-		}
+    this.poursuit_script
+    //     if('function' == typeof this.options.suivre) this.options.suivre();
+    // else{ 
+    //       if('object' == typeof this.attached_script){
+    //         if('undefined' != typeof this.options.next_stop_point){ 
+    //           this.attached_script.arg = this.options.next_stop_point}
+    //         else if('undefined' != typeof this.options.arg ) this.attached_script.arg = this.options.arg
+    //         this.poursuit_script
+    //       }
+    // }
   }
   
 }
-
+/* 
+ * Propriétés complexes pour Wait
+ *
+ */
+Object.defineProperties(Wait, {
+  // Pour poursuivre le script (après l'attente)
+  "poursuit_script":{
+    get:function(){
+      this.script.fonction.stop_pause
+			this.script.run
+    }
+  }
+})
+/*
+ * Ajout des traitements pour les méthodes magiques `_` et son alias `and`
+ *
+ */
+_SuiteTestPourMethodesWait = {
+  "suite":{
+    get:function()
+    {
+      this.define_suite_if_necessary
+      return this._suite
+    }
+  },
+  "script":{
+    get:function()
+    {
+      return window.CURRENT_SCRIPT
+      // return this.attached_script
+    }
+  },
+  "define_suite_if_necessary":{
+    get:function()
+    {
+      if(undefined == this._suite) this._suite = new _SuiteTest_(this)
+    }
+  }
+}
+Object.defineProperties(Wait, _SuiteTestPourMethodesWait)
 
 /*  Méthodes permettant d'utiliser les tournures :
  *
- *    <fct>.wait.until.file(<path>).exists
- *    <fct>.wait.while.file(<path>).exists
- *    <fct>.wait.while.file(<path>).exists_and(<arg>)
- *    <fct>.wait.until.file(<path>).exists_and(<arg>)
+ *    <fct>.wait.until.file(<path>).exists[.and(...)]
+ *    <fct>.wait.while.file(<path>).exists[.and(...)]
+ *
  */
 Wait.until.file = function(path){return Wait.until_or_while_file(path, true)}
 Wait.while.file = function(path, options){return Wait.until_or_while_file(path, false)}
@@ -265,27 +319,33 @@ Wait.until_or_while_file = function(path, condition)
 }
 _ObjetWaitUntilFile = {}
 Object.defineProperties(_ObjetWaitUntilFile,{
+  // Utile à _SuiteTest_ (méthodes magiques)
+  "script":{
+    get:function(){return window.CURRENT_SCRIPT}
+  },
+  "define_suite_or_reset":{
+    get:function(){
+      if(undefined == this._suite)
+      {
+        this._script  = window.CURRENT_SCRIPT
+        this._suite   = new _SuiteTest_(this)
+      }
+      this._suite.reset
+    }
+  },
+  "suite":{
+    get:function(){return this._suite}
+  },
   // La première méthode atteinte par :
-  //  <fct>.wait.until.file(...).exist
+  //  <fct>.wait.until.file(...).exists
   "exists":{
     get:function()
     {
-      this.exists_and({})
-    }
-  },
-  // La même que la précédente mais permet de passer des options
-  // à Wait, par exemple pour passer au stop-point suivant
-  "exists_and":{
-    value:function(options)
-    {
-      Wait.traite_options(options)
+      this.define_suite_or_reset
       this.tested_file  = file(this.path)
-      console.log("-> exists_and OK (tested_file:"+this.tested_file.path+")")
-      console.log("Wait.options :");console.dir(Wait.options);console.log("/Wait.options")
   		this.stop_time    = (new Date()).valueOf() + 20 * 1000
-      // On check le fichier
-      this.tested_file._script = {}
       this.wait_and_seek
+      return this.suite
     }
   },
   // Méthode appelée par File.seek après avoir été voir si le fichier
@@ -297,9 +357,9 @@ Object.defineProperties(_ObjetWaitUntilFile,{
       if( this.condition == this.tested_file.exists )
       { 
         // OK
-        console.log("-> retour_exists OK (tested_file:"+this.tested_file.path+")")
         delete this.tested_file
-        Wait.stop_check(true)
+        this.suite.onresultat(true)
+        Wait.fin_ok()
       }
       else
       {
@@ -308,7 +368,8 @@ Object.defineProperties(_ObjetWaitUntilFile,{
           // Échec
           delete this.tested_file
           failure(LOCALES.wait['wait for file ' + (this.condition?'existence':'non existence')] +"`"+ this.path+"`")
-          Wait.stop_check(false)
+          this.suite.onresultat(false)
+          Wait.fin_not_ok()
         }
         else this.wait_and_seek
       }
@@ -318,7 +379,6 @@ Object.defineProperties(_ObjetWaitUntilFile,{
   "wait_and_seek":{
     get:function()
     {
-      console.log("[Wait]-> wait_and_seek")
       me = this
       this.timer = setTimeout(function(){
         me.tested_file.seek_poursuivre = $.proxy(me.retour_exists, me)

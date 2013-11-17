@@ -15,3 +15,10 @@ UTest = {}
 $(document).ready(function(){
 	Test.UI.localize
 })
+
+// window.onerror = function (err, file, line) {
+//   ERROR_OCCURED = 'The following error occured:\n' + err + '\n' +
+//   'In file: ' + file + '\n' +
+//   'At line: ' + line ;
+//   return true
+// }

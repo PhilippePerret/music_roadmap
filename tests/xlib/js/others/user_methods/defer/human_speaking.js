@@ -63,14 +63,27 @@ Object.defineProperties(String.prototype, {
 	"exact_type":{
 		get:function(){return _exact_type_of(this.eval)}
 	},
+  // Retourne le script contenant le test
+  "script":{
+    get:function()
+    {
+      // window.file.caller.script // utilisé dans file avec succès
+      // return this.caller.script // va fonctionner ?
+      return window.CURRENT_SCRIPT
+    }
+  },
 	"should":{
-		get:function(){this.positif=true;return this},
+		get:function(){
+      this.positif=true;return this},
 		// Pour pouvoir utiliser `'<foo>'.should = <valeur>`
-		set:function(value){return this.should.be.equal_to(value, strict = true)}
+		set:function(value){
+      return this.should.be.equal_to(value, strict = true)}
 	},
 	"should_not":{
-		get:function(){this.positif=false;return this},
-		set:function(value){return this.should_not.be.equal_to(value, strict = true)}
+		get:function(){
+      this.positif=false;return this},
+		set:function(value){
+      return this.should_not.be.equal_to(value, strict = true)}
 	},
   "has":{
     get:function(){
@@ -190,6 +203,13 @@ window._function_less_than = function(comp, strict){
 
 
 const HumanStringProperties_Should = {
+  // Pour `should.exist`, raccourci de `should.be.defined`
+  "exist":{
+    get:function()
+    {
+      return this.should.be.defined
+    }
+  },
 	"be":{
 		get:function(){return this},
 		set:function(value){return this.should.be.equal_to(value)}
@@ -401,6 +421,7 @@ const HumanProperties_Should_Be = {
 			return _estime(this.eval == true, data_estimation(this))
     }
 	},
+  // Répond aux méthodes magiques `and` et son alias `_`
 	"defined":{
 		get:function(){
 			this.expected = LOCALES["DEFINED"]
@@ -409,7 +430,7 @@ const HumanProperties_Should_Be = {
 			this.data_extension = {
 				result:{negatif:{success:LOCALES["UNDEFINED"]}}
 			}
-			return _estime(this.eval != undefined, data_estimation(this))
+			_estime(this.eval != undefined, data_estimation(this))
     }
 	},
 	"undefined":{

@@ -28,14 +28,12 @@ window.TScript = function(data){
 	this.function_after		= undefined		// La fonction pour suivre, si fournie
 	this.script_after			= undefined		// Le TScript pour suivre, si fourni
 	this.arg							= undefined		// Les arguments optionnels à envoyer à la fonction
-                                      // @todo: le mettre au singulier, on ne passe qu'un seul
-                                      // argument
 
 	// Utiles
 	this.proxy						= null				// {Function} Une référence à la fonction principale du script
                                       // Doit devenir OBSOLÈTE
 	// Pour les étapes
-	this._step_list				  = undefined		// La liste des étapes du script {Array of TScript}
+	this._step_list				  = undefined		// La liste des étapes du script {Array of TStep}
 	this.number_of_steps	  = undefined		// {Number} Nombre d'étapes
 	this.curstep_indice			= undefined		// {Number} Indice de l'étape courante
 	
@@ -70,7 +68,7 @@ Object.defineProperties(TScript.prototype, {
       if(false == this._message_running_ok){
         var p = this.relative_path
         if(p.substr(-3)!='.js') p += '.js'
-  	    db(LOCALES.messages['running'] + "`" + p + "'", SYSTEM);
+  	    w(LOCALES.messages['running'] + "`" + p + "'", SYSTEM);
         this._message_running_ok = true
       }
 			if(!this._implanted) this.implant
@@ -85,6 +83,21 @@ Object.defineProperties(TScript.prototype, {
 		get:function(){
 			if(false == this._first_run_ok) return this.first_run
 			
+      // // --- Débug ---
+      // debug("-> TScript.run ("+this.relative_path+") avec :"+
+      //       "\n   curstep_indice:"+this.curstep_indice+
+      //       "\n   stop_point:"+this.stop_point +
+      //       "\n   arg:"+this.arg
+      //     )
+      // // --- /Débug ---
+      
+      // Utile pour les méthodes magiques `and` et son alias `_` car
+      // je ne sais pas récupérer partout la valeur du script courant
+      // Note: La définition doit se faire ici, à chaque appel run du
+      // script, dans le cas où des scripts sont appelés à l'intérieur
+      // d'autres script
+      window.CURRENT_SCRIPT = this
+      
 			// === FONCTION PRINCIPALE DE TEST JOUÉE ===
 			
       // -- Protection anti-répétion --
@@ -124,8 +137,12 @@ Object.defineProperties(TScript.prototype, {
             this.run
             break
           default:
-            force_db("### [TScript.run] Type d'erreur ingérée : " + inspect(erreur) +
-            "\n"+erreur)
+            warning("### [TScript.run] An error occured: " +
+            "\nMessage: " + erreur.message +
+            "\nIn file: " + erreur.fileName +
+            "\nAt line: " + erreur.lineNumber +
+            "\nColumn : " + erreur.columnNumber
+            )
           }
         }
 				else return Test.fatal_error(erreur)
@@ -189,6 +206,11 @@ Object.defineProperties(TScript.prototype, {
 			this.unimplant
 		}
 	},
+  // Retourne l'indice de l'étape +step+ dans la fonction
+  // @note : La même méthode existe pour la fonction
+  "indice_of_step":{
+    value:function(step){return this.fonction.STEP_NAME_TO_INDICE[step]}
+  },
 	// Calcule le path du script et le nom de la fonction, sauf si ce nom
 	// a été fourni
 	"path_and_fonction_name":{

@@ -138,17 +138,25 @@ window.LOCALES = {
     'path (relative) required'        : " Un chemin d'accès (relatif) doit être fourni ",
     'script folder path required'     : " Le chemin d'accès au dossier du script est requis ",
   
+    'onsuccess should be defined in'  : "La méthode `onsuccess` devrait être définie, dans ",
+    'onfailure should be defined in'  : "La méthode `onfailure` devrait être définie, dans ",
+  
     'ERROR_NEW_TSCRIPT'       : "### IMPOSSIBLE D'INSTANCIER UN NOUVEAU TSCRIPT : ",
 		'errors encountered'			: "ERREURS RENCONTRÉES",
 		'error during test'				: " ERREUR EN COURS DE TEST ",
+    // Steps
+    'dont know step'          : "Étape demandée inconnue : ",
     'need_step_list'          : "Vous devez définir la liste des étapes au début de la fonction de test !"+
                                 "\n(`I.set_step_list_to([...])`",
 		'no step supplied'				: "Aucune étape fournie",
+
 		'function unfound'				: "est introuvable. C'est elle que je dois pourtant appeler pour lancer le test…",
     'waiting too long on'     : "Attente trop longue dans Wait avec ",
     'need_sandbox_ready_code' : "Il faut remettre le code `Test.SANDBOX_READY = true` tout en bas de votre fichier `_sandbox_.js`.",
+    dom:{
+      'DOM Element unfound'   : "Impossible de localiser l'élément DOM : "
+    },
     jq:{
-      'jq_unfound_element'    : "Élément introuvable dans le DOM",
       'at_pos_but_unfound'    : " à la position donnée, mais il est introuvable",
       'create_need_data'      : "Il faut fournir des données, pour créer un élément jQ",
       'id_required_to_create' : "Un ID est requis, pour créer un élément jQ",

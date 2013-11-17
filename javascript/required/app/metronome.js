@@ -100,17 +100,23 @@ window.Metronome = {
     
     // Joue le son
     clic : function(){
-      if (Metronome.sound_on){
-        this.son.pause();
-        this.son.currentTime = 0 ;
-        this.son.play();
-      } else {
-        $('img#speakers').css({'opacity':"1"});
-        $('img#speakers').animate({
-          'opacity':"0.5"
-        }, {duration:160, always:function(){$('img#speakers').css({'opacity':"1"})}});
-        ;
+      // Il arrive parfois que ça bug. Je n'ai pas le temps de voir à cause
+      // de quoi pour le moment, donc je mets cette rustine try/catch en attendant
+      try
+      {
+        if (Metronome.sound_on){
+          this.son.pause();
+          this.son.currentTime = 0 ;
+          this.son.play();
+        } else {
+          $('img#speakers').css({'opacity':"1"});
+          $('img#speakers').animate({
+            'opacity':"0.5"
+          }, {duration:160, always:function(){$('img#speakers').css({'opacity':"1"})}});
+          ;
+        }
       }
+      catch(err){/* Ne rien faire pour le moment */}
     },
     // Change le volume (de 0 à 1 — 0.1, 0.2 etc.)
     change_volume: function( amount ){

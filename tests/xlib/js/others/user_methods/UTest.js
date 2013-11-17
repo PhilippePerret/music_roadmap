@@ -17,7 +17,7 @@ $.extend(window.UTest, {
 		synopsis_path	: null,				// Le synopisis courant (path relatif dans :
 				 												// 		tests/user_lib/javascript/synopsis/)
 																// Ce path relatif permet également d'obtenir le nom de la méthode
-		poursuivre		: null,				// méthode pour suivre
+		poursuivre		: null,				// méthode pour suivre (non, maintenant c'est le script)
 		tscript				: null,				// Instance TScript portant le synopsis en jeu
 	
 	
@@ -32,13 +32,17 @@ $.extend(window.UTest, {
 		run:function(synopsis_path, poursuivre, arg){
       if(synopsis_path.substr(-4) != '.js') synopsis_path += '.js'
 			this.synopsis_path	= synopsis_path
-			this.poursuivre 		= poursuivre
-			this.tscript = new TScript({
+      var data = {
 				relative_path			: synopsis_path,
 				folders						: 'user_lib/javascript/synopsis',
-				function_after		: poursuivre,
 				arg								: arg
-			})
+      }
+      if(poursuivre instanceof TScript)         data.script_after   = poursuivre
+      else if('function' == typeof poursuivre)  data.function_after = poursuivre
+      // this.poursuivre     = poursuivre
+      // console.log("data dans Synopsis.run envoyées au script "+synopsis_path)
+      // console.dir(data);console.log("/data")
+			this.tscript = new TScript(data)
 			this.tscript.first_run
 		}	
 	

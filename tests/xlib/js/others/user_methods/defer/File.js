@@ -22,14 +22,15 @@
 // @usage     file(<path>).<method>(<argument>)
 window.file = function(path, argument){
   var tfile = new _TFile(path)
-  tfile._script = window.file.caller.script
+  // tfile.script = window.file.caller.script
+  // tfile.script = window.file.caller.script
   return tfile
 }
 
 // La class _TFile
 window._TFile = function(path){
   this._path    = path
-  this._script  = null    // Défini par la fonction file(...)
+  // this._script  = null    // Défini par la fonction file(...)
 }
 Object.defineProperties(_TFile.prototype, {
 
@@ -38,13 +39,14 @@ Object.defineProperties(_TFile.prototype, {
   //  Gestion des erreurs
   // -------------------------------------------------------------------
 
+  "humanName":{get:function(){return "file("+this._path+")"}},
   // Force un message d'erreur dans le rapport
   // @param   err     Soit un texte explicite, soit un identifiant dans LOCALES.errors.file
   "error":{
     value:function( err )
     {
       if(undefined != LOCALES.errors.file[err]) err = LOCALES.errors.file[err]
-      force_db(err, WARNING)
+      warning("["+this.humanName+"] "+err)
     }
   },
   "error_call_before":{
@@ -64,11 +66,16 @@ Object.defineProperties(_TFile.prototype, {
   },
   // <file>.script retourne le script de la fonction qui a appelé
   "script":{
-    get:function(){ return this._script }
+    get:function()
+    { 
+      return window.CURRENT_SCRIPT
+      // if(undefined == this._script) this._script = window.CURRENT_SCRIPT
+      // return this._script 
+    }
   },
   // Retourne la fonction principale de test du script courant
   "fonction":{
-    get:function(){return this._script.fonction}
+    get:function(){return this.script.fonction}
   },
 
   // -------------------------------------------------------------------
@@ -82,6 +89,7 @@ Object.defineProperties(_TFile.prototype, {
   "poursuit":{
     get:function()
     { 
+      this.fonction.waiting = false
       this.script.run
     }
   },
@@ -99,6 +107,15 @@ Object.defineProperties(_TFile.prototype, {
     }
   },
   
+  // Pour les méthodes magiques
+  "suite":{
+    get:function()
+    {
+      if(undefined == this._suitetest_) this._suitetest_ = new _SuiteTest_(this)
+      return this._suitetest_
+    }
+  },
+ 
   // -------------------------------------------------------------------
   //  Méthodes de retour de requête
   // -------------------------------------------------------------------
@@ -108,6 +125,10 @@ Object.defineProperties(_TFile.prototype, {
   // @note: S'il a été chargé avec `load'
   // @note: _content n'est pas effacé après l'appel, car les méthodes should seraient 
   // erronnée (si on teste avec `'file.content'.should = "mon contenu"`)
+  // 
+  // Cf. aussi les méthodes définies plus bas :
+  //    <file>.content.from_json  => décode le string comme une chaine JSON
+  //    <file>.content.from_yaml  => décode le string comme une chaine yaml (pas encore implémenté)
   "content":{
     get:function(){
       if(undefined == this._content)
@@ -115,9 +136,17 @@ Object.defineProperties(_TFile.prototype, {
         this.error_call_before('`<file>.load`', '`<file>.content`')
       }
       else
-      {
+      { 
         return this._content
       }
+    }
+  },
+  "content_from_json":{
+    get:function()
+    {
+      var contenu = this.content
+      if(undefined == contenu) return null
+      return JSON.parse(contenu)
     }
   },
   // Retourne TRUE si le fichier existe, FALSE dans le cas contraire
@@ -214,7 +243,7 @@ Object.defineProperties(_TFile.prototype, {
     value:function(code, arg)
     {
       this.fonction.waiting = true
-      this._script.arg      = arg
+      this.script.arg       = arg
       // Test.write("Writing code in `"+this.path+"`… ")
       Ajax.send({
         script:'file/write', 
@@ -232,37 +261,38 @@ Object.defineProperties(_TFile.prototype, {
       this.poursuit
     }
   },
-  "load_and":{
-    value:function(arg)
+  "load":{
+    get:function()
     {
       this.fonction.waiting = true
-      this._script.arg      = arg
-      // Test.write("Loading file `"+this.path+"`… ")
       Ajax.send({script:'file/load', path:this.path}, $.proxy(this.suite_load,this));
+      return this.suite
     }
-  },
-  "load":{get:function(){this.load_and()}
   },
   "suite_load":{
     value:function(rajax)
     {
-      // Test.write(rajax.ok ? "OK" : "NOT OK")
       this._loaded = rajax.ok
-      if(rajax.ok) this._content = rajax.file_content.stripSlashes()
+      if(rajax.ok){
+        // ICI Il se produit une erreur, mais je ne sais fichtrement pas d'où elle
+        // vient. Ça envoie un message d'erreur en console de rajax.file_content indéfini
+        // mais ça continue de fonctionner quand même…
+        this._content = rajax.file_content.stripSlashes()
+      }
       if('function' == typeof this.load_poursuivre) this.load_poursuivre()
-      else this.poursuit
+      else
+      { 
+        this.suite.onresultat(rajax.ok)
+        this.poursuit
+      }
     }
   },
-  "delete_and":{
-    value:function(arg)
+  "delete":{get:function()
     {
       this.fonction.waiting = true
-      this._script.arg      = arg
-      // Test.write("Deleting file `"+this.path+"`… ")
       Ajax.send({script:'file/delete', path:this.path}, $.proxy(this.suite_delete,this));
+      return this.suite
     }
-  },
-  "delete":{get:function(){this.delete_and()}
   },
   "suite_delete":{
     value:function(rajax)
@@ -287,22 +317,14 @@ Object.defineProperties(_TFile.prototype, {
       if( this.fonction ) this.fonction.waiting = true
     }
   },
-  "seek_and":{
-    value:function(arg)
+  "seek":{get:function()
     {
       this.wait_function()
-      this._script.arg = arg
-      // Test.write("Seeking `"+this.path+"` file… ")
       Ajax.send({
         script:'file/seek', 
         path:this.path
       }, $.proxy(this.suite_seek, this), $.proxy(this.wait_function, this))    
-    }
-  },
-  "seek":{get:function()
-    {
-      console.log("-> File.seek")
-      this.seek_and()
+      return this.suite
     }
   },
   "suite_seek":{
@@ -341,7 +363,7 @@ Object.defineProperties(_TFile.prototype, {
     value:function(searched, arg, strict)
     {
       this.fonction.waiting = true
-      this._script.arg      = arg
+      this.script.arg       = arg
       if(undefined == strict) strict = false
       this.load_poursuivre  = $.proxy(this.suite_contain, this, searched, strict)
       this.load
@@ -370,41 +392,43 @@ Object.defineProperties(_TFile.prototype, {
       this.poursuit
     }
   },
-  // Should.exist_and
-  "exist_and":{
-    value:function(arg)
+  "exist":{
+    get:function()
     {
+      // this.exist_and()
       this.fonction.waiting = true
-      this._script.arg      = arg
       this.seek_poursuivre  = $.proxy(this.suite_exist, this)
       this.seek
+      return this.suite
     }
   },
-  // Should.exist
-  "exist":{get:function(){this.exist_and()}},
   "suite_exist":{
     value:function()
     {
       this.seek_poursuivre = null
-      _estime(
-        this._exists,{
-          test:'File.should.exists',
-          args:[],
-          positif:this.positif,
-          sujet:"`'"+this.path+"'`",
-          result:{
-            positif:{success:LOCALES['exists'], failure:LOCALES['should exist']},
-            negatif:{success:LOCALES['not exists'], failure:LOCALES['should not exist']}
-          },
-          expected_result:null,
-      		no_expected_result:true,
-          after_if_failure:null
-        }
-      )
+      // On regarde si l'utilisateur a défini des messages en
+      // cas de succès ou d'échec (ainsi que des étapes suivantes suivant
+      // le résultat). Si aucun message n'est défini, on affiche celui
+      // par défaut ci-dessous
+      if( false == this.suite.onresultat( this.positif == this._exists ))
+      {
+        _estime(
+          this._exists,{
+            test:'File.should.exists',
+            args:[],
+            positif:this.positif,
+            sujet:"File:`'"+this.path+"'`",
+            result:{
+              positif:{success:LOCALES['exists'], failure:LOCALES['should exist']},
+              negatif:{success:LOCALES['not exists'], failure:LOCALES['should not exist']}
+            },
+            expected_result:null,
+        		no_expected_result:true,
+            after_if_failure:null
+          }
+        )
+      }
       this.poursuit
     }
   }
 })
-
-
- 

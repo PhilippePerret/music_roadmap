@@ -1,10 +1,11 @@
-const NOTICE  = 'NOTICE';
-const WARNING = 'WARNING';
-const SYSTEM  = 'SYSTEM';
-const GREEN   = 'GREEN';
-const BLUE    = 'BLUE';
-const RED     = 'RED';
-const ORANGE  = 'ORANGE';
+const NOTICE  = 'NOTICE'
+const WARNING = 'WARNING'
+const SYSTEM  = 'SYSTEM'
+const GREEN   = 'GREEN'
+const BLUE    = 'BLUE'
+const RED     = 'RED'
+const ORANGE  = 'ORANGE'
+const WHITE   = 'WHITE'
 
 window.Test = {
   failure_list  :null,        // Liste des échecs
@@ -78,15 +79,16 @@ window.Test = {
 	},
   
 	reset_values:function(){
-    this.failure_list  	= [];
-    this.nb_success  		= 0;
-    this.nb_failures 		= 0;
-    this.nb_pendings 		= 0;
-    this.nb_exemples 		= 0;
-    this.rapport_fin_ok = false;
-		this.indice_current_success	= 0;
-		this.indice_current_failure = 0;
-		this.indice_current_pending = 0;
+    this.failure_list  	= []
+    this.nb_success  		= 0
+    this.nb_failures 		= 0
+    this.nb_pendings 		= 0
+    this.nb_exemples 		= 0
+    this.rapport_fin_ok = false
+    this.aborting       = false
+		this.indice_current_success	= 0
+		this.indice_current_failure = 0
+		this.indice_current_pending = 0
 	},
 	
   // Lance la Fonction Principale de Test courant
@@ -204,9 +206,13 @@ window.Test = {
     this.load_script('./tests/user_tests/_sandbox_.js', 'script_sandbox')
   },
 
+  aborting:false,
   force_stop_test:function(){
 		this.force_db("<br /><br />"+LOCALES.messages['test aborted'], WARNING);
     this.stop = true;
+    this.aborting = true // pour empêcher de scroller en bas
+    // Cela aura pour effet de détruire le timeout
+    if(this.timer_scroll_bottom) this.scroll_to_bottom();
     this.end();
   },
   
@@ -247,7 +253,7 @@ window.Test = {
       this.display_detailled_errors();
     }
     this.write_ln('<br /><br /><br />');
-    this.scroll_to_bottom();
+    if(this.aborting == false) this.scroll_to_bottom()
     // On remet le nom du bouton run
     $('input#btn_run_stop').val(LOCALES.ui['run test']);
 		// On rend visible le bouton pour remonter
@@ -267,7 +273,6 @@ window.Test = {
         this.write_ln(step_failures.errors.join('<br>'), RED);
       }
     }
-    this.scroll_to_bottom();
   },
   
   // Définit l'étape courante et l'affiche
@@ -328,10 +333,11 @@ window.Test = {
   },
   
   // Écriture d'un message système à l'écran
+  //  @param  mess      Le message de débug
   //  @param  forcer    Si true, le message s'affiche même en mode non verbeux
   //                    On peut utiliser aussi la méthode `force_db'
   db:function(mess,type,forcer){
-    this.write_in_rapport('div', mess, type, forcer || false);
+    this.write_in_rapport('div', mess, WHITE, forcer || false);
   },
   force_db:function(mess,type){
     this.write_in_rapport('div', mess, type, forcer=true);
@@ -352,16 +358,13 @@ window.Test = {
     }
     if(undefined == type || type== null) type = SYSTEM;
     $('div#rapport').append('<'+bal+' class="'+type+'">'+mess+'</'+bal+'>');
-    // On se place toujours en bas de fenêtre
-    this.scroll_to_bottom();
-    
+    if(this.aborting == false) this.scroll_to_bottom()
   },
   
   // Pour aller en bas de la fenêtre : noter qu'on attend toujours
   // une seconde avant de le faire vraiment
   scroll_to_bottom:function(){
     if(this.timer_scroll_bottom){
-      // window.scrollTo(0, window.innerHeight + 100);
       window.scrollTo(0,10000000000);
       clearTimeout(this.timer_scroll_bottom);
       delete this.timer_scroll_bottom;
@@ -436,6 +439,8 @@ window._estime = function(ok, options){
 window.w          = $.proxy(Test.write_ln,Test);
 window.r          = $.proxy(Test.write, Test);
 window.db         = $.proxy(Test.db, Test);
+window.debug      = $.proxy(Test.db, Test)
+window.warning    = function(mess){return Test.force_db(mess, WARNING)}
 window.force_db   = $.proxy(Test.force_db, Test);
 window.success    = $.proxy(Test.success,Test);
 window.failure    = $.proxy(Test.failure,Test);

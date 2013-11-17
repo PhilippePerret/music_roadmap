@@ -136,17 +136,25 @@ window.LOCALES = {
     'path (relative) required'        : " A path (relative) is required ",
     'script folder path required'     : " Folder path of the script is required ",
 
-    'ERROR_NEW_TSCRIPT'       : "### CAN'T INSTANTIATE NEW TSCRIPT : ",
+    'onsuccess should be defined in'  : "`onsuccess` method should be defined, in ",
+    'onfailure should be defined in'  : "`onfailure` method should be defined, in ",
+    
+    'ERROR_NEW_TSCRIPT'       : "### CAN'T INSTANCIATE NEW TSCRIPT : ",
 		'errors encountered'			: "ERRORS ENCOUNTERED",
 		'error during test'				: " ERROR UNDER TEST ",
+    // Steps
+    'dont know step'          : "Step unknown: ",
     'need_step_list'          : "You must define step list at the top of the main test function!"+
                                 "\n(`I.set_step_list_to([...])`",
 		'no step supplied'				: "no step supplied",
+    
 		'function unfound'				: " is unfound. Unable to run test…",
     'waiting too long on'     : "I wait for too long with ",
     'need_sandbox_ready_code' : "Maybe you loose the `Test.SANDBOX_READY = true` code at the bottom of your `_sandbox_.js` file",
+    dom:{
+      'DOM Element unfound'   : "Unable to find DOM Element: "
+    },
     jq:{
-      'jq_unfound_element'    : "Element is unfound",
       'at_pos_but_unfound'    : " at position, but it is unfound",
       'create_need_data'      : "To create de jQ element, data are provided",
       'id_required_to_create' : "A ID is required to create a jQ element",

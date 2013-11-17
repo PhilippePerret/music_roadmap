@@ -26,7 +26,6 @@ _PropertiesMainTestFunction = {
   // 
 	"run":{
 	  get:function(){
-      // console.log("\n-\n[MainTestFunction]--> run ("+this.name+")")
       
       if(this.waiting) return
 
@@ -38,7 +37,6 @@ _PropertiesMainTestFunction = {
       }
       
       // if(this.waiting) return
-      // console.log("Indice après define_work : "+this.script.curstep_indice)
       
       // Si un before_each est défini, on le joue
       this.before_each
@@ -49,12 +47,10 @@ _PropertiesMainTestFunction = {
       // on appelle simplement la Fonction Principale de Test.
       if(this.curstep)
       {
-        // console.log("curstep DÉFINI, => script.fonction.curstep.run")
         this.curstep.run
       }
       else
       { 
-        // console.log("curstep NON DÉFINI => fonction jouée")
         this.script.fonction()
       }
       if(this.waiting) return
@@ -118,7 +114,7 @@ _PropertiesMainTestFunction = {
         if(false == this.define_current_step) return false // dernière étape
         this.init_step
       }
-      return true // pour jouer effectivement l'étape
+      return true // pour jouer effectivement l'étape (ou son stop point)
 		}
 	},
 
@@ -218,7 +214,6 @@ _PropertiesMainTestFunction = {
         // On écrit la fin de la fonction est on arrête
         if (this.script.curstep_indice == this.script.number_of_steps)
         {
-          // TODO: Voir pourquoi ce cas n'est jamais appelé
   				step("FIN DU TEST `" + this.script.function_name + "`")
   			}
         return false //this.end
@@ -319,6 +314,11 @@ _PropertiesMainTestFunction = {
       this.throw // pour relancer en prenant en compte la première étape
 		}
 	},
+  // Retourne l'indice de l'étape +step+ dans la fonction
+  // @note : La même méthode existe pour le script
+  "indice_of_step":{
+    value:function(step){return this.STEP_NAME_TO_INDICE[step]}
+  },
   // Définit ou retourne la liste des étapes (raccourci pour `set_step_list_to`)
   // S'utilise avec `<fonction>.step_list = [...]`
   "step_list":{
@@ -488,7 +488,6 @@ _PropertiesMainTestFunction = {
 	// 
 	"end":{
 		get:function(){
-			
       Test.NO_TEST = false
 			Test.SILENCE = false
       
@@ -498,11 +497,11 @@ _PropertiesMainTestFunction = {
 			if(this.script.function_after)
       { // Une fonction pour suivre a été définie
 				if('function' == typeof this.script.function_after) this.script.function_after()
-				else if (this.script.function_after instanceof TScript) this.script.function_after.run
 				else force_db("Impossible de savoir comment prendre `"+this.script.function_after+"`… Je ne peux rien lancer.")
 			}
       else if(this.script.script_after)
       { // Un script pour suivre a été défini
+        this.script.script_after.fonction.waiting = false
         this.script.script_after.run
       }
 			else Test.end()
@@ -578,7 +577,7 @@ _PropertiesMainTestFunction = {
     value:function(path, argument)
     {
       var ifile = file(path, argument)
-      ifile._script = this.script
+      // ifile._script = this.script
       return ifile
     }
   },
