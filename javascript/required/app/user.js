@@ -16,7 +16,7 @@ window.User = {
   preparing_form  :false, // mis à true pendant préparation formulaires
   
   PREFERENCES: {
-    after_roadmap_loading: Seance.show
+    after_roadmap_loading: null, //@TODO: REMETTRE ÇA EN RÉGLAGE Seance.show
   },
   
   // Réinitialisation de l'user

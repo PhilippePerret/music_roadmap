@@ -7,6 +7,7 @@
   
 =end
 
+require 'rubygems'
 require 'json'
 require 'digest/md5'
 require 'date'
