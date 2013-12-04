@@ -16,6 +16,7 @@ FOLDER_PROCEDURES = File.join(FOLDER_RUBY, 'procedure')
 
 FOLDER_ROADMAP   = File.join(APP_FOLDER, 'user', 'roadmap')
 
+$: << APP_FOLDER
 $: << FOLDER_RUBY
 $: << FOLDER_LIB_RUBY
 
