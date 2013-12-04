@@ -1,4 +1,5 @@
-# encoding: UTF-8
+# coding: UTF-8
+
 =begin
 
   Class Html
@@ -20,7 +21,7 @@ class Html
   #   PROPRE À L'APPLICATION
   # -------------------------------------------------------------------
   URL         = 'www.music-roadmap.net'
-  URL_OFFLINE = "localhost/~philippeperret/cgi-bin/music_roadmap"
+  URL_OFFLINE = "localhost/~philippeperret/ruby/music_roadmap"
   # JQuery's files
   JQUERIES = [
     File.join(PATH_LIB_JS_GENE, 'required', 'jquery.js'),
@@ -270,7 +271,8 @@ class Html
     end
     def section_roadmap
       '<section id="roadmap" onmousedown="UI.set_premier_plan(this)" style="">' +
-      section_specs + section_exercices +
+      section_specs + 
+      section_exercices +
       '</section>'
     end
     def section_specs

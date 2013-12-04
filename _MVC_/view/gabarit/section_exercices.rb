@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 =begin
 
   View des paramètres
