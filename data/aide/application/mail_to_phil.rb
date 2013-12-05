@@ -1,6 +1,6 @@
 =begin
 
-  Envoyer un mail à Phil
+  Write to Phil
   
   La page contient un captcha anti-robot
   
@@ -39,7 +39,7 @@ begin
     cur   = APP_FOLDER
     upto  = upto.sub(/#{APP_FOLDER}\//,'')
     upto.split('/').each do |dossier|
-      break if dossier.index('.') != nil # un fichier à la fin
+      break if dossier.index('.') != nil # un fichier &agrave; la fin
       cur = "#{cur}/#{dossier}"
       Dir.mkdir(cur, 0777) unless File.exists? cur
     end
@@ -59,8 +59,8 @@ begin
     :reponse            => nombre_croches
   }
   path = File.join(APP_FOLDER, 'tmp', 'captcha', "#{now}.js")
-  check_folders path    # lourd de le faire ici, mais bon… j'ai pas de classe 
-                        # générale pour le moment
+  check_folders path    # lourd de le faire ici, mais bon&hellip; j'ai pas de classe 
+                        # generale pour le moment
   File.open(path, 'wb'){|f| f.write data.to_json}
 
   captcha = <<-EOT
@@ -75,10 +75,10 @@ begin
     </div>
   </div>
   EOT
-  # Formulaire renvoyé
+  # Formulaire renvoye
   form = File.read(File.join(APP_FOLDER,'data','aide','application',"mail_form.html"))
   form.sub!(/CAPTCHA/,captcha)
 rescue Exception => e
   RETOUR_AJAX[:error] = e.message
-  "Problème"
+  "Probl&egrave;me"
 end

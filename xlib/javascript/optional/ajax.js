@@ -29,14 +29,30 @@ window.Ajax = {
                     p.data : objet contenant les données à envoyer. Ou null.
   */
   query:function(p){
+    console.log("-> Ajax.query avec :")
+    console.dir(p)
     var my = Ajax ;
     // if ( my.ON ) return false ;
     // my.ON = true ;
     // Flash.clean();
 
-    p = my.surdefine_p( p ) ;
-    p = my.formate_returned_params( p ) ;
-    p = my.formate_data_send( p ) ;
+    try
+    {
+      p = my.surdefine_p( p ) ;
+      p = my.formate_returned_params( p ) ;
+      p = my.formate_data_send( p ) ;
+    }
+    catch(err)
+    {
+      var mess_err = "Erreur dans Ajax.query : "+err
+      if(console)
+      {
+        console.log(mess_err + " / Data envoyées à la requête :")
+        console.dir(p)
+      }
+      F.error(mess_err)
+      return false
+    }
 
     p_ajax = {
       url         : this.R_AJAX_FILENAME,

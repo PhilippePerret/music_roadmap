@@ -11,7 +11,7 @@ $fichier_debug = nil
 def dbg message
   return unless DEBUG_ON
   if $fichier_debug.nil?
-    $fichier_debug = "debug-#{Time.now.to_i}.txt"
+    $fichier_debug = File.join(App::folder_debug, "#{Time.now.to_i}.txt")
   end
   begin
     now = Time.now.strftime("%d %m %Y - %H:%m:%S")

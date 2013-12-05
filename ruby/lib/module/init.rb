@@ -10,6 +10,7 @@ Dir["#{APP_FOLDER}/ruby/lib/app/required/**/*.rb"].each { |m| require m }
 # require "_MVC_/model/html"
 
 # Always Required Models
+require_model 'App'
 require_model 'html'
 require_model 'roadmap'
 require_model 'user'

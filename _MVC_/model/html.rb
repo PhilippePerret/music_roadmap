@@ -7,7 +7,6 @@
   Permet de gérer tout le code HTML de la page
 
 =end
-# DEBUG_ON = true
 
 require 'cgi'
 
@@ -21,7 +20,7 @@ class Html
   #   PROPRE À L'APPLICATION
   # -------------------------------------------------------------------
   URL         = 'www.music-roadmap.net'
-  URL_OFFLINE = "localhost/~philippeperret/ruby/music_roadmap"
+  URL_OFFLINE = "localhost/ruby/music_roadmap"
   # JQuery's files
   JQUERIES = [
     File.join(PATH_LIB_JS_GENE, 'required', 'jquery.js'),
@@ -141,7 +140,7 @@ class Html
         File.expand_path( "." ).split('/').each do |dossier|
           realpath << dossier
           # @FIXME: Il faudra être beaucoup plus spécifique ci-dessous pour
-          # définir que 'wwww' est recherché online et 'cgi-bin' recherché
+          # définir que 'wwww' est recherché online et 'ruby' recherché
           # offline
           # break if dossier == 'www' || dossier == 'cgi-bin'
           break if dossier == 'music_roadmap'
@@ -186,12 +185,12 @@ class Html
         # STDOUT.write "- js: #{js}\n  path: #{real_path_to_html(js)}\n"
         js = File.expand_path js
         "<script type=\"text/javascript\" src=\"#{real_path_to_html(js)}\"></script>"
-      end.to_s
+      end.join("\n")
       # Les locales (il faut leur mettre un id)
       locales = Dir["#{FOLDER_JAVASCRIPTS}/locale/#{lang}/**/*.js"].collect do |js|
         affixe = File.basename(js, File.extname(js) )
         "<script id=\"locale-#{affixe}\" class=\"locale\" type=\"text/javascript\" src=\"#{real_path_to_html(js)}\"></script>"
-      end.to_s
+      end.join("\n")
       # Les javascripts propres à cette application
       liste = 
         Dir["#{FOLDER_JAVASCRIPTS}/required/**/*.js"] +
@@ -199,7 +198,7 @@ class Html
       jss = tags + locales + liste.collect do |js|
         js = js.sub(/#{APP_FOLDER}\//,'')
         "<script type=\"text/javascript\" src=\"#{js}\"></script>"
-      end.to_s
+      end.join("\n")
       jss
     end
     
@@ -207,12 +206,14 @@ class Html
     # ---
     # Retourne le code pour toutes les feuilles de styles à utiliser
     def tags_css
+      dbg "-> HTML::tags_css"
       liste = Dir["#{FOLDER_CSS}/required/**/*.css"] + @@css
       liste += Dir["#{FOLDER_CSS}/admin/**/*.css"] if Params::offline?
       liste.collect do |css|
         css = css.sub(/#{APP_FOLDER}\//,'')
+        dbg "Stylesheet: #{css}"
         "<link rel=\"stylesheet\" type=\"text/css\" href=\"#{css}\" />"
-      end.to_s
+      end.join("\n")
     end
     
     # => Retourne le code HTML de la vue
