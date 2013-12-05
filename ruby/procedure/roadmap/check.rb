@@ -9,6 +9,8 @@
   @note: Cette procédure NE vérifie PAS la validité des noms envoyés.
   
 =end
+require 'fileutils'
+
 load_model 'roadmap'
 
 def ajax_roadmap_check
@@ -25,7 +27,7 @@ def ajax_roadmap_check
     e.message = "\"#{e.message}\"" unless e.message.start_with?("ERROR")
     RETOUR_AJAX[:error] = e.message
   else
-    if fdr.exists?
+    if fdr.exists?      
       RETOUR_AJAX[:error] = "ERROR.Roadmap.existe_deja"
     else
       RETOUR_AJAX[:error] = nil

@@ -22,7 +22,7 @@ class Roadmap
   attr_reader :nom
   
   @nom        = nil
-  @datajs     = nil  # Données du fichier data.js
+  @datainfile     = nil  # Données du fichier data.msh
   
   # Hash contenant les instances Exercice des exercices déjà relevés au cours du travail.
   # En clé : l'identifiant (String) de l'exercice et en valeur son instance.
@@ -79,10 +79,8 @@ class Roadmap
       user = User.new hismail
       raise "User inconnu" unless user.exists?
     rescue Exception => e
-      # # -- Débug Roadmap.owner? --
-      # puts "# ERREUR in Roadmap.owner? : #{e.message}"
-      # puts "Data transmises : mail:#{hismail}, password:#{hispwd}, md5:#{hismd5}"
-      # # -- / débug --
+      dbg "# ERREUR in Roadmap.owner? : #{e.message}"
+      dbg "# Data envoyées : hismail:#{hismail} / hismd5:#{hismd5}"
       return false
     end
   
@@ -101,7 +99,8 @@ class Roadmap
   def config_generale
     @config_generale ||= begin
       if config_generale?
-        JSON.parse(File.read(path_config_generale)).to_sym
+        App::load_data path_config_generale
+        # JSON.parse(File.read(path_config_generale)).to_sym
       else
         {
           :first_to_last => true,
@@ -159,7 +158,7 @@ class Roadmap
   # Save config générale
   # 
   def save_config_generale
-    File.open(path_config_generale, 'wb'){|f| f.write @config_generale.to_json}
+    App::save_data path_config_generale, @config_generale
   end
   
   
@@ -197,25 +196,25 @@ class Roadmap
   #     n'existe pas, ou toutes les données si aucun paramètre
   # @param  key     La clé dans le fichier
   #                 Si nil, ce sont toutes les data qui sont remontées
-  def get_datajs key = nil
+  def get_data_in_file key = nil
     return nil unless data?
-    @datajs ||= JSON.parse(File.read(path_data))
-    return @datajs if key.nil?
-    @datajs[key.to_s]
+    @datainfile ||= (App::load_data path_data)
+    return @datainfile if key.nil?
+    @datainfile[key]
   end
   # =>  Retourne ce que j'appelle le `md5' de la roadmap, qui est
   #     constitué par le "mail-sel-password" du possession de la roadmap
   #     passé par un digest (toutes ces valeurs se trouvent dans data.js).
   # @return nil si les dannées ne sont pas fournies
-  def md5;        get_datajs 'md5'        end
+  def md5;        get_data_in_file :md5        end
   # =>  Retourne l'ip du possesseur de la roadmap (ou nil si pas de data.js)
-  def ip;         get_datajs 'ip'         end
+  def ip;         get_data_in_file :ip         end
   # =>  Retourne le mail du possesseur de la roadmap (ou nil)
-  def mail;       get_datajs 'mail'       end
+  def mail;       get_data_in_file :mail       end
   # =>  Retourne la date de création de la rm
-  def created_at; get_datajs 'created_at' end
+  def created_at; get_data_in_file :created_at end
   # =>  Retourne la date de dernière modification
-  def updated_at; get_datajs 'updated_at' end
+  def updated_at; get_data_in_file :updated_at end
   
   # Retourne l'instance Exercice de l'exercice d'identifiant idex
   # 
@@ -229,11 +228,11 @@ class Roadmap
   #     (fichier exercices.js) si +key+ n'est pas fourni ou nil
   def data_exercices key = nil
     return nil unless exercices?
-    @data_exercices ||= JSON.parse(File.read(path_exercices))
+    @data_exercices ||= (App::load_data path_exercices)
     if key.nil?
       return @data_exercices
     else
-      return @data_exercices[key.to_s] # toujours clé string
+      return @data_exercices[key.to_sym]
     end
   end
   
@@ -253,24 +252,24 @@ class Roadmap
     end
   end
   
-  # =>  Retourne l'ordre des exercices (key 'ordre' du fichier 'exercices.js')
+  # =>  Retourne l'ordre des exercices (key :ordre du fichier 'exercices.msh')
   #     En cas d'absence du fichier exercices.js renvoie une liste vide
   def ordre_exercices
     return [] if data_exercices.nil?
-    data_exercices['ordre'] || []
+    data_exercices[:ordre] || []
   end
   
   # =>  Actualise la date de dernière modification de la roadmap
   def set_last_update
-    @datajs = get_datajs
-    @datajs ||= default_datajs
-    @datajs['updated_at'] = Time.now.to_i
-    File.open(path_data, 'wb'){|f| f.write( @datajs.to_json) }
+    @datainfile = get_data_in_file
+    @datainfile ||= default_datainfile
+    @datainfile[:updated_at] = Time.now.to_i
+    App::save_data path_data, @datainfile
   end
   # Données de data.js par défaut
   # @note: le mail et le password de l'utilisateur doivent se trouver dans
   # les paramètres.
-  def default_datajs
+  def default_datainfile
     mail      = param(:mail)
     password  = param(:password)
     md5       = Digest::MD5.hexdigest("#{mail}-#{password}")
@@ -362,10 +361,10 @@ class Roadmap
     @folder ||= File.join(APP_FOLDER, 'user', 'roadmap', affixe )
   end
   def path_data
-    @path_data ||= File.join( folder, 'data.js' )
+    @path_data ||= File.join( folder, 'data.msh' )
   end
   def path_config_generale
-    @path_config_generale ||= File.join(folder, 'config_generale.js')
+    @path_config_generale ||= File.join(folder, 'config_generale.msh')
   end
   # --- EXERCICES ---
   # Return path to folder seance(s)
@@ -384,11 +383,11 @@ class Roadmap
   # Path contenant les données générales des exercices (liste des exercices
   # en cours, etc.)
   def path_exercices
-    @path_exercices ||= File.join(folder, 'exercices.js')
+    @path_exercices ||= File.join(folder, 'exercices.msh')
   end
   # Path d'un exercice en particulier
   def path_exercice id
-    File.join( folder_exercices, "#{id}.js")
+    File.join( folder_exercices, "#{id}.msh")
   end
   # --- JOURNAL DE BORD ---
   # Path du journal de bord (historique)

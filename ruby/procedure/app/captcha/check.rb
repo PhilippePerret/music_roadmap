@@ -28,24 +28,26 @@ def ajax_app_captcha_check
     time    = param(:captcha_time).to_s
     raise "no_time"     if time == ""
 
-    @path_data_captcha = File.join(APP_FOLDER, 'tmp', 'captcha', "#{time}.js")
+    @path_data_captcha = File.join(APP_FOLDER, 'tmp', 'captcha', "#{time}.msh")
     raise "no_file" unless File.exists? @path_data_captcha
     
     # Données enregistrées
-    data = JSON.parse(File.read(@path_data_captcha))
+    # data = JSON.parse(File.read(@path_data_captcha))
+    data = App::load_data @path_data_captcha
     
     # Évaluation
-    RETOUR_AJAX[:captcha_success] = reponse == data['reponse'].to_s
+    RETOUR_AJAX[:captcha_success] = reponse == data[:reponse].to_s
     
     unless RETOUR_AJAX[:captcha_success]
-      if data['nombre_tentatives'] >= 3
+      if data[:nombre_tentatives] >= 3
         # Trop de tentatives
         detruire_fichier_data
         raise 'too_much_tentatives'
       else
         # On inscrit une tentative supplémentaire
-        data['nombre_tentatives'] += 1
-        File.open(@path_data_captcha, 'wb'){|f| f.write data.to_json}
+        data[:nombre_tentatives] += 1
+        # File.open(@path_data_captcha, 'wb'){|f| f.write data.to_json}
+        App::save_data @path_data_captcha, data
         raise 'bad_answer'
       end
     end

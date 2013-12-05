@@ -14,7 +14,7 @@ def dbg message
     $fichier_debug = File.join(App::folder_debug, "#{Time.now.to_i}.txt")
   end
   begin
-    now = Time.now.strftime("%d %m %Y - %H:%m:%S")
+    now = Time.now.strftime("%d %m %Y - %H:%M:%S")
     File.open($fichier_debug, 'a'){ |f| f.write "#{now} -- #{message}\n" }
     $nombre_try = 0
   rescue Exception => e

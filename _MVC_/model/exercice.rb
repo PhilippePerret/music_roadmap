@@ -51,7 +51,7 @@ class Exercice
   # 
   attr_accessor :index
     
-  # Data dans le fichier .js de l'exercice
+  # Data dans le fichier [OBSOLÈTE].js [UPDATED].msh de l'exercice
   # 
   # @note: Utiliser la méthode <exercice>.data pour les récupérer
   # 
@@ -95,7 +95,8 @@ class Exercice
   # Return Hash Data of the exercices (keys are String-s, NOT Symbol-s)
   # 
   def data
-    @data_js ||= JSON.parse(File.read(path))
+    # @data_js ||= JSON.parse(File.read(path))
+    @data_js ||= (App::load_data path)
   end
   
   # Return the working time for the exercie.

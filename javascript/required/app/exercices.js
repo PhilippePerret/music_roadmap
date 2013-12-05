@@ -204,12 +204,12 @@ $.extend(window.Exercices,{
   // Retourne l'ordre des exercices
   // @note: Raccourci pour Roadmap.Data.EXERCICES['ordre']
   ordre: function(){
-    return Roadmap.Data.EXERCICES['ordre'] ;
+    return Roadmap.Data.EXERCICES.ordre ;
   },
   // Définit le nouvel ordre
   // @note: Raccourci pour Roadmap.Data.EXERCICES['ordre'] = <liste>
   set_ordre: function( liste ){
-    Roadmap.Data.EXERCICES['ordre'] = liste ;
+    Roadmap.Data.EXERCICES.ordre = liste ;
   },
   
   // @note: Called by Roadmap.Data.tone() when configuration change

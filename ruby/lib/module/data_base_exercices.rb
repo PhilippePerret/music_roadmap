@@ -445,7 +445,7 @@ class DataBaseExercices
   
   # Update JS DBE_DATA (only number pour le moment)
   # @note: c'est la méthode `final_code' ci-dessous qui appelle cette méthode
-  # @return la table @dbe_data au format JSON
+  # @return la table @dbe_data au format [OBSOLÈTE] JSON [GOOD:] Marshal
   def self.update_dbe_data instid = nil
     instid ||= @current_instrument
     dbe_data = {
@@ -462,7 +462,8 @@ class DataBaseExercices
         dbe_data[:nombre][:exercices]  += (Dir["#{drecueil}/*.yml"].count - 1)
       end
     end
-    dbe_data.to_json
+    # dbe_data.to_json
+    Marshal::dump(dbe_data)
   end
   
   # Return final code according to instrument and lang

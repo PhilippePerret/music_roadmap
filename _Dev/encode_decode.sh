@@ -6,12 +6,25 @@
 
 echo "Dossier courant: "`pwd`
 
+# ---------------------------------------------------------------------
+#   ENCODAGES
+# ---------------------------------------------------------------------
+
 # Encoder en html tous les fichiers du dossier data/aide
 # 
 # @note '-k' pour ne pas produire de fichier <name>-original
 # 
-~/Programmation/Programmes/html/encode.rb ./data/aide -k -v
+# ~/Programmation/Programmes/html/encode.rb ./data/aide -k -v
 
+# Mails
+# 
+~/Programmation/Programmes/html/encode.rb ./data/mail -k -v
+
+
+# ---------------------------------------------------------------------
+#   DÉCODAGES
+#   Pour revenir à une version "humaine" des textes (pour modification)
+# ---------------------------------------------------------------------
 # Décoder depuis html (pour pouvoir retravailler les textes plus confortablement)
 # 
 # ~/Programmation/Programmes/html/decode.rb ./data/aide -k -v

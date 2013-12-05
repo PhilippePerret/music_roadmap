@@ -69,8 +69,8 @@ def exercice_add_from_dbe rm, duser, inst_id, exs, options
     # notamment la date de dernière modification de la roadmap)
     require 'procedure/roadmap/save'
     data_exercices = rm.data_exercices
-    data_exercices = data_exercices.merge 'ordre' => [] unless data_exercices.has_key?('ordre')
-    data_exercices['ordre'] += list_new_ids
+    data_exercices = data_exercices.merge :ordre => [] unless data_exercices.has_key?(:ordre)
+    data_exercices[:ordre] += list_new_ids
     roadmap_save 'exercices', data_exercices, rm
   end
   

@@ -52,7 +52,7 @@ def ajax_roadmap_save
   # Sauvegarde possible
   unless param(:config_generale).nil?
     gconfig = param(:config_generale)
-    gconfig['tone'] = gconfig['tone'].to_i
+    gconfig[:tone] = gconfig[:tone].to_i
     roadmap_save 'config_generale', gconfig, rm
   end
   unless param(:data_exercices).nil?
@@ -80,6 +80,12 @@ def roadmap_save keypath, data, rm
   begin
     if data.class == Hash
       # --- Traitement à faire sur les data ---
+
+      # On utilise toujours des clés symboliques
+      data = data.to_sym
+
+      # Modification de valeurs stringifiées dans la 
+      # requête ajax.
       data.each do |k,v|
         v = case v
         when 'false'  then false
@@ -89,21 +95,21 @@ def roadmap_save keypath, data, rm
         end
         data[k] = v
       end 
+      
       # Actualisation des temps
-      data = data.merge('created_at' => now) unless data.has_key?('created_at')
-      data = data.merge('updated_at' => now)
+      data = data.merge(:created_at => now) unless data.has_key?(:created_at)
+      data = data.merge(:updated_at => now)
     end
   
-    # On ajoute toujours la paramètres 'ordre' à exercices.js, qui a pu être supprimé au
-    # cours de la requête ajax
+    # On ajoute toujours la paramètres :ordre à exercices.js, qui a pu être 
+    # supprimé au cours de la requête ajaxw
     if keypath == 'exercices'
-      data = data.merge('ordre' => []) unless data.has_key?('ordre')
+      data = data.merge(:ordre => []) unless data.has_key?(:ordre)
     end
     
     # --- Enregistrement ---
     rm.build_folder
-    File.open( rm.send("path_#{keypath}"), 'wb' ){ |f| f.write data.to_json }
-    
+    App::save_data rm.send("path_#{keypath}"), data
     # On indique toujours la date de dernière modification de la roadmap
     rm.set_last_update
     

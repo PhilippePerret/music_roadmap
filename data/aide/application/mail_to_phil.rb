@@ -58,11 +58,12 @@ begin
     :nombre_tentatives  => 0,
     :reponse            => nombre_croches
   }
-  path = File.join(APP_FOLDER, 'tmp', 'captcha', "#{now}.js")
+  # path = File.join(APP_FOLDER, 'tmp', 'captcha', "#{now}.js")
+  path = File.join(APP_FOLDER, 'tmp', 'captcha', "#{now}.msh")
   check_folders path    # lourd de le faire ici, mais bon&hellip; j'ai pas de classe 
                         # generale pour le moment
-  File.open(path, 'wb'){|f| f.write data.to_json}
-
+  # File.open(path, 'wb'){|f| f.write data.to_json}
+  App::save_data path, data
   captcha = <<-EOT
   <div>
     <div id="captcha">

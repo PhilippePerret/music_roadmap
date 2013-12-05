@@ -15,6 +15,10 @@ require_model 'html'
 require_model 'roadmap'
 require_model 'user'
 
+# Voir si les dossiers indispensable existent bien et
+# les créer si nécessaire
+App.check_required_folder
+
 # Connection Analyzing
 require 'params'
 Params.set_params

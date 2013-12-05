@@ -45,10 +45,10 @@ def exercice_load rm, ids, owner
     :errors     => []
   }
   ids.each do |id|
-    path = File.join(rm.folder_exercices,"#{id}.js")
+    path = File.join(rm.folder_exercices,"#{id}.msh")
     if File.exists? path
       begin
-        hres[:exercices] << JSON.parse(File.read(path))
+        hres[:exercices] << (App::load_data path)
       rescue Exception => e
         hres[:errors] << "# ERROR with ex ##{id}: #{e.message}"
       end

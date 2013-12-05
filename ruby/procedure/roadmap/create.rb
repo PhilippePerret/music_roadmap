@@ -5,6 +5,7 @@
   @note:  pas de méthode ajax car la roadmap se crée depuis la procédure
           save
 =end
+
 require_model 'user'
 require_model 'roadmap'
 require_model 'mail'
@@ -17,15 +18,19 @@ def roadmap_create data, lang = 'en'
     raise unless data.has_key?(:mail) && data[:mail] != nil
     raise unless data.has_key?(:md5) && data[:md5] != nil
     owner = User.new data[:mail]
+    
     raise unless owner.md5 == data[:md5]
+    
     return "ERROR.Roadmap.too_many" if owner.roadmaps.count > 9
     raise unless data.has_key?(:nom) && data[:nom] != nil
     raise unless data.has_key?(:salt) && data[:salt] != nil
     raise unless data.has_key?(:partage) && data[:partage] != nil
     # Unicité de la roadmap
-    rm = Roadmap.new data[:nom], data[:mail]
+    rm = Roadmap.new data[:nom], data[:mail]    
     raise if rm.exists?
   rescue Exception => e
+    dbg e.message
+    dbg e.backtrace.join("\n")
     return "ERROR.Roadmap.cant_create"
   end
   
@@ -37,11 +42,12 @@ def roadmap_create data, lang = 'en'
     data = data.merge(
       :created_at => now, :updated_at => now, :ip => Params::User.ip
     )
-    File.open(rm.path_data,'wb') { |f| f.write data.to_json }
+    # File.open(rm.path_data,'wb') { |f| f.write data.to_json }
+    App::save_data rm.path_data, data
     data = {
       :created_at => now, :updated_at => now, :ordre => []
     }
-    File.open(rm.path_exercices,'wb') { |f| f.write data.to_json }
+    App::save_data rm.path_exercices, data
     # On ajoute cette roadmap à l'utilisateur
     owner.add_roadmap rm.nom
     # On envoie un mail à l'user pour lui confirmer la création de la roadmap
@@ -65,6 +71,6 @@ def roadmap_create data, lang = 'en'
   rescue Exception => e
     errmes = e.message
     errmes += '<br>'+e.backtrace.join('<br>') if Params::offline?
-    return "# [Procédure roadmap/create] FATAL ERROR: #{e.message}"
+    return "# [Procédure roadmap/create] FATAL ERROR: #{errmes}"
   end
 end

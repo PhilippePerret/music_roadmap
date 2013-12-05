@@ -46,7 +46,8 @@ def user_create duser, lang = 'en'
       :created_at => Time.now.to_i,
       :updated_at => Time.now.to_i
       )
-    File.open(user.path, 'wb'){|f| f.write duser.to_json}
+    # File.open(user.path, 'wb'){|f| f.write duser.to_json}
+    App::save_data user.path, duser
     
     # On peut envoyer un mail à l'utilisateur et à l'administrateur
     Mail::lang( lang )

@@ -35,7 +35,7 @@ class Seance
     # 
     attr_reader :types
     
-    # Id of all exercices of the roadmap (in play, get in 'ordre')
+    # Id of all exercices of the roadmap (in play, get in :ordre)
     # 
     attr_reader :ids_exercices
     
@@ -786,7 +786,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       return if types.empty?
       new_ids_exercices = []
       @idexs_in_ordre_jeu.each do |idex|
-        typesex = @exercices[idex].data['types']
+        typesex = @exercices[idex].data[:types]
         type_found = false
         unless typesex.nil?
           types.each do |type|

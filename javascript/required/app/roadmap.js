@@ -347,7 +347,8 @@ window.Roadmap = {
       // l'exécute.
       // @todo: pour le moment, c'est la préparation de séance pour moi seulement, mais il
       // faudra pouvoir la définir.
-      User.PREFERENCES.after_roadmap_loading();
+      // User.PREFERENCES.after_roadmap_loading();
+      Seance.show()
     }
     BT.add('<- Roadmap.end_open (return: this.loaded='+this.loaded+')') ;
     Roadmap.opening = false ;

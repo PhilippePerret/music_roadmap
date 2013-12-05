@@ -157,7 +157,8 @@ class DBExercice
         dex = dex.merge prop => data[prop.to_s]
       end
       # Create in Roadmap folder
-      File.open(rm.path_exercice(dex[:id]), 'wb'){|f| f.write dex.to_json}
+      # File.open(rm.path_exercice(dex[:id]), 'wb'){|f| f.write dex.to_json}
+      App::save_data rm.path_exercice(dex[:id]), dex
       return nil
     rescue Exception => e
       return e.message + "\n" + e.backtrace.join("\n")

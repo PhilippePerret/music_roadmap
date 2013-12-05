@@ -34,7 +34,7 @@ def ajax_exercice_import
   
   # Il faut charger les identifiants courant pour en trouver de nouveaux
   data = roadmap_load param(:rm_nom), param(:rm_mail), {:data_exercices => true}
-  $liste_ids = data[:data_exercices]['ordre']
+  $liste_ids = data[:data_exercices][:ordre]
 
   # # débug
   # erreurs << "Paths reçues : '#{param(:data)}'"
@@ -50,7 +50,7 @@ def ajax_exercice_import
       ok, dex = load_this_exercice m_from, old_id, rm_to # fonction locale
       if ok
         # L'exercice existe et a pu être chargé
-        dex['id'] = new_id = get_new_id          # Identifiant unique
+        dex[:id] = new_id = get_new_id          # Identifiant unique
         
         # # debug
         # erreurs << "New ID créé : #{new_id} (pas une erreur, pour retour)"
@@ -72,9 +72,9 @@ end
 
 def load_this_exercice m_from, old_id, rm_to
   begin
-    path = File.join(m_from.folder_exercices, "#{old_id}.js")
+    path = File.join(m_from.folder_exercices, "#{old_id}.msh")
     raise "Cet exercice est introuvable" unless File.exists? path
-    [ true, JSON.parse(File.read(path)) ]
+    [ true, App::load_data path ]
   rescue Exception => e
     [ false, e.message ]
   end
