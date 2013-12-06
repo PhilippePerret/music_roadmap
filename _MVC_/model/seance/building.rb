@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 =begin
   Class Seance::Building
   
@@ -123,8 +125,12 @@ div#div_operations div.operation span.idval{
     # Et on finalise le document
     def end_debug
       return if @no_debug
+      dbg "-> Building::end_debug"
+      dbg "   @path_debug:#{@path_debug}"
+      dbg "   debug_end_report:#{debug_end_report}:#{debug_end_report.class}"
       code =  '<div id="div_operations">'+
-              File.read(@path_debug) +
+              # File.read(@path_debug) +
+              File.open(@path_debug, 'r', :encoding => 'UTF-8'){|f| f.read} +
               debug_end_report.gsub(/\n/,'<br>') +
               '</div>' + 
               debug_infos_exercices
@@ -711,7 +717,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     # joués à la session précédente. Juste pour les mettre en exergue dans
     # la présentation de la session.
     def liste_exercices_rejoues_de_derniere_session
-      idexs_last_seance = @seances[0][:id_exercices]
+      idexs_last_seance = @seances.count > 0 ? @seances[0][:id_exercices] : []
       @idexs_des_rejoues = []
       @idexs_retenus.each do |idex|
         next if idexs_last_seance.index(idex) === nil
