@@ -636,7 +636,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       debug "Durée des anciens : #{duree_anciens.as_horloge}"
       duree_a_atteindre = duree_anciens + (duree_anciens/3)
       debug "Durée à atteindre en ajoutant des récents (les plus anciens) : #{duree_a_atteindre.as_horloge}"
-      while duree_anciens < duree_a_atteindre
+      while @idexs_recents.count > 0 && duree_anciens < duree_a_atteindre
         id_vieux_recent = @idexs_recents.pop
         @idexs_anciens  << id_vieux_recent
         duree_anciens   += (duree_of id_vieux_recent)
@@ -749,6 +749,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     # Handy méthode pour obtenir la durée d'un exercice
     # Ou d'une liste d'exercices
     def duree_of idex
+      dbg "-> duree_of(#{idex.inspect})"
       if idex.class == Array
         idex.collect{|id| duree_of_exercice id}.inject(:+) || 0
       else
@@ -756,6 +757,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       end
     end
     def duree_of_exercice idex
+      # dbg "-> duree_of_exercice(#{idex}:#{idex.class})"
       @durees_des_exercices ||= {}
       if @durees_des_exercices[idex].nil?
         @durees_des_exercices[idex] = @exercices[idex].seances_working_time
@@ -843,6 +845,7 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
     #     cours des dernières sessions de travail.
     # 
     def etat_des_lieux
+      dbg "-> Building::etat_des_lieux"
       @total_duree_roadmap  = 0
       @ids_exercices        = roadmap.ordre_exercices
       @exercices            = {}

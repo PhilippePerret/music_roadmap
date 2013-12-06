@@ -1,7 +1,6 @@
 /* Titre du div principal */
 div#database_exercices div.titre {
   font-weight     :bold;
-  color           :#555;
 }
 div#database_exercices div#dbe_div_nombres {
   font-size       :11pt;
@@ -20,19 +19,19 @@ div#database_exercices div#dbe_boutons {
   text-align      :right;
 }
 
+
 /* Un div complet pour un auteur */
 div.dbe_div_auteur {
   padding-bottom  :2px;
-  border-bottom   :1px solid #999;
+  border-bottom-width:1px;
+  border-bottom-style:solid;
   margin-bottom   :6px;
 }
-
 /* Le nom de l'auteur des exercices/recueils */
 div.dbe_div_auteur a.dbe_auteur {
   display         :block;
   font-size       :1.1em;
   font-weight     :bold;
-  color           :black !important;
   margin-bottom   :0.6em;
 }
 
@@ -52,14 +51,13 @@ div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_recueil {
   margin-top      :0.6em;
 }
 div.dbe_div_auteur div.dbe_div_recueils div.titre_recueil a.recueil_title {
-  color           :black !important;
   text-decoration :none;
 }
-
 /* Div d'un exercice dans le listing de la database */
 div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_exercices div.dbe_div_ex {
   margin-left     :1em;
-  border-bottom   :1px solid #ddd;
+  border-bottom-style :solid;
+  border-bottom-width :1px;
 }
 /* Les checkbox pour choisir les exercices à importer */
 div.dbe_div_auteur div.dbe_div_ex input[type="checkbox"].dbe_cb_ex {

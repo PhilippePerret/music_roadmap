@@ -479,14 +479,16 @@ window.Roadmap = {
        *    menu
        *  - régler la configuration générale des exercices
        *  - cacher les boutons "créer" et "open"
+       *  - vider ul#exercices
        */
       User.add_roadmap(this.nom);
       this.set_etat_btn_open(false);
       this.set_etat_btn_create(false);
+      $('ul#exercices').html('')
       this.UI.Set.config_generale();
     }
     this.creating = false;
-    return false ; // pour certaines méthodes
+    return false // pour certaines méthodes
   },
   
   // --- Méthodes de destruction de la roadmap

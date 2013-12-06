@@ -8,6 +8,27 @@ Pour l'application comme application
 class App
   class << self
     
+    # Permet d'exécuter une requête sudo
+    # 
+    # NOTES
+    # -----
+    #   @ En offline seulement
+    # 
+    # @param  code  Le code shell à exécuter
+    def sudo code
+
+      # La méthode peut être appelée par un script utilitaire (en offline) donc
+      # il faut faire ce check (dans un script utilitaire, Params n'est pas 
+      # souvent défini)
+      raise if (defined?(Params) && Params.online?) || ENV['TM_MATE'] == nil
+      
+      # raise "Interdit" if Params.online?
+      pwd_file = File.join('data', 'secret', 'home_password')
+      raise "Fichier password (home_password) introuvable dans ./data/secret/" unless File.exists? pwd_file
+      pwd = File.read(pwd_file)
+      `echo #{pwd} | sudo -S #{code}`
+    end
+    
     # Charge les données du fichier +path+
     # 
     # Cette méthode a été inaugurée suite aux problèmes JSON de US-ASCII

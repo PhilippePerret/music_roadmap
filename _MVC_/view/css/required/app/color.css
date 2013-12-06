@@ -1,0 +1,240 @@
+/*
+ *  Définition des couleurs utilisées
+ */
+body {
+  background-color  :white;
+}
+
+/* ---------------------------------------------------------------------
+ *  Généraux
+ */
+.texte_cliquable {
+  color             : #009 ;
+}
+
+/* ---------------------------------------------------------------------
+ *  Image de fond
+ */
+div#background {
+  background-image  :url('http://www.music-roadmap.net/data/db_exercices/piano/cramer/84_studies_book_1/4-extrait.jpg');
+  background-position   :270px 180px;
+}
+
+/* ---------------------------------------------------------------------
+ *  Section bande logo
+ */
+section#bande_logo {
+  background-color    :white;
+  color               :black;
+}
+/* ---------------------------------------------------------------------
+ *  Métronome principal
+ */
+section#sec_metronome {
+  background-color  :#EDEDED;
+}
+
+/* ---------------------------------------------------------------------
+ *  Section roadmap
+ */
+section#roadmap {
+  border-color        :#FFFFFF;
+}
+/* --- Spécifications de la roadmap --- */
+div#roadmap_specs {
+  background-color      :#ccc;
+}
+section#roadmap div#roadmap_specs {
+  color               : white ;
+}
+div#roadmap_specs select#roadmaps {
+  color:#727272;
+}
+div#open_roadmap_specs a {
+  color         :#4F4F4F !important;
+}
+section#roadmap span#mode_exergue_paragraphe_cliquable {
+  color             : white !important ;
+}
+/* --- Outils roadmap --- */
+section#roadmap div#outils_roadmap {
+  background-color        : #cdd7d7 ; /* s'associe bien avec vert dur */
+}
+
+/* ---------------------------------------------------------------------
+ *  Section des boutons principaux
+ */
+section#main_buttons a {
+  color               :#555 !important;
+}
+a#btn_want_signin:focus {
+  border-color:#AAFFCC;
+}
+
+/* ---------------------------------------------------------------------
+ *  Section exercices
+ */
+section#section_exercices {
+  background-color  : #F2F2F2;
+  border-color      : #e9e9e9;
+}
+/* Boutons exercices */
+div#btns_exercices {
+  background-color    :#969696;
+}
+
+/* --- Tables de formulaires --- */
+table#exercice_form, div#database_exercices {
+  background-color     :whitesmoke;
+  border-color         :#334E52;
+}
+table#exercice_form div#exercice_cbs_types {
+  background-color          :#E0E0E0;
+}
+
+/* --- Listing exercices --- */
+ul#exercices {
+  border-bottom-color: #ccc;
+}
+ul#exercices li.ex {
+  background-color      :white;
+}
+ul#exercices li.ex.selected {
+  background-color       :#cdd7d7 !important;
+}
+/* Le Div de l'image quand l'exercice est sélectionné */
+ul#exercices li.ex.selected div.div_ex_image {
+  border-color    :#5a7d6c;
+}
+
+li.ex div.ex_note {
+  background-color      :#D1EADE;
+  border-color          :#7BD161;
+}
+li.ex div.btns_edition a.btn_del {
+  background-color      :#f99 !important ;
+  border-color          :#900 !important ;
+  opacity               :0.7;
+}
+li.ex div.btns_edition a.btn_del:hover { opacity:1; }
+
+/* ---------------------------------------------------------------------
+ * Configuration générale des exercices
+ */
+div#config_generale div#div_cur_tone {
+  background-color  :#eee;
+}
+div#config_generale div#config_generale_resume {
+  color :#000;
+}
+div#config_generale label#config_generale_label_cbsave {
+  color :white;
+}
+/* Le DIV contenant la définition d'un paramètre */
+div.param {
+  background-color  : white;
+  border-color      : #000;
+}
+div.param span.titre {
+  color             : #888 ;
+}
+div.param span.valeur {
+  color           : #005 ;
+}
+/* ---------------------------------------------------------------------
+ *  Section Séance
+ */
+section#seance {
+  background-color    :white;
+}
+section#seance div#seance_start,
+section#seance div#seance_end,
+section#seance div#seance_form {
+  background-color  :white;
+}
+section#seance div#seance_form_types {
+  background-color    :#ECECEC;
+}
+section#seance div#seance_form label.libelle {
+  color               :#659460;
+}
+section#seance div#seance_start_description span.libelle {
+  color           :#55A555;
+}
+/* - Infos exercice current - */
+section#current_exercice{
+  color       :black;
+}
+
+/* ---------------------------------------------------------------------
+ *  Section Rapport
+ */
+section#rapport {
+  background-color    :white;
+}
+section#rapport section#section_calendar div#rapport_cal_buttons_open a {
+  color           :#000069;
+}
+section#rapport tr#calendar_day_names td {
+  color       :#555;
+}
+/* Cellule pour un jour */
+section#rapport table#table_calendar td.calendar_day {
+  border-color : #ccc;
+}
+/* Jour sélectionné (en général jour courant) */
+table#table_calendar td.calendar_day.selected {
+  background-color  :#9ee;
+  border-color      :#0080AF;
+}
+table#table_calendar td.calendar_day div.calendar_day_number {
+  color       :#eeeeff;
+}
+section#rapport div.rapport_div_ex {
+  border-bottom-color:#ccc;
+}
+
+/* ---------------------------------------------------------------------
+ * Database exercices
+ */
+div#database_exercices div.titre {
+  color           :#555;
+}
+/* Un div complet pour un auteur */
+div.dbe_div_auteur {
+  border-bottom-color :#999;
+}
+/* Le nom de l'auteur des exercices/recueils */
+div.dbe_div_auteur a.dbe_auteur {
+  color           :black !important;
+}
+div.dbe_div_auteur div.dbe_div_recueils div.titre_recueil a.recueil_title {
+  color           :black !important;
+}
+/* Div d'un exercice dans le listing de la database */
+div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_exercices div.dbe_div_ex {
+  border-bottom-color:#ddd;
+}
+
+/* ---------------------------------------------------------------------
+ *  Partition
+ */
+div#partition {
+  border-color:#454545;
+}
+
+
+/* ---------------------------------------------------------------------
+ *  Raccourcis
+ */
+div.table_shortcuts {
+  border-color    :#CCCCCC;
+  background-color:#F6F6F6;
+}
+div.table_shortcuts div.titre a {
+  color           :#005;
+}
+div.table_shortcuts div.shortcut {
+  border-color    :#fcfcfc;
+  background-color:#E7E7E7;
+}

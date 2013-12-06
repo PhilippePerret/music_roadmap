@@ -58,7 +58,8 @@ class Rapport
   #     :first_month_day  =>  first week day index of month (0-6)
   #     :last_month_day   =>  last week day index of month (0-6)
   # 
-  def data_for_js_build
+  def data_for_js_building
+    dbg "-> Rapport::data_for_js_building"
     defaultize_options
     @data_seances = Seance.get_from_to roadmap, options[:from], options[:to]
     # Pour faciliter le travail de javascript, on lui fournit quelques valeurs
@@ -73,6 +74,8 @@ class Rapport
       :first_month_day  => week_day(Date.new(options[:year], options[:month], 1)),
       :last_month_day   => week_day(Date.new(options[:year], options[:month], -1))
     )
+    dbg "<- Rapport::data_for_js_building(@data_seances:\n#{@data_seances.inspect})"
+    return @data_seances
   end
   
   # Return number of days for the report.

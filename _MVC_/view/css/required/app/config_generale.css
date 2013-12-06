@@ -1,7 +1,6 @@
 div#div_cur_tone {
   margin-left       :2.4em;
   text-align        :center;
-  background-color  :#eee;
   width             :230px;
   padding           :5px;
   border-radius     :18.8px;
@@ -20,7 +19,6 @@ div#config_generale div#config_generale_resume {
   font-size         :10pt;
   margin            :12px 0 1em 3em;
   text-align        :justify;
-  color             :#FFFFFF;
 }
 div#config_generale div#config_generale_boutons {
   margin-left       :3.5em;
@@ -32,6 +30,5 @@ div#config_generale img#config_generale_volant {
 }
 
 div#config_generale label#config_generale_label_cbsave {
-  color         :white;
   font-size     :0.85em;
 }

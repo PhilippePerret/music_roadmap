@@ -43,7 +43,7 @@ class Seance
   
   def self.debug str = nil
     return if Params::online?
-    nf = 'seance_rb_debug.txt'
+    nf = File.join('tmp', 'debug','seance_rb_debug.txt')
     File.unlink(nf) if File.exists?(nf) && File.stat(nf).mtime.to_i < (Time.now.to_i - 60)
     File.open(nf, 'a'){|f| f.puts str} unless str.nil?
   end
@@ -90,7 +90,6 @@ class Seance
     data_exercice = {
       :id               => iex.id,
       :number_of_times  => 0,     # number of times, whatever working time
-      :real_nb_fois     => 0.0,   # calculted number of times, according to time of exercice
       :total_duration   => nil,
       :average_duration => 120,   # default
       :durations        => [],
@@ -106,14 +105,12 @@ class Seance
         next unless dex[:id] == iex.id
         data_exercice[:number_of_times] += 1
         nbfois = dex.has_key?(:nbfois) ? dex[:nbfois].to_f : 1.0 # compatibilité anciennes versions
-        data_exercice[:real_nb_fois]    += nbfois
         data_exercice[:data]      << dex.merge(:day => jour)
         data_exercice[:tempos]    << dex[:tempo]
         data_exercice[:tones]     << dex[:tone]
         data_exercice[:durations] << dex[:time]
       end
     end
-    data_exercice[:real_nb_fois] = data_exercice[:real_nb_fois].to_i
     if data_exercice[:number_of_times] > 0
       data_exercice[:total_duration] = data_exercice[:durations].inject(:+)
       data_exercice[:average_duration] = 
@@ -173,6 +170,7 @@ class Seance
   #   :rm_last_seance   => Day (YYMMDD) of the very last seance of the roadmap
   # 
   def self.get_from_to rm, from, to
+    dbg "-> Seance.get_from_to(roadmap.class:#{rm.class}, from:#{from}, to:#{to})"
     @roadmap = rm
     hseances = {
       :from             => from,
@@ -188,7 +186,7 @@ class Seance
       hseances[:sorted_days] << seance_day
       hseances[:seances] = hseances[:seances].merge seance_day => data_seance(seance_day)
     end
-    
+    dbg "<- Seance.get_from_to"
     return hseances
   end
   
@@ -233,7 +231,8 @@ class Seance
   # Return data of seance of the day +day+ of the current roadmap (@roadmap)
   # 
   def self.data_seance day
-    Marshal.load File.read(File.join(@roadmap.folder_seances, "#{day}.msh"))
+    # Marshal.load File.read(File.join(@roadmap.folder_seances, "#{day}.msh"))
+    App::load_data File.join(@roadmap.folder_seances, "#{day}.msh")
   end
   
   # -------------------------------------------------------------------

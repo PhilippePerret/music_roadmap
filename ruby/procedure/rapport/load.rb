@@ -7,7 +7,7 @@
   Pour voir le contenu du hash retourné, cf. 
     
     Seance::get_from_to
-    Rapport.data_for_js_build
+    Rapport.data_for_js_building
     
 =end
 require_model 'roadmap' unless defined?(Roadmap)
@@ -19,6 +19,7 @@ def ajax_rapport_load
   duser = {:mail => param(:mail), :md5 => param(:md5)}
   res   = rapport_load rm, duser, (param(:options) || {})
   unless res.class == String
+    dbg "RETOUR_AJAX[:data_rapport] mis à : #{res.inspect}"
     RETOUR_AJAX[:data_rapport] = res
   else
     RETOUR_AJAX[:error] = res
@@ -36,5 +37,5 @@ def rapport_load rm, duser, options
     return e.message
   end
   # OK, seek data report according to options
-  Rapport.new(rm, options).data_for_js_build
+  Rapport.new(rm, options).data_for_js_building
 end

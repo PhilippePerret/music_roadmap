@@ -2,9 +2,6 @@
   Les styles généraux propres à l'interface
 */
 
-.texte_cliquable {
-  color             : #009 ;
-}
 
 span.suivi_by_aide a.to_help {
   visibility      :hidden;
@@ -23,15 +20,12 @@ span.suivi_by_aide:hover a.to_help {
 */
 div.table_shortcuts {
   font-size       :0.81em;
-  border          :1px solid #CCCCCC;
-  background-color:#F6F6F6;
+  border-width    :1px;
+  border-style    :solid;
   padding         :0.5em;
 }
 div.table_shortcuts div.titre {
   font-weight     :bold;
-}
-div.table_shortcuts div.titre a {
-  color           :#005;
 }
 /* Shortcut list */
 div.table_shortcuts div.shortcuts{
@@ -40,8 +34,8 @@ div.table_shortcuts div.shortcuts{
 /*Un shortcut*/
 div.table_shortcuts div.shortcut {
   display         :inline-block;
-  border          :1px solid #fcfcfc;
-  background-color:#E7E7E7;
+  border-width    :1px;
+  border-style    :solid;
   padding         :4px 8px;
   margin-right    :8px;
 }

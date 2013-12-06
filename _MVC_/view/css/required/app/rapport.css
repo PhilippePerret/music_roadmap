@@ -1,5 +1,4 @@
 section#rapport {
-  background-color    :white;
   padding             :1em;
 }
 /*
@@ -21,7 +20,6 @@ section#rapport span#rapport_cal_total_wk_libelle {
 }
 section#section_calendar div#rapport_cal_buttons_open a {
   margin-left     :2em;
-  color           :#000069;
   font-size       :12px;
   font-family     :Geneva,Arial;
 }
@@ -60,22 +58,16 @@ tr#calendar_day_names {
 tr#calendar_day_names td {
   font-size   :0.9em;
   font-style  :italic;
-  color       :#555;
   text-align  :center;
   padding     :0.8em 0 0;
 }
-
 /* Cellule pour un jour */
 table#table_calendar td.calendar_day {
   width       :6em;
   height      :4em;
-  border      :1px solid #ccc;
+  border-style:solid;
+  border-width:1px;
   padding     :0;
-}
-/* Jour sélectionné (en général jour courant) */
-table#table_calendar td.calendar_day.selected {
-  background-color  :#9ee;
-  border-color      :#0080AF;
 }
 table#table_calendar td.calendar_day > div {
   position    :relative;
@@ -84,7 +76,6 @@ table#table_calendar td.calendar_day > div {
 table#table_calendar td.calendar_day div.calendar_day_number {
   position    :absolute;
   font-size   :40px;
-  color       :#eeeeff;
   padding     :4px;
   z-index     :0;
 }
@@ -160,7 +151,8 @@ section#section_calendar div#rapport_cal_by_ex_content {
 */
 div.rapport_div_ex {
   margin-bottom   :8px;
-  border-bottom   :1px solid #ccc;
+  border-bottom-width:1px;
+  border-bottom-style:solid;
 }
 div.rapport_div_ex div.titre {
   font-weight     :bold;

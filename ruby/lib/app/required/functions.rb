@@ -7,11 +7,15 @@ DEBUG_ON = false unless defined? DEBUG_ON
 
 $nombre_try = 0
 $fichier_debug = nil
+
 # Pour enregistrer des messages de débug
+#   Si débug normal, mettre DEBUG_ON à true dans ./index.rb
+#   Si débug de requêtes Ajax, mettre DEBUG_ON à true dans ./ajax.rb
 def dbg message
   return unless DEBUG_ON
   if $fichier_debug.nil?
-    $fichier_debug = File.join(App::folder_debug, "#{Time.now.to_i}.txt")
+    $fichier_debug = File.join(App::folder_debug, "dbg.txt")
+    File.unlink $fichier_debug if File.exists? $fichier_debug
   end
   begin
     now = Time.now.strftime("%d %m %Y - %H:%M:%S")

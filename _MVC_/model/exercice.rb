@@ -76,26 +76,25 @@ class Exercice
   
   # Return current tempo of the exercice (Fixnum)
   def tempo
-    @tempo ||= data['tempo'].to_i
+    @tempo ||= data[:tempo].to_i
   end
   # Return max tempo of the exercice (Fixnum)
   def tempo_max
-    @tempo_max ||= data['tempo_max'].to_i
+    @tempo_max ||= data[:tempo_max].to_i
   end
   # Return min tempo of the exercice (Fixnum)
   def tempo_min
-    @tempo_min ||= data['tempo_min'].to_i
+    @tempo_min ||= data[:tempo_min].to_i
   end
   
   # Return true if it's a mandatory exercice
   def obligatory?
-    data['obligatory'] === true
+    data[:obligatory] === true
   end
   
-  # Return Hash Data of the exercices (keys are String-s, NOT Symbol-s)
+  # Return Hash Data of the exercices
   # 
   def data
-    # @data_js ||= JSON.parse(File.read(path))
     @data_js ||= (App::load_data path)
   end
   
@@ -126,7 +125,12 @@ class Exercice
   end
   
   # Return la durée du travail de l'exercice au tempo fourni en argument.
-  # Si le tempo n'est pas fourni, on prend le tempo courant
+  # 
+  # NOTES
+  # -----
+  #   @ Si le tempo n'est pas fourni, on prend le tempo courant
+  #   @ Si le nombre de mesures n'est pas défini on renvoie 120 (2 minutes).
+  # 
   def duree_at this_tempo = nil
     this_tempo ||= tempo
     ((60.0 / this_tempo) * nombre_temps * nombre_mesures).to_i
@@ -135,7 +139,7 @@ class Exercice
   # Return number of beats of exercice (Fixnum) (default: 4)
   def nombre_temps
     @nombre_temps ||= begin
-      data['nb_temps'].nil? ? 4 : data['nb_temps'].to_i
+      data[:nb_temps].nil? ? 4 : data[:nb_temps].to_i
     end
   end
   
@@ -155,22 +159,28 @@ class Exercice
   #   nb_mesures = 120 / ( 60.0 / 60 * 4)
   #   nb_mesures = 120 / 4 = 30
   # 
-  # If neither data['nb_mesures'] nor seances are defined, working time is
+  # If neither data[:nb_mesures] nor seances are defined, working time is
   # set to 120 (2 minutes = default value)
   def nombre_mesures
-    @nombre_mesures ||= data['nb_mesures'].nil? ? calc_nombre_mesures : data['nb_mesures'].to_i
+    @nombre_mesures ||= data[:nb_mesures].nil? ? calc_nombre_mesures : data[:nb_mesures].to_i
   end
   
-  # Calculte the (real) nb of times (fois) the exercices has been played
+  # Retourne le nombre de fois où l'exercice a été joué en fonction
+  # de tempo fourni.
   # 
-  # * NOTES
+  # NOTES
+  # -----
+  #   @ La donnée est enregistrée dans la séance chaque fois que l'exercice
+  #     est joué.
   # 
-  #   This data is recorded in seance, each time the exercice has been played
+  #   @ Le résultat est un flottant à deux décimales.
   #   
-  #   The result is a float with 2 decimals max.
+  #   @ Si l'exercice ne définit pas son nombre de mesures ou son nombre de
+  #     temps par mesure, cette valeur ne peut être calculée, on renvoie donc
+  #     1
   # 
   def real_nbfois_with_time_and_tempo totaltime, curtempo
-    nbfois = totaltime.to_f / duree_at(curtempo.to_i)
+    nbfois = totaltime.to_f / (duree_at curtempo.to_i)
     if RUBY_VERSION >= "2.0.0"
       nbfois.round(2)
     else
@@ -181,7 +191,14 @@ class Exercice
   
   # Calculate number of measures in exercice
   # 
-  # @sea `nombre_mesures' above for details
+  # NOTES
+  # -----
+  #   @ voir `nombre_mesures' above for details
+  #   @ seances_working_time renvoie 120 par défaut
+  #   @ nombre_temps renvoie 4 par défaut
+  #   @ Donc la méthode peut toujours fonctionner, même lorsqu'aucune
+  #     séance n'a encore été jouée.
+  # 
   def calc_nombre_mesures
     seances_working_time / ( (60.0 / tempo) * nombre_temps )
   end
@@ -191,8 +208,9 @@ class Exercice
   # 
   # NOTE
   # ----
-  # Ce temps est correspond à une moyenne du temps de jeu des dernières séances, quel
+  # Ce temps correspond à une moyenne du temps de jeu des dernières séances, quel
   # que soit leur nombre de mesures, leur temps, etc.
+  # 
   def seances_working_time
     @seances_working_time ||= data_in_seances[:average_duration]
   end
@@ -201,11 +219,6 @@ class Exercice
   # 
   def number_of_times
     @number_times_played ||= data_in_seances[:number_of_times]
-  end
-  
-  # Return real number times of exercice in sessions checked
-  def real_nb_fois
-    @real_nb_fois ||= data_in_seances[:real_nb_fois]
   end
   
   # Return exercice data in the +x+ last seances
@@ -313,7 +326,7 @@ class Exercice
   
   # Return l'identifiant absolu ou NIL s'il n'existe pas
   def abs_id
-    @abs_id ||= data['abs_id']
+    @abs_id ||= data[:abs_id]
   end
   
   # Return the Instrument ID or NIL if it doesn't exist
@@ -324,7 +337,7 @@ class Exercice
   # exercice sera-t-elle forcément toujours liée à un utilisateur ?
   # 
   def instrument
-    @instrument ||= data['instrument']
+    @instrument ||= data[:instrument]
   end
   
   # Return TRUE si l'exercice provient de la Database Exerice (DBE)

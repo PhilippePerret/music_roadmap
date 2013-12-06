@@ -3,20 +3,18 @@
 */
 /* Le DIV contenant la définition d'un paramètre */
 div.param {
-  background-color  : white;
   padding           : 0.5em ;
   margin            : 0.5em ;
-  border            : 1px solid #000 ;
+  border-width      : 1px;
+  border-style      : solid ;
   border-radius     : 8px ;
   width             : 90% ;
 }
 div.param span.titre {
   display           : block;
-  color             : #888 ;
   font-style        : italic;
   font-weight       : bold;
 }
 div.param span.valeur {
   display         : block ;
-  color           : #005 ;
 }

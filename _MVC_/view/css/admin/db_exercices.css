@@ -10,6 +10,7 @@ div#admindbe_form_ex {
   height            :600px;
   background-color  :white;
   padding           :1em;
+  border            :1px solid;
 }
 div#admindbe_form_ex > div,
 div#admindbe_form_ex > fieldset {

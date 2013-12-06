@@ -162,7 +162,7 @@ window.LOCALE_UI = {
     option_next_config      :"Configuration suivante",
     direction               :"Direction",
     btn_prepare             :"Prépare ma séance de travail !",
-    start                   :"Démarrer",
+    start                   :"Commencer",
     stop                    :"Finir la séance",
     pause                   :"Pause",
     restart                 :"Reprendre",

@@ -511,9 +511,15 @@ $.extend(window.Exercices,{
           case 'types'      : data['types'] = this.pickup_types(); break;
           case 'nb_mesures' :
           case 'nb_temps'   :
+            val = $(oid).val();
+            if (val != "") val = parseInt(val,10);
+            data[k] = val
+            break;
           case 'tempo'      :
           case 'tempo_min'  :
-          case 'tempo_max'  : data[k] = parseInt($(oid).val(),10); break;
+          case 'tempo_max'  : 
+            data[k] = parseInt($(oid).val(),10); 
+            break;
           // Par défaut
           default :
             // Les checkbox du formulaire

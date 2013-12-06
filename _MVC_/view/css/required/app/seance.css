@@ -3,7 +3,6 @@
 */
 section#seance {
   padding             :1em;
-  background-color    :white;
   position            :relative;
   z-index             :1050;
   width               :91%;
@@ -15,13 +14,10 @@ section#seance div#seance_form {
   top               :0;
   left              :0;
   padding           :1em;
-  background-color  :white;
   width             :100%;
 }
-
 section#seance div#seance_form_types {
   padding             :1em;
-  background-color    :#ECECEC;
   font-size           :0.9em;
 }
 
@@ -40,7 +36,6 @@ section#seance div#seance_form label.libelle {
   font-size           :1.1em;
   font-style          :italic;
   margin-bottom       :0.5em;
-  color               :#659460;
 }
 div#div_seance_form_duree label.libelle {
   float               :left;
@@ -94,10 +89,7 @@ section#seance table#seance_table_start td {
   vertical-align          :middle;
 }
 section#seance div#seance_start_description span.libelle {
-/*  display         :inline-block;*/
   font-weight     :bold;
-/*  width           :150px;*/
-  color           :#55A555;
 }
 section#seance img#seance_data_img_tone {
 /*  float           :right;*/
@@ -115,10 +107,9 @@ section#seance img#seance_data_img_suite_harmonique {
 */
 section#current_exercice{
   position    :absolute;
-  top         :17em;
+  top         :20em;
   left        :0.5em;
   width       :8.5em;
-  color       :white;
   border      :2px solid;
   padding     :0.5em;
 }

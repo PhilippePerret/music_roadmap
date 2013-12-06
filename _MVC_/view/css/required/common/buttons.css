@@ -9,7 +9,7 @@ a.btn, input.btn, button.btn {
   padding           : 4px 10px ;
   border-width      : 1px ;
   border-style      : solid ;
-  border-color      : #DDDDDD #006800 #006800 #DDDDDD ;
+  border-color      : #DDD ;
   border-radius     : 4px ;
   font-family       : Arial, Helvetica ;
   font-size         : 12.8px ;
@@ -17,10 +17,11 @@ a.btn, input.btn, button.btn {
   color             : #006800 ;
   text-align        : center ;
   cursor            : pointer ;
+  color             : #474747 !important;
 }
 /* Boutons de navigation */
 a.btn.nav {
-  background-color  :#EFEFDD !important;
+  background-color  :white !important;
 }
 a.btn:active, input.btn:active, button.btn:active {
   color             : white !important ;
