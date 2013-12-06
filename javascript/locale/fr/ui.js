@@ -33,6 +33,7 @@ window.LOCALE_UI = {
   Verb:{
     and_save    :"et l'enregistrer",
     Cancel      :"Renoncer",
+    CheckAll    :"Tout cocher", UncheckAll: "Tout décocher",
     close       :"fermer",
     Close       :"Fermer",
     decrease    :"diminuer",
@@ -42,6 +43,7 @@ window.LOCALE_UI = {
     open        :"ouvrir",
     Open        :"Ouvrir",
     Save        :"Sauver",
+    SelectAll   :"Tout sélectionner",
     update      :"actualiser",
     Update      :"Actualiser"
   },

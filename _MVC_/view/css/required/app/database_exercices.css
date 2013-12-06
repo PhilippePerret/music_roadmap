@@ -78,3 +78,16 @@ div.dbe_div_auteur div.dbe_div_recueils div.dbe_div_exercices div.dbe_div_ex a {
   margin-left     :12px;
   font-size       :0.85em;
 }
+
+/* Par défaut, le contenu du recueil est masqué (on ne voit que son titre) */
+div.dbe_div_recueil div.dbe_div_recueil_content {
+  display:none;
+}
+/* Boutons au-dessus de la liste des exercices des recueils */
+div.dbe_div_recueil div.dbe_div_recueil_content div.boutons_recueil {
+  text-align      :right;
+  margin-bottom   :8px;
+}
+div.dbe_div_recueil div.dbe_div_recueil_content div.boutons_recueil input[type="button"] {
+  font-size       :0.6em !important;
+}

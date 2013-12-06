@@ -66,11 +66,18 @@ window.DBE = {
     $('div#database_exercices '+conteneur+'div.dbe_infos_ex')[this.show_details ? 'show' : 'hide']();
   },
   
-  // Affiche ou masque la liste des exercices du recueil d'id complet +idcomplet+ ("auteur-recueil")
-  toggle_liste_exercices:function(idcomplet){
-    $('div#div_exercices-'+idcomplet).slideToggle(400);
-    return false;
+  // Affiche le contenu du recueil
+  show_recueil_content:function(idcomplet)
+  {
+    $('div#div_recueil_content-'+idcomplet).slideDown(400);
   },
+  
+  // Affiche ou masque la liste des exercices du recueil d'id complet +idcomplet+ ("auteur-recueil")
+  toggle_recueil_content:function(idcomplet){
+    $('div#div_recueil_content-'+idcomplet).slideToggle(400);
+    return false // pour le a-lien
+  },
+    
   // Chargement des exercices d'un recueil
   // 
   // @param   idcomplet     Id "complet" composé de "<auteur_id>-<recueil_id>"
@@ -105,13 +112,14 @@ window.DBE = {
     this.loading = false;
   },
   
-  // Affiche les exercices (remontés par ajax)
+  // Affiche les exercices remontés par ajax
   // 
   // @param ary_exs     Array des exercices, avec des clés unilettre
   // @param idcomplet   Identifiant complet formé de "<id auteur>-<id recueil>"
   // 
-  // @products    Ajoute des divs à la liste des exercices du recueil avec des cases à
-  //              cocher pour les choisir.
+  // @products    - Ajoute des divs à la liste des exercices du recueil avec des 
+  //                cases à cocher pour les choisir.
+  //              - Ouvre le contenu du recueil
   display_exercices:function(ary_exs, idcomplet){
     var jid = 'div#div_exercices-'+idcomplet ;
     if (ary_exs != null){
@@ -128,6 +136,7 @@ window.DBE = {
         '</span>');
     }
     this.set_etat_details(jid);
+    this.show_recueil_content( idcomplet );
   },
   
   // return le DIV de l'exercice défini par le hash +hex+ à insérer dans les lites des
@@ -219,15 +228,44 @@ window.DBE = {
     div +=  '</div>' ;
     return div;
   },
+  
+  /*
+   *  Coche ou décoche tous les exercices du recueil identifié par +idcomplet+
+   *    
+   */
+  check_all_exercices:function(idcomplet, checked)
+  {
+    $('div#div_exercices-'+idcomplet+' > div.dbe_div_ex input.dbe_cb_ex').each(function(i, o){
+      $(this)[0].checked = checked
+    })
+  },
+  
   // Prépare le div d'un recueil d'un auteur
   prepare_div_recueil:function(autid, drec){
     var idcomplet = autid + "-" + drec.i;
-    return  '<div id="div_receuil-'+idcomplet+'" class="dbe_div_recueil">' +
+    return  '<div id="div_recueil-'+idcomplet+'" class="dbe_div_recueil">' +
               '<div class="titre_recueil">' + 
                 this.titre_recueil_with_lien(idcomplet,drec) + 
               '</div>' +
-              '<div id="div_exercices-'+idcomplet+'" class="dbe_div_exercices"></div>' +
+              // Contenu masqué du recueil
+              '<div id="div_recueil_content-'+idcomplet+'" class="dbe_div_recueil_content">'+
+                this.boutons_recueil(idcomplet) +
+                '<div id="div_exercices-'+idcomplet+'" class="dbe_div_exercices"></div>' +
+              '</div>' +
             '</div>';
+  },
+  
+  /*
+   *  Boutons pour chaque recueil
+   *  
+   *  @param  idcomplet   Identifiant du recueil (sert à définir les DOM Ids)
+   */
+  boutons_recueil:function(idcomplet)
+  {
+    return '<div class="boutons_recueil">'+
+      '<input type="button" value="'+LOCALE_UI.Verb.CheckAll+'" onclick="DBE.check_all_exercices(\''+idcomplet+'\',true)" />' +
+      '<input type="button" value="'+LOCALE_UI.Verb.UncheckAll+'" onclick="DBE.check_all_exercices(\''+idcomplet+'\',false)" />'+
+    '</div>'
   },
   
   // Retire le lien sur le titre du recueil et le remplace par un lien pour ouvre/fermer
@@ -235,8 +273,8 @@ window.DBE = {
   // @note: appelé après la construction de la liste des exercices du recueil
   set_titre_recueil_to_show_hide_exercices:function(autid, recid){
     var idcomplet = autid + "-" + recid ;
-    var olien = $('div#div_receuil-'+idcomplet+' a.recueil_title');
-    olien.attr('onclick', "return $.proxy(DBE.toggle_liste_exercices, DBE, '"+idcomplet+"')()")
+    var olien = $('div#div_recueil-'+idcomplet+' a.recueil_title');
+    olien.attr('onclick', "return $.proxy(DBE.toggle_recueil_content, DBE, '"+idcomplet+"')()")
   },
   // Retourne le lien pour le titre d'un recueil, lien permettant de charger les exercices
   // du recueil

@@ -36,6 +36,7 @@ window.LOCALE_UI = {
   Verb:{
     and_save    :"and save",
     Cancel      :"Cancel",
+    CheckAll    :"Check all", UncheckAll: "Uncheck all",
     close       :"close",
     Close       :"Close",
     decrease    :"decrease",
@@ -45,6 +46,7 @@ window.LOCALE_UI = {
     open        :"open",
     Open        :"Open",
     Save        :"Sauver",
+    SelectAll   :"Select All",
     update      :"update",
     Update      :"Update"
   },

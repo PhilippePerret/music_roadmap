@@ -48,10 +48,10 @@ DBExercice.prototype.bd_div = function(){
   var idcb  = "cb_dbex-" + iddom;
   return '<div id="div_exercice-'+iddom+'" class="dbe_div_ex">' +
             '<input class="dbe_cb_ex" id="'+idcb+'" type="checkbox" />' +
-              this.btn_show_infos() +
-              this.lien_to_show_extrait() +
-              '<label for="'+idcb+'">' + this.titre + '</label>' +
-              this.div_infos() +
+            this.btn_show_infos() +
+            this.lien_to_show_extrait() +
+            '<label for="'+idcb+'">' + this.titre + '</label>' +
+            this.div_infos() +
           '</div>' ;
 }
 // Retourne le div caché des infos de l'exercice
