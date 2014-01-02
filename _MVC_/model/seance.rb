@@ -39,202 +39,213 @@ class Seance
     # @see self.lasts below
     # 
     attr_reader :seances_data
-  end
-  
-  def self.debug str = nil
-    return if Params::online?
-    nf = File.join('tmp', 'debug','seance_rb_debug.txt')
-    File.unlink(nf) if File.exists?(nf) && File.stat(nf).mtime.to_i < (Time.now.to_i - 60)
-    File.open(nf, 'a'){|f| f.puts str} unless str.nil?
-  end
-  
-  # Return data of exercice +iex+ in the +x+ last seances
-  # 
-  # * USAGE
-  # 
-  #   dex = Seance.exercice iex[, x_last_seances_default_50]
-  # 
-  # * PARAMS
-  #   :iex::      Instance Exercice of the exercice (Exercice)
-  #   :x::        Search only the x last seances (Fixnum -- default: 50)
-  # 
-  # * RETURN
-  # 
-  #   An Hash containing:
-  #     {
-  #       :id               => Exercice ID (Fixnum but as String)
-  #       :x_last           => The x last seances seached
-  #       :number_of_times  => <the exercice has been played this number of times>
-  #       :average_duration =>  Average playing time (Fixnum, seconds)
-  #                             @note: set to 120 if exercice has not been worked
-  #       :total_duration   => Total working time
-  #       :durations        => Array of working times of exercice
-  #       :data             => Array containing Hash-s with something like:
-  #                           { :day    => seance day ("YYMMDD"), 
-  #                             :time   => Working time (Fixnum, seconds), 
-  #                             :tempo  => Tempo used (Fixnum), 
-  #                             :tone  => Scale used (Fixnum, 0-11 = C->B, 12-23 = Cm->Bm),
-  #                             :id     => Exercice ID
-  #                           }
-  #       :tempos           => Array of tempi used for the exercice
-  #       :tones           => Array of tones used for the exercice
-  #       :seances          => Array of seance String days (["YYMMJJ", ...])
-  #     }
-  # 
-  def self.exercice iex, x = 50
-    @data_exercices ||= {}
-    if defined?(@data_exercices[iex.id]) && @data_exercices[iex.id] != nil
-      dex = @data_exercices[iex.id]
-      return dex[:data] if dex[:roadmap] == iex.roadmap && dex[:x] == x
+
+    def debug str = nil
+      return if Params::online?
+      nf = File.join('tmp', 'debug','seance_rb_debug.txt')
+      File.unlink(nf) if File.exists?(nf) && File.stat(nf).mtime.to_i < (Time.now.to_i - 60)
+      File.open(nf, 'a'){|f| f.puts str} unless str.nil?
     end
-    data_exercice = {
-      :id               => iex.id,
-      :number_of_times  => 0,     # number of times, whatever working time
-      :total_duration   => nil,
-      :average_duration => 120,   # default
-      :durations        => [],
-      :data             => [],
-      :tempos           => [],
-      :tones            => [],
-      :seances          => []
-    }
-    lasts(iex.roadmap,x)[:seances].each do |jour, dseance|
-      next unless dseance[:id_exercices].include?( iex.id )
-      data_exercice[:seances] << jour
-      dseance[:exercices].each do |dex|
-        next unless dex[:id] == iex.id
-        data_exercice[:number_of_times] += 1
-        nbfois = dex.has_key?(:nbfois) ? dex[:nbfois].to_f : 1.0 # compatibilité anciennes versions
-        data_exercice[:data]      << dex.merge(:day => jour)
-        data_exercice[:tempos]    << dex[:tempo]
-        data_exercice[:tones]     << dex[:tone]
-        data_exercice[:durations] << dex[:time]
-      end
-    end
-    if data_exercice[:number_of_times] > 0
-      data_exercice[:total_duration] = data_exercice[:durations].inject(:+)
-      data_exercice[:average_duration] = 
-         data_exercice[:total_duration] / data_exercice[:number_of_times]
-    end
-    @data_exercices = @data_exercices.merge( iex.id => {
-        :x => x, :roadmap => iex.roadmap, :data => data_exercice
-      })
-    data_exercice
-  end
   
-  # Return the +x+ last seances of roadmap +roadmap+
-  # 
-  # * PARAMS
-  #   :roadmap::    Instance Roadmap of the roadmap
-  #   :x::          Number of last seances required (default: 50)
-  # 
-  # * RETURN
-  # 
-  #   {
-  #     :x            => Number of seances needed,
-  #     :sorted_days  => [day list, from earliest to oldest],
-  #     :seances      => <Hash of seance> (*)
-  #   }
-  #   (*) An Hash where key is the seance day ("YYMMDD") and the value
-  #   an Hash of seance Data (@note: NOT instance Seance).
-  # 
-  def self.lasts roadmap, x = 50
-    return @seances_data if @seances_data != nil && @seances_data[:x] == x
-    # debug # pour détruire le fichier debug
-    @roadmap = roadmap
-    hseances = {
-      :x            => x,
-      :sorted_days  => [],
-      :seances      => {}
-    }
-    if File.exists? roadmap.folder_seances
-      last_files( x ).each do |path|
-        hseance = Marshal.load File.read( path )
-        hseances[:sorted_days] << hseance[:day]
-        hseances[:seances] = hseances[:seances].merge hseance[:day] => hseance
-      end
-    end
-    @seances_data = hseances
-  end
-  
-  # Return data of seances from day +from+ (YYMMDD) to day +to+ (YYMMDD) of the 
-  # roadmap +rm+.
-  # 
-  # Return an Hash containing
-  #   :from         => from (YYMMDD)
-  #   :to           => to   (YYMMDD)
-  #   :sorted_days  => Array of days (YYMMDD)
-  #   :seances      => Hash of data seances where key is the day (YYMMDD) and
-  #                    value is the hash data of the seance as recorded in the file
-  #   :rm_first_seance  => Day (YYMMDD) of the very first seance of the roadmap
-  #   :rm_last_seance   => Day (YYMMDD) of the very last seance of the roadmap
-  # 
-  def self.get_from_to rm, from, to
-    dbg "-> Seance.get_from_to(roadmap.class:#{rm.class}, from:#{from}, to:#{to})"
-    @roadmap = rm
-    hseances = {
-      :from             => from,
-      :to               => to,
-      :sorted_days      => [],
-      :seances          => {},
-      :rm_first_seance  => all_days[0],
-      :rm_last_seance   => all_days[-1]
-    }
-    all_days.each do |seance_day|
-      next  if seance_day < from
-      break if seance_day > to
-      hseances[:sorted_days] << seance_day
-      hseances[:seances] = hseances[:seances].merge seance_day => data_seance(seance_day)
-    end
-    dbg "<- Seance.get_from_to"
-    return hseances
-  end
-  
-  # Return up to +x+ last files of seances of current roadmap (:roadmap)
-  # 
-  # There can be a lot of seance files (more than 600 for a musician
-  # signed up since 2 years). So we first get all filenames (marshal only)
-  # then we uprise from today to oldest day until we have +x+ files.
-  # 
-  # * RETURN
-  # 
-  #   Sorted list (from youngest to oldest) of the file paths.
-  # 
-  def self.last_files x = 50
-    # Tous les fichiers séances (Array of file names)
+    # Return data of exercice +iex+ in the +x+ last seances
     # 
-    return [] if all_days.empty?
-    oldest_date = Date.strptime(all_days.first, '%y%m%d')
-    # Only the lasts x
-    lejour, choosed_files, fold = Date.today, [], @roadmap.folder_seances
-    while choosed_files.count < x && lejour >= oldest_date
-      day   = lejour.strftime("%y%m%d") 
-      nfile = "#{day}.msh"
-      choosed_files << File.join(fold, nfile) if all_days.include?( day )
-      lejour -= 1
-    end
+    # * USAGE
+    # 
+    #   dex = Seance.exercice iex[, x_last_seances_default_50]
+    # 
+    # * PARAMS
+    #   :iex::      Instance Exercice of the exercice (Exercice)
+    #   :x::        Search only the x last seances (Fixnum -- default: 50)
+    # 
+    # * RETURN
+    # 
+    #   An Hash containing:
+    #     {
+    #       :id               => Exercice ID (Fixnum but as String)
+    #       :x_last           => The x last seances seached
+    #       :number_of_times  => <the exercice has been played this number of times>
+    #       :average_duration =>  Average playing time (Fixnum, seconds)
+    #                             Réglé sur la durée de l'exercice d'après son tempo et
+    #                             ses mesures ou sur 120 si ces informations ne sont
+    #                             pas données.
+    #       :total_duration   => Total working time
+    #       :durations        => Array of working times of exercice
+    #       :data             => Array containing Hash-s with something like:
+    #                           { :day    => seance day ("YYMMDD"), 
+    #                             :time   => Working time (Fixnum, seconds), 
+    #                             :tempo  => Tempo used (Fixnum), 
+    #                             :tone  => Scale used (Fixnum, 0-11 = C->B, 12-23 = Cm->Bm),
+    #                             :id     => Exercice ID
+    #                           }
+    #       :tempos           => Array of tempi used for the exercice
+    #       :tones           => Array of tones used for the exercice
+    #       :seances          => Array of seance String days (["YYMMJJ", ...])
+    #     }
+    # 
+  
+    def exercice iex, x = 50
+      @data_exercices ||= {}
     
-    choosed_files
-  end
-  
-  # Return an Array of all seances day of the current roadmap
-  # 
-  # @note:    Seances are sorted from oldest to earliest
-  # 
-  def self.all_days
-    @all_days ||= begin
-      ary = Dir["#{@roadmap.folder_seances}/*.msh"].collect{|path| File.basename(path, File.extname(path))}
-      ary.sort
+      # Les données de l'exercice ont peut-être déjà été relevées
+      dex = @data_exercices[iex.id]
+      return dex[:data] if data_exercice_of_same_seance?( dex, iex.roadmap, x )
+    
+      data_exercice = {
+        :id               => iex.id,
+        :number_of_times  => 0,     # number of times, whatever working time
+        :total_duration   => nil,
+        :average_duration => iex.duree_exercice,
+        :durations        => [],
+        :data             => [],
+        :tempos           => [],
+        :tones            => [],
+        :seances          => []
+      }
+      lasts(iex.roadmap,x)[:seances].each do |jour, dseance|
+        next unless dseance[:id_exercices].include?( iex.id )
+        data_exercice[:seances] << jour
+        dseance[:exercices].each do |dex|
+          next unless dex[:id] == iex.id
+          data_exercice[:number_of_times] += 1
+          nbfois = dex.has_key?(:nbfois) ? dex[:nbfois].to_f : 1.0 # compatibilité anciennes versions
+          data_exercice[:data]      << dex.merge(:day => jour)
+          data_exercice[:tempos]    << dex[:tempo]
+          data_exercice[:tones]     << dex[:tone]
+          data_exercice[:durations] << dex[:time]
+        end
+      end
+      if data_exercice[:number_of_times] > 0
+        data_exercice[:total_duration] = data_exercice[:durations].inject(:+)
+        data_exercice[:average_duration] = 
+           data_exercice[:total_duration] / data_exercice[:number_of_times]
+      end
+      @data_exercices = @data_exercices.merge( iex.id => {
+          :x => x, :roadmap => iex.roadmap, :data => data_exercice
+        })
+      data_exercice
     end
-  end
   
-  # Return data of seance of the day +day+ of the current roadmap (@roadmap)
-  # 
-  def self.data_seance day
-    # Marshal.load File.read(File.join(@roadmap.folder_seances, "#{day}.msh"))
-    App::load_data File.join(@roadmap.folder_seances, "#{day}.msh")
-  end
+    # Return true si les données exercices +dataex+ correspondent à la
+    # roadmap de +iex+ et au nombre de séance +nombre_seances+
+    def data_exercice_of_same_seance? dataex, roadmap, nombre_seances
+      return false if dataex.nil?
+      return dataex[:roadmap] == roadmap && dataex[:x] == nombre_seances
+    end
   
+    # Return the +x+ last seances of roadmap +roadmap+
+    # 
+    # * PARAMS
+    #   :roadmap::    Instance Roadmap of the roadmap
+    #   :x::          Number of last seances required (default: 50)
+    # 
+    # * RETURN
+    # 
+    #   {
+    #     :x            => Number of seances needed,
+    #     :sorted_days  => [day list, from earliest to oldest],
+    #     :seances      => <Hash of seance> (*)
+    #   }
+    #   (*) An Hash where key is the seance day ("YYMMDD") and the value
+    #   an Hash of seance Data (@note: NOT instance Seance).
+    # 
+    def lasts roadmap, x = 50
+      return @seances_data if @seances_data != nil && @seances_data[:x] == x
+      # debug # pour détruire le fichier debug
+      @roadmap = roadmap
+      hseances = {
+        :x            => x,
+        :sorted_days  => [],
+        :seances      => {}
+      }
+      if File.exists? roadmap.folder_seances
+        last_files( x ).each do |path|
+          hseance = Marshal.load File.read( path )
+          hseances[:sorted_days] << hseance[:day]
+          hseances[:seances] = hseances[:seances].merge hseance[:day] => hseance
+        end
+      end
+      @seances_data = hseances
+    end
+  
+    # Return data of seances from day +from+ (YYMMDD) to day +to+ (YYMMDD) of the 
+    # roadmap +rm+.
+    # 
+    # Return an Hash containing
+    #   :from         => from (YYMMDD)
+    #   :to           => to   (YYMMDD)
+    #   :sorted_days  => Array of days (YYMMDD)
+    #   :seances      => Hash of data seances where key is the day (YYMMDD) and
+    #                    value is the hash data of the seance as recorded in the file
+    #   :rm_first_seance  => Day (YYMMDD) of the very first seance of the roadmap
+    #   :rm_last_seance   => Day (YYMMDD) of the very last seance of the roadmap
+    # 
+    def get_from_to rm, from, to
+      dbg "-> Seance.get_from_to(roadmap.class:#{rm.class}, from:#{from}, to:#{to})"
+      @roadmap = rm
+      hseances = {
+        :from             => from,
+        :to               => to,
+        :sorted_days      => [],
+        :seances          => {},
+        :rm_first_seance  => all_days[0],
+        :rm_last_seance   => all_days[-1]
+      }
+      all_days.each do |seance_day|
+        next  if seance_day < from
+        break if seance_day > to
+        hseances[:sorted_days] << seance_day
+        hseances[:seances] = hseances[:seances].merge seance_day => data_seance(seance_day)
+      end
+      dbg "<- Seance.get_from_to"
+      return hseances
+    end
+  
+    # Return up to +x+ last files of seances of current roadmap (:roadmap)
+    # 
+    # There can be a lot of seance files (more than 600 for a musician
+    # signed up since 2 years). So we first get all filenames (marshal only)
+    # then we uprise from today to oldest day until we have +x+ files.
+    # 
+    # * RETURN
+    # 
+    #   Sorted list (from youngest to oldest) of the file paths.
+    # 
+    def last_files x = 50
+      # Tous les fichiers séances (Array of file names)
+      # 
+      return [] if all_days.empty?
+      oldest_date = Date.strptime(all_days.first, '%y%m%d')
+      # Only the lasts x
+      lejour, choosed_files, fold = Date.today, [], @roadmap.folder_seances
+      while choosed_files.count < x && lejour >= oldest_date
+        day   = lejour.strftime("%y%m%d") 
+        nfile = "#{day}.msh"
+        choosed_files << File.join(fold, nfile) if all_days.include?( day )
+        lejour -= 1
+      end
+    
+      choosed_files
+    end
+  
+    # Return an Array of all seances day of the current roadmap
+    # 
+    # @note:    Seances are sorted from oldest to earliest
+    # 
+    def all_days
+      @all_days ||= begin
+        ary = Dir["#{@roadmap.folder_seances}/*.msh"].collect{|path| File.basename(path, File.extname(path))}
+        ary.sort
+      end
+    end
+  
+    # Return data of seance of the day +day+ of the current roadmap (@roadmap)
+    # 
+    def data_seance day
+      # Marshal.load File.read(File.join(@roadmap.folder_seances, "#{day}.msh"))
+      App::load_data File.join(@roadmap.folder_seances, "#{day}.msh")
+    end
+  end # << self
+
   # -------------------------------------------------------------------
   #   Instance Seance
   # -------------------------------------------------------------------

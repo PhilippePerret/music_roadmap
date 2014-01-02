@@ -98,12 +98,26 @@ class Exercice
     @data_js ||= (App::load_data path)
   end
   
-  # Return the working time for the exercie.
+  # Retourne le temps de travail de l'exercice
   # 
-  # Evaluated either on the base of current tempo, number of measures, number
-  # of beats per measure, or on the base of working time recorded in sessions (seances)
+  # La valeur est calculée soit d'après les données de l'exercice (tempo, nombre de
+  # mesures etc.) soit, si elles existent, d'après les données des dernières 
+  # séances.
+  # 
   def working_time
     @working_time ||= duree_at tempo
+  end
+  
+  # Retourne la durée de l'exercice calculée d'après son nombre de mesures, son
+  # nombre de temps par mesure et son tempo actuel. Retourne 120 (2mn) par 
+  # défaut de ces informations ou un nombre calculé avec les données connues.
+  # 
+  # Contraitement à la méthode précédente, cette méthode ne se sert que des 
+  # données de l'exercice, pas des séances. Si on veut une durée qui soit plus
+  # réelle et tienne compte des séances, utiliser `working_time`
+  # 
+  def duree_exercice
+    @duree_exercice ||= ((60.0 / tempo) * nombre_temps * nombre_mesures).to_i
   end
   
   # Retourne la durée maximale du travail sur l'exercice.
@@ -133,14 +147,28 @@ class Exercice
   # 
   def duree_at this_tempo = nil
     this_tempo ||= tempo
-    ((60.0 / this_tempo) * nombre_temps * nombre_mesures).to_i
+    ((60.0 / this_tempo) * nombre_temps * nb_mesures_calculed).to_i
   end
   
-  # Return number of beats of exercice (Fixnum) (default: 4)
+  # {Fixnum} Retourne le nombre de temps définis par mesure dans les
+  # données de l'exercice, ou 4 par défaut.
   def nombre_temps
-    @nombre_temps ||= begin
-      data[:nb_temps].nil? ? 4 : data[:nb_temps].to_i
-    end
+    @nombre_temps ||= (data[:nb_temps] || 4).to_i
+  end
+  
+  # {Fixnum} Retourne le nombre de mesures dans les données de l'exercice
+  # ou 60 par défaut
+  # Notes
+  # -----
+  #   * Si on veut un nombre calculé d'après les séances de travail, il convient
+  #     d'utiliser `nb_mesures_calculed
+  #   * Le nombre de mesures par défaut est calculé pour qu'à un tempo de 120,
+  #     avec un nombre de temps par mesure de 4, la durée de l'exercice fasse
+  #     2 minutes.
+  # 
+  # @return {Fixnum} Nombre de mesures ou 60
+  def nombre_mesures
+    @nombre_mesures ||= (data[:nb_mesures] || 60).to_i
   end
   
   # Return number of measures of exercice (Fixnum)
@@ -161,9 +189,10 @@ class Exercice
   # 
   # If neither data[:nb_mesures] nor seances are defined, working time is
   # set to 120 (2 minutes = default value)
-  def nombre_mesures
-    @nombre_mesures ||= data[:nb_mesures].nil? ? calc_nombre_mesures : data[:nb_mesures].to_i
+  def nb_mesures_calculed
+    @nb_mesures_calculed ||= data[:nb_mesures].nil? ? calc_nombre_mesures : data[:nb_mesures].to_i
   end
+  
   
   # Retourne le nombre de fois où l'exercice a été joué en fonction
   # de tempo fourni.
@@ -193,7 +222,7 @@ class Exercice
   # 
   # NOTES
   # -----
-  #   @ voir `nombre_mesures' above for details
+  #   @ voir `nb_mesures_calculed' above for details
   #   @ seances_working_time renvoie 120 par défaut
   #   @ nombre_temps renvoie 4 par défaut
   #   @ Donc la méthode peut toujours fonctionner, même lorsqu'aucune
@@ -215,7 +244,7 @@ class Exercice
     @seances_working_time ||= data_in_seances[:average_duration]
   end
   
-  # Return the number of times that the exercice has been played
+  # Nombre de fois où l'exercice a été joué
   # 
   def number_of_times
     @number_times_played ||= data_in_seances[:number_of_times]
@@ -265,71 +294,14 @@ class Exercice
   # 
   def path
     @path ||= @roadmap.path_exercice( id )
-  end
-  
-  # # Relève la ligne de code de l'exercice dans le fichier de données des data pour
-  # # dispatcher les données ici, afin de pouvoir les traiter (par exemple ajouter une
-  # # durée de jeu sur cet exercice)
-  # # 
-  # # OBSOLETE
-  # def get_data_in_duree_jeu
-  #   @line = @roadmap.file_duree_jeu.line_code_exercice self
-  #   explode_line unless @line.to_s == ""
-  # end
+  end  
 
-  # # Analyse et "explose" dans les propriétés de l'instance les données tirées de la ligne
-  # # enregistrée dans le fichier de données de jeu des exercices.
-  # # 
-  # # À titre de rappel, cette ligne est composée de :
-  # #   <id exercice>TAB<nombre fois joué>TAB<durée totale de jeu>TAB<durée moyenne>TAB<exercices>
-  # #   Où <exercices> ci-dessus est composé de données duo "AAMMJJ<duree>", séparés par des ":"
-  # #   Par exemple "13010155" pour 55 secondes jouées le 01 janvier 2013
-  # # 
-  # def explode_line
-  #   @id, foi, tot, moy, @exercices_str = @line.split("\t")
-  #   @fois           = foi.to_i
-  #   @duree_totale   = tot.to_i
-  #   @duree_moyenne  = moy.to_i
-  #   # @exercices      = per_day.nil? ? [] : per_day.split(':').collect{|ex| date_duree_to_h ex}
-  # end
-  # 
-  # # Implose la ligne, pour enregistrement
-  # def implode_line
-  #   "#{@id}\t#{@fois}\t#{@duree_totale}\t#{@duree_moyenne}\t#{@exercices_str}\n"
-  # end
-  # 
-  # # Line de code (doit être remis à nil dès la modification des données)
-  # def line_code
-  #   @line_code ||= implode_line
-  # end
-  # 
-  # # Retourne la longueur de la ligne de code
-  # def len
-  #   line_code.length
-  # end
-  # 
-  # # Renvoie le code à enregistrer dans le fichier des données de jeu pour les fois où les
-  # # exercices ont été joués.
-  # # 
-  # def exercices_to_data
-  #   @exercices.collect do |ex| "#{ex[:date]}#{ex[:duree]}" end.join(':')
-  # end
-  # 
-  # # Reçoit la durée-date (tout collé dans le fichier de données) et return un Hash
-  # # contenant {:date => "AAMMJJ", :duree => <nombre de secondes>}
-  # def date_duree_to_h this
-  #   {
-  #     :date   => this[0..5],
-  #     :duree  => this[6..-1].to_i
-  #   }
-  # end
-  
   # Return l'identifiant absolu ou NIL s'il n'existe pas
   def abs_id
     @abs_id ||= data[:abs_id]
   end
   
-  # Return the Instrument ID or NIL if it doesn't exist
+  # Retourne l'instrument de l'exercice ou nil
   # 
   # @note: Instrument ID exists only for exercices from DB Exercices
   # @todo: Mais on pourrait imaginer de mettre l'instrument de l'user, puisqu'il doit
@@ -340,7 +312,7 @@ class Exercice
     @instrument ||= data[:instrument]
   end
   
-  # Return TRUE si l'exercice provient de la Database Exerice (DBE)
+  # Return TRUE si l'exercice provient de la Database Exercices (DBE)
   # 
   def dbe?
     abs_id != nil
