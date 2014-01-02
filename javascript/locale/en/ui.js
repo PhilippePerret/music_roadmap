@@ -113,7 +113,9 @@ window.LOCALE_UI = {
     btn_init      : "Init",
     btn_create    : "Create",
   },
+  // LOCALE_UI.Exercices
   Exercices: {
+    // LOCALE_UI.Exercices.Label
     Label:{
       new_exercice            :"New Exercice",
       activate_moving         :"Activate moving",
@@ -140,11 +142,13 @@ window.LOCALE_UI = {
       types_of_exercice     :"Technics"
     }
   },
+  // LOCALE_UI.Exercice
   Exercice: {
     create_new_exercice     :"Save this new exercice",
     create_new_morceau      :"Save this new piece",
     update                  :"Update this exercice",
-    save_duree_travail      :"Yes, save time working on this exercice"
+    save_duree_travail      :"Yes, save time working on this exercice",
+    remove                  :"Remove once and for all this exercice from roadmap"
   },
   DBExercice:{
     titre                   :"DATABASE EXERCICES",

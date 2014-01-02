@@ -141,7 +141,8 @@ window.LOCALE_UI = {
     create_new_exercice     :"Enregistrer ce nouvel exercice",
     create_new_morceau      :"Enregistrer ce nouvel morceau",
     update                  :"Actualiser cet exercice",
-    save_duree_travail      :"Oui, sauver la durée de travail sur cet exercice"
+    save_duree_travail      :"Oui, sauver la durée de travail sur cet exercice",
+    remove                  :"Retirer définitivement cet exercice de la feuille de route"
   },
   DBExercice:{
     titre                   :"BASE DE DONNÉES D’EXERCICES",

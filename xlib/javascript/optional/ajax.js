@@ -29,8 +29,6 @@ window.Ajax = {
                     p.data : objet contenant les données à envoyer. Ou null.
   */
   query:function(p){
-    console.log("-> Ajax.query avec :")
-    console.dir(p)
     var my = Ajax ;
     // if ( my.ON ) return false ;
     // my.ON = true ;

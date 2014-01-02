@@ -1,9 +1,11 @@
-/*
-    Class Exercice
-    --------------
-    Pour la gestion des exercices
-    
-*/
+/**
+  * @module exercice
+  * @class Exercice
+  * @constructor
+  *
+  * Pour la gestion interactive des exercices de music-roadmap
+  *
+  */
 
 window.EXERCICES = {length: 0} ; // Instances Exercice déjà créées
 
@@ -75,24 +77,108 @@ function Exercice(data){
   EXERCICES.length ++ ;
   
 }
-// => Retourne le LI de l'exercice
-Exercice.prototype.li = function(){
-  return $('ul#exercices > li#li_ex-'+this.id);
-}
 
-// Dispatch les données +data+
-// @note: toutes les valeurs "" sont mises à null
-Exercice.prototype.dispatch = function(data){
-  for( var k in data ) {
-    if ( data[k] == "" ) data[k] = null ;
-    this[k] = data[k] ;
+/**
+  * Méthodes de classe
+  */
+$.extend(Exercice,{
+  /**
+    * @class Exercice.Dom
+    * @static
+    * Pour tout ce qui concerne le DOM
+    */
+  Dom:{
+    /**
+      * Return le code HTML pour le "footer" de chaque exercice
+      * @method footer_buttons_for
+      * @param  {Exercice} iex Instance de l'exercice
+      */
+    footer_buttons_for:function(iex)
+    {
+      return  '<div class="ex_footer">'+
+                this.button_delete_for(iex)+
+              '</div>'
+    },
+    /* Return le code HTML du bouton pour jouer l'exercice +iex+ */
+    button_play_for:function(iex)
+    {
+      return '<a id="btn_clic-'+iex.id+'"class="btn_clic petit btn" onclick="$.proxy(Exercices.play, Exercices, \''+iex.id+'\')()">Play</a>'    
+    },
+    /* Return le code HTML du bouton pour éditer l'exercice */
+    button_edit_for:function(iex)
+    {
+      return '<a class="btn_edit petit btn" onclick="$.proxy(Exercices.edit, Exercices, \''+iex.id+'\')()">Edit</a>'
+    },
+    /* Return le code HTML du bouton pour détruire l'exercice */
+    button_delete_for:function(iex)
+    {
+      return '<a class="btn_del" onclick="$.proxy(Exercices.delete, Exercices, \''+iex.id+'\')()">'+LOCALE_UI.Exercice.remove+'</a>'
+    }
   }
-  // Est-ce qu'on peut considérer l'exercice comme chargé ?
-  if(this.id == null || this.titre==null) return;
-  if(this.tempo==null || this.tempo_min==null || this.tempo_max==null)return;
-  // Otherwise, exercice is loaded
-  this.loaded = true;
-}
+})
+
+/*
+  * Extension du prototype Exercice
+  *
+  */
+$.extend(Exercice.prototype,{
+  /**
+    * Sauvegarde de l'exercice
+    *
+    * @method save
+    * @async
+    * @param  {Function|Null} fx_suite  La méthode pour suivre
+    *
+    */
+  save:function(fx_suite)
+  {
+    if('undefined' == typeof fx_suite) fx_suite = $.proxy(this.end_save, this) ;
+    this.saving = true ;
+    Ajax.query({
+      data:{
+        proc:'exercice/save',
+        roadmap_nom : Roadmap.nom, 
+        mail        : User.mail,
+        md5         : User.md5,
+        data        : this.as_hash()
+      },
+      success : fx_suite
+    })
+  },
+
+  /**
+    * Retourne la balise LI de l'exercice
+    * @method li
+    * @return {DOMElement} Balise LI
+    */
+  li:function()
+  {
+    return $('ul#exercices > li#li_ex-'+this.id);
+  },
+  
+  /**
+    * Dispatch les données +data+ dans l'exercice.
+    * Notes
+    *   * Toutes les valeurs "" sont mises à NULL
+    *   * Met la propriété `loaded` à true.
+    *   * Cette méthode a un alias : `update`
+    * @method dispatch
+    * @param  {Object} data Données à dispatcher
+    */
+  dispatch:function(data)
+  {
+    for( var k in data ) {
+      if ( data[k] == "" ) data[k] = null ;
+      this[k] = data[k] ;
+    }
+    // Est-ce qu'on peut considérer l'exercice comme chargé ?
+    if(this.id == null || this.titre==null) return;
+    if(this.tempo==null || this.tempo_min==null || this.tempo_max==null)return;
+    // Otherwise, exercice is loaded
+    this.loaded = true;
+  }
+})
+
 // Convenient alias
 Exercice.prototype.update = Exercice.prototype.dispatch
 
@@ -167,21 +253,6 @@ Exercice.prototype.set_tone = function(){
   }
   $('select#tone_ex-'+this.id).val(valtone);
 }
-// Sauvegarde de l'exercice
-Exercice.prototype.save = function(fx_suite){
-  if('undefined' == typeof fx_suite) fx_suite = $.proxy(this.end_save, this) ;
-  this.saving = true ;
-  Ajax.query({
-    data:{
-      proc:'exercice/save',
-      roadmap_nom : Roadmap.nom, 
-      mail        : User.mail,
-      md5         : User.md5,
-      data        : this.as_hash()
-    },
-    success : fx_suite
-  })
-}
 Exercice.prototype.end_save = function(rajax){
   if (rajax['error']) F.error( rajax['error'] ) ;
   else F.show("Exercice enregistré.") ;
@@ -208,19 +279,28 @@ Exercice.prototype.types_as_human = function(delimiter){
 
 // => Retourne le code HTML du li de l'exercice
 Exercice.prototype.code_html = function(){
-  // log("-> <Exercice>.code_html") ;
-  var li = "" ;
-  li += '<li id="li_ex-'+this.id+'" class="ex">' ;
-  li += this.code_btns_edition() ;
-  li += this.code_vignette() ;
-  li += this.code_div_titre() ;
-  li += this.code_tempo_et_tones();
-  li += this.code_suite() ;
-  li += this.code_note() ;
-  li += '</li>'
-  // log("<- <Exercice>.code_html") ;
-  return li ;
+  return  '<li id="li_ex-'+this.id+'" class="ex">' +
+            this.code_btns_edition() +
+            this.code_vignette() +
+            this.code_div_titre() +
+            this.code_tempo_et_tones() +
+            this.code_suite() +
+            this.code_note() +
+            this.code_footer_buttons() + 
+            '</li>'
 }
+
+/**
+  * Retourne le code HTML pour les boutons du "footer" de l'exercice
+  * (le lien pour retirer l'exercice de la roadmap)
+  * @method code_footer_buttons
+  * @return {StringHTML} Le code à écrire dans le LI de l'exercice
+  */
+Exercice.prototype.code_footer_buttons = function()
+{
+  return Exercice.Dom.footer_buttons_for(this)
+}
+
 // Règle le bouton pour le métronome
 // 
 // @param   running     True si l'exercice doit être en jeu, FALSE dans le cas contraire
@@ -233,12 +313,10 @@ Exercice.prototype.set_btn_metronome = function( running ){
   $("li#li_ex-"+this.id+" a#btn_clic-"+this.id).html(running ? 'STOP' : 'Play') ;
 }
 Exercice.prototype.code_btns_edition = function(){
-  var div = '<div class="btns_edition">' ;
-  div += '<a class="btn_del petit btn" onclick="$.proxy(Exercices.delete, Exercices, \''+this.id+'\')()">Sup</a>';
-  div += '<a class="btn_edit petit btn" onclick="$.proxy(Exercices.edit, Exercices, \''+this.id+'\')()">Edit</a>';
-  div += '<a id="btn_clic-'+this.id+'"class="btn_clic petit btn" onclick="$.proxy(Exercices.play, Exercices, \''+this.id+'\')()">Play</a>';
-  div += '</div>' ;
-  return div ;
+  return  '<div class="btns_edition">' +
+            Exercice.Dom.button_edit_for(this) +
+            Exercice.Dom.button_play_for(this) +
+          '</div>'
 }
 // Return le code d'affichage de la vignette for main listing (if any)
 Exercice.prototype.code_vignette = function(){
@@ -417,7 +495,7 @@ Exercice.prototype.stop_exercice = function(dont_stop_metronome){
   if ( ! dont_stop_metronome ) $.proxy(Metronome.stop, Metronome)();
   this.w_end    = Time.now() ;
   this.calc_duree_travail() ;
-  if(Seance.data_seance.duree_moyenne_par_ex){
+  if(Seance.data_seance && Seance.data_seance.duree_moyenne_par_ex){
     var jeu = this.w_duree;
     var moy = Seance.data_seance.duree_moyenne_par_ex[this.id];
     var dif = moy - jeu;

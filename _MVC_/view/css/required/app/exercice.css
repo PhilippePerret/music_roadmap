@@ -151,10 +151,18 @@ li.ex div.btns_edition {
 }
 li.ex div.btns_edition a {
   display               :block ; /*  les uns au dessous  */
-  margin-bottom         :4px   ; /*  des autres          */
+  margin-bottom         :14px  ; /*  des autres          */
   width                 :40px  ;
   font-size             :0.83em ;
 }
 li.ex div.btns_edition a.btn_edit {
   
 }
+
+li.ex div.ex_footer a.btn_del {
+  color     : #E8C0C3;
+  font-size : 9.5pt;
+  cursor    : pointer;
+}
+li.ex div.ex_footer a.btn_del:hover {color:red;}
+
