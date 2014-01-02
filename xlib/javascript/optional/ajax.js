@@ -43,11 +43,6 @@ window.Ajax = {
     catch(err)
     {
       var mess_err = "Erreur dans Ajax.query : "+err
-      if(console)
-      {
-        console.log(mess_err + " / Data envoyées à la requête :")
-        console.dir(p)
-      }
       F.error(mess_err)
       return false
     }
@@ -142,12 +137,10 @@ window.Ajax = {
     for( key in r ){
       content = r[key] ;
       if ( content == null ){ 
-        // console.log("Contenu vide (je continue)") ;
         continue ;
       }
       dom_id  = "#"+key ;
       if ($(dom_id).length == 0 ){ 
-        // console.log("Élément DOM introuvable. Je continue.") ;
         continue ; 
       }
       // Contenu + observers sur élément DOM
@@ -164,10 +157,6 @@ window.Ajax = {
   },
   error:function( r ){
     Ajax.led_off() ;
-    if (console){
-      console.log("# ERREUR #") ;
-      console.dir( r ) ;
-    }
     if ( 'undefined' != typeof r.responseText ){
       // Erreur système
       err_html=r.responseText;

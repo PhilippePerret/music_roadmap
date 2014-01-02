@@ -85,9 +85,6 @@ window.REdit = {
               e.preventDefault();
             }
             break;
-          default :
-            // Pour voir la touche pressée :
-            // console.log( "charCode:" + e.charCode + " / keyCode:"+e.keyCode ) ;
         }
         my.redim( target ) ;
         return true ; 

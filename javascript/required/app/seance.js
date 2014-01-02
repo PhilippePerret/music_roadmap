@@ -47,8 +47,6 @@ window.Seance = {
         evt.stopPropagation();
         Metronome.toggleMute();
         return false;break;
-      default:
-        // console.log("touche:"+evt.charCode);
     }
     switch(evt.keyCode){
       case K_LARROW:

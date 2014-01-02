@@ -5,7 +5,6 @@ Object.defineProperties(String.prototype,{
       var val = this.toString()
       var exact_type_value = _exact_type_of(value)
       if( strict && (this.exact_type != exact_type_value) ) return false
-      // console.log("Exact type:"+this.exact_type)
       if(exact_type_value == 'regexp')
       {
         return val.match(value) !== null

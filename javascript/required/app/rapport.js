@@ -138,23 +138,6 @@ window.Rapport = {
     // Maintenant, on peut construire le détail de la séance du jour
     Rapport.ByDay.build();
     
-    // if(console){
-    //   console.log("\n*** Résultat de Rapport.CALC ***");
-    //   console.log("Rapport.total_working_time : " + this.total_working_time);
-    //   console.log("Rapport.seances:");
-    //   console.dir(this.seances);
-    //   console.log("Rapport.exercices:");
-    //   console.dir(this.exercices);
-    //   console.log("Rapport.types:");
-    //   console.dir(this.types);
-    //   console.log("Rapport.types_sorted");
-    //   console.dir(this.types_sorted);
-    //   console.log("Rapport.tones:");
-    //   console.dir(this.tones);
-    //   console.log("Rapport.tones_sorted");
-    //   console.dir(this.tones_sorted);
-    //   console.log("\n *** FIN résultat de Rapport.CALC ***");
-    // }
   },
   /*  Initialize all values to calculate
    *

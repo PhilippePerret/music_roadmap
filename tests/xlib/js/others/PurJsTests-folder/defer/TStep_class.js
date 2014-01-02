@@ -61,8 +61,6 @@ Object.defineProperties(TStep.prototype,{
   // SI `test' est défini, c'est un appel d'un autre test (run_test ?)
   "run":{
     get:function(){
-      // console.log("\n---> TStep.run (étape:"+this.name+"/script:"+this.script.relative_path)
-      // this._script.curstep = this
       if(this.fonction != null)   return this.run_fonction
       else if(this.test != null)  return this.run_test
       else                        return this.run_script
@@ -80,7 +78,6 @@ Object.defineProperties(TStep.prototype,{
   },
   "run_fonction":{
     get:function(){
-      // console.log("-> TStep.run_fonction")
       if(undefined == this.fonction || 'function' != typeof this.fonction)
       {
         throw "Il faut définir la fonction de l'étape !"

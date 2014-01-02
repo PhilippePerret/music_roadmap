@@ -67,7 +67,6 @@ APP.jq = jq
 
 
 window._jq = function(jid){
-	// console.log("-> instanciation de "+jid)
   this.jid 			= jid
 	this.obj			= null		// L'énumérateur jQuery
 	this.obj_dom	= null		// Véritable objet DOM
@@ -680,7 +679,6 @@ const HumanProperties_JQ_Should_Have = {
     value:function(foo, val){
       if('string' == typeof foo){ tbl = {}; tbl[foo] = val}
       else tbl = foo
-      console.log("Arrivée dans css (mode:"+this.mode+")")
       if(this.mode == 'set') // lire le @warning ci-dessus
       {
         this.obj.css(tbl)

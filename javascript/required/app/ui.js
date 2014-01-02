@@ -43,7 +43,6 @@ $.extend(UI,{
     if(this.current_volet != null && this.current_volet != volet){
       this.close_volet(this.current_volet);
     }
-    // console.log("open volet "+volet);
     if('undefined' == typeof hide) hide = false;
     switch(volet){
       case 'rapport':

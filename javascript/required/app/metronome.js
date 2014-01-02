@@ -57,7 +57,6 @@ window.Metronome = {
   // Note: c'est ce checker qui "tourne" même lorsqu'on change d'exercice
   // ou de tempo
   run_checker: function(){
-    if(DEBUG) console.log("-> Lancement du checker") ;
     this.checker = setInterval("Metronome.check()", 1) ;
   },
   // Appelée toutes les millisecondes pour voir s'il faut jouer le son
@@ -69,26 +68,17 @@ window.Metronome = {
       // --- / débug -- 
       this.Clic.clic() ;
       this.next_clic += this.clics_interval ;
-      // --- Débug ---
-      if(DEBUG) console.log(
-        offset + " = décalage (devrait être ~ 0)\n" +
-        now + " = NOW\n" + 
-        this.next_clic + " = prochain clic\n" +
-        (this.next_clic - now) + " = Interval") ;
-      // --- /Débug ---
     }
   },
   // Méthode qui calcule, suivant le tempo (this.tempo), l'intervalle en
   // millisecondes entre chaque clic et le time du prochain click
   calc_next_clic_and_intervals: function(){
     this.clics_interval = parseInt(1000 / this.tempo * 60, 10) ;
-    if(DEBUG) console.log("Interval entre les clics : " + this.clics_interval ) ;
     // On cherche le premier clic dans x secondes (1 pour voir)
     var first_interval = 0 ;
     while ( first_interval < 1000 ) first_interval += this.clics_interval ;
     var now = (new Date()).valueOf() ;
     this.next_clic = now + first_interval ;
-    if(DEBUG) console.log(now + " = Temps départ (maintenant)\n" + this.next_clic + " = Premier clic") ;
   },
   
   // Sous-objet Metronome.Clic
@@ -132,7 +122,6 @@ window.Metronome = {
         pour tous les tempos
     */
     set_sound_by_tempo: function(){
-      if(DEBUG) console.log("-> set_sound_by_tempo") ;
       var tempo = Metronome.tempo ;
       var name ;
       if      ( tempo > 110)  name = "normal.wav" ; // petits problème de 110 à 116 (compris)
@@ -145,7 +134,6 @@ window.Metronome = {
         this.son.load() ;
         this.son2.src = this.path( name ) ;
         this.son2.load() ;
-        if(DEBUG) console.log("Le son utilisé pour le tempo " + tempo + " est mis `"+name+"'") ;
         this.sound_name = name.toString();
       }
     },

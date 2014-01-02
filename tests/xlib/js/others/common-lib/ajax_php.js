@@ -21,7 +21,6 @@ window.Ajax = {
     // if(this.ajaxing == true)
     // {
     //   // On doit mettre la requête de côté
-    //   // console.log("Mise en tampon de la requête " + JSON.stringify(data))
     //   this.stack.push([data, options, run_on_stack])
     //   return
     // }
@@ -29,9 +28,6 @@ window.Ajax = {
     // {
     //   this.ajaxing = true
     //   if('function' == typeof run_on_stack) run_on_stack()
-    //   // console.log("Je joue la requête :")
-    //   // console.dir(data)
-    //   // console.dir(options)
     // }
     if('undefined'==typeof options)options = {};
     else if ('function' == typeof options) options = {pour_suivre: options}

@@ -39,9 +39,6 @@ $.extend(window.UTest, {
       }
       if(poursuivre instanceof TScript)         data.script_after   = poursuivre
       else if('function' == typeof poursuivre)  data.function_after = poursuivre
-      // this.poursuivre     = poursuivre
-      // console.log("data dans Synopsis.run envoyées au script "+synopsis_path)
-      // console.dir(data);console.log("/data")
 			this.tscript = new TScript(data)
 			this.tscript.first_run
 		}	

@@ -172,17 +172,14 @@ window.REvent={
   /* Méthode captant la soumission du formulaire */
   on_submit_formulaire_by_ajax: function(evt){
     if ( ! REvent.ON ) return false ;
-    // console.log("--> REvent::on_submit_formulaire_by_ajax") ;
     var target, data ;
     target = this.target(evt);
     data = this.get_data_formulaire( target ) ;
     params = { type: 'POST', data: data } ;
-    // if ( console ){console.log("* data envoyées *");console.dir(data);}
     Ajax.query( params ) ;
     return false ;
   },
   get_data_formulaire: function( target ){
-    // console.log("--> REvent::get_data_formulaire") ;
     var data_form, data, k, h ;
     
     dform = REdit.form.data( target ) ;
@@ -204,7 +201,6 @@ window.REvent={
     }
   },
   js_unob:function(evt){
-    // console.log("--> REvent::js_unob") ;
     try{
       if ( ! REvent.ON ) return true ;
       target = this.target(evt);
@@ -245,7 +241,6 @@ window.REvent={
     return false;
   },
   on_keypress_textarea:function(otarget){
-    // console.log("--> REvent::on_keypress_textarea") ;
     if (      ! REvent.ON 
           ||  ! this.ON_KEYPRESS_ON_TEXTAREA 
           ||    (BoiteEdition && BoiteEdition.ON)
@@ -265,9 +260,7 @@ window.REvent={
     target.css('cursor', 'pointer');
   },
   on_submit_form:function(otarget){
-    // console.log("--> REvent::on_submit_form") ;
     if ( ! REvent.ON ){ 
-      console.log("REvent.ON est false, je ne soumets pas le formulaire");
       return false ; 
     }
     var data = this.get_data_formulaire( otarget.jq_target ) ;

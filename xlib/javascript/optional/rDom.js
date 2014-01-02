@@ -37,25 +37,14 @@ window.RDom = {
     @return: le parent trouvé (objet jQuery) ou null
   */
   parent_with_attribute: function( o, attr_name ){
-    // console.dir({
-    //   method: "RDom::parent_with_attribute",
-    //   odom: o,
-    //   attr_name: attr_name
-    // });
     var loop_max = 100, iloop = 0 ; // pour éviter les infinite loops
-    // console.dir({
-    //   type: "Parent du node envoyé",
-    //   odom: o,
-    //   o_type: typeof( o ),
-    //   o_class: o.class,
-    //   o_parent: o.parentNode
-    // });
     while ( (o.tagName != 'body') && (o = o.parentNode) ) {
       if ("undefined" != typeof $(o).attr(attr_name) ) return o ;
       ++ iloop; 
       if (iloop > loop_max) {
         var merr = "Problème de boucle infinie dans UI.parent_with_attribute" ; 
-        alert(merr);if(console){console.log(merr); console.dir(o);return null;}
+        alert(merr);
+        return null;
       }
     }
     return null ; // => parent non trouvé

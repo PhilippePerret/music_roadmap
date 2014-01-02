@@ -152,7 +152,6 @@ _PropertiesOnSuccessAndFailure = {
   "reset":{
     get:function()
     {
-      // console.log("-> TSuite.reset")
       delete this._step_on_success
       delete this._step_on_failure
       delete this._stop_point_on_success

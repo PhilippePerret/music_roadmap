@@ -143,7 +143,6 @@ window.Test.Messages = {
   
   correct_code_in:function(messa)
   {
-    // console.log(messa.match(/\`([^\`\n]+)\`/g))
     return messa.replace(/\`([^\`\n]+)\`/g, function(tout, code, index){
       return '<code>' + code.replace(/\</g,'&lt;').replace(/\>/g, '&gt;') + '</code>'
     })
