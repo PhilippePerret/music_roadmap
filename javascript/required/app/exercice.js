@@ -102,12 +102,12 @@ $.extend(Exercice,{
     /* Return le code HTML du bouton pour jouer l'exercice +iex+ */
     button_play_for:function(iex)
     {
-      return '<a id="btn_clic-'+iex.id+'"class="btn_clic petit btn" onclick="$.proxy(Exercices.play, Exercices, \''+iex.id+'\')()">Play</a>'    
+      return '<a id="btn_clic-'+iex.id+'"class="btn_clic btn" onclick="$.proxy(Exercices.play, Exercices, \''+iex.id+'\')()">Play</a>'    
     },
     /* Return le code HTML du bouton pour éditer l'exercice */
     button_edit_for:function(iex)
     {
-      return '<a class="btn_edit petit btn" onclick="$.proxy(Exercices.edit, Exercices, \''+iex.id+'\')()">Edit</a>'
+      return '<a class="btn_edit btn" onclick="$.proxy(Exercices.edit, Exercices, \''+iex.id+'\')()">Edit</a>'
     },
     /* Return le code HTML du bouton pour détruire l'exercice */
     button_delete_for:function(iex)
