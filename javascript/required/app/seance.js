@@ -1,7 +1,12 @@
-/*  Object Seance
-    ---------------
-    Gestion des séances de travail
-*/
+/**
+  * @module seance
+  *
+  * Objet gérant la séance de travail du musicien.
+  *
+  * @class Seance
+  * @static
+  *
+  */
 window.Seance = {
   ready           :false,   // Set to true when form is ready
   section_opened  :false,   // True if section seance is opened
@@ -16,6 +21,12 @@ window.Seance = {
   curex_indice    :null,    // Index of the current exercice
   start_time      :null,    // Number of seconds for starting session time
   stop_time       :null,    // Number of seconds for stopping session time
+  /**
+    * Instance du chronomètre comptant le jeu de la séance
+    * @property {Chrono} chronometre
+    * @default NULL
+    */
+  chronometre     :null,
 
   // Key press handler (on seance)
   onkeypress:function(evt){
@@ -62,8 +73,8 @@ window.Seance = {
     Exercices.deselect_all();
     UI.set_visible('section#current_exercice');
     this.curex_indice = 0;
-    this.start_time = Time.now();
-    UI.Chrono.start('span#curex_horloge_seance');
+    this.start_time   = Time.now();
+    this.chronometre  = UI.Chrono.start('span#curex_horloge_seance');
     this.play_first_in_stack();
     this.initialize_seance_file();
     return false;//for a-link
@@ -218,7 +229,8 @@ window.Seance = {
     this.cur_exercice.play(); //start or stop
     this.pause_on = !this.pause_on;
     o.html(LOCALE_UI.Seance[this.pause_on?'restart':'pause']);
-    UI.Chrono[this.pause_on?'pause':'unpause']('span#curex_horloge_seance');
+    this.chronometre[this.pause_on?'pause':'unpause']()
+    // UI.Chrono[this.pause_on?'pause':'unpause']('span#curex_horloge_seance');
     return false;//for a-link
   },
   // To Stop the working session
@@ -230,7 +242,8 @@ window.Seance = {
     this.stopping = true;
     if( forcer_arret === true ) this.stop_cur_exercice(true);
     this.stop_time = Time.now();
-    UI.Chrono.stop('span#curex_horloge_seance');
+    this.chronometre.stop()
+    // UI.Chrono.stop('span#curex_horloge_seance');
     Metronome.stop();
     UI.set_invisible('section#current_exercice');
     this.ordre_stack  =null;

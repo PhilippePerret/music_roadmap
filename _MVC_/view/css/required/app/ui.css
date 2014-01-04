@@ -2,6 +2,15 @@
   Les styles généraux propres à l'interface
 */
 
+span.horloge {
+  display     :inline-block;
+/*  width             : 5em ;*/
+  font-family       : Courier;
+  font-size         : 10pt;
+  background-color  : black;
+  color             : white;
+  padding           : 2px 4px;
+}
 
 span.suivi_by_aide a.to_help {
   visibility      :hidden;

@@ -81,7 +81,10 @@ window.Metronome = {
     this.next_clic = now + first_interval ;
   },
   
-  // Sous-objet Metronome.Clic
+  /**
+    * @class Metronome.Clic
+    * @static
+    */
   Clic: {
     sound_name  : null,   // Nom du son courant
     son         : null,   // Référence à Metronome.son

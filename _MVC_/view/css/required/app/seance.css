@@ -114,8 +114,7 @@ section#current_exercice{
   padding     :0.5em;
 }
 section#current_exercice span#curex_horloge_seance {
-  display     :inline-block;
-  width       :5em;
+
 }
 section#current_exercice div#curex_indice, 
 section#current_exercice div#curex_total {
