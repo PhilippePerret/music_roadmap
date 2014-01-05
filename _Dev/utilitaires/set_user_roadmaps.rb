@@ -15,7 +15,7 @@ path_user_data = File.join('user', 'data', USER)
 user_data = App::load_data path_user_data
 puts "Anciennes données :"
 puts "#{user_data.inspect}"
-# exit(0) # pour ne voir que les données
+exit(0) # pour ne voir que les données
 user_data[:roadmaps] = roadmaps
 App::sudo "chmod 0777 '#{path_user_data}'"
 App::save_data path_user_data, user_data

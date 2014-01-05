@@ -151,7 +151,7 @@ class Roadmap
   # Si la tonalité courante est majeure (<12) on ajoute 12, sinon, on retranche
   # 11 pour obtenir la tonalité majeur suivante
   def next_tone
-    ton = @config_generale[:tone]
+    ton = @config_generale[:tone].to_i
     @config_generale[:tone] = (ton < 12 ? ton + 12 : (ton + 1) % 12)
   end
   
