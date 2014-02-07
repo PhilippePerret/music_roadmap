@@ -48,7 +48,7 @@ section#roadmap div#roadmap_specs {
   color               : white ;
 }
 div#roadmap_specs select#roadmaps {
-  color:#727272;
+  color:#222;
 }
 div#open_roadmap_specs a {
   color         :#4F4F4F !important;

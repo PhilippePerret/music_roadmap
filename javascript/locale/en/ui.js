@@ -65,7 +65,7 @@ window.LOCALE_UI = {
     increased           :"increased", 
     link_to_next        :"Linked to next",
     MDP                 :"PASSWORD",
-    mail_to_phil        :"Mail to Phil",
+    mail_to_phil        :"Contact",
     obligatory          :"Obligatory",
     pulse               :"pulse",
     recueil             :"collection",

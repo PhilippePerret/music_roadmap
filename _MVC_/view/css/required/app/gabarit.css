@@ -73,7 +73,7 @@ div#roadmap_specs-specs {
 div#roadmap_specs select#roadmaps {
   font-size     :1.0em;
   width         :14em;
-  background-color:inherit;
+  background-color:white;
 }
 div#btns_exercices {
   height              :35px;

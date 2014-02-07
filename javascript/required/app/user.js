@@ -24,7 +24,10 @@ window.User = {
     [this.nom, this.md5, this.mail, this.instrument,this.roadmaps] = [null,null,null,null,null];
     this.identified = false;
   },
-  // When logout button is clicked
+  /**
+    * Méthode appelée quand l'user se déconnecte en cliquant sur "Log out"
+    * @method logout
+    */
   logout:function(){
     this.reset();
     UI.open_volet('exercices');
@@ -86,26 +89,31 @@ window.User = {
     this.fx_pour_suivre_signin = fx_suite ;
     return true ;
   },
-  // Open the identification pseudo-form
-  // @note: maybe the signup form is visible, so we have to remove it, because some
-  // fields have same name.
-  // 
-  // @note: On regarde s'il y a des cookies contenant les mail et password
-  //        Si c'est le cas on passe directement au check
-  // 
+  /**
+    * Méthode appelée quand l'utilisateur clique sur le lien pour s'identifier.
+    * S'il possède des cookies, on l'envoie directement au check (`this.check`), sinon on ouvre
+    * le formulaire d'identification.
+    * @method signin
+    */
   signin:function(){
-    if(Cookies.exists('mrdm_mail')){
-      this.remembered = true;
-      var mail = Cookies.valueOf('mrdm_mail');
-      var pass = Cookies.valueOf('mrdm_password');
-      // Et on lance tout de suit le check
-      this.check({mail:mail,password:pass});
-      return false;
+    if(Cookies.exists('mrdm_mail'))
+    {
+      var data_user = {
+        mail      : Cookies.valueOf('mrdm_mail'),
+        password  : Cookies.valueOf('mrdm_password'),
+        remember  : true
+      }
+      Cookies.delete( 'mrdm_mail')
+      Cookies.delete( 'mrdm_password')
+      this.check( data_user )
     }
-    this.preparing_form = true ;
-    Aide.options({bandeau_titre:false}) ; // réglage des options
-    Aide.remove('user/signup_form');
-    Aide.show('user/signin_form', $.proxy(this.prepare_signin_form, this));    
+    else
+    {
+      this.preparing_form = true ;
+      Aide.options({bandeau_titre:false}) ; // réglage des options
+      Aide.remove('user/signup_form');
+      Aide.show('user/signin_form', $.proxy(this.prepare_signin_form, this));    
+    }
     return false; // pour le a-lien
   },
   // Méthode vérifiant les data envoyées pour l'identification
@@ -115,29 +123,41 @@ window.User = {
   check:function(hdata){
     this.checking = true ;
     if ('undefined' == typeof hdata){
-      hdata = {mail:$('input#user_mail').val(), password:$('input#user_password').val()}
-    }
-    // On vérifie que les données soient valides avant de les envoyer
-    try{
-      if ( hdata.mail     == "" ) throw 'mail_required';
-      if ( hdata.password == "" ) throw 'password_required';
-    }catch(erreur){
-      F.error(ERROR.User[erreur]);
-      return this.checking = false ;
+      hdata = {
+        mail      : $('input#user_mail').val(), 
+        password  : $('input#user_password').val(),
+        remember  : $('input#remember_me').is(':checked')
+      }
+      // On vérifie que les données soient valides avant de les envoyer
+      try{
+        if ( hdata.mail     == "" ) throw 'mail_required';
+        if ( hdata.password == "" ) throw 'password_required';
+      }catch(erreur){
+        F.error(ERROR.User[erreur]);
+        return this.checking = false ;
+      }
     }
     Ajax.query({
       data:{proc:'user/check',user:hdata},
-      success: $.proxy(this.retour_check, this)
+      success: $.proxy(this.retour_check, this, hdata.password)
     });
     return false ; // pour le a-lien
   },
-  // Retour ajax de la précédente
-  retour_check:function(rajax){
+  /**
+    * Retour ajax de la précédente
+    * @method retour_check
+    * @param {String} password    Le mot de passe fourni ou récupéré dans le cookie
+    * @param {Object} rajax       Le retour ajax
+    */
+  retour_check:function(password, rajax){
     if ( false == traite_rajax(rajax) ){
       // ------------------------
       //  Identification réussie
       // ------------------------
-      this.remember_me();
+      if(rajax.remember){ 
+        rajax.user.password = password ;
+        this.remember_me( rajax.user ) ;
+      }
       this.set_identified(rajax.user);
       this.roadmaps = rajax.roadmaps ;
       Aide.remove('user/signin_form');
@@ -149,17 +169,27 @@ window.User = {
     }
     this.checking = false ;
   },
-  // Pour mémoriser l'utilisateur
-  // @todo: détruire le cookie si l'utilisateur ne veut plus être reconnu
-  remember_me:function(){
-    if(false == $('input#remember_me').is(':checked')) return ;
-    if(this.remembered) return ; // les cookies existent déjà
-    // On place un cookie contenant l'adresse mail et le md5 de l'utilisateur
-    Cookies.create('mrdm_mail',  $('input#user_mail').val(), 1000);
-    Cookies.create('mrdm_password',  $('input#user_password').val(), 1000);    
-    this.remembered = true;
+  
+  /**
+    * Méthode qui mémorise l'utilisateur
+    * Elle place deux cookies sur l'ordinateur de l'utilisateur, contenant son mail et son mot
+    * de passe. La méthode est appelée au retour du check de l'utilisateur, on sait donc qu'il
+    * est valide.
+    * @method remember_me
+    * @param {Object} user  Données de l'utilisateur, dont `mail` et `password`
+    */
+  remember_me:function( user ){
+    // On place un cookie contenant l'adresse mail et le mot de passe de l'utilisateur
+    Cookies.create('mrdm_mail',       user.mail,      1000);
+    Cookies.create('mrdm_password',   user.password,  1000);    
+    this.remembered = true
   },
-  // Identifie vraiment l'utilisateur dans l'application
+  
+  /**
+    * Marquer l'utilisateur identifié pour l'application
+    * @method set_identified
+    * @param {Object} duser   Données (non sensibles) de l'utilisateur
+    */
   set_identified:function(duser){
     this.md5        = duser.md5;
     this.nom        = duser.nom;

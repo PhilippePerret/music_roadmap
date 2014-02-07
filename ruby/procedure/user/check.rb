@@ -5,7 +5,6 @@ def ajax_user_check
     hdata = param(:user)
     raise "Un Hash de données est requis" if hdata.class != Hash
     res = user_check hdata.to_sym
-    # puts "res: #{res.inspect}"
     raise res[1] if res[0] == false
   rescue Exception => e
     RETOUR_AJAX[:error]     = e.message
@@ -13,7 +12,7 @@ def ajax_user_check
     RETOUR_AJAX[:roadmaps]  = []
   else
     RETOUR_AJAX[:user]      = res[1]
-    RETOUR_AJAX[:babar]     = "Est parmi nous"
+    RETOUR_AJAX[:remember]  = hdata['remember'].to_s == "true"
     RETOUR_AJAX[:roadmaps]  = res[2]
   end
 end
