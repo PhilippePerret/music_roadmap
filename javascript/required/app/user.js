@@ -137,9 +137,10 @@ window.User = {
         return this.checking = false ;
       }
     }
+    Flash.show( MESSAGE.thank_to_wait )
     Ajax.query({
-      data:{proc:'user/check',user:hdata},
-      success: $.proxy(this.retour_check, this, hdata.password)
+      data    : {proc:'user/check',user:hdata},
+      success : $.proxy(this.retour_check, this, hdata.password)
     });
     return false ; // pour le a-lien
   },
@@ -165,6 +166,7 @@ window.User = {
       F.show(MESSAGE.User.welcome);
       this.pour_suivre_identification();
     } else {// Identification failed
+      Flash.clean()
       this.reset();
     }
     this.checking = false ;

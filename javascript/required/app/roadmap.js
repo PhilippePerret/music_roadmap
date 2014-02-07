@@ -308,6 +308,7 @@ window.Roadmap = {
     BT.add('-> Roadmap.open') ;
     this.opening = true ;
     if( this.specs_ok( true ) == false ) return false ;
+    Flash.show( MESSAGE.thank_to_wait )
     Ajax.query({
       data:{
         proc            : "roadmap/load",

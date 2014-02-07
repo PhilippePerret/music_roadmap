@@ -314,6 +314,7 @@ window.Seance = {
     this.params_seance = this.get_values();
     if( this.params_seance == null ) return this.building = false;
     // console.dir(this.params_seance);
+    Flash.show( MESSAGE.thank_to_wait )
     Ajax.query({
       data:{
         proc          :'seance/build',
@@ -329,6 +330,7 @@ window.Seance = {
   // Retour ajax de la précédente
   suite_build:function(rajax){
     if(false==traite_rajax(rajax)){
+      Flash.clean()
       this.data_seance = rajax.data_seance ; // les données remontées pour la séance
       if (this.show_data_seance()){
         Roadmap.Data.set_general_config(this.data_seance);

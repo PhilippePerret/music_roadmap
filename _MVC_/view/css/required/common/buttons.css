@@ -13,11 +13,10 @@ a.btn, input.btn, button.btn {
   border-radius     : 4px ;
   font-family       : Arial, Helvetica ;
   font-size         : 12.8px ;
-  background-color  : #acda7d ;
-  color             : #006800 ;
+  background-color  : #4CBF4D ;
   text-align        : center ;
   cursor            : pointer ;
-  color             : #474747 !important;
+  color             : white !important;
 }
 /* Boutons de navigation */
 a.btn.nav {
