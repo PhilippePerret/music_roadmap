@@ -332,8 +332,8 @@ window.Seance = {
     if(false==traite_rajax(rajax)){
       Flash.clean()
       this.data_seance = rajax.data_seance ; // les données remontées pour la séance
-      if (this.show_data_seance()){
-        Roadmap.Data.set_general_config(this.data_seance);
+      if ( this.show_data_seance() ){
+        Roadmap.Data.set_general_config($.extend(this.data_seance, this.params_seance));
         Roadmap.Data.show();
         this.hide_form(false);
         this.show_start();

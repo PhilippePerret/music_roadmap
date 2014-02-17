@@ -546,7 +546,7 @@ window.Roadmap = {
   // /*
   //     Sous-objet Roadmap.Data
   //     -------------------------
-  //     Gère toutes les données de l'roadmap
+  //     Gère toutes les données de la roadmap
   // */
   Data:{
     
@@ -565,11 +565,17 @@ window.Roadmap = {
       // @see `next_general_config' ci-dessous
       'down_to_up', 'maj_to_rel', 'first_to_last', 'tone', 'last_changed'
     ],
-    down_to_up      :true,            // cf. N0001
-    first_to_last    :true,           // cf. N0002
-    maj_to_rel      :true,            // cf. N0003
-    tone           :0,
-    last_changed    :'down_to_up',    // cf. N0004
+    down_to_up        :true,            // cf. N0001
+    first_to_last     :true,           // cf. N0002
+    /**
+      * Propriété à True si les exercices doivent être joués de façon aléatoire.
+      * La valeur `true` surclasse `first_to_last`
+      * @property {Boolean} ordre_aleatoire
+      */
+    ordre_aleatoire   :false,
+    maj_to_rel        :true,            // cf. N0003
+    tone              :0,
+    last_changed      :'down_to_up',    // cf. N0004
     
     // --- Les Données générales des exercices ---
     // Pour l'obtenir     : Exercices.ordre()
@@ -583,6 +589,7 @@ window.Roadmap = {
       this.down_to_up     = true ;
       this.first_to_last  = true ;
       this.maj_to_rel     = true ;
+      this.ordre_aleatoire = false ;
       this.tone          = 0 ;
       this.last_changed   = 'down_to_up' ;
       this.show() ;
@@ -624,9 +631,23 @@ window.Roadmap = {
       }
       return d;
     },
-    // Define data of general config
-    set_general_config:function(data){
+    /**
+      * Définit les données générales pour la séance
+      * @method set_general_config
+      * @param  {Object} data   Les données de la séance courante. L'objet contient beaucoup plus de
+      *                         données que celles nécessaires à la méthode. Ici, on se sert de :
+      *   @param {Boolean} data.down_to_up      Détermine le sens des exercices (à remonter ou à descendre)
+      *   @param {Boolean} data.first_to_last   Du premier exercice au dernier, ou inversement
+      *   @param {Boolean} data.maj_to_rel      Majeur au relatif ou inversement
+      *   @param {Object}  data.options         Liste des options de la séance de travail
+      *     @param  {Boolean} data.options.aleatoire  True si le sens doit être aléatoire.
+      */
+    set_general_config:function( data ){
+      console.log("Data envoyées à set_general_config:")
+      console.dir(data)
       if (data == null) return F.show(MESSAGE.Roadmap.no_config_generale);
+      this.ordre_aleatoire = false
+      if(undefined != data.options) this.ordre_aleatoire = data.options.aleatoire
       for(var i in this.GENERAL_CONFIG_PROPERTIES){
         var prop = this.GENERAL_CONFIG_PROPERTIES[i];
         if('undefined' != typeof data[prop]) this[prop] = data[prop];
@@ -696,10 +717,25 @@ window.Roadmap = {
     
     Set:{
       // Shortcuts
-      downToUp:function(){    return Roadmap.Data.down_to_up},
-      firstToLast:function(){ return Roadmap.Data.first_to_last},
-      majToRel:function(){    return Roadmap.Data.maj_to_rel},
+      aleatoire   :function(){ return Roadmap.Data.ordre_aleatoire},
+      downToUp    :function(){ return Roadmap.Data.down_to_up},
+      firstToLast :function(){ return Roadmap.Data.first_to_last},
+      majToRel    :function(){ return Roadmap.Data.maj_to_rel},
       
+      /**
+        * Retourne le diminutif pour la direction des exercices
+        * Nouveau traitement pour les trois choix de direction des exercices :
+        * - de bas en haut (downToUp)
+        * - de haut en bas (UpToDown)
+        * - aléatoire
+        * @method direction
+        * @return {String} 'dtu', 'utd' ou 'zig'
+        */
+      dim_direction_exercices:function()
+      {
+        if( this.aleatoire() ) return 'zig'
+        else return this.firstToLast() ? 'ftl' : 'ltf' 
+      },
       // Règle le volant de la configuration générale et son texte
       config_generale:function(){
         $('img#config_generale_volant').attr('src', this.config_generale_img_path());
@@ -716,9 +752,9 @@ window.Roadmap = {
       // Return path to config generale image
       config_generale_img_path:function(){
         var ary = [];
-        ary.push(this.downToUp()    ? 'dtu' : 'utd');
-        ary.push(this.majToRel()    ? 'mtr' : 'rtm');
-        ary.push(this.firstToLast() ? 'ftl' : 'ltf');
+        ary.push( this.downToUp() ? 'dtu' : 'utd' );
+        ary.push( this.majToRel() ? 'mtr' : 'rtm' );
+        ary.push( this.dim_direction_exercices() );
         return UI.path_image('config/volant/'+ary.join('_')+'.png');
       },
       // Mets le texte +texte+ dans le SPAN d'identifiant +id+
