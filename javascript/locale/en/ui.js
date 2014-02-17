@@ -129,6 +129,7 @@ window.LOCALE_UI = {
       cb_save                 :"Save general config on change",
       first_to_last           :"from first to last exercice (except if session)",
       last_to_first           :"from Last to first exercice (except if session)",
+      aleatoire               :"in a random suite of exercices",
       down_to_up              :"Up and then down the exercice",
       up_to_down              :"Down and then up the exercice",
       maj_to_rel              :"From MAJOR to Relative",

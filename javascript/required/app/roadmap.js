@@ -746,7 +746,12 @@ window.Roadmap = {
         var ary = [];
         ary.push(LOCALE_UI.Exercices.Config[this.downToUp()?'down_to_up':'up_to_down']);
         ary.push(LOCALE_UI.Exercices.Config[this.majToRel()?'maj_to_rel':'rel_to_maj']);
-        ary.push(LOCALE_UI.Exercices.Config[this.firstToLast()?'first_to_last':'last_to_first']);
+        ary.push(
+          LOCALE_UI.Exercices.Config[
+            this.aleatoire() ? 'aleatoire' : 
+            (this.firstToLast()?'first_to_last':'last_to_first')
+          ]
+        );
         return LOCALE_UI.Label.resume + LOCALE_UI.colon + ary.join(', ') + ".";
       },
       // Return path to config generale image

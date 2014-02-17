@@ -124,6 +124,7 @@ window.LOCALE_UI = {
       cb_save                 :"Enregistrer la configuration (cliquer le volant pour passer à la suivante)",
       first_to_last           :"du premier exercice au dernier (sauf si séance)",
       last_to_first           :"du dernier exercice au premier (sauf si séance)",
+      aleatoire               :"dans un ordre aléatoire des exercices",
       down_to_up              :"Monter puis redescendre l'exercice",
       up_to_down              :"Descendre puis remonter l'exercice",
       maj_to_rel              :"Du TON MAJEUR vers Relatif mineur",
