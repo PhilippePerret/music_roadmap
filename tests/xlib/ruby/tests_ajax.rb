@@ -29,17 +29,17 @@ require 'json'
 # @usage:     param(<key>) # => retourne la valeur <key> envoyée par POST
 def param(key); Params::get_param(key) end
 class Params
-  @@PARAMS = {}
+  @params = {}
   def self.init posted_value
     JSON.parse(posted_value).each{ |k,v| set_param(k,v) }
   end
   def self.get_param key
-    @@PARAMS[key.to_sym]
+    @params[key.to_sym]
   end
   def self.set_param key, value
-    @@PARAMS ||= {}
+    @params ||= {}
     key = key.to_sym
-    @@PARAMS[key] = case value
+    @params[key] = case value
                       when "true"   then true
                       when "false"  then false
                       when "null"   then nil

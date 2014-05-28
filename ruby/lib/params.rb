@@ -3,125 +3,148 @@
 # Class Params::User
 # 
 require 'cgi'
-require 'rack' # pour Rack::Utils.parse_nested_query(string)
-# require 'hash' # mine
-# require 'array' # mine
 
 class Params
   # -------------------------------------------------------------------
   #   Class
   # -------------------------------------------------------------------
-  @@PARAMS      = nil
-  @@is_offline  = nil
-  @@is_online   = nil
+  class << self
+    @params
+    @params      = nil
+    @is_offline  = nil
+    @is_online   = nil
 
-  def self.offline?
-    @@is_offline ||= get_env('SERVER_NAME') == 'localhost' # ou essayer avec HTTP_HOST
-  end
-  def self.online?
-    @@is_online ||= !offline?
-  end
+    def offline?
+      @is_offline ||= get_env('SERVER_NAME') == 'localhost' # ou essayer avec HTTP_HOST
+    end
+    def online?
+      @is_online ||= !offline?
+    end
+    # Deux méthodes pour le débuggage (simulation de offline/online)
+    def set_offline
+      @is_offline = true
+      @is_online  = false
+    end
+    def set_online
+      @is_offline = false
+      @is_online  = true
+    end
   
-  # Deux méthodes pour le débuggage (simulation de offline/online)
-  def self.set_offline
-    @@is_offline = true
-    @@is_online  = false
-  end
-  def self.set_online
-    @@is_offline = false
-    @@is_online  = true
-  end
+    # => Définit les paramètres à la volée ou les lit dans l'URL
+    def set_params hash = nil
+      unless hash.nil?
+        # Définition à la volée
+        @params ||= {}
+        return unless hash.class == Hash
+        @params = @params.merge hash
+      else
+        init_params
+        extract_params_from_url
+      end
+    end
   
-  # => Définit les paramètres à la volée ou les lit dans l'URL
-  def self.set_params hash = nil
-    unless hash.nil?
-      # Définition à la volée
-      @@PARAMS ||= {}
-      return unless hash.class == Hash
-      @@PARAMS = @@PARAMS.merge hash
-    else
-      init_params # vraiment bien ???...
-      # extract_valeurs_post
-      extract_valeurs_get_from_url
+
+    # => Retourne une valeur environnement
+    def get_env cle
+      ENV[cle]
+    end
+  
+    # => Initialiser les paramètres
+    def init_params
+      @params = {}
+    end
+
+    # => Renvoie tous les paramètres
+    def get_params
+      @params
+    end
+    
+    # => Extrait les valeurs GET de l'url
+    def extract_params_from_url
+      # extract_params
+      # return if ENV['QUERY_STRING'].nil?
+      # qstring = CGI::parse(CGI::unescape(ENV['QUERY_STRING']))
+      # dbg qstring.inspect
+      # # Rack::Utils.parse_nested_query( CGI::unescape(ENV['QUERY_STRING']) ).
+      # qstring.each do |cle, valeur|
+      #   valeur = valeur[0] if valeur.count == 1
+      #   @params = @params.merge cle.to_sym => valeur
+      # end
+    end
+    def extract_params key, as_array = false
+      $cgi = CGI::new('html4')
+      @params ||= {}
+      skey  = key.to_s
+      return nil if $cgi.nil? # quand tests
+      value = if $cgi.has_key? skey
+                if as_array
+                  $cgi[skey]
+                else
+                  real_value_of $cgi[skey].to_s
+                end
+              else
+                param_as_hash skey, as_array
+              end
+      @params[key] = value
+    end
+ 
+    def param_as_hash key, as_array
+      key = key.to_s
+      h = nil
+      $cgi.params.each do |cle, value|
+        found = cle.match(/^#{key}\[(.*)\]$/)
+        next if found.nil?
+        value = value[0] if value.count == 1 && !as_array
+        value = real_value_of value
+        h ||= {}
+        if found[1].index('][').nil?
+        
+          h = h.merge found[1].to_sym => value
+        else
+          hstr = "h"
+          found[1].split('][').each do |souscle|
+            hstr = "#{hstr}[:#{souscle}]"
+            eval("#{hstr} = {}") if true == eval("#{hstr}.nil?")
+          end
+          eval("#{hstr} = #{value.inspect}")
+        end
+      end
+      h
+    end
+  
+    def real_value_of value
+      case value
+        when "true" then true
+        when "false" then false
+        when "nil", "null" then nil
+        else value
+      end
+    end
+  
+    # => Récupère la route dans les paramètres
+    # (@note: la méthode ne fait que chercher la clé :r — utilisée dans
+    #  l'URL — et la remplace par :route)
+    def extract_route params
+      return params unless params.has_key? :r
+      params = params.merge( :route => params.delete(:r) )
+      params
+    end
+
+    # => Renvoie une valeur GET
+    def value_get key
+      return nil if @params.nil?
+      @params[key.to_sym]
+    end
+    def value_set hashorkey, value = nil
+      unless hashorkey.class = Hash
+        hashorkey = { hashorkey => value }
+      end
+      @params ||= {}
+      hashorkey.each do |key, value|
+        @params = @params.merge key => value
+      end
     end
   end
-
-  # => Retourne une valeur environnement
-  def self.get_env cle
-    ENV[cle]
-  end
-  
-  # => Initialiser les paramètres
-  def self.init_params
-    @@PARAMS = {}
-  end
-
-  # => Renvoie tous les paramètres (@@PARAMS)
-  def self.get_params
-    @@PARAMS
-  end
-  
-  # => Extrait les valeurs POST de CGI
-  # def self.extract_valeurs_post
-  #   $CGI ||= CGI.new 'html4'
-  #   params = extract_route( $CGI.params.unarrays )
-  #   add_val_post params
-  #   add_val_get( :route => params[:route] ) if params.has_key? :route
-  # end
-  
-  # => Extrait les valeurs GET de l'url
-  def self.extract_valeurs_get_from_url
-    # params = extract_route CGI::parse(CGI::unescape(ENV['QUERY_STRING']))
-    # qstring = CGI::parse(CGI::unescape(ENV['QUERY_STRING']))
-    # params = Rack::Utils.parse_nested_query( "#{qstring}" )
-    return if ENV['QUERY_STRING'].nil?
-    Rack::Utils.parse_nested_query( CGI::unescape(ENV['QUERY_STRING']) ).
-    each do |cle, valeur|
-      @@PARAMS = @@PARAMS.merge cle.to_sym => valeur
-    end
-    # ---
-    # Pour débug (pour voir ce qui est récupéré dans les paramètres)
-    # File.open('@@PARAMS.txt', 'wb'){ |f| f.write @@PARAMS.inspect }
-    # ---
-  end
-  
-  # => Récupère la route dans les paramètres
-  # (@note: la méthode ne fait que chercher la clé :r — utilisée dans
-  #  l'URL — et la remplace par :route)
-  def self.extract_route params
-    return params unless params.has_key? :r
-    params = params.merge( :route => params.delete(:r) )
-    params
-  end
-
-  # => Ajoute un param GET
-  def self.add_val_get key, val = nil
-    @@PARAMS ||= {}
-    if key.class == Hash
-      @@PARAMS = @@PARAMS.merge key
-    else
-      @@PARAMS = @@PARAMS.merge( key.to_sym => val )
-    end
-  end
-  # => Ajoute un param POST
-  def self.add_val_post key, val = nil
-    if key.class == Hash
-      @@PARAMS = @@PARAMS.merge key
-    else
-      @@PARAMS = @@PARAMS.merge( key => val )
-    end
-  end
-  # => Renvoie une valeur GET
-  def self.value_get key
-    return nil if @@PARAMS.nil?
-    @@PARAMS[key.to_sym]
-  end
-  # => Renvoie une valeur POST
-  def self.value_post key
-    return nil if @@PARAMS.nil?
-    @@PARAMS[key.to_sym]
-  end
-
 end
 
 # -------------------------------------------------------------------
@@ -178,19 +201,12 @@ end
 def online?; Params.online? end
 def offline?; Params.offline? end
 
-# => Renvoie ou définit une variable ou un hash de variable GET
+# => Renvoie ou définit une variable URI
 def param keyorhash, value = nil
   if value.nil? && keyorhash.class != Hash
-    Params::value_get keyorhash
+    Params::extract_params keyorhash
+    # Params::value_get keyorhash
   else
-    Params.add_val_get keyorhash, value
+    Params.value_set keyorhash, value
   end
 end
-# => Renvoie ou définit une variable ou un hash de variable POST
-def post keyorhash, value = nil
-  if value.nil? && keyorhash.class != Hash
-    Params::value_post keyorhash
-  else
-    Params::add_val_post keyorhash, value
-  end
-end  

@@ -20,9 +20,6 @@ window.AdminDBE = {
     this.saving_exercice = true;
     var data = this.get_values();
     data.folder = this.folder_exercice;
-    // @TODO: On pourra ajouter "update:true" pour utiliser cette méthode
-    // quand on voudra updater des exercices.
-    console.dir(data);
     Ajax.query({
       data:{
         proc: 'db_exercices/exercice/save',

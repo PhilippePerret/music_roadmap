@@ -45,15 +45,11 @@ window.Ajax = {
       });
   },
   on_success:function(data, textStatus, jqXHR){
-    // console.dir({
-    //   jqXHR:jqXHR, textStatus:textStatus, data:data
-    // })
     if(this.options.pour_suivre) this.options.pour_suivre(data);
     this.next_stack()
     return true;
   },
   on_error:function(jqXHR, errStatus, error){
-    if(console)console.dir(jqXHR);
     this.next_stack()
   },
   

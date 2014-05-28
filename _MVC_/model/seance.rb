@@ -13,7 +13,7 @@
     Chaque session est enregistré dans un FICHIER DU JOUR, au format json
     Dès qu'un exercice est joué suffisamment longtemps, il est enregistré
     @noter que le même exercice peut être joué plusieurs fois le même jour. Il sera
-    enregistrer comme un nouvel exercice, et rentrera dans les calculs
+    enregistré comme un nouvel exercice, et rentrera dans les calculs
   
   # Confection d'une séance de travail
     L'instance se sert d'un maximum de 50 séances précédentes pour connaitre les
@@ -348,8 +348,28 @@ class Seance
   #   - Scale of the day
   #   - Harmonic sequence
   # 
+  # @param {Hash} params  Les paramètres de la séance, définis par l'utilisateur, 
+  #                       dont la durée, les techniques à aborder, etc.
   def build_with_params params
+    # On enregistre toujours les derniers paramètres utilisés pour les remettre
+    # à la séance suivante.
+    save_params_seance params
     Building.new(self, params).data
+  end
+  
+  def save_params_seance params
+    App::save_data path_params_seance, params
+  end
+  def get_params_last_seance
+    if File.exists? path_params_seance
+      App::load_data path_params_seance
+    else
+      {}
+    end
+  end
+  
+  def path_params_seance
+    @path_params_seance ||= File.join(roadmap.folder, 'params_last_seance.msh')
   end
 
   # Return the Roadmap of the working session (instance Roadmap)

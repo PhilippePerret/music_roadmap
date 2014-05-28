@@ -5,7 +5,7 @@
 
 require 'rubygems'
 require 'cgi'
-require 'rack'  # pour Rack::Utils.parse_nested_query(string)
+# require 'rack'  # pour Rack::Utils.parse_nested_query(string)
 
 Sorry.configure do |config|
   

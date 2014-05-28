@@ -333,6 +333,7 @@ window.Roadmap = {
       this.last_id_exercice = parseInt(rajax.last_id_exercice, 10) ;
       Exercices.reset_liste() ;
       Roadmap.Data.dispatch(roadmap);
+      Seance.last_params = rajax.params_last_seance ; 
       Roadmap.Data.show();
       F.show(MESSAGE.Roadmap.loaded);
       RMEvent.enable(KEY_EVENTS, $.proxy(Seance.onkeypress, Seance));
@@ -344,11 +345,6 @@ window.Roadmap = {
     
     // [#TODO: TRAITER ÇA PAR DES PRÉFÉRENCES]
     if ( this.loaded && User.mail == 'phil@atelier-icare.net') {
-      // S'il y a une méthode utilisateur post chargement de roadmap, on 
-      // l'exécute.
-      // @todo: pour le moment, c'est la préparation de séance pour moi seulement, mais il
-      // faudra pouvoir la définir.
-      // User.PREFERENCES.after_roadmap_loading();
       Seance.show()
     }
     BT.add('<- Roadmap.end_open (return: this.loaded='+this.loaded+')') ;
@@ -643,8 +639,6 @@ window.Roadmap = {
       *     @param  {Boolean} data.options.aleatoire  True si le sens doit être aléatoire.
       */
     set_general_config:function( data ){
-      console.log("Data envoyées à set_general_config:")
-      console.dir(data)
       if (data == null) return F.show(MESSAGE.Roadmap.no_config_generale);
       this.ordre_aleatoire = false
       if(undefined != data.options) this.ordre_aleatoire = data.options.aleatoire

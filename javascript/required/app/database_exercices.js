@@ -107,7 +107,6 @@ window.DBE = {
     if (false == traite_rajax(rajax)){
       this.display_exercices( rajax.exercices, rajax.auteur_id + "-" + rajax.recueil_id);
       this.set_titre_recueil_to_show_hide_exercices(rajax.auteur_id, rajax.recueil_id);
-      // console.dir(rajax.exercices);
     }
     this.loading = false;
   },

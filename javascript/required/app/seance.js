@@ -11,6 +11,14 @@ window.Seance = {
   ready           :false,   // Set to true when form is ready
   section_opened  :false,   // True if section seance is opened
   
+  /** Les paramètres de la dernière séance de travail (confection). Ils sont
+    * remontés au chargement de la feuille de route et permettent de repartir
+    * avec les mêmes réglages.
+    * @class last_params
+    * @static
+    */
+  last_params:null,
+  
   // During session
   running         :false,   // True when we work on the exercices suite
   pause_on        :false,   // Set to TRUE when we pause
@@ -271,6 +279,7 @@ window.Seance = {
       else UI.animin($('div#'+key));
     });
     this.section_opened = true;
+    this.set_values() ;
   },
   // Close section Seance
   hide_section:function(){
@@ -313,7 +322,6 @@ window.Seance = {
     this.ordre_stack  = null;
     this.params_seance = this.get_values();
     if( this.params_seance == null ) return this.building = false;
-    // console.dir(this.params_seance);
     Flash.show( MESSAGE.thank_to_wait )
     Ajax.query({
       data:{
@@ -338,8 +346,6 @@ window.Seance = {
         this.hide_form(false);
         this.show_start();
       }
-      // @debug Pour voir les données remontées
-      // if(console)console.dir(this.data_seance);
     }
     this.building = false;
   },
@@ -415,6 +421,25 @@ window.Seance = {
     UI.open_volet('exercices');
     this.ordre_stack = null; // empties the stack
     return false;//for a-link
+  },
+  /** Méthode qui règle le formulaire de définition de la séance de travail
+    * en prenant les derniers réglages utilisés pour la roadmap courante
+    * @method set_values
+    */
+  set_values:function(params)
+  {
+    if(undefined == params){ params = this.last_params }
+    if(!params || params == {}){ return }
+    var wtime = parseInt(params.working_time) ;
+    // Réglage du temps
+    $('select#seance_duree_heures').val( Math.floor(wtime / 60) ) ;
+    $('select#seance_duree_minutes').val( wtime % 60 ) ;
+    // Réglage des options
+    $.map(params.options, function(value, opt){
+      $('input#seance_option_'+opt)[0].checked = value ;
+    });
+    // Peut-être que plus tard il faudra aussi remettre les difficultés choisies
+    // ...
   },
   // Relève les data du formulaire
   OPTIONS_LIST:['aleatoire', 'obligatory', 'new_tone', 'same_ex', 'next_config'],

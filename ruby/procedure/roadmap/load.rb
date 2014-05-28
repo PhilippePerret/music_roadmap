@@ -2,6 +2,7 @@
 
 require_model 'roadmap'
 require_model 'exercice'
+require_model 'seance'
 
 # Procédure Ajax de chargement de la roadmap
 def ajax_roadmap_load
@@ -20,6 +21,7 @@ def ajax_roadmap_load
       RETOUR_AJAX[:error] = data_rm
     else
       RETOUR_AJAX[:roadmap] = data_rm
+      RETOUR_AJAX[:params_last_seance] = Seance::new(rm).get_params_last_seance
       RETOUR_AJAX[:last_id_exercice] = rm.last_id_exercice
     end
   end 

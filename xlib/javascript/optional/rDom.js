@@ -8,13 +8,7 @@ window.RDom = {
                         attribute:    Le parent doit contenir cet attribut
                         tagname:      Le parent doit avoir ce tag
   */
-  parent_with: function( o, params ){
-    // console.dir({
-    //   method: "RDom::parent_with",
-    //   params: params,
-    //   odom: o
-    // });
-    
+  parent_with: function( o, params ){    
     // Dans le cas où c'est un objet jQuery qui a été envoyé
     if( not_defined(o.parentNode) ) o = o[0] ;
     
