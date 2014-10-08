@@ -1,3 +1,13 @@
+TESTS À IMPLÉMENTER
+  - Adresse mail conforme à l'inscription
+  - Impossibilité d'avoir deux noms identiques
+  
+NOUVEAUX TESTS AVEC RSPEC
+  > Procédure pour tout initialiser dans le dossier au début des tests, et peut-être des états figés qui permettront de revenir vite dans un état précis.
+  - C'est un module dans un dossier ruby/tests/
+  - Il n'est jouable que si l'on est en mode développement (Params::development?)
+  - Il doit répondre à des actions, grâce aux paramètres transmis
+
 -# Penser qu'un problème qui peut survenir avec la nouvelle utilisation de
 Marshal pour l'enregistrement des données, c'est que les clés sont des
 symboles, contrairement à JSON.

@@ -351,18 +351,17 @@ class Seance
   # @param {Hash} params  Les paramètres de la séance, définis par l'utilisateur, 
   #                       dont la durée, les techniques à aborder, etc.
   def build_with_params params
-    # On enregistre toujours les derniers paramètres utilisés pour les remettre
-    # à la séance suivante.
     save_params_seance params
     Building.new(self, params).data
   end
-  
+  # On enregistre toujours les derniers paramètres utilisés pour les remettre
+  # à la séance suivante.
   def save_params_seance params
-    App::save_data path_params_seance, params
+    App::save_data path_params_seance, params.values_str_to_real
   end
   def get_params_last_seance
     if File.exists? path_params_seance
-      App::load_data path_params_seance
+      (App::load_data path_params_seance).values_str_to_real
     else
       {}
     end

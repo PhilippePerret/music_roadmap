@@ -565,6 +565,10 @@ GAMME CHOISIE POUR LA SÉANCE : #{ISCALE_TO_HSCALE[config_generale[:tone]]}
       return unless exercices_obligatoires
       new_idexs = []
       @idexs_in_ordre_jeu.each do |idex|
+        if @exercices[idex].nil?
+          # Cela peut arriver lorsqu'un exercice a été retiré de la liste
+          next
+        end
         if @exercices[idex].obligatory?
           @mandatories        << @ids_exercices.delete(idex)
           @duree_mandatories  += (duree_of idex)

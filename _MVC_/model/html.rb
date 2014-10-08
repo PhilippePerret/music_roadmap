@@ -21,6 +21,8 @@ class Html
   # -------------------------------------------------------------------
   URL         = 'www.music-roadmap.net'
   URL_OFFLINE = "localhost/ruby/music_roadmap"
+  
+  
   # JQuery's files
   JQUERIES = [
     File.join(PATH_LIB_JS_GENE, 'required', 'jquery.js'),
@@ -52,6 +54,13 @@ class Html
   FOLDER_JAVASCRIPTS  = File.join(APP_FOLDER,   'javascript')
   
   class << self
+
+    def url
+      @url ||= begin
+        (Params::online? ? URL : URL_OFFLINE) + (Params::development? ? '/development' : '')
+      end
+    end
+
     def out
       cgi = CGI::new 'html4'
       cgi.out( 'cookie' => cgi.cookies ) {
@@ -79,7 +88,7 @@ class Html
     
  		# =>	Return le lien pour le flavicon ou définit l'image à utiliser
 		def flavicon
-			url_icon = File.join("#{Html::URL}/_MVC_/view/img/metronome/flav.ico")
+			url_icon = File.join("#{Html::url}/_MVC_/view/img/metronome/flav.ico")
 			'<link rel="shortcut icon" type="image/ico" href="http://'+ url_icon +'" />'
 		end
    
@@ -150,9 +159,7 @@ class Html
       end
     end
     def html_path_racine
-      @html_path_racine ||= begin
-        Params.online? ? Html::URL : Html::URL_OFFLINE
-      end
+      @html_path_racine ||= url
     end
     
     # =>  Retourne le code, pour le haut du body de la page, indiquant l'état

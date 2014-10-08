@@ -87,8 +87,7 @@ window.Flash={
     if( this.options.timer === false ) return ;
     if ( $('div#inner_flash').length ){
       this.calcule_duree_lecture();
-      // this.timer = setTimeout("Flash.clean()", this.duree_lecture * 1000) ;
-      this.timer = setTimeout("Flash.clean()", 10 * 1000) ;
+      // this.timer = setTimeout("Flash.clean()", 10 * 1000) ;
     }
   },
   // Détruit le compte à rebours s'il existe
@@ -99,7 +98,7 @@ window.Flash={
   utimer: null,
   run_utimer: function(){
     this.kill_utimer();
-    this.utimer = setTimeout( "$.proxy(Flash.clean,Flash)()", this.DUREE_UTIMER * 1000 ) ;
+    this.utimer = setTimeout( $.proxy(Flash.force_clean,Flash), this.DUREE_UTIMER * 1000 ) ;
   },
   kill_utimer:function(){
     if (this.utimer != null ) clearTimeout(this.utimer) ;
@@ -195,13 +194,15 @@ window.Flash={
     this.textes = this.textes.replace( /\n/g, '<br />' ) ;
   },
   clean:function(){
+    // TODO: En laissant cette méthode, les messages s'effacent tout de suite
+    // J'ai juste conservé `force_clean' sur le utimer
+    return false; // Pour le a-lien éventuel
+  },
+  force_clean:function(){
     $('div#flash').fadeOut( null,function(){$(this).html("");});
     this.kill_timers();
     this.on = false;
-    return false; // Pour le a-lien éventuel
   },
-  // For Sorry
-  reset:function(){this.clean()},
   // Durée de lecture du message (en secondes, pour le timer)
   calcule_duree_lecture: function(){
     if(this.texte_brut == null) this.define_texte_brut();

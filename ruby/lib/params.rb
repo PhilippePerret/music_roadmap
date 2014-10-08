@@ -20,6 +20,9 @@ class Params
     def online?
       @is_online ||= !offline?
     end
+    def development?
+      @mode_development ||= ENV['REQUEST_URI'].start_with?('/development/')
+    end
     # Deux méthodes pour le débuggage (simulation de offline/online)
     def set_offline
       @is_offline = true
@@ -114,9 +117,9 @@ class Params
   
     def real_value_of value
       case value
-        when "true" then true
-        when "false" then false
-        when "nil", "null" then nil
+        when "true"         then true
+        when "false"        then false
+        when "nil", "null"  then nil
         else value
       end
     end

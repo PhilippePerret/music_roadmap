@@ -84,6 +84,10 @@ class Mail
   #   :from::       Email address of the sender (me by default)
   # 
   def self.send mail, to, from
+    if Params::development?
+      # TODO: Plus tard, enregistrer le mail pour pouvoir le checker
+      return
+    end
     Net::SMTP.start(
       MY_SMTP[:server], 
       MY_SMTP[:port], 
