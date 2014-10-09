@@ -356,6 +356,7 @@ window.User = {
       this.roadmaps = [];
       $('div#user_signup_form').remove();
       Aide.close();
+      $('input#roadmap_nom').addClass('green');
       this.pour_suivre_identification();
     }
     this.creating = false ;
@@ -382,7 +383,7 @@ window.User = {
     this.preparing_form = false ;
   },
   
-  // Called with user choose a instrument in select #instruments in sign up form
+  // Called with user choose a instrument in select #instrument in sign up form
   // 
   on_choose_instrument:function(oselect){
     var o = $(oselect);
@@ -399,10 +400,10 @@ window.User = {
   prepare_instruments_in_signup_form:function(){
     for(var instid in DATA_INSTRUMENTS){
       var dinst = DATA_INSTRUMENTS[instid];
-      $('select#instruments').append(
+      $('select#instrument').append(
         '<option value="'+dinst['id']+'">' + dinst['name'] + '</option>');
     }
-    $('select#instruments').append(
+    $('select#instrument').append(
       '<option value="other" class="other">' + LOCALE_UI.Class.other + '</option>');
     // Et placer le texte explicatif en fonction de la langue
     

@@ -5,7 +5,7 @@ window.MESSAGE = {
   // USER
   User:{
     created     :"You're signup! Enjoy Music Roadmap!"+
-                  "<br>Now you can <a onclick=\"return $.proxy(H.show,H,'roadmap/creation.html')()\" href=\"#\" class=\"to_help aide_lien\">create a roadmap</a>.",
+                  "<br>Now you can <a onclick=\"return $.proxy(H.show,H,'roadmap/creation.html')()\" href=\"#\" class=\"to_help aide_lien\">create a roadmap</a>. Please type its name in the green field below.",
     welcome     :"Welcome at Music Roadmap!",
     goodbye     :"See you later at Music Roadmap!"
   },

@@ -1,3 +1,7 @@
+/**
+  * Styles généraux pour les champs de formulaire
+  */
+input[type="text"].green { background-color: #CFC;}
 
 /*
   
@@ -54,3 +58,4 @@ table.form tr.buttons, table.form tr.boutons {
 table.form tr.buttons, table.form tr.boutons td {
   padding-top         :1.3em;
 }
+

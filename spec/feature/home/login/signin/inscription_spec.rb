@@ -2,15 +2,21 @@
 require 'spec_helper'
 
 def data_user
-  @mail = "benoit.ackerman@yahoo.fr"
-  @pwd  = "unmotdepassebidon"
-  @data_user ||= {
-    :nom => "Benoit",
-    :mail => @mail,
-    :mail_confirmation => @mail,
-    :password => @pwd,
-    :password_confirmation => @pwd,
-  }
+  @data_user ||= begin
+    d = data_benoit
+    @mail = d[:mail]
+    @pwd  = d[:password]
+    # Note : les données ne doivent comprendre que les noms des champs du 
+    # formulaire et tous les noms des champs de formulaire
+    {
+      :nom  => d[:nom],
+      :mail => @mail,
+      :mail_confirmation => @mail,
+      :password => @pwd,
+      :password_confirmation => @pwd,
+      :instrument => d[:instrument]
+    }
+  end
 end
 
 feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
@@ -33,9 +39,12 @@ feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
     
     # L'user remplit le formulaire
     data_user.each do |prop, value|
-      fill_in("user_#{prop}", with: value)
+      unless prop == :instrument
+        fill_in("user_#{prop}", with: value)
+      else
+        select(value.capitalize, from: 'instrument')
+      end
     end
-    select("Piano", from: 'instruments')
     
     # L'user clique sur S'inscrire
     click_link('btn_signup')
@@ -44,15 +53,21 @@ feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
     # Les bons messages
     expect(page).to have_content("Vous êtes inscrit à Feuille de Route Musicale !")
     expect(page).to have_content("Vous pouvez maintenant créer une feuille de route.")
+    expect(page).to have_content("Indiquez son nom dans le champ vert ci-dessous.")
 
     # Le formulaire d'inscription doit être caché
     expect(page).to_not have_css('div#user_signin_form')
     
     shot 'after_signup'
     
+    # Le champ pour inscrire un nom de feuille de route doit être vert
+    expect(page).to have_css('input#roadmap_nom.green')
+    
     # # On fait un gel s'il n'a pas encore été fait
     # gel 'benoit_simple'
     # shot "after-gel-benoit"
+    
+    # L'utilisateur se trouve sur la bonne page
     
   end
   
@@ -72,9 +87,12 @@ feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
     
     # L'user remplit le formulaire
     data_user.each do |prop, value|
-      fill_in("user_#{prop}", with: value)
+      unless prop == :instrument
+        fill_in("user_#{prop}", with: value)
+      else
+        select(value.capitalize, from: 'instrument')
+      end
     end
-    select("Piano", from: 'instruments')
     
     # L'erreur volontaire
     fill_in('user_mail_confirmation', with: "mauvais@mail.com")
