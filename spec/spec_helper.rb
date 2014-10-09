@@ -2,13 +2,18 @@
 require 'capybara/rspec'
 # require 'rspec-steps'
 require 'rspec-html-matchers'
+require 'cgi'
+require 'net/http'
+
+URL_MUSIC_ROADMAP = "http://www.music-roadmap.net"
+URI_DEVELOPMENT = "#{URL_MUSIC_ROADMAP}/development"
 
 Capybara.javascript_driver = :webkit
 Capybara.default_driver = :selenium
 Capybara.current_driver = :selenium
 # Capybara.current_driver = :rack_test
 Capybara.run_server = false
-Capybara.app_host = "http://www.music-roadmap.net/development" # Développement
+Capybara.app_host =  URI_DEVELOPMENT # Développement
 Capybara.default_wait_time = 10
 
 Dir["./spec/support/**/*.rb"].each {|f| require f}
@@ -68,6 +73,19 @@ RSpec.configure do |config|
   #---------------------------------------------------------------------
   #   Méthodes utilitaires propres à l'application testée
   #---------------------------------------------------------------------
+
+  # Identification de Benoit en mode d'intégration
+  # Note: Il faut peut-être procéder à un dégel avant.
+  def identify_benoit
+    visit('/')
+    click_link('btn_want_signin')
+    within('div#user_signin_form') do
+      fill_in 'user_mail',      with: data_benoit[:mail]
+      fill_in 'user_password',  with: data_benoit[:password]
+      click_link('btn_signin')
+    end
+    expect(page).to have_content("Bienvenue")
+  end
   def data_benoit
     @data_benoit ||= begin
       require './data/secret/data_benoit'
@@ -75,16 +93,16 @@ RSpec.configure do |config|
     end
   end
   
+  #---------------------------------------------------------------------
+  #   Méthodes de tests utiles
+  #---------------------------------------------------------------------
+  # Cf. dans le dossier support/test_methods
   
-  # Procède à un gel de l'état courant
-  def gel nom_gel
-    visit("/tests_utilitaires.rb?op=gel&arg1=#{nom_gel}")
-  end
+  #---------------------------------------------------------------------
+  #   Raccourcis des méthodes tests_utilitaires
+  #---------------------------------------------------------------------
+  # Cf. dans /support/test_methods/tests_utilitaires.rb
   
-  # Procède au dégel de +nom_gel+
-  def degel nom_gel
-    visit("/tests_utilitaires.rb?op=degel&arg1=#{nom_gel}")
-  end
 
   # ---------------------------------------------------------------------
   #   Screenshots

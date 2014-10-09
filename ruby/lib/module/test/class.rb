@@ -2,9 +2,21 @@ class Tests
   
   class << self
     
+    # => Retourne les logs sous forme de Array (format = :array) ou de 
+    # String (format = :string)
+    def logs format = :array
+      case format
+      when :array
+        @logs
+      when :string
+        (@logs||[]).collect{|lg| "<div>#{lg}</div>"}.join('')
+      end
+    end
+    
     def log str, options = nil
       options ||= {}
-      STDOUT.write "<div class='#{options[:class]}'>#{str}</div>"
+      @logs ||= []
+      @logs << "<div class='#{options[:class]}'>#{str}</div>"
     end
     
     # = Main =
@@ -16,8 +28,11 @@ class Tests
       unless self.respond_to? method
         raise "La méthode #{method.inspect} est inconnue au bataillon"
       end
-      self.send(method, *args)
-      log "OPÉRATION EXÉCUTÉE AVEC SUCCÈS"
+      res = self.send(method, *args)
+      if param(:type) == 'html'
+        log "OPÉRATION EXÉCUTÉE AVEC SUCCÈS"
+      end
+      return res
     end
     
     def args

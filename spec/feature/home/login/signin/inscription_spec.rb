@@ -22,7 +22,7 @@ end
 feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
   background do
     # @note : Exécuté à chaque "scenario"
-    visit('/tests_utilitaires.rb?op=erase_all')
+    erase_all
   end
   
   scenario 'Un visiteur s’inscrit avec succès' do
@@ -55,6 +55,20 @@ feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
     expect(page).to have_content("Vous pouvez maintenant créer une feuille de route.")
     expect(page).to have_content("Indiquez son nom dans le champ vert ci-dessous.")
 
+
+    # Un fichier de data correct a été créé
+    file_should_exist "./user/data/#{data_user[:mail]}"
+    hsaved = data_of "./user/data/#{data_user[:mail]}", 'msh'
+    [:mail, :nom, :instrument].each do |prop|
+      expect(hsaved[prop]).to eq(data_user[prop])
+    end
+    # L'user ne doit pas avoir encore de roadmaps
+    rms = roadmaps_of data_user[:mail]
+    expect(rms).to be_instance_of Array
+    expect(rms).to be_empty
+    
+    # L'utilisateur se retrouve sur une page correcte
+
     # Le formulaire d'inscription doit être caché
     expect(page).to_not have_css('div#user_signin_form')
     
@@ -62,12 +76,11 @@ feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
     
     # Le champ pour inscrire un nom de feuille de route doit être vert
     expect(page).to have_css('input#roadmap_nom.green')
-    
+
     # # On fait un gel s'il n'a pas encore été fait
     # gel 'benoit_simple'
     # shot "after-gel-benoit"
     
-    # L'utilisateur se trouve sur la bonne page
     
   end
   

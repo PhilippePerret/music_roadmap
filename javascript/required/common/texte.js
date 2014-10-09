@@ -18,7 +18,7 @@ window.Texte = {
   to_ascii:function(txt){
     var bad, good;
     for(good in this.NON_ASCII){
-      bad = new RegExp(this.NON_ASCII[good], "g");
+      bad = new RegExp("[" + this.NON_ASCII[good] + "]", "g");
       txt = txt.replace(bad,good);
     }
     return txt;

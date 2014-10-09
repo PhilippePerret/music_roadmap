@@ -226,11 +226,14 @@ window.Roadmap = {
       try{
         if ( nom == "" ) throw 'need_a_nom' ;
         else {
-          if( this.get_a_correct_and_set( nom ) ) throw 'invalid_nom';
-          if( this.nom.length < 4 ) throw 'too_short_name';
+          if( this.get_a_correct_and_set( nom ) == false ) throw 'invalid_nom';
+          if( /*le nom corrigé */ this.nom.length < 4 ) throw 'too_short_name';
+          if( this.nom.length > 30){
+            this.set(this.nom.substr(0,29)) ;
+            throw 'too_long_name' ;
+          }
         }
       } catch (iderr){
-        this.set(this.nom = null) ;
         F.error(ERROR.Roadmap.Specs[iderr]);
       }
     }
@@ -274,14 +277,14 @@ window.Roadmap = {
     return this.specs_valides ;
   },
   // Compose un nom correct pour la roadmap et le met dans le champ
-  // return FALSE si seuls les espaces ont été corrigées, sinon return TRUE (erreur)
+  // return FALSE si le nom a dû être corrigé
   get_a_correct_and_set: function( from ){
     from = from.replace(/ /g, '_');
     from_init = from.toString();
     from = Texte.to_ascii( from );
     from = from.replace(/[^a-zA-Z0-9_-]/g, '');
     this.set(from);
-    return from != from_init;
+    return from == from_init;
   },
 
   /*  Ouvre la roadmap voulue par un menu

@@ -2,34 +2,51 @@
 # encoding: UTF-8
 =begin
 
-Ce script peut être appelé directement par l'adresse :
-
-  http://www.music-roadmap.net/development/tests_utilitaires.rb
-
-… pour permettre des traitements au cours des tests.
+Cf. le fichier tests_utilitaires.md pour le détail
 
 =end
+require 'rubygems'
+require 'json'
 
 AJAX      = false
 DEBUG_ON  = true
 
-STDOUT.write "Content-type: text/html; charset:utf-8;\n"
-STDOUT.write "\n"
-STDOUT.write <<-HTML
-<!DOCTYPE html>
-<head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-  <title>Utilitaires de tests</title>
-  <link rel="stylesheet" href="/_MVC_/view/css/required/common/common.css" type="text/css" media="screen" title="no title" charset="utf-8">
-</head>
-<style type="text/css">
-body {
-  padding: 4em !important;
-  font-size:16pt !important;
-}
-</style>
-<body>
-HTML
+def output code_or_hash
+  if param(:type) == 'html'
+    code_or_hash = code_or_hash.collect do |k,v|
+      "<div>#{k} => #{v.inspect}</div>"
+    end.join('') if code_or_hash.class == Hash
+    output_html code_or_hash
+  else
+    code_or_hash = {:code => code_or_hash} unless code_or_hash.class == Hash
+    output_json code_or_hash
+  end
+end
+def output_json data
+  STDOUT.write "Content-type: application/json\n\n"
+  STDOUT.write data.to_json
+end
+def output_html code
+  STDOUT.write "Content-type: text/html; charset:utf-8;\n\n"
+  STDOUT.write <<-HTML
+  <!DOCTYPE html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Utilitaires de tests</title>
+    <link rel="stylesheet" href="/_MVC_/view/css/required/common/common.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <style type="text/css">
+  body {
+    padding: 4em !important;
+    font-size:16pt !important;
+  }
+  </style>
+  <body>
+    #{code}
+  </body>
+  </html>
+  HTML
+end
 begin
   require 'rubygems'
   require 'cgi'
@@ -40,7 +57,8 @@ begin
   if Params::development?
     Dir["#{APP_FOLDER}/ruby/lib/module/test/**/*.rb"].each{|m| require m}
     begin
-      Tests::run_operation
+      res_operation = Tests::run_operation
+      output :result => res_operation, :code => (Tests::logs :string)
     rescue Exception => e
       raise e
     end
@@ -49,9 +67,7 @@ begin
   end
   
 rescue Exception => e
-  # STDOUT.write "Content-type: text/html; charset:utf-8;\n"
-  # STDOUT.write "\n"
-  STDOUT.write "<div class='warning'>#{e.message}</div>"
-  STDOUT.write "<br><br>" + e.backtrace.join("<br>")
+  str = "<div class='warning'>#{e.message}</div>"
+  str << "<br><br>" + e.backtrace.join("<br>")
+  output str
 end
-STDOUT.write '</body></html>'

@@ -32,14 +32,15 @@ window.ERROR = {
     too_many              :"Désolé, mais vous ne pouvez pas créer plus de dix feuilles de route…",
     cant_create           :"Impossible de créer la feuille de route avec les données fournies…",
     unknown               :"Feuille de route introuvable…",
-    existe_deja           :"Cette feuille de route existe déjà.",
+    existe_deja           :"Vous possédez déjà une feuille de route de ce nom. Cliquez le bouton “Ouvrir” pour l'ouvrir.",
     not_destroyed         :"# Impossible de détruire cette feuille de route…",
     bad_owner             :"Vous devez être le possesseur de cette feuille de route pour procéder à cette opération !",
     Specs:{
       requises            :"Le nom de la feuille de route est requis !",
       need_a_nom          :"Il faut définir le nom de la feuille de route !",
       invalid_nom         :"Le nom contient des caractères invalides que j'ai supprimés ou remplacés…",
-      too_short_name      :"Ce nom est trop court (au moins 4 caractères, s'il vous plait)"
+      too_short_name      :"Ce nom est trop court (au moins 4 caractères, s'il vous plait)",
+      too_long_name       :"Ce nom est trop long (max 30 signes). Je l'ai raccourci."
     },
     Data:{
       required                  : "Les données à dispatcher sont requises !",
