@@ -1,7 +1,7 @@
 # require 'webmock/rspec'
 require 'capybara/rspec'
 # require 'rspec-steps'
-# require 'rspec-html-matchers'
+require 'rspec-html-matchers'
 
 Capybara.javascript_driver = :webkit
 Capybara.default_driver = :selenium
@@ -13,6 +13,8 @@ Capybara.default_wait_time = 10
 
 Dir["./spec/support/**/*.rb"].each {|f| require f}
 
+APP_FOLDER = File.expand_path('.')
+require File.join(APP_FOLDER, 'ruby', 'lib', 'module', 'init.rb')
 
 class String
   # Pour les tests, il faut supprimer les balises dans les textes pour faire

@@ -20,13 +20,28 @@ class App
       # La méthode peut être appelée par un script utilitaire (en offline) donc
       # il faut faire ce check (dans un script utilitaire, Params n'est pas 
       # souvent défini)
-      raise if (defined?(Params) && Params.online?) || ENV['TM_MATE'] == nil
+      # raise if (defined?(Params) && Params.online?) || ENV['TM_MATE'] == nil
       
       # raise "Interdit" if Params.online?
       pwd_file = File.join('data', 'secret', 'home_password')
       raise "Fichier password (home_password) introuvable dans ./data/secret/" unless File.exists? pwd_file
       pwd = File.read(pwd_file)
       `echo #{pwd} | sudo -S #{code}`
+    end
+    
+    def autorize_phil path
+      autorize path, 'philippeperret'
+    end
+    def autorize_www path
+      autorize path, 'www'
+    end
+    
+    def autorize path, proprietaire
+      sudo "chown #{proprietaire} \"#{path}\""
+      return unless File.directory? path
+      Dir["#{path}/**/*.*"].each do |spath|
+        sudo "chown #{proprietaire} \"#{spath}\""
+      end
     end
     
     # Charge les données du fichier +path+

@@ -10,6 +10,7 @@ window.ERROR = {
     Signup:{
       already_exists            :"Email address of a user already signed up, sorry.",
       name_required             : "Your name should not be empty!",
+      nom_existe_deja           :"Your name is already used, sorry.",
       mail_required             : "Email address required.",
       bad_mail                  : "Invalid email address. Please try again.",
       bad_mail_confirmation     :"Your mail confirmation does not match…",

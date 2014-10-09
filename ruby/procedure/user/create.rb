@@ -30,6 +30,8 @@ def user_create duser, lang = 'en'
     raise "ERROR.User.mail_required" unless duser.has_key?(:mail)
     raise "ERROR.User.password_required" unless duser.has_key?(:password)
     raise "ERROR.User.Signup.instrument_required" unless duser.has_key?(:instrument)
+    raise "ERROR.User.Signup.nom_existe_deja" if User::nom_exists?(duser[:nom])
+    
     # MD5 et check de la non-existence
     # @note: l'instance a aussi besoin de connaître @instrument pour calculer
     # le md5
@@ -46,8 +48,8 @@ def user_create duser, lang = 'en'
       :created_at => Time.now.to_i,
       :updated_at => Time.now.to_i
       )
-    # File.open(user.path, 'wb'){|f| f.write duser.to_json}
     App::save_data user.path, duser
+    User::add_nom user
     
     # On peut envoyer un mail à l'utilisateur et à l'administrateur
     Mail::lang( lang )

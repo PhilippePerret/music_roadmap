@@ -120,7 +120,7 @@ feature 'Inscription d’un nouvel utilisateur de Music-Roadmap' do
     fill_in('user_mail_confirmation', with: adresse_unique)
     click_link('btn_signup')
     expect(page).to_not have_content("Vous êtes inscrit à Feuille de Route Musicale !")
-    expect(page).to have_content("Cet nom est celui d'un roadmapeur déjà inscrit")
+    expect(page).to have_content("Ce nom est déjà porté par un Roadmapeur")
         
   end
 end

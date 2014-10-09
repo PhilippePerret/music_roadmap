@@ -1,24 +1,8 @@
 # Class Utilisateur
 
+Dir["./_MVC_/model/user/**/*.rb"].each{|m| require m}
 class User
-  class << self
-    
-    def authentify_as_admin dauth
-      require File.join(APP_FOLDER,'data','secret','data_phil_bis') # => DATA_PHIL
-      authentify_with_mail_and_password(dauth) || authentify_with_md5(dauth)
-    end
 
-    def authentify_with_mail_and_password dauth
-      return false if dauth[:mail].nil? || dauth[:password].nil?
-      dauth[:mail] == DATA_PHIL[:mail] && dauth[:password] == DATA_PHIL[:password]
-    end
-
-    def authentify_with_md5 dauth
-      return false if dauth[:md5].to_s == ""
-      dauth[:md5] == DATA_PHIL[:md5]
-    end
-  end  
-  
   # -------------------------------------------------------------------
   #   L'instance
   # -------------------------------------------------------------------

@@ -11,7 +11,11 @@ class Tests
         FileUtils::rm_rf dossier if File.exists? dossier
         Dir.mkdir(dossier, 0777) unless strict
       end
-      log "Dossier user/data et user/roadmap détruits."
+      log "- Dossier user/data et user/roadmap détruits."
+      if File.exists? User::path_names_file
+        File.unlink User::path_names_file 
+        log "- Fichier des noms détruit"
+      end
     end
     
     # Procède au gel de l'état courant

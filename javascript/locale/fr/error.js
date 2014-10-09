@@ -14,6 +14,7 @@ window.ERROR = {
     Signup:{            
       already_exists        :"Cet email est celui d'un roadmapeur déjà inscrit.",
       name_required         :"Votre nom ne peut être vide !",
+      nom_existe_deja       :"Ce nom est déjà porté par un Roadmapeur.",
       mail_required         :"Votre adresse mail est requise.",
       bad_mail              :"Votre adresse email est invalide. Merci de la corriger",
       bad_mail_confirmation :"La confirmation de votre adresse email ne correspond pas…",
