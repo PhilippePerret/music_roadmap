@@ -1,7 +1,3 @@
-def data_of path, type = nil
-  res = make_operation_test :op => 'data_of', :arg1 => path, :arg2 => (type || "nil")
-  res[:result]
-end
 def erase_all
   make_operation_test :op => 'erase_all'
 end
@@ -36,5 +32,9 @@ def make_operation_test hdata
   res = Net::HTTP.get(uri)
   res = JSON::parse(res).to_sym
   # puts "<div>#{res.inspect}:#{res.class}</div>"
-  return res
+  if res.has_key? :error
+    raise res[:error]
+  else
+    return res
+  end
 end

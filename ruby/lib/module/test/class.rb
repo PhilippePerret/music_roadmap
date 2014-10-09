@@ -24,15 +24,20 @@ class Tests
     # Méthode principale appelée par le script tests_utilitaires.rb
     #
     def run_operation
-      method = param(:op).to_sym
-      unless self.respond_to? method
-        raise "La méthode #{method.inspect} est inconnue au bataillon"
+      res = nil; method = nil
+      begin
+        method = param(:op).to_sym
+        raise "La méthode #{method.inspect} est inconnue au bataillon" unless self.respond_to? method
+        res = self.send(method, *args)
+        log "OPÉRATION EXÉCUTÉE AVEC SUCCÈS" if param(:type) == 'html'
+        return {:result => res, :code => (Tests::logs :string)}
+      rescue Exception => e
+        return {
+          :error  => "ERREUR AU COURS DE L'OPÉRATION `#{method}' : \n#{e.message}\n\n" + (e.backtrace.join("\n")),
+          :code   => (Tests::logs :string),
+          :result => res
+        }
       end
-      res = self.send(method, *args)
-      if param(:type) == 'html'
-        log "OPÉRATION EXÉCUTÉE AVEC SUCCÈS"
-      end
-      return res
     end
     
     def args

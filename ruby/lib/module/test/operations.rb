@@ -25,11 +25,13 @@ class Tests
     # retourne le contenu du fichier.
     # Le type (extension) peut être forcé à l'aide de +type+ (nécessaire par exemple
     # pour les fichiers de data des users dont le nom complet est le mail)
-    def data_of path, type
+    def data_of path, type = nil
+      raise "Fichier introuvable" unless File.exists? path
       type = File.extname(path)[1..-1] if type.nil? || type == "nil"
       case type
-      when 'msh' then App::load_data path
-      when 'js'  then JSON::parse(File.read path).to_sym
+      when 'msh'      then App::load_data path
+      when 'js'       then JSON::parse(File.read path).to_sym
+      when 'integer'  then (File.read path).to_i
       else
         File.read path
       end

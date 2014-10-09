@@ -8,7 +8,6 @@ describe 'User' do
     # Débug : pour voir la liste des noms enregistrés
     if File.exists? User::path_names_file
       name_list = App::load_data User::path_names_file
-      puts name_list.inspect
     end
     
   end

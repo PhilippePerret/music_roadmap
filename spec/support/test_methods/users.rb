@@ -1,10 +1,9 @@
 #  Méthodes tests pour les utilisateurs
 
+# => Return l'instance {User} de Benoit
+def benoit
+  @benoit ||= ( User::new data_benoit[:mail] )
+end
 def user_data umail
   data_of "./user/data/#{umail}", 'msh'
-end
-
-# => Return Array des noms de roadmaps de l'utilisateur de mail +umail+
-def roadmaps_of umail
-  user_data(umail)[:roadmaps]
 end

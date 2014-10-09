@@ -44,8 +44,7 @@ feature 'Création d’une Roadmap' do
 
     # La nouvelle roadmap doit être enregistrée dans la liste des roadmaps de
     # Benoit
-    rms = roadmaps_of data_benoit[:mail]
-    expect(rms).to include "Nouvelle_roadmap"
+    expect(roadmaps_of benoit).to include "Nouvelle_roadmap"
 
     # # On fait un gel si des choses ont été changées
     # gel 'benoit_first_empty_roadmap'

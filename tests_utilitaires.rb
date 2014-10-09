@@ -58,7 +58,7 @@ begin
     Dir["#{APP_FOLDER}/ruby/lib/module/test/**/*.rb"].each{|m| require m}
     begin
       res_operation = Tests::run_operation
-      output :result => res_operation, :code => (Tests::logs :string)
+      output res_operation
     rescue Exception => e
       raise e
     end
