@@ -38,7 +38,7 @@ par défaut, ce qui est bien pour commencer) :
 - Choisir la page qui contient le début de l'extrait
 - Rogner au maximum (MAJ + C)
 - Régler la taille du canevas à 500 x 300 (pixels) (Image > Taille du canevas)
-- Modifier l'échelle de l'image pour que le début tienne dans l'image (MAJ + T)
+- Modifier l'échelle de l'image (MAJ + T) et/ou sa position pour que le début tienne dans l'image.
 - Exporter au format .jpg en qualité 60
   En nommant l'image "<id image>-extrait.jpg"
 - Placer l'image à côté de son fichier data
